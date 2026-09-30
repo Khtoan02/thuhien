@@ -1,5 +1,6 @@
 /**
  * Core UI JavaScript for Thu Hiền - Cùng Mẹ Hiểu Con (Pure Static Edition)
+ * Đồng hành cùng cha mẹ có con tự kỷ (ASD)
  * Handles: Scroll reveals, lead modals, interactive pills, LocalStorage persistence & toasts
  */
 
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Track Page View & Realtime Live Heartbeat via DB layer
     if (typeof DB !== 'undefined') {
-        const curPage = document.title.includes('Đặt Lịch') ? 'Đặt Lịch Tư Vấn 1-1' : 'Trang Chủ';
+        const curPage = document.title.includes('Đặt Lịch') ? 'Đặt Lịch Trò Chuyện 1-1' : 'Trang Chủ';
         DB.trackView(curPage);
         // Periodic heartbeat every 12 seconds to keep session alive
         setInterval(() => {
@@ -85,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         bookingForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const submitBtn = bookingForm.querySelector('button[type="submit"]');
-            const originalBtnHtml = submitBtn.innerHTML;
 
             // Collect form values
             const formData = new FormData(bookingForm);
@@ -100,16 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 email: formData.get('email') || '',
                 baby_name: formData.get('baby_name') || '',
                 baby_age: formData.get('baby_age') || '',
-                baby_weight: formData.get('baby_weight') || '',
+                baby_weight: formData.get('baby_weight') || 'Bé Trai',
                 baby_height: formData.get('baby_height') || '',
                 issues: issues,
                 feeding_notes: formData.get('feeding_notes') || '',
-                consult_type: formData.get('consult_type') || 'Gói Đồng Hành 21 Ngày Tối Ưu Hấp Thu',
+                consult_type: formData.get('consult_type') || 'Gói Đồng Hành Chuyên Sâu 1 Tháng (Zalo Hằng Ngày)',
                 preferred_time: formData.get('preferred_time') || 'Buổi tối (19h30 - 21h30)'
             };
 
             if (!bookingData.parent_name || !bookingData.phone) {
-                showToast('Vui lòng điền họ tên mẹ và số điện thoại liên hệ.', 'error');
+                showToast('Vui lòng điền họ tên mẹ và số điện thoại Zalo liên hệ.', 'error');
                 return;
             }
 
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Save to client-side DB
                 const savedBooking = DB.addBooking(bookingData);
 
-                showToast('Đăng ký thành công! Chuyên gia Thu Hiền sẽ liên hệ qua Zalo.', 'success');
+                showToast('Đăng ký thành công! Thu Hiền sẽ liên hệ riêng qua Zalo cùng Mẹ.', 'success');
                 
                 // Show confirmation screen
                 const formContainer = bookingForm.closest('.booking-card-inner');
@@ -135,14 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="eyebrow-badge mb-3">TIẾP NHẬN THÀNH CÔNG #TH-${savedBooking.id}</span>
                             <h3 class="font-serif text-2xl md:text-3xl text-[#174C3B] font-bold mb-4">Cảm ơn Mẹ đã tin tưởng gửi gắm!</h3>
                             <p class="text-[#5F6E66] max-w-lg mx-auto mb-6 text-base leading-relaxed">
-                                Chuyên gia Dinh dưỡng Thu Hiền đã ghi nhận tình trạng của bé. Chuyên gia sẽ liên hệ trực tiếp qua số Zalo/SĐT để trao đổi và lên lịch hẹn cụ thể trong thời gian sớm nhất.
+                                Thu Hiền đã ghi nhận câu chuyện của Mẹ. Thu Hiền sẽ chủ động liên hệ riêng tư qua số Zalo/SĐT để lắng nghe và sắp xếp lịch hẹn trò chuyện trong thời gian sớm nhất. Mẹ hãy yên tâm nhé!
                             </p>
                             <div class="inline-flex flex-col sm:flex-row gap-4 justify-center items-center">
                                 <a href="/" class="btn-pill-primary">
                                     <span>Về Trang Chủ</span>
                                 </a>
                                 <a href="https://zalo.me" target="_blank" rel="noopener" class="btn-pill-peach">
-                                    <span>Nhắn Zalo Trực Tiếp</span>
+                                    <span>Nhắn Zalo Riêng Với Thu Hiền</span>
                                 </a>
                             </div>
                         </div>
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 phone: formData.get('phone') || '',
                 email: formData.get('email') || '',
                 baby_age: formData.get('baby_age') || '',
-                resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu'
+                resource_name: 'Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà'
             };
 
             if (!leadData.parent_name || !leadData.phone) {
@@ -187,8 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             </svg>
                         </div>
                         <h4 class="font-serif text-xl font-bold text-[#174C3B] mb-2">Tài liệu đã sẵn sàng!</h4>
-                        <p class="text-[#5F6E66] text-sm mb-6">Mẹ hãy bấm nút bên dưới để tải trực tiếp file cẩm nang 30 thực đơn về điện thoại nhé.</p>
-                        <a href="data:text/plain;charset=utf-8,Cam%20Nang%20Dinh%20Duong%20Thu%20Hien%20-%20Cung%20Me%20Hieu%20Con" download="Cam-Nang-Dinh-Duong-Thu-Hien.pdf" class="btn-pill-peach">
+                        <p class="text-[#5F6E66] text-sm mb-6">Mẹ hãy bấm nút bên dưới để tải trực tiếp file cẩm nang về điện thoại nhé.</p>
+                        <a href="data:text/plain;charset=utf-8,Cam%20Nang%20Nhung%20Buoc%20Dau%20Dong%20Hanh%20Cung%20Con%20Tu%20Ky%20Tai%20Nha%20-%20Thu%20Hien" download="Cam-Nang-Dong-Hanh-Con-Tu-Ky-Thu-Hien.pdf" class="btn-pill-peach">
                             <span>Tải Cẩm Nang Ngay (PDF)</span>
                         </a>
                     </div>
@@ -238,48 +238,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedPackage = urlParams.get('package');
     const consultTypeSelect = document.querySelector('select[name="consult_type"]');
     if (selectedPackage && consultTypeSelect) {
-        if (selectedPackage === '21ngay') {
-            consultTypeSelect.value = 'Gói Đồng Hành 21 Ngày Tối Ưu Hấp Thu';
+        if (selectedPackage === '1thang') {
+            consultTypeSelect.value = 'Gói Đồng Hành Chuyên Sâu 1 Tháng (Zalo Hằng Ngày)';
         } else if (selectedPackage === '60phut') {
-            consultTypeSelect.value = 'Tư Vấn Đơn Điểm 1-1 (60 Phút Trực Tiếp)';
-        } else if (selectedPackage === '60ngay') {
-            consultTypeSelect.value = 'Gói Đồng Hành Toàn Diện 1 Tháng Kèm Thực Đơn';
+            consultTypeSelect.value = 'Buổi Trò Chuyện & Tháo Gỡ Ban Đầu (60 Phút 1-1)';
+        } else if (selectedPackage === '3thang') {
+            consultTypeSelect.value = 'Gói Đồng Hành Bền Vững 3 Tháng (Toàn Diện Nền Tảng)';
         }
     }
 
-    // 9. Interactive 1-Minute Assessment Tool on Homepage
+    // 9. Interactive 1-Minute Assessment Tool on Homepage (Autism & Sensory Connection)
     const assessmentForm = document.getElementById('babyAssessmentForm');
     const assessmentResult = document.getElementById('assessmentResult');
     if (assessmentForm && assessmentResult) {
         assessmentForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const age = assessmentForm.querySelector('input[name="quiz_age"]:checked')?.value || '1-2 tuổi';
-            const issue = assessmentForm.querySelector('input[name="quiz_issue"]:checked')?.value || 'Biếng ăn';
-            const habit = assessmentForm.querySelector('input[name="quiz_habit"]:checked')?.value || 'Xem điện thoại';
+            const age = assessmentForm.querySelector('input[name="quiz_age"]:checked')?.value || '18 - 36 tháng';
+            const issue = assessmentForm.querySelector('input[name="quiz_issue"]:checked')?.value || 'Chậm nói';
+            const habit = assessmentForm.querySelector('input[name="quiz_habit"]:checked')?.value || 'Mẹ kiệt sức';
 
-            let analysisTitle = "Góc Nhìn Về Nhịp Sinh Học & Tâm Lý Bàn Ăn";
-            let analysisDesc = `Bé trong độ tuổi <strong>${age}</strong> đang có biểu hiện <strong>${issue}</strong>, kết hợp với thói quen <strong>${habit}</strong>. Điều này cho thấy bé có thể đang gặp áp lực vô hình trong bữa ăn, khiến hệ tiêu hóa chưa thực sự sẵn sàng đón nhận thức ăn một cách tự nhiên.`;
+            let analysisTitle = "Góc Nhìn Về Giao Tiếp Chức Năng & Tiền Ngôn Ngữ";
+            let analysisDesc = `Bé trong độ tuổi <strong>${age}</strong> đang có biểu hiện <strong>${issue}</strong>. Trong giai đoạn này, trước khi con bật ra từ ngữ đầu tiên, con cần tích lũy đủ các kỹ năng tiền ngôn ngữ: Giao tiếp mắt, bắt chước cử chỉ, chú ý chung và động lực tương tác. Khi con chưa sẵn sàng mà mẹ ép con nói, con sẽ càng khép kín và nhại lời vô nghĩa.`;
             let recs = [
-                "Giảm dần sự phụ thuộc vào màn hình điện thoại, tạo không khí bữa ăn vui vẻ và thoải mái.",
-                "Tối ưu mật độ dinh dưỡng trong từng thìa nhỏ thay vì ép con ăn số lượng nhiều.",
-                "Lắng nghe tín hiệu no - đói tự nhiên và xây dựng lại nhịp sinh hoạt ăn ngủ đều đặn."
+                "Hạ thấp người ngang tầm mắt con, lồng ghép từ ngữ đơn giản gắn liền với hành động con yêu thích.",
+                "Tạo tình huống để con có nhu cầu nhờ mẹ giúp (đặt đồ chơi con thích trong hộp trong suốt đóng nắp).",
+                "Dừng việc bắt con 'nói đi mới cho', thay vào đó mô tả cảm xúc và gọi tên đồ vật bằng giọng điệu vui tươi."
             ];
 
-            if (issue.includes('Táo bón') || issue.includes('phân sống')) {
-                analysisTitle = "Góc Nhìn Về Chế Độ Ăn & Cân Bằng Tiêu Hóa";
-                analysisDesc = `Ở độ tuổi <strong>${age}</strong>, hiện tượng tiêu hóa phân sống hoặc táo bón thường liên quan đến sự mất cân đối giữa lượng đạm, chất xơ hòa tan và lượng nước hàng ngày. Điều này khiến đường ruột bé khó tiêu hóa trọn vẹn thức ăn.`;
+            if (issue.includes('giao tiếp mắt') || issue.includes('quay đầu')) {
+                analysisTitle = "Góc Nhìn Về Quá Tải Giác Quan & Kết Nối Ánh Mắt";
+                analysisDesc = `Ở độ tuổi <strong>${age}</strong>, trẻ có nét tự kỷ thường cảm thấy nhìn thẳng vào mắt người khác là một trải nghiệm quá tải giác quan thị giác. Con tránh ánh mắt không phải vì không yêu mẹ, mà vì não bộ con đang tìm cách tự điều hòa để giảm căng thẳng.`;
                 recs = [
-                    "Cân đối lại lượng đạm nạp vào mỗi bữa, tránh để hệ tiêu hóa non nớt của bé bị quá tải.",
-                    "Tăng cường bổ sung nước và chất xơ tự nhiên từ rau củ quả phù hợp lứa tuổi.",
-                    "Tạo thói quen vận động nhẹ nhàng và giờ đi vệ sinh cố định hàng ngày cho con."
+                    "Tuyệt đối không giữ đầu hay ép con nhìn thẳng vào mắt mẹ, điều này khiến con càng thêm sợ hãi.",
+                    "Đưa đồ vật con thích lên sát cạnh mắt hoặc miệng của mẹ khi trò chuyện để thu hút ánh nhìn tự nhiên.",
+                    "Chơi các trò chơi biến mất - xuất hiện bất ngờ (ú òa, trùm khăn voan) để tạo nụ cười và ánh mắt kết nối."
                 ];
-            } else if (issue.includes('Chậm tăng cân') || issue.includes('đứng cân')) {
-                analysisTitle = "Góc Nhìn Về Khả Năng Hấp Thu & Chuyển Hóa";
-                analysisDesc = `Bé <strong>${age}</strong> đứng cân kéo dài thường do sự thiếu hụt các vi chất cần thiết giúp kích hoạt cảm giác thèm ăn tự nhiên, hoặc do cơ cấu bữa ăn chưa cân đối giữa các nhóm dưỡng chất.`;
+            } else if (issue.includes('bùng nổ') || issue.includes('Meltdown')) {
+                analysisTitle = "Góc Nhìn Về Hệ Thần Kinh & Cơn Quá Tải Meltdown";
+                analysisDesc = `Cơn Meltdown ở bé <strong>${age}</strong> là tình trạng 'cháy cầu chì' của hệ thần kinh khi con bị ngập tràn trong cảm xúc hoặc quá tải giác quan. Con không thể tự kiểm soát được hành vi vào lúc đó, nên mọi lời quát mắng hay giải thích lý lẽ đều phản tác dụng.`;
                 recs = [
-                    "Đánh giá lại khẩu phần thực tế để đảm bảo đủ chất béo lành mạnh và vi chất thiết yếu.",
-                    "Đa dạng hóa món ăn, đổi mới cách chế biến để kích thích sự hào hứng khám phá của con.",
-                    "Thiết lập lịch trình đồng hành cùng chuyên gia để theo dõi và điều chỉnh từng tuần."
+                    "Giữ bản thân mẹ bình tĩnh tuyệt đối, mẹ chính là chiếc 'mỏ neo an toàn' để con nương tựa.",
+                    "Đưa con vào không gian yên tĩnh, giảm ánh sáng và âm thanh, loại bỏ các vật sắc nhọn nguy hiểm.",
+                    "Ôm giữ sâu (nếu con cho phép) hoặc ngồi cạnh im lặng bảo bọc cho đến khi nhịp thở của con chậm lại."
+                ];
+            } else if (issue.includes('lặp lại') || issue.includes('giác quan')) {
+                analysisTitle = "Góc Nhìn Về Nhu Cầu Tự Điều Hòa Giác Quan (Stimming)";
+                analysisDesc = `Các hành vi lặp lại (vẫy tay, nhón chân, xoay tròn, ngắm đồ vật) là cách con gửi tín hiệu để tự cân bằng hệ thống cảm giác bản thể và tiền đình. Ngăn cấm thô bạo sẽ khiến con càng thêm lo âu và bùng phát hành vi dữ dội hơn.`;
+                recs = [
+                    "Ghi chép lại thời điểm con hay lặp lại hành vi (khi con quá phấn khích hay khi con lo âu sợ hãi).",
+                    "Cung cấp các hoạt động thay thế an toàn cho giác quan (nhún nhảy đệm, xoa bóp tay chân, chơi cát/nước).",
+                    "Thiết lập lịch sinh hoạt trực quan bằng hình ảnh giúp con biết trước điều gì sắp diễn ra trong ngày."
                 ];
             }
 
@@ -291,28 +299,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="flex items-center gap-3 mb-4">
                             <span class="w-10 h-10 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center font-bold text-lg">✦</span>
                             <div>
-                                <span class="text-xs font-bold text-[#F08A4B] uppercase tracking-wider block">Góc Nhìn Dinh Dưỡng Từ Chuyên Gia</span>
+                                <span class="text-xs font-bold text-[#F08A4B] uppercase tracking-wider block">Góc Nhìn Thấu Cảm Từ Thu Hiền</span>
                                 <h4 class="font-serif text-xl font-bold text-[#174C3B]">${analysisTitle}</h4>
                             </div>
                         </div>
                         <p class="text-sm text-[#5F6E66] leading-relaxed mb-5">${analysisDesc}</p>
                         <div class="p-4 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/30 mb-6">
-                            <h5 class="text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-2.5">3 Gợi Ý Hữu Ích Dành Cho Mẹ:</h5>
+                            <h5 class="text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-2.5">3 Gợi Ý Kết Nối Dành Cho Mẹ:</h5>
                             <ul class="space-y-2 text-xs text-[#174C3B]">
                                 ${recs.map(r => `<li class="flex items-start gap-2"><span class="text-[#F08A4B] font-bold shrink-0 mt-0.5">•</span><span>${r}</span></li>`).join('')}
                             </ul>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3">
                             <a href="./dat-lich/?issue=${encodeURIComponent(issue)}" class="btn-pill-peach justify-center flex-1">
-                                <span>Đăng Ký Tư Vấn Đồng Hành 1-1</span>
+                                <span>Đặt Lịch Trò Chuyện 1-1 Cùng Thu Hiền</span>
                                 <span class="btn-circle-icon"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></span>
                             </a>
                             <button type="button" data-open-modal="ebook" class="btn-pill-ghost justify-center">
-                                <span>Tải Cẩm Nang 30 Thực Đơn</span>
+                                <span>Tải Cẩm Nang Đồng Hành (PDF)</span>
                             </button>
                         </div>
                         <p class="text-[11px] text-[#8B9992] text-center mt-4">
-                            *Lưu ý: Đánh giá mang tính tham khảo thói quen ăn uống, không thay thế chẩn đoán hay điều trị y tế.*
+                            *Lưu ý: Đánh giá mang tính chất thấu hiểu và gợi ý tương tác tại nhà, không thay thế chẩn đoán hay điều trị y khoa.*
                         </p>
                     </div>
                 `;
@@ -347,4 +355,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
