@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Database files (database.php will automatically create and seed the DB on first run)
+data/*.db
+data/*.db-shm
+data/*.db-wal
+!data/.gitkeep
+
+# Logs & temp files
+*.log
+.vscode/
+.idea/

@@ -1,0 +1,773 @@
+<?php
+$pageTitle = 'Thu Hiền - Cùng Mẹ Hiểu Con | Chuyên Gia Dinh Dưỡng Nhi Khoa';
+$pageDesc = 'Chuyên gia Dinh dưỡng Thu Hiền - Cùng mẹ hiểu con. Nuôi con bằng sự thấu hiểu, không áp lực từ chiếc cân. Phác đồ cá nhân hóa dựa trên 4 trụ cột khoa học.';
+$currentPage = 'home';
+require_once __DIR__ . '/header.php';
+?>
+
+<!-- ==========================================================================
+     HERO SECTION: Nuôi Con Bằng Sự Thấu Hiểu
+     ========================================================================== -->
+<section class="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            <!-- Left Editorial Text -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF5EA] border border-[#8FAF91]/35">
+                    <span class="w-2 h-2 rounded-full bg-[#174C3B]"></span>
+                    <span class="text-xs font-bold text-[#174C3B] uppercase tracking-wider">Chuyên Gia Dinh Dưỡng Thu Hiền</span>
+                </div>
+
+                <h1 class="font-serif text-3xl sm:text-5xl lg:text-[3.4rem] font-bold text-[#174C3B] leading-[1.18] tracking-tight">
+                    Nuôi con bằng <span class="font-serif italic font-normal text-[#1F5A45]">sự thấu hiểu</span>, <br class="hidden sm:inline">
+                    không áp lực từ <span class="peach-highlight relative inline-block">
+                        chiếc cân.
+                        <svg class="absolute -bottom-1.5 left-0 w-full h-2 text-[#F08A4B]/40" viewBox="0 0 100 20" preserveAspectRatio="none" fill="none">
+                            <path d="M0 15 Q50 0 100 15" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                </h1>
+
+                <p class="text-[#5F6E66] text-base sm:text-lg leading-relaxed max-w-2xl font-normal">
+                    Mỗi đứa trẻ là một bản thể sinh học độc bản. Chuyên gia Thu Hiền cùng mẹ lắng nghe nhịp điệu tự nhiên của cơ thể con — từ hệ vi sinh đường ruột, nhu cầu vi chất đến đồng hồ sinh học, để mỗi bữa ăn không còn là cuộc chiến mà trở thành niềm vui lớn lên.
+                </p>
+
+                <!-- Dual Action CTAs -->
+                <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                    <a href="/dat-lich" class="btn-pill-primary group text-center justify-center">
+                        <span>Đăng Ký Tư Vấn 1-1 Cùng Chuyên Gia</span>
+                        <span class="btn-circle-icon">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <button data-open-modal="ebook" class="btn-pill-ghost text-center justify-center">
+                        <svg class="w-4 h-4 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Nhận Cẩm Nang 30 Thực Đơn</span>
+                    </button>
+                </div>
+
+                <!-- Live Philosophy Pill -->
+                <div class="pt-4 flex items-center gap-4 text-xs text-[#5F6E66]">
+                    <div class="flex -space-x-1.5 overflow-hidden">
+                        <div class="w-6 h-6 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-[10px]">TH</div>
+                        <div class="w-6 h-6 rounded-full bg-[#8FAF91] text-white flex items-center justify-center font-bold text-[10px]">MD</div>
+                        <div class="w-6 h-6 rounded-full bg-[#F08A4B] text-white flex items-center justify-center font-bold text-[10px]">VN</div>
+                    </div>
+                    <span>Triết lý: <strong>Tôn trọng sinh lý học trẻ nhỏ • Dinh dưỡng chuẩn y khoa</strong></span>
+                </div>
+            </div>
+
+            <!-- Right Visual Component: The Double-Bezel Scientific Compass -->
+            <div class="lg:col-span-5">
+                <div class="double-bezel">
+                    <div class="double-bezel-inner bg-gradient-to-b from-white to-[#FAF7F0] p-6 sm:p-8">
+                        
+                        <!-- Header inside card -->
+                        <div class="flex items-center justify-between pb-6 border-b border-[#8FAF91]/20">
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-[#8FAF91]">Bản Đồ Sinh Học</span>
+                                <h3 class="font-serif text-xl font-bold text-[#174C3B]">Hệ Trục Thấu Hiểu Con</h3>
+                            </div>
+                            <span class="w-9 h-9 rounded-full bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center">
+                                <!-- Stethoscope / Science Icon -->
+                                <svg class="w-5 h-5 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <!-- 4 Biological Nodes Grid -->
+                        <div class="grid grid-cols-2 gap-3.5 py-6">
+                            
+                            <!-- Node 1: Vi sinh đường ruột -->
+                            <div class="p-3.5 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/30 hover:border-[#8FAF91] transition-all">
+                                <div class="w-8 h-8 rounded-lg bg-white text-[#174C3B] flex items-center justify-center mb-2 shadow-xs">
+                                    <!-- Gut / Intestines SVG -->
+                                    <svg class="w-5 h-5 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 8c0-2.2 1.8-4 4-4s4 1.8 4 4v8c0 2.2 1.8 4 4 4s4-1.8 4-4"/>
+                                        <circle cx="8" cy="8" r="1.5" fill="#8FAF91"/>
+                                        <circle cx="16" cy="16" r="1.5" fill="#F08A4B"/>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-bold text-[#174C3B] block">Hệ Vi Sinh Đường Ruột</span>
+                                <span class="text-[11px] text-[#5F6E66]">Hấp thu & miễn dịch tự nhiên</span>
+                            </div>
+
+                            <!-- Node 2: Vi chất thiết yếu -->
+                            <div class="p-3.5 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/30 hover:border-[#8FAF91] transition-all">
+                                <div class="w-8 h-8 rounded-lg bg-white text-[#174C3B] flex items-center justify-center mb-2 shadow-xs">
+                                    <!-- Micronutrient Droplet / Atom SVG -->
+                                    <svg class="w-5 h-5 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <circle cx="12" cy="12" r="3" stroke="#174C3B"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.5-6.5l-2 2m-7 7l-2 2m11 0l-2-2m-7-7l-2-2"/>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-bold text-[#174C3B] block">Vi Chất Thiết Yếu</span>
+                                <span class="text-[11px] text-[#5F6E66]">Sắt, Kẽm, D3K2, Canxi</span>
+                            </div>
+
+                            <!-- Node 3: Trục Não - Ruột -->
+                            <div class="p-3.5 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/30 hover:border-[#8FAF91] transition-all">
+                                <div class="w-8 h-8 rounded-lg bg-white text-[#174C3B] flex items-center justify-center mb-2 shadow-xs">
+                                    <!-- Brain / Cognition SVG -->
+                                    <svg class="w-5 h-5 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 2A4.5 4.5 0 005 6.5c0 .76.19 1.48.53 2.11A4.5 4.5 0 004 12.5a4.5 4.5 0 002.5 4.02V17a3 3 0 003 3h1m3.5-18A4.5 4.5 0 0118.5 6.5c0 .76-.19 1.48-.53 2.11A4.5 4.5 0 0119.5 12.5a4.5 4.5 0 01-2.5 4.02V17a3 3 0 01-3 3h-1"/>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-bold text-[#174C3B] block">Trục Não - Ruột</span>
+                                <span class="text-[11px] text-[#5F6E66]">Tâm lý & hành vi ăn uống</span>
+                            </div>
+
+                            <!-- Node 4: Đồng hồ sinh học -->
+                            <div class="p-3.5 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/30 hover:border-[#8FAF91] transition-all">
+                                <div class="w-8 h-8 rounded-lg bg-white text-[#174C3B] flex items-center justify-center mb-2 shadow-xs">
+                                    <!-- Circadian Clock SVG -->
+                                    <svg class="w-5 h-5 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <circle cx="12" cy="12" r="9"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l3.5 2"/>
+                                    </svg>
+                                </div>
+                                <span class="text-xs font-bold text-[#174C3B] block">Đồng Hồ Sinh Học</span>
+                                <span class="text-[11px] text-[#5F6E66]">Nhịp điệu đói no & giấc ngủ</span>
+                            </div>
+
+                        </div>
+
+                        <!-- Card Quote Footer -->
+                        <div class="pt-4 border-t border-[#8FAF91]/20 flex items-center justify-between">
+                            <span class="text-xs text-[#5F6E66] italic">"Con chỉ ăn ngon khi cơ thể con thực sự sẵn sàng."</span>
+                            <span class="text-xs font-bold text-[#F08A4B]">Chuyên gia Thu Hiền</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 4 Core Trust Metrics Bar -->
+        <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div class="bg-white/80 border border-[#8FAF91]/30 rounded-2xl p-5 text-center shadow-xs">
+                <span class="font-serif text-3xl font-bold text-[#174C3B] block mb-1">1.200+</span>
+                <span class="text-xs text-[#5F6E66] font-medium leading-tight block">Bé cải thiện biếng ăn & phục hồi đường ruột</span>
+            </div>
+            <div class="bg-white/80 border border-[#8FAF91]/30 rounded-2xl p-5 text-center shadow-xs">
+                <span class="font-serif text-3xl font-bold text-[#F08A4B] block mb-1">100%</span>
+                <span class="text-xs text-[#5F6E66] font-medium leading-tight block">Phác đồ cá nhân hóa dựa trên thể trạng thực</span>
+            </div>
+            <div class="bg-white/80 border border-[#8FAF91]/30 rounded-2xl p-5 text-center shadow-xs">
+                <span class="font-serif text-3xl font-bold text-[#174C3B] block mb-1">4 Trụ Cột</span>
+                <span class="text-xs text-[#5F6E66] font-medium leading-tight block">Khoa học dinh dưỡng độc quyền Thu Hiền</span>
+            </div>
+            <div class="bg-white/80 border border-[#8FAF91]/30 rounded-2xl p-5 text-center shadow-xs">
+                <span class="font-serif text-3xl font-bold text-[#174C3B] block mb-1">21 Ngày</span>
+                <span class="text-xs text-[#5F6E66] font-medium leading-tight block">Chu kỳ hình thành nhịp sinh hoạt & hấp thu mới</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 1: Triết Lý "Cùng Mẹ Hiểu Con"
+     ========================================================================== -->
+<section id="triet-ly" class="py-24 bg-gradient-to-b from-[#FAF7F0] via-[#EEF5EA]/40 to-[#FAF7F0] border-y border-[#8FAF91]/20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        
+        <div class="max-w-3xl mx-auto text-center mb-16">
+            <span class="eyebrow-badge mb-3">TRIẾT LÝ DINH DƯỠNG CỐT LÕI</span>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#174C3B] mb-4">
+                Tại sao mẹ không nên đơn độc trong mỗi bữa ăn?
+            </h2>
+            <p class="text-[#5F6E66] text-base leading-relaxed">
+                Đằng sau mỗi cái lắc đầu từ chối món ăn của con không phải là sự bướng bỉnh, mà là một tín hiệu sinh học con đang cố gửi gắm đến mẹ: dạ dày quá tải, thiếu men tiêu hóa, mất cân bằng vi chất, hay nhịp sinh học bị xáo trộn.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Principle Card 1 -->
+            <div class="double-bezel">
+                <div class="double-bezel-inner">
+                    <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center mb-5 border border-[#8FAF91]/30">
+                        <!-- Bowl & Nourishment Icon -->
+                        <svg class="w-6 h-6 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 11h16a8 8 0 01-16 0zM6 19h12"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v3m-4-2v2m8-2v2"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-bold text-[#F08A4B] uppercase tracking-wider block mb-1">Nguyên Tắc 01</span>
+                    <h3 class="font-serif text-xl font-bold text-[#174C3B] mb-2">Đủ Chất Trước Khi Đủ Lượng</h3>
+                    <p class="text-[#5F6E66] text-sm leading-relaxed">
+                        Một bát cháo to không có ý nghĩa nếu niêm mạc ruột của bé không hấp thu được. Thay vì ép con ăn hết khẩu phần, chúng ta tối ưu mật độ năng lượng và hoạt tính sinh học trong từng thìa ăn nhỏ.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Principle Card 2 -->
+            <div class="double-bezel">
+                <div class="double-bezel-inner">
+                    <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center mb-5 border border-[#8FAF91]/30">
+                        <!-- Compass / Respect Signals -->
+                        <svg class="w-6 h-6 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="#8FAF91" stroke="#174C3B"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-bold text-[#F08A4B] uppercase tracking-wider block mb-1">Nguyên Tắc 02</span>
+                    <h3 class="font-serif text-xl font-bold text-[#174C3B] mb-2">Tôn Trọng Tín Hiệu Đói - No</h3>
+                    <p class="text-[#5F6E66] text-sm leading-relaxed">
+                        Cơ thể trẻ nhỏ có cơ chế tự điều hòa năng lượng bẩm sinh. Khi mẹ học cách nhận biết tín hiệu đói thật sự qua nhịp sinh học, bữa ăn sẽ diễn ra tự nhiên, không cần điện thoại, rong chơi hay ép uổng.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Principle Card 3 -->
+            <div class="double-bezel">
+                <div class="double-bezel-inner">
+                    <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center mb-5 border border-[#8FAF91]/30">
+                        <!-- Heart & Science Balance -->
+                        <svg class="w-6 h-6 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-bold text-[#F08A4B] uppercase tracking-wider block mb-1">Nguyên Tắc 03</span>
+                    <h3 class="font-serif text-xl font-bold text-[#174C3B] mb-2">Giải Tỏa Tâm Lý Cho Người Mẹ</h3>
+                    <p class="text-[#5F6E66] text-sm leading-relaxed">
+                        Tâm trạng lo âu, căng thẳng của mẹ trong bữa ăn sẽ được truyền trực tiếp sang hệ thần kinh ruột của bé qua trục Não - Ruột. Cùng mẹ hiểu con là hành trình giải phóng áp lực tâm lý cho chính người mẹ.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 2: 4 Trụ Cột Khoa Học Dinh Dưỡng Độc Quyền (Asymmetrical Bento Grid)
+     ========================================================================== -->
+<section id="tru-cot" class="py-24 max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+            <span class="eyebrow-badge mb-3">NỀN TẢNG Y KHOA VỮNG CHẮC</span>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#174C3B]">
+                4 Trụ Cột Khoa Học Dinh Dưỡng
+            </h2>
+        </div>
+        <p class="text-[#5F6E66] text-sm max-w-md">
+            Mỗi phác đồ tư vấn của Chuyên gia Thu Hiền được xây dựng dựa trên sự liên kết mật thiết giữa 4 hệ thống sinh học cốt lõi này.
+        </p>
+    </div>
+
+    <!-- Bento Grid Container -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- Bento 1: Gut Microbiome (Col-span 7) -->
+        <div class="md:col-span-7 double-bezel">
+            <div class="double-bezel-inner flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center border border-[#8FAF91]/30">
+                            <!-- Gut Microbiome SVG -->
+                            <svg class="w-6 h-6 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            </svg>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-[#174C3B] text-white text-xs font-semibold">Trụ Cột 01</span>
+                    </div>
+
+                    <h3 class="font-serif text-2xl font-bold text-[#174C3B] mb-3">
+                        Hệ Vi Sinh Đường Ruột & Khả Năng Hấp Thu
+                    </h3>
+                    <p class="text-[#5F6E66] text-sm leading-relaxed mb-6">
+                        80% tế bào miễn dịch nằm tại niêm mạc ruột. Khi hệ vi sinh mất cân bằng (loạn khuẩn, phân sống, táo bón mãn tính hoặc ruột kích thích), dù mẹ có tẩm bổ bao nhiêu chất dinh dưỡng cao cấp, cơ thể con vẫn không thể dung nạp. Phác đồ phục hồi hệ men ruột tự nhiên là bước tiên quyết số 1.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-[#EEF5EA] border border-[#8FAF91]/30 flex items-center gap-3 text-xs text-[#174C3B]">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#174C3B] shrink-0"></span>
+                    <span><strong>Mục tiêu:</strong> Tái tạo hàng rào biểu mô ruột, tối ưu hấp thu dinh dưỡng và dứt điểm rối loạn đại tiện.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bento 2: Micronutrients (Col-span 5) -->
+        <div class="md:col-span-5 double-bezel">
+            <div class="double-bezel-inner flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center border border-[#8FAF91]/30">
+                            <!-- Micronutrient balance -->
+                            <svg class="w-6 h-6 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <circle cx="12" cy="12" r="9"/>
+                                <circle cx="12" cy="12" r="3" fill="#F08A4B"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v3m0 12v3M3 12h3m12 0h3"/>
+                            </svg>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-[#8FAF91] text-white text-xs font-semibold">Trụ Cột 02</span>
+                    </div>
+
+                    <h3 class="font-serif text-2xl font-bold text-[#174C3B] mb-3">
+                        Cân Bằng Vi Chất Thiết Yếu
+                    </h3>
+                    <p class="text-[#5F6E66] text-sm leading-relaxed mb-6">
+                        Thiếu kẽm sinh học làm giảm gai vị giác khiến con thấy thức ăn nhạt nhẽo. Thiếu sắt tiềm ẩn gây mệt mỏi, uể oải. Thiếu D3K2 làm canxi lắng đọng sai vị trí. Bổ sung vi chất đúng tỷ lệ hiệp đồng giúp con tự thèm ăn.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-[#EEF5EA] border border-[#8FAF91]/30 flex items-center gap-3 text-xs text-[#174C3B]">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#F08A4B] shrink-0"></span>
+                    <span><strong>Mục tiêu:</strong> Bù đắp "nạn đói vi chất tiềm ẩn", kích hoạt men vị giác tự nhiên.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bento 3: Brain-Gut Axis (Col-span 5) -->
+        <div class="md:col-span-5 double-bezel">
+            <div class="double-bezel-inner flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center border border-[#8FAF91]/30">
+                            <!-- Gut-Brain Connection -->
+                            <svg class="w-6 h-6 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-[#8FAF91] text-white text-xs font-semibold">Trụ Cột 03</span>
+                    </div>
+
+                    <h3 class="font-serif text-2xl font-bold text-[#174C3B] mb-3">
+                        Trục Não - Ruột & Tâm Lý Bữa Ăn
+                    </h3>
+                    <p class="text-[#5F6E66] text-sm leading-relaxed mb-6">
+                        Đường ruột được mệnh danh là "bộ não thứ hai", sản sinh tới 90% serotonin (hormone hạnh phúc). Khi trẻ bị ép ăn hoặc căng thẳng, dây thần kinh phế vị gửi tín hiệu co thắt dạ dày, dập tắt hoàn toàn cảm giác thèm ăn.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-[#EEF5EA] border border-[#8FAF91]/30 flex items-center gap-3 text-xs text-[#174C3B]">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#174C3B] shrink-0"></span>
+                    <span><strong>Mục tiêu:</strong> Thiết lập mối quan hệ tích cực, an tâm và hạnh phúc giữa trẻ và thức ăn.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bento 4: Circadian Rhythm & Metabolism (Col-span 7) -->
+        <div class="md:col-span-7 double-bezel">
+            <div class="double-bezel-inner flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center border border-[#8FAF91]/30">
+                            <!-- Circadian Clock & Metabolism -->
+                            <svg class="w-6 h-6 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <circle cx="12" cy="12" r="9"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 3M8 2.5l-3 2M16 2.5l3 2"/>
+                            </svg>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-[#174C3B] text-white text-xs font-semibold">Trụ Cột 04</span>
+                    </div>
+
+                    <h3 class="font-serif text-2xl font-bold text-[#174C3B] mb-3">
+                        Đồng Hồ Sinh Học & Nhịp Điệu Trao Đổi Chất
+                    </h3>
+                    <p class="text-[#5F6E66] text-sm leading-relaxed mb-6">
+                        Hoạt động tiết axit dạ dày và nhu động ruột thay đổi theo chu kỳ sinh học ngày/đêm. Ăn dặm hoặc uống sữa sai giờ (vào lúc cơ thể cần nghỉ ngơi) sẽ gây trào ngược, ngủ chập chờn và biếng ăn ban ngày. Đồng bộ nhịp sinh học là chìa khóa vàng để con tăng cân bền vững.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-[#EEF5EA] border border-[#8FAF91]/30 flex items-center gap-3 text-xs text-[#174C3B]">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#F08A4B] shrink-0"></span>
+                    <span><strong>Mục tiêu:</strong> Tối ưu hóa chu kỳ bài tiết hormone tăng trưởng (GH) trong giấc ngủ sâu.</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 3: So Sánh - Sự Chuyển Hóa Của Bé
+     ========================================================================== -->
+<section class="py-24 bg-[#EEF5EA]/50 border-y border-[#8FAF91]/25">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="eyebrow-badge mb-3">HÀNH TRÌNH CHUYỂN HÓA</span>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#174C3B] mb-3">
+                Khi Mẹ Bắt Đầu Hiểu Cơ Thể Con
+            </h2>
+            <p class="text-[#5F6E66] text-sm">
+                Sự khác biệt rõ rệt giữa việc nuôi con theo định kiến khuôn mẫu và nuôi con bằng phác đồ dinh dưỡng dựa trên bằng chứng khoa học.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            
+            <!-- Before Column -->
+            <div class="p-8 rounded-3xl bg-white/70 border border-red-200 shadow-xs space-y-4">
+                <div class="flex items-center gap-3 text-red-700 pb-3 border-b border-red-100">
+                    <span class="w-7 h-7 rounded-full bg-red-100 flex items-center justify-center font-bold text-sm">✕</span>
+                    <h3 class="font-serif font-bold text-lg">Trước Khi Có Phác Đồ Khoa Học</h3>
+                </div>
+                <ul class="space-y-3.5 text-sm text-[#5F6E66]">
+                    <li class="flex items-start gap-2.5">
+                        <span class="text-red-500 font-bold shrink-0 mt-0.5">•</span>
+                        <span>Mỗi bữa ăn kéo dài 45 - 60 phút, mẹ cầm bát chạy theo con hoặc phải bật điện thoại, tivi để dụ con mở miệng.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="text-red-500 font-bold shrink-0 mt-0.5">•</span>
+                        <span>Con thường xuyên ngậm cháo, không chịu nhai thô, hễ thấy thìa thức ăn là quay đầu hoặc đẩy ra.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="text-red-500 font-bold shrink-0 mt-0.5">•</span>
+                        <span>Bổ sung men vi sinh, cốm ăn ngon tràn lan theo lời mách bảo nhưng tình trạng con không cải thiện.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="text-red-500 font-bold shrink-0 mt-0.5">•</span>
+                        <span>Mẹ luôn trong trạng thái tự trách, stress tột độ mỗi khi nhìn vào bảng cân nặng của con.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- After Column -->
+            <div class="p-8 rounded-3xl bg-[#EEF5EA] border border-[#8FAF91] shadow-xs space-y-4">
+                <div class="flex items-center gap-3 text-[#174C3B] pb-3 border-b border-[#8FAF91]/30">
+                    <span class="w-7 h-7 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">✓</span>
+                    <h3 class="font-serif font-bold text-lg">Sau Khi Cùng Mẹ Hiểu Con</h3>
+                </div>
+                <ul class="space-y-3.5 text-sm text-[#174C3B]">
+                    <li class="flex items-start gap-2.5">
+                        <span class="text-[#F08A4B] font-bold shrink-0 mt-0.5">•</span>
+                        <span>Bữa ăn gói gọn trong 25 - 30 phút, con ngồi vào bàn ăn vui vẻ, chủ động đòi ăn khi tới giờ sinh học.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="text-[#F08A4B] font-bold shrink-0 mt-0.5">•</span>
+                        <span>Đường ruột êm, phân thành khuôn đẹp, con không còn đầy hơi chướng bụng hay quấy khóc ban đêm.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="text-[#F08A4B] font-bold shrink-0 mt-0.5">•</span>
+                        <span>Vi chất được bổ sung chính xác liều lượng sinh lý, vị giác phục hồi, con khám phá món ăn hứng thú.</span>
+                    </li>
+                    <li class="flex items-start gap-2.5">
+                        <span class="text-[#F08A4B] font-bold shrink-0 mt-0.5">•</span>
+                        <span>Mẹ hoàn toàn an tâm, thấu hiểu từng cột mốc phát triển của con mà không còn bất kỳ áp lực so sánh nào.</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-12">
+            <a href="/dat-lich" class="btn-pill-peach">
+                <span>Đặt Lịch Để Chuyên Gia Lắng Nghe Mẹ</span>
+                <span class="btn-circle-icon">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                    </svg>
+                </span>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 4: Góc Cảm Nhận Thực Tế (Feedback Phụ Huynh)
+     ========================================================================== -->
+<section id="cam-nhan" class="py-24 max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto text-center mb-16">
+        <span class="eyebrow-badge mb-3">CÂU CHUYỆN ĐỒNG HÀNH THẬT</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#174C3B] mb-3">
+            Những Bữa Ăn Hạnh Phúc Trở Lại
+        </h2>
+        <p class="text-[#5F6E66] text-sm">
+            Lắng nghe chia sẻ từ những người mẹ đã từng kiệt sức trong cuộc chiến bàn ăn và tìm lại nụ cười nhờ phác đồ của Chuyên gia Thu Hiền.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Feedback 1: Mẹ bé Bơ -->
+        <div class="double-bezel">
+            <div class="double-bezel-inner flex flex-col justify-between">
+                <div>
+                    <!-- Star Rating Badge -->
+                    <div class="flex items-center gap-1 text-[#F08A4B] mb-4">
+                        <?php for($i=0; $i<5; $i++): ?>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <?php endfor; ?>
+                        <span class="text-xs font-bold text-[#174C3B] ml-2">Bé Bơ • 14 Tháng Tuổi</span>
+                    </div>
+
+                    <p class="text-[#174C3B] text-sm italic leading-relaxed mb-6 font-medium">
+                        "Trước đây mỗi bữa ăn của Bơ là cả nhà như đánh trận. Bé ngậm cả tiếng, khóc lóc. Chị Thu Hiền xem xét kỹ nhật ký ăn của con mới chỉ ra là Bơ bị thiếu kẽm sinh học và thiếu enzym phân giải tinh bột, cộng thêm lịch ngủ bị trễ. Chỉ sau 12 ngày điều chỉnh theo phác đồ của chị, Bơ tự há miệng đòi ăn và bữa ăn giờ chỉ còn đúng 20 phút. Thật sự biết ơn chị vô cùng!"
+                    </p>
+                </div>
+
+                <div class="pt-4 border-t border-[#8FAF91]/20 flex items-center justify-between">
+                    <div>
+                        <span class="font-serif font-bold text-sm text-[#174C3B] block">Mẹ Mai Lan</span>
+                        <span class="text-xs text-[#5F6E66]">Hà Nội • Đồng hành 21 ngày</span>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-[#EEF5EA] text-[#174C3B] text-[11px] font-semibold">Tự giác ăn ngoan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback 2: Mẹ bé Sóc -->
+        <div class="double-bezel">
+            <div class="double-bezel-inner flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-1 text-[#F08A4B] mb-4">
+                        <?php for($i=0; $i<5; $i++): ?>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <?php endfor; ?>
+                        <span class="text-xs font-bold text-[#174C3B] ml-2">Bé Sóc • 8 Tháng Tuổi</span>
+                    </div>
+
+                    <p class="text-[#174C3B] text-sm italic leading-relaxed mb-6 font-medium">
+                        "Bé Sóc bị táo bón kéo dài từ lúc bắt đầu ăn dặm, mỗi lần đi vệ sinh là khóc thét nứt cả kẽ hậu môn, mẹ xót xa phát khóc. Mình đổi 4 loại sữa không đỡ. Gặp chị Thu Hiền, chị hướng dẫn cân bằng lại tỷ lệ chất xơ hòa tan FOS và bổ sung nước đúng cách sinh học. Sau 4 ngày con đi phân mềm tự nhiên, không phải thụt nữa. Cảm giác như cởi bỏ được tảng đá ngàn cân!"
+                    </p>
+                </div>
+
+                <div class="pt-4 border-t border-[#8FAF91]/20 flex items-center justify-between">
+                    <div>
+                        <span class="font-serif font-bold text-sm text-[#174C3B] block">Mẹ Thu Trang</span>
+                        <span class="text-xs text-[#5F6E66]">Đà Nẵng • Tư vấn dinh dưỡng ruột</span>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-[#EEF5EA] text-[#174C3B] text-[11px] font-semibold">Dứt hẳn táo bón</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback 3: Mẹ bé Bon -->
+        <div class="double-bezel">
+            <div class="double-bezel-inner flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-1 text-[#F08A4B] mb-4">
+                        <?php for($i=0; $i<5; $i++): ?>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <?php endfor; ?>
+                        <span class="text-xs font-bold text-[#174C3B] ml-2">Bé Bon • 24 Tháng Tuổi</span>
+                    </div>
+
+                    <p class="text-[#174C3B] text-sm italic leading-relaxed mb-6 font-medium">
+                        "Bon 2 tuổi mà chỉ nặng 9.5kg, chậm tăng cân 6 tháng liền dù mẹ cho ăn toàn đồ bổ. Chị Thu Hiền phát hiện con bị quá tải protein dẫn tới ruột không hấp thu được vi khoáng. Chị lên lại thực đơn 30 ngày rất dễ nấu cho mẹ bận rộn. Tháng đầu tiên Bon tăng 700g, da dẻ hồng hào, đêm ngủ một mạch từ 9h tối đến sáng không quấy khóc!"
+                    </p>
+                </div>
+
+                <div class="pt-4 border-t border-[#8FAF91]/20 flex items-center justify-between">
+                    <div>
+                        <span class="font-serif font-bold text-sm text-[#174C3B] block">Mẹ Thanh Thảo</span>
+                        <span class="text-xs text-[#5F6E66]">TP. Hồ Chí Minh • Phác đồ 1 tháng</span>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-[#EEF5EA] text-[#174C3B] text-[11px] font-semibold">Tăng cân chuẩn đà</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 5: Cẩm Nang Dinh Dưỡng Ebook (Lead Magnet)
+     ========================================================================== -->
+<section id="cam-nang" class="py-24 bg-[#FAF7F0]">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="double-bezel-mint max-w-5xl mx-auto">
+            <div class="double-bezel-inner p-8 sm:p-12">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    
+                    <div class="md:col-span-7 space-y-4">
+                        <span class="eyebrow-badge bg-white">QUÀ TẶNG DÀNH CHO MẸ</span>
+                        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-[#174C3B]">
+                            Cẩm Nang 30 Thực Đơn Đột Phá Hấp Thu Cho Trẻ 6 - 36 Tháng
+                        </h2>
+                        <p class="text-[#5F6E66] text-sm leading-relaxed">
+                            Tài liệu đúc kết từ hơn 5 năm kinh nghiệm tư vấn lâm sàng của Chuyên gia Thu Hiền. Giúp mẹ giải quyết câu hỏi muôn thuở: <em>"Hôm nay cho con ăn gì để vừa đủ chất, vừa bảo vệ đường ruột?"</em>
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-3 pt-2 text-xs text-[#174C3B] font-semibold">
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#F08A4B]"></span>
+                                <span>30 món dễ nấu, nguyên liệu thuần Việt</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#F08A4B]"></span>
+                                <span>Tỷ lệ chuẩn vi chất Sắt - Kẽm - Canxi</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#F08A4B]"></span>
+                                <span>Bảng theo dõi phân & tiêu hóa</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#F08A4B]"></span>
+                                <span>Công thức nước dùng ngọt thanh tự nhiên</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-4">
+                            <button data-open-modal="ebook" class="btn-pill-peach">
+                                <span>Nhận File Cẩm Nang Miễn Phí (PDF)</span>
+                                <span class="btn-circle-icon">
+                                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8l-8 8-8-8"/>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Ebook Visual Illustration -->
+                    <div class="md:col-span-5 flex justify-center">
+                        <div class="w-56 sm:w-64 aspect-[3/4] rounded-2xl bg-gradient-to-br from-[#174C3B] to-[#1F5A45] p-6 text-white shadow-xl flex flex-col justify-between border-2 border-white/20 transform md:rotate-2 hover:rotate-0 transition-transform duration-500">
+                            <div>
+                                <span class="text-[10px] font-bold tracking-widest text-[#F08A4B] uppercase block mb-1">EBOOK ĐỘC QUYỀN</span>
+                                <div class="w-8 h-1 bg-[#F08A4B] rounded-full mb-3"></div>
+                                <h4 class="font-serif font-bold text-lg leading-snug">30 Thực Đơn Đột Phá Hấp Thu</h4>
+                                <p class="text-[11px] text-[#A9C2A4] mt-1">Dành riêng cho bé 6 - 36 tháng</p>
+                            </div>
+
+                            <div class="py-4 my-auto border-y border-white/10 flex justify-around text-center">
+                                <div>
+                                    <span class="font-serif text-lg font-bold block">30+</span>
+                                    <span class="text-[9px] text-[#EEF5EA]">Món ăn</span>
+                                </div>
+                                <div class="border-r border-white/10"></div>
+                                <div>
+                                    <span class="font-serif text-lg font-bold block">100%</span>
+                                    <span class="text-[9px] text-[#EEF5EA]">Chuẩn Y Khoa</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between text-[11px]">
+                                <span class="font-medium text-white/90">Chuyên gia Thu Hiền</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-white/20">PDF Bản Đẹp</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 6: Quy Trình 4 Bước Tư Vấn Cá Nhân Hóa 1-1
+     ========================================================================== -->
+<section class="py-24 bg-gradient-to-b from-[#FAF7F0] via-[#EEF5EA]/30 to-[#FAF7F0]">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="eyebrow-badge mb-3">QUY TRÌNH CHUYÊN NGHIỆP</span>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#174C3B] mb-3">
+                4 Bước Đồng Hành Cùng Mẹ
+            </h2>
+            <p class="text-[#5F6E66] text-sm">
+                Chúng tôi không đưa ra những lời khuyên chung chung. Mỗi em bé nhận được một lộ trình dinh dưỡng đo ni đóng giày theo đúng thể trạng thực.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Step 1 -->
+            <div class="p-6 rounded-3xl bg-white border border-[#8FAF91]/30 shadow-xs relative">
+                <span class="font-serif text-4xl font-bold text-[#8FAF91]/30 absolute top-4 right-5">01</span>
+                <div class="w-10 h-10 rounded-xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+                <h3 class="font-serif font-bold text-lg text-[#174C3B] mb-2">Khảo Sát Toàn Diện</h3>
+                <p class="text-xs text-[#5F6E66] leading-relaxed">
+                    Mẹ điền thông tin chi tiết về thói quen ăn uống, tiền sử dị ứng, tính chất phân và gửi nhật ký ăn uống 3 ngày gần nhất của bé.
+                </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="p-6 rounded-3xl bg-white border border-[#8FAF91]/30 shadow-xs relative">
+                <span class="font-serif text-4xl font-bold text-[#8FAF91]/30 absolute top-4 right-5">02</span>
+                <div class="w-10 h-10 rounded-xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-serif font-bold text-lg text-[#174C3B] mb-2">Phân Tích & Tư Vấn 1-1</h3>
+                <p class="text-xs text-[#5F6E66] leading-relaxed">
+                    Chuyên gia Thu Hiền gọi video trực tiếp 60 phút cùng mẹ để giải thích cặn kẽ gốc rễ vấn đề theo 4 trục sinh học và giải đáp mọi lo lắng.
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="p-6 rounded-3xl bg-white border border-[#8FAF91]/30 shadow-xs relative">
+                <span class="font-serif text-4xl font-bold text-[#8FAF91]/30 absolute top-4 right-5">03</span>
+                <div class="w-10 h-10 rounded-xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <h3 class="font-serif font-bold text-lg text-[#174C3B] mb-2">Thiết Lập Phác Đồ 21 Ngày</h3>
+                <p class="text-xs text-[#5F6E66] leading-relaxed">
+                    Chuyên gia gửi phác đồ dinh dưỡng chi tiết từng ngày, bảng liều vi chất và thực đơn khoa học phù hợp với điều kiện chế biến của gia đình.
+                </p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="p-6 rounded-3xl bg-white border border-[#8FAF91]/30 shadow-xs relative">
+                <span class="font-serif text-4xl font-bold text-[#8FAF91]/30 absolute top-4 right-5">04</span>
+                <div class="w-10 h-10 rounded-xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-serif font-bold text-lg text-[#174C3B] mb-2">Đồng Hành Hàng Ngày</h3>
+                <p class="text-xs text-[#5F6E66] leading-relaxed">
+                    Theo sát mẹ qua Zalo mỗi ngày, giải đáp kịp thời các phản ứng của con, linh hoạt tinh chỉnh thực đơn để đạt kết quả tối ưu nhất.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 7: Final Call to Action
+     ========================================================================== -->
+<section class="py-20 max-w-5xl mx-auto px-6 lg:px-8">
+    <div class="double-bezel">
+        <div class="double-bezel-inner bg-gradient-to-r from-[#174C3B] to-[#1F5A45] text-white p-8 sm:p-14 text-center">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-[#EEF5EA] text-xs font-semibold uppercase tracking-wider mb-4 border border-white/20">
+                BẮT ĐẦU HÀNH TRÌNH THẤU HIỂU
+            </span>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold mb-4 leading-tight">
+                Mẹ Không Phải "Chiến Đấu" Một Mình Nữa!
+            </h2>
+            <p class="text-[#A9C2A4] text-sm sm:text-base max-w-xl mx-auto mb-8 leading-relaxed">
+                Hãy để Chuyên gia Thu Hiền cùng mẹ tháo gỡ từng nút thắt dinh dưỡng, giúp con tìm lại niềm vui ăn uống tự nhiên và phát triển toàn diện.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="/dat-lich" class="btn-pill-peach">
+                    <span>Đăng Ký Đặt Lịch Tư Vấn Ngay</span>
+                    <span class="btn-circle-icon">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                        </svg>
+                    </span>
+                </a>
+                <a href="https://zalo.me" target="_blank" rel="noopener" class="btn-pill-ghost text-white border-white/30 hover:bg-white/10">
+                    <span>Trò Chuyện Qua Zalo</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<?php require_once __DIR__ . '/footer.php'; ?>

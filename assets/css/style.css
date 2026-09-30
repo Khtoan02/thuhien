@@ -1,0 +1,358 @@
+/* ==========================================================================
+   Design System & Styling for "Thu Hiền - Cùng Mẹ Hiểu Con"
+   Archetype: Soft Structuralism & Editorial Luxury (Health/Pediatric Nutrition)
+   Palette: 70% Warm Cream (#FAF7F0), 20% Deep Green (#174C3B), 10% Peach (#F08A4B)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --color-primary: #174C3B;
+  --color-primary-light: #1F5A45;
+  --color-primary-dark: #0F3529;
+  --color-sage: #8FAF91;
+  --color-sage-light: #A9C2A4;
+  --color-mint-sub: #EEF5EA;
+  --color-mint-border: #E0EBDC;
+  --color-cream-bg: #FAF7F0;
+  --color-cream-card: #FFFFFF;
+  --color-cream-subtle: #F7F2E8;
+  --color-peach: #F08A4B;
+  --color-peach-hover: #E07837;
+  --color-peach-light: #FDF1EA;
+  --color-text-main: #174C3B;
+  --color-text-muted: #5F6E66;
+  --color-text-dim: #8B9992;
+  
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Fraunces', Georgia, serif;
+  
+  --ease-elastic: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-sans);
+  background-color: var(--color-cream-bg);
+  color: var(--color-text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100dvh;
+  line-height: 1.65;
+  background-color: var(--color-cream-bg);
+  overflow-x: hidden;
+}
+
+/* Typography Overrides */
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* Subtle Film Grain Texture (Fixed, non-scrolling for performance) */
+.bg-subtle-pattern {
+  background-image: radial-gradient(var(--color-sage) 0.75px, transparent 0.75px);
+  background-size: 28px 28px;
+  opacity: 0.25;
+}
+
+/* Double-Bezel Nested Architecture */
+.double-bezel {
+  background-color: rgba(23, 76, 59, 0.04);
+  border: 1px solid rgba(143, 175, 145, 0.35);
+  border-radius: 2rem;
+  padding: 0.5rem;
+  transition: all 0.5s var(--ease-elastic);
+}
+
+.double-bezel:hover {
+  background-color: rgba(23, 76, 59, 0.07);
+  border-color: rgba(143, 175, 145, 0.55);
+}
+
+.double-bezel-inner {
+  background-color: var(--color-cream-card);
+  border-radius: calc(2rem - 0.5rem);
+  padding: 2rem;
+  box-shadow: 0 4px 20px -2px rgba(23, 76, 59, 0.04);
+  height: 100%;
+}
+
+.double-bezel-mint {
+  background-color: rgba(238, 245, 234, 0.7);
+  border: 1px solid rgba(143, 175, 145, 0.4);
+  border-radius: 2rem;
+  padding: 0.5rem;
+}
+
+.double-bezel-mint .double-bezel-inner {
+  background-color: var(--color-mint-sub);
+}
+
+/* Button-in-Button / Island Architecture */
+.btn-pill-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  padding: 0.85rem 1.6rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.4s var(--ease-elastic);
+  cursor: pointer;
+}
+
+.btn-pill-primary:hover {
+  background-color: var(--color-primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(23, 76, 59, 0.25);
+}
+
+.btn-pill-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-pill-primary .btn-circle-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s var(--ease-elastic);
+}
+
+.btn-pill-primary:hover .btn-circle-icon {
+  transform: translateX(3px) translateY(-1px);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-pill-peach {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--color-peach);
+  color: #FFFFFF;
+  padding: 0.85rem 1.6rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.4s var(--ease-elastic);
+  cursor: pointer;
+  border: none;
+}
+
+.btn-pill-peach:hover {
+  background-color: var(--color-peach-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(240, 138, 75, 0.35);
+}
+
+.btn-pill-peach:active {
+  transform: scale(0.98);
+}
+
+.btn-pill-peach .btn-circle-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s var(--ease-elastic);
+}
+
+.btn-pill-peach:hover .btn-circle-icon {
+  transform: translateX(3px);
+}
+
+.btn-pill-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: transparent;
+  color: var(--color-primary);
+  padding: 0.85rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1px solid rgba(23, 76, 59, 0.2);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-pill-ghost:hover {
+  background-color: rgba(23, 76, 59, 0.05);
+  border-color: var(--color-primary);
+}
+
+/* Floating Navigation Island */
+.nav-island {
+  position: sticky;
+  top: 1.25rem;
+  z-index: 50;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 72rem;
+  padding: 0 1rem;
+}
+
+.nav-island-inner {
+  background-color: rgba(250, 247, 240, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(143, 175, 145, 0.35);
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 30px -10px rgba(23, 76, 59, 0.08);
+}
+
+/* Eyebrow Tag */
+.eyebrow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  background-color: var(--color-mint-sub);
+  border: 1px solid var(--color-mint-border);
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Highlight badge for peach accent */
+.peach-highlight {
+  color: var(--color-peach);
+  font-weight: 700;
+}
+
+/* Micro animations */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s var(--ease-elastic), transform 0.8s var(--ease-elastic);
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Pulse animation for live consultant status */
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.75; }
+}
+
+.pulse-indicator {
+  animation: pulse-soft 2.5s infinite;
+}
+
+/* Modal lead magnet styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background-color: rgba(23, 76, 59, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.35s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background-color: var(--color-cream-bg);
+  border-radius: 2rem;
+  max-width: 38rem;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--color-sage-light);
+  box-shadow: 0 25px 50px -12px rgba(23, 76, 59, 0.25);
+  transform: scale(0.95);
+  transition: transform 0.35s var(--ease-elastic);
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1);
+}
+
+/* Custom Checkbox Pill */
+.checkbox-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 9999px;
+  background-color: var(--color-mint-sub);
+  border: 1.5px solid transparent;
+  color: var(--color-text-main);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.25s ease;
+}
+
+.checkbox-pill:hover {
+  background-color: #E2ECD7;
+}
+
+.checkbox-pill input {
+  display: none;
+}
+
+.checkbox-pill.checked {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+  border-color: var(--color-primary);
+}
+
+/* Scrollbar refinement */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-sage);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
