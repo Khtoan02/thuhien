@@ -3,21 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Trị Báo Cáo | Thu Hiền - Cùng Mẹ Hiểu Con</title>
+    <title>Hệ Thống Quản Trị & Báo Cáo | Thu Hiền - Cùng Mẹ Hiểu Con</title>
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#174C3B',
+                            primaryLight: '#1F5A45',
+                            sage: '#8FAF91',
+                            sageLight: '#A9C2A4',
+                            mintSub: '#EEF5EA',
+                            creamBg: '#FAF7F0',
+                            peach: '#F08A4B',
+                            peachHover: '#E07837',
+                            textMuted: '#5F6E66'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+                        serif: ['"Fraunces"', 'Georgia', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Chart.js CDN for interactive visual graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <!-- Design System Stylesheet -->
     <link rel="stylesheet" href="../assets/css/style.css">
+    
     <style>
         .badge-pending { background-color: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
         .badge-contacted { background-color: #DBEAFE; color: #1E40AF; border: 1px solid #93C5FD; }
         .badge-in_progress { background-color: #E0E7FF; color: #3730A3; border: 1px solid #A5B4FC; }
         .badge-completed { background-color: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
         .badge-cancelled { background-color: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+        
+        .lead-badge-new { background-color: #FEF3C7; color: #92400E; }
+        .lead-badge-contacted { background-color: #DBEAFE; color: #1E40AF; }
+        .lead-badge-nurturing { background-color: #F3E8FF; color: #6B21A8; }
+        .lead-badge-converted { background-color: #D1FAE5; color: #065F46; }
     </style>
 </head>
 <body class="bg-[#FAF7F0] text-[#174C3B] min-h-screen">
 
 <!-- ==========================================================================
-     LOGIN SCREEN (Hidden when logged in)
+     LOGIN SCREEN (Hidden when authenticated)
      ========================================================================== -->
 <div id="loginSection" class="min-h-screen flex items-center justify-center p-6">
     <div class="double-bezel max-w-md w-full">
@@ -27,7 +65,7 @@
                 TH
             </div>
             
-            <h2 class="font-serif text-2xl font-bold text-[#174C3B] mb-1">Cổng Quản Trị Báo Cáo</h2>
+            <h2 class="font-serif text-2xl font-bold text-[#174C3B] mb-1">Cổng Quản Trị & Báo Cáo</h2>
             <p class="text-xs text-[#5F6E66] mb-6">Chuyên Gia Dinh Dưỡng Thu Hiền • Cùng Mẹ Hiểu Con</p>
 
             <form id="adminLoginForm" class="space-y-4 text-left">
@@ -58,151 +96,518 @@
 </div>
 
 <!-- ==========================================================================
-     AUTHENTICATED DASHBOARD (Shown when logged in)
+     AUTHENTICATED WORKSPACE
      ========================================================================== -->
-<div id="dashboardSection" class="hidden max-w-7xl mx-auto px-6 py-8">
+<div id="dashboardSection" class="hidden min-h-screen">
     
-    <!-- Top Nav Bar -->
-    <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-[#8FAF91]/30">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-serif font-bold text-lg">
-                TH
+    <!-- Top System Navigation Bar -->
+    <header class="bg-white border-b border-[#8FAF91]/30 sticky top-0 z-40 shadow-xs">
+        <div class="max-w-7xl mx-auto px-6 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-serif font-bold text-lg shadow-sm">
+                    TH
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-serif text-lg font-bold text-[#174C3B]">Thu Hiền Management Center</h1>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#EEF5EA] text-[#174C3B] text-[10px] font-semibold border border-[#8FAF91]/40">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#8FAF91] pulse-indicator"></span>
+                            Live System
+                        </span>
+                    </div>
+                    <span class="text-xs text-[#5F6E66] block">Hệ thống đo lường Marketing & Quản lý lịch hẹn 1-1</span>
+                </div>
             </div>
-            <div>
-                <h1 class="font-serif text-2xl font-bold text-[#174C3B] leading-none">Báo Cáo Hoạt Động & Hồ Sơ Mẹ Bé</h1>
-                <span class="text-xs text-[#5F6E66] mt-1 block">Chào Chuyên gia Thu Hiền • Hệ thống sẵn sàng</span>
-            </div>
-        </div>
 
-        <div class="flex items-center gap-3">
-            <a href="../" class="px-4 py-2 rounded-full bg-white border border-[#8FAF91]/40 text-xs font-semibold hover:bg-[#EEF5EA] text-[#174C3B] transition-colors">
-                Xem Trang Chủ
-            </a>
-            <a href="../dat-lich/" class="px-4 py-2 rounded-full bg-white border border-[#8FAF91]/40 text-xs font-semibold hover:bg-[#EEF5EA] text-[#174C3B] transition-colors">
-                Trang Đặt Lịch
-            </a>
-            <button id="logoutBtn" class="px-4 py-2 rounded-full bg-[#174C3B] text-white text-xs font-semibold hover:bg-[#1F5A45] transition-colors">
-                Đăng Xuất
-            </button>
+            <!-- Dashboard Switcher Tabs (2 Separate Workspaces) -->
+            <div class="flex items-center bg-[#FAF7F0] p-1 rounded-full border border-[#8FAF91]/40 text-xs font-semibold">
+                <button id="navMarketingBtn" class="px-4 py-2 rounded-full transition-all bg-[#174C3B] text-white shadow-xs flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span>Dashboard Marketing</span>
+                </button>
+                <button id="navOperationsBtn" class="px-4 py-2 rounded-full transition-all text-[#5F6E66] hover:text-[#174C3B] flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                    <span>Quản Lý Đặt Lịch & Leads</span>
+                </button>
+            </div>
+
+            <!-- External Links & Logout -->
+            <div class="flex items-center gap-2.5">
+                <a href="../" target="_blank" class="p-2 rounded-lg text-[#5F6E66] hover:text-[#174C3B] hover:bg-[#EEF5EA] text-xs font-semibold flex items-center gap-1" title="Mở trang chủ">
+                    <span>Trang Chủ</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+                <button id="logoutBtn" class="px-3.5 py-1.5 rounded-lg border border-red-200 text-red-700 hover:bg-red-50 text-xs font-semibold transition-colors">
+                    Đăng Xuất
+                </button>
+            </div>
+
         </div>
     </header>
 
-    <!-- 1. KPI Cards Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8" id="kpiContainer">
-        <!-- Rendered by JS -->
-    </div>
-
-    <!-- 2. Main Tabs Navigation -->
-    <div class="flex items-center gap-4 mb-6 border-b border-[#8FAF91]/30 pb-3">
-        <button id="tabBookingsBtn" class="font-serif font-bold text-lg text-[#174C3B] border-b-2 border-[#174C3B] pb-2 px-1 focus:outline-none">
-            Danh Sách Đăng Ký Tư Vấn (<span id="bookingsCountBadge">0</span>)
-        </button>
-        <button id="tabLeadsBtn" class="font-serif font-medium text-lg text-[#5F6E66] hover:text-[#174C3B] pb-2 px-1 focus:outline-none">
-            Khách Tải Cẩm Nang Ebook (<span id="leadsCountBadge">0</span>)
-        </button>
-    </div>
-
-    <!-- 3. BOOKINGS TAB -->
-    <div id="tabBookings">
-        <!-- Actions & Filter Bar -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-4">
-            <div class="flex items-center gap-3">
-                <input type="text" id="searchInput" placeholder="Tìm theo tên mẹ hoặc SĐT..." class="px-4 py-2 rounded-xl border border-[#8FAF91]/40 bg-white text-xs w-64 focus:outline-none focus:border-[#174C3B]">
-                <select id="statusFilter" class="px-3 py-2 rounded-xl border border-[#8FAF91]/40 bg-white text-xs focus:outline-none">
-                    <option value="all">Tất cả trạng thái</option>
-                    <option value="pending">Chờ liên hệ</option>
-                    <option value="contacted">Đã liên hệ</option>
-                    <option value="in_progress">Đang theo dõi phác đồ</option>
-                    <option value="completed">Đã hoàn thành</option>
-                </select>
+    <!-- ======================================================================
+         WORKSPACE 1: MARKETING & GROWTH DASHBOARD
+         ====================================================================== -->
+    <main id="spaceMarketing" class="max-w-7xl mx-auto px-6 py-8">
+        
+        <!-- Welcome & Date Filter Strip -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <span class="eyebrow-badge mb-1">BÁO CÁO TĂNG TRƯỞNG & CHUYỂN ĐỔI</span>
+                <h2 class="font-serif text-2xl font-bold text-[#174C3B]">Chỉ Số Hiệu Suất Marketing (KPIs)</h2>
+                <p class="text-xs text-[#5F6E66]">Dữ liệu đo lường hành vi phụ huynh, phễu chuyển đổi và nguồn truy cập</p>
             </div>
 
-            <div class="flex items-center gap-2">
-                <button onclick="DB.exportCSV('bookings')" class="px-4 py-2 rounded-full bg-[#174C3B] text-white text-xs font-semibold hover:bg-[#1F5A45] flex items-center gap-2">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    <span>Xuất Excel / CSV</span>
-                </button>
-                <button onclick="resetData()" class="px-3 py-2 rounded-full bg-white border border-[#8FAF91]/40 text-xs text-[#5F6E66] hover:text-[#174C3B]" title="Nạp lại dữ liệu mẫu">
+            <div class="flex items-center gap-3">
+                <span class="text-xs text-[#5F6E66]">Khoảng thời gian:</span>
+                <select class="px-3 py-1.5 rounded-xl border border-[#8FAF91]/40 bg-white text-xs font-semibold text-[#174C3B] focus:outline-none">
+                    <option>7 Ngày Gần Nhất (Tuần này)</option>
+                    <option>30 Ngày Gần Nhất</option>
+                    <option>Tháng Này</option>
+                </select>
+                <button onclick="resetData()" class="px-3 py-1.5 rounded-xl bg-white border border-[#8FAF91]/40 text-xs text-[#5F6E66] hover:text-[#174C3B]" title="Nạp lại dữ liệu thống kê mẫu">
                     Nạp mẫu
                 </button>
             </div>
         </div>
 
-        <!-- Bookings Table Card -->
-        <div class="bg-white rounded-2xl border border-[#8FAF91]/30 shadow-xs overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs" id="bookingsTable">
-                    <thead class="bg-[#EEF5EA] text-[#174C3B] uppercase font-bold tracking-wider border-b border-[#8FAF91]/30">
-                        <tr>
-                            <th class="p-4">ID</th>
-                            <th class="p-4">Mẹ & Liên Hệ</th>
-                            <th class="p-4">Thông Tin Bé</th>
-                            <th class="p-4">Vấn Đề Gặp Phải</th>
-                            <th class="p-4">Gói Tư Vấn</th>
-                            <th class="p-4">Trạng Thái</th>
-                            <th class="p-4 text-center">Thao Tác</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-[#8FAF91]/20 text-[#174C3B]" id="bookingsTableBody">
-                        <!-- Populated by JS -->
-                    </tbody>
-                </table>
+        <!-- 6 Core Marketing Metric Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8" id="marketingMetricsCards">
+            <!-- Rendered by JS -->
+        </div>
+
+        <!-- Charts Row: Traffic Trend & Traffic Sources -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
+            
+            <!-- Left Chart: 7-Day Performance Trend (Col-span 8) -->
+            <div class="lg:col-span-8 bg-white p-6 rounded-3xl border border-[#8FAF91]/30 shadow-xs">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="font-serif font-bold text-lg text-[#174C3B]">Xu Hướng Tăng Trưởng Lượt Xem & Đăng Ký</h3>
+                        <span class="text-xs text-[#5F6E66]">Số lượt xem trang, lượt tải cẩm nang và đặt lịch 1-1 theo ngày</span>
+                    </div>
+                    <span class="text-xs font-semibold text-[#174C3B] px-2.5 py-1 rounded-full bg-[#EEF5EA]">
+                        7 Ngày qua
+                    </span>
+                </div>
+                <div class="h-72">
+                    <canvas id="trafficTrendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Right Chart: Traffic Sources Breakdown (Col-span 4) -->
+            <div class="lg:col-span-4 bg-white p-6 rounded-3xl border border-[#8FAF91]/30 shadow-xs flex flex-col justify-between">
+                <div>
+                    <h3 class="font-serif font-bold text-lg text-[#174C3B] mb-1">Nguồn Lưu Lượng (Channels)</h3>
+                    <span class="text-xs text-[#5F6E66] block mb-4">Kênh tiếp cận phụ huynh hiệu quả nhất</span>
+                    <div class="h-52 relative">
+                        <canvas id="trafficSourceChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-[#8FAF91]/20 space-y-2 text-xs" id="trafficSourceLegend">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Deep Insights: Conversion Funnel & Topic Demand Breakdown -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Funnel Breakdown (Col-span 6) -->
+            <div class="lg:col-span-6 bg-white p-6 sm:p-8 rounded-3xl border border-[#8FAF91]/30 shadow-xs">
+                <div class="flex items-center justify-between mb-6 pb-3 border-b border-[#8FAF91]/20">
+                    <div>
+                        <h3 class="font-serif font-bold text-lg text-[#174C3B]">Phễu Chuyển Đổi Phụ Huynh (Funnel)</h3>
+                        <span class="text-xs text-[#5F6E66]">Từ người đọc thông thường đến khách hàng tư vấn 1-1</span>
+                    </div>
+                    <span class="text-xs font-bold text-[#F08A4B] px-2.5 py-1 rounded-full bg-[#FAF7F0] border border-[#F08A4B]/30">
+                        Phễu Tối Ưu
+                    </span>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <!-- Step 1 -->
+                    <div>
+                        <div class="flex justify-between font-semibold mb-1">
+                            <span class="text-[#174C3B]">1. Truy Cập Website (Awareness)</span>
+                            <span class="font-mono text-[#5F6E66]">1.840 lượt (100%)</span>
+                        </div>
+                        <div class="w-full bg-[#EEF5EA] h-3 rounded-full overflow-hidden">
+                            <div class="bg-[#174C3B] h-full rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div>
+                        <div class="flex justify-between font-semibold mb-1">
+                            <span class="text-[#174C3B]">2. Đọc Triết Lý & Tìm Hiểu 4 Trụ Cột</span>
+                            <span class="font-mono text-[#5F6E66]">1.250 lượt (67.9%)</span>
+                        </div>
+                        <div class="w-full bg-[#EEF5EA] h-3 rounded-full overflow-hidden">
+                            <div class="bg-[#1F5A45] h-full rounded-full" style="width: 67.9%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div>
+                        <div class="flex justify-between font-semibold mb-1">
+                            <span class="text-[#174C3B]">3. Mở Modal Cẩm Nang Hoặc Form Đặt Lịch</span>
+                            <span class="font-mono text-[#5F6E66]">480 lượt (26.1%)</span>
+                        </div>
+                        <div class="w-full bg-[#EEF5EA] h-3 rounded-full overflow-hidden">
+                            <div class="bg-[#8FAF91] h-full rounded-full" style="width: 26.1%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div>
+                        <div class="flex justify-between font-semibold mb-1">
+                            <span class="text-[#174C3B]">4. Nhận Cẩm Nang Ebook 30 Thực Đơn (Leads)</span>
+                            <span class="font-mono text-[#F08A4B] font-bold">246 mẹ (13.4%)</span>
+                        </div>
+                        <div class="w-full bg-[#EEF5EA] h-3 rounded-full overflow-hidden">
+                            <div class="bg-[#F08A4B] h-full rounded-full" style="width: 13.4%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div>
+                        <div class="flex justify-between font-semibold mb-1">
+                            <span class="text-[#174C3B]">5. Đăng Ký Tư Vấn 1-1 Thành Công</span>
+                            <span class="font-mono text-[#174C3B] font-bold">74 hồ sơ (4.0%)</span>
+                        </div>
+                        <div class="w-full bg-[#EEF5EA] h-3 rounded-full overflow-hidden">
+                            <div class="bg-[#174C3B] h-full rounded-full" style="width: 4.0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/30 flex items-center justify-between text-xs">
+                    <span class="text-[#174C3B]"><strong>Hiệu quả Lead Magnet:</strong> Cứ 10 mẹ tải cẩm nang thì có khoảng 3 mẹ quay lại đăng ký tư vấn 1-1 chuyên sâu.</span>
+                </div>
+            </div>
+
+            <!-- Customer Demand & Topics Analysis (Col-span 6) -->
+            <div class="lg:col-span-6 bg-white p-6 sm:p-8 rounded-3xl border border-[#8FAF91]/30 shadow-xs">
+                <div class="flex items-center justify-between mb-6 pb-3 border-b border-[#8FAF91]/20">
+                    <div>
+                        <h3 class="font-serif font-bold text-lg text-[#174C3B]">Nhu Cầu Dinh Dưỡng Quan Tâm Nhất</h3>
+                        <span class="text-xs text-[#5F6E66]">Thống kê từ các lựa chọn trong phiếu tiếp nhận</span>
+                    </div>
+                    <span class="text-xs font-bold text-[#174C3B] px-2.5 py-1 rounded-full bg-[#EEF5EA]">
+                        Top Nhu Cầu
+                    </span>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="font-semibold text-[#174C3B]">Biếng ăn sinh lý & Ngậm thức ăn</span>
+                            <span class="font-bold text-[#F08A4B]">38% (Cao nhất)</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-[#F08A4B] h-full rounded-full" style="width: 38%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="font-semibold text-[#174C3B]">Chậm tăng cân & Đứng cân nhiều tháng</span>
+                            <span class="font-bold text-[#174C3B]">26%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-[#174C3B] h-full rounded-full" style="width: 26%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="font-semibold text-[#174C3B]">Táo bón, phân sống & Đầy hơi trướng bụng</span>
+                            <span class="font-bold text-[#174C3B]">18%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-[#8FAF91] h-full rounded-full" style="width: 18%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="font-semibold text-[#174C3B]">Bổ sung vi chất chuẩn liều (Kẽm, Sắt, D3K2)</span>
+                            <span class="font-bold text-[#174C3B]">11%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-[#A9C2A4] h-full rounded-full" style="width: 11%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="font-semibold text-[#174C3B]">Dị ứng đạm bò & Lên thực đơn ăn dặm</span>
+                            <span class="font-bold text-[#174C3B]">7%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-slate-400 h-full rounded-full" style="width: 7%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insights Callout -->
+                <div class="mt-6 pt-4 border-t border-[#8FAF91]/20 grid grid-cols-2 gap-3 text-xs">
+                    <div class="p-3 rounded-xl bg-[#FAF7F0] border border-[#8FAF91]/30">
+                        <span class="text-[10px] text-[#8FAF91] font-bold uppercase block">Độ Tuổi Tập Trung</span>
+                        <span class="font-serif font-bold text-sm text-[#174C3B]">6 - 12 Tháng (44%)</span>
+                        <span class="text-[11px] text-[#5F6E66] block">Giai đoạn bắt đầu ăn dặm</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-[#FAF7F0] border border-[#8FAF91]/30">
+                        <span class="text-[10px] text-[#8FAF91] font-bold uppercase block">Khung Giờ Liên Hệ Hot</span>
+                        <span class="font-serif font-bold text-sm text-[#F08A4B]">Tối 19h30 - 21h30 (62%)</span>
+                        <span class="text-[11px] text-[#5F6E66] block">Mẹ rảnh sau giờ cơm</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ======================================================================
+         WORKSPACE 2: OPERATIONS & CRM DASHBOARD (Bookings & Leads)
+         ====================================================================== -->
+    <main id="spaceOperations" class="hidden max-w-7xl mx-auto px-6 py-8">
+        
+        <!-- Header Strip with Subtabs -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+            <div>
+                <span class="eyebrow-badge mb-1">TRUNG TÂM TIẾP NHẬN & CHĂM SÓC</span>
+                <h2 class="font-serif text-2xl font-bold text-[#174C3B]">Quản Lý Hồ Sơ Đặt Lịch & Khách Hàng</h2>
+                <p class="text-xs text-[#5F6E66]">Theo dõi tiến độ phác đồ 21 ngày, ghi chú chuyên môn và chăm sóc phụ huynh</p>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="openManualBookingModal()" class="btn-pill-peach py-2.5 px-4 text-xs">
+                    <span>+ Thêm Hồ Sơ Mới</span>
+                </button>
             </div>
         </div>
-    </div>
 
-    <!-- 4. EBOOK LEADS TAB -->
-    <div id="tabLeads" class="hidden">
-        <div class="flex items-center justify-between gap-4 mb-4">
-            <h3 class="font-serif font-bold text-lg text-[#174C3B]">Danh Sách Phụ Huynh Đăng Ký Tải Cẩm Nang Thực Đơn</h3>
-            <button onclick="DB.exportCSV('leads')" class="px-4 py-2 rounded-full bg-[#174C3B] text-white text-xs font-semibold hover:bg-[#1F5A45] flex items-center gap-2">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                <span>Xuất Danh Sách Leads</span>
+        <!-- Subtabs: Bookings vs Leads -->
+        <div class="flex items-center gap-4 mb-6 border-b border-[#8FAF91]/30 pb-3">
+            <button id="subTabBookingsBtn" class="font-serif font-bold text-lg text-[#174C3B] border-b-2 border-[#174C3B] pb-2 px-1 focus:outline-none flex items-center gap-2">
+                <span>Hồ Sơ Đặt Lịch Tư Vấn</span>
+                <span class="text-xs px-2 py-0.5 rounded-full bg-[#174C3B] text-white" id="opsBookingsBadge">0</span>
+            </button>
+            <button id="subTabLeadsBtn" class="font-serif font-medium text-lg text-[#5F6E66] hover:text-[#174C3B] pb-2 px-1 focus:outline-none flex items-center gap-2">
+                <span>Khách Tải Cẩm Nang Ebook (Leads)</span>
+                <span class="text-xs px-2 py-0.5 rounded-full bg-[#EEF5EA] text-[#174C3B]" id="opsLeadsBadge">0</span>
             </button>
         </div>
 
-        <div class="bg-white rounded-2xl border border-[#8FAF91]/30 shadow-xs overflow-hidden">
-            <table class="w-full text-left text-xs">
-                <thead class="bg-[#EEF5EA] text-[#174C3B] uppercase font-bold tracking-wider border-b border-[#8FAF91]/30">
-                    <tr>
-                        <th class="p-4">ID</th>
-                        <th class="p-4">Tên Mẹ</th>
-                        <th class="p-4">Số Điện Thoại Zalo</th>
-                        <th class="p-4">Email</th>
-                        <th class="p-4">Tuổi Của Bé</th>
-                        <th class="p-4">Tài Liệu</th>
-                        <th class="p-4">Thời Gian</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-[#8FAF91]/20" id="leadsTableBody">
-                    <!-- Populated by JS -->
-                </tbody>
-            </table>
+        <!-- SUBTAB 1: BOOKINGS LIST -->
+        <div id="subTabBookings">
+            
+            <!-- Filters & Export Bar -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-4">
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <input type="text" id="bookingSearchInput" placeholder="Tìm theo tên mẹ, SĐT, tên bé..." class="px-4 py-2 rounded-xl border border-[#8FAF91]/40 bg-white text-xs w-64 focus:outline-none focus:border-[#174C3B]">
+                    
+                    <select id="bookingStatusFilter" class="px-3 py-2 rounded-xl border border-[#8FAF91]/40 bg-white text-xs focus:outline-none">
+                        <option value="all">Tất cả trạng thái</option>
+                        <option value="pending">Chờ liên hệ</option>
+                        <option value="contacted">Đã liên hệ</option>
+                        <option value="in_progress">Đang theo dõi phác đồ</option>
+                        <option value="completed">Đã hoàn thành</option>
+                        <option value="cancelled">Đã hủy</option>
+                    </select>
+
+                    <select id="bookingPackageFilter" class="px-3 py-2 rounded-xl border border-[#8FAF91]/40 bg-white text-xs focus:outline-none">
+                        <option value="all">Tất cả gói tư vấn</option>
+                        <option value="Gói Đồng Hành 21 Ngày">Gói 21 Ngày</option>
+                        <option value="Tư Vấn Đơn Điểm">Tư Vấn 60 Phút</option>
+                        <option value="Toàn Diện 1 Tháng">Gói 1 Tháng</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button onclick="DB.exportCSV('bookings')" class="px-4 py-2 rounded-full bg-[#174C3B] text-white text-xs font-semibold hover:bg-[#1F5A45] flex items-center gap-2">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span>Xuất Excel Hồ Sơ</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bookings Table Card -->
+            <div class="bg-white rounded-3xl border border-[#8FAF91]/30 shadow-xs overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs" id="bookingsOpsTable">
+                        <thead class="bg-[#EEF5EA] text-[#174C3B] uppercase font-bold tracking-wider border-b border-[#8FAF91]/30">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Mẹ & Kết Nối</th>
+                                <th class="p-4">Thông Tin Bé</th>
+                                <th class="p-4">Tình Trạng & Nhật Ký Ăn</th>
+                                <th class="p-4">Gói Quan Tâm</th>
+                                <th class="p-4">Trạng Thái Xử Lý</th>
+                                <th class="p-4 text-center">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#8FAF91]/20 text-[#174C3B]" id="bookingsOpsTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-    </div>
+
+        <!-- SUBTAB 2: LEADS LIST -->
+        <div id="subTabLeads" class="hidden">
+            
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-4">
+                <div class="flex items-center gap-2.5">
+                    <input type="text" id="leadSearchInput" placeholder="Tìm theo tên mẹ, số điện thoại..." class="px-4 py-2 rounded-xl border border-[#8FAF91]/40 bg-white text-xs w-64 focus:outline-none focus:border-[#174C3B]">
+                    <select id="leadCareFilter" class="px-3 py-2 rounded-xl border border-[#8FAF91]/40 bg-white text-xs focus:outline-none">
+                        <option value="all">Tất cả chăm sóc</option>
+                        <option value="new">Mới tải</option>
+                        <option value="contacted">Đã liên hệ Zalo</option>
+                        <option value="nurturing">Đang chăm sóc</option>
+                        <option value="converted">Đã chốt lịch hẹn</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button onclick="DB.exportCSV('leads')" class="px-4 py-2 rounded-full bg-[#174C3B] text-white text-xs font-semibold hover:bg-[#1F5A45] flex items-center gap-2">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span>Xuất Excel Khách Hàng Leads</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-[#8FAF91]/30 shadow-xs overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs" id="leadsOpsTable">
+                        <thead class="bg-[#EEF5EA] text-[#174C3B] uppercase font-bold tracking-wider border-b border-[#8FAF91]/30">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Họ Tên Mẹ</th>
+                                <th class="p-4">Số Zalo & Kết Nối</th>
+                                <th class="p-4">Email</th>
+                                <th class="p-4">Tuổi Bé</th>
+                                <th class="p-4">Tiến Độ Chăm Sóc</th>
+                                <th class="p-4">Ghi Chú CSKH</th>
+                                <th class="p-4 text-center">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#8FAF91]/20 text-[#174C3B]" id="leadsOpsTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
 
 </div>
+
+<!-- ==========================================================================
+     MODALS: Detail View & Manual Booking Creation
+     ========================================================================== -->
 
 <!-- Booking Detail Modal -->
 <div id="detailModal" class="modal-overlay">
     <div class="modal-content max-w-2xl">
         <div class="bg-white rounded-[calc(2rem-0.5rem)] p-6 sm:p-8 relative">
-            <button id="closeDetailModal" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-[#174C3B]">✕</button>
+            <button id="closeDetailModal" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-[#174C3B]">✕</button>
             <div id="detailModalContent"></div>
         </div>
     </div>
 </div>
 
+<!-- Manual Booking Modal (For expert to manually record phone/Zalo requests) -->
+<div id="manualBookingModal" class="modal-overlay">
+    <div class="modal-content max-w-xl">
+        <div class="bg-white rounded-[calc(2rem-0.5rem)] p-6 sm:p-8 relative">
+            <button id="closeManualModal" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-[#174C3B]">✕</button>
+            
+            <div class="mb-5 pb-3 border-b border-[#8FAF91]/20">
+                <span class="eyebrow-badge mb-1">THỦ CÔNG</span>
+                <h3 class="font-serif text-xl font-bold text-[#174C3B]">Tạo Hồ Sơ Tư Vấn Mới</h3>
+                <p class="text-xs text-[#5F6E66]">Nhập hồ sơ tiếp nhận trực tiếp từ Zalo, Fanpage hoặc điện thoại</p>
+            </div>
+
+            <form id="manualBookingForm" class="space-y-4 text-xs">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-bold text-[#174C3B] mb-1">Họ Tên Mẹ *</label>
+                        <input type="text" name="parent_name" required placeholder="Ví dụ: Mẹ Thu Nga" class="w-full p-2.5 rounded-xl border border-[#8FAF91]/40 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-[#174C3B] mb-1">Số Điện Thoại / Zalo *</label>
+                        <input type="tel" name="phone" required placeholder="0912 xxx xxx" class="w-full p-2.5 rounded-xl border border-[#8FAF91]/40 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block font-bold text-[#174C3B] mb-1">Tên Bé</label>
+                        <input type="text" name="baby_name" placeholder="Bé Gạo" class="w-full p-2.5 rounded-xl border border-[#8FAF91]/40 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-[#174C3B] mb-1">Độ Tuổi Bé *</label>
+                        <input type="text" name="baby_age" required placeholder="10 tháng" class="w-full p-2.5 rounded-xl border border-[#8FAF91]/40 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-[#174C3B] mb-1">Cân Nặng / Cao</label>
+                        <input type="text" name="baby_weight" placeholder="8.5kg / 72cm" class="w-full p-2.5 rounded-xl border border-[#8FAF91]/40 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-[#174C3B] mb-1">Vấn Đề Gặp Phải</label>
+                    <input type="text" name="issues" placeholder="Biếng ăn sinh lý, táo bón..." class="w-full p-2.5 rounded-xl border border-[#8FAF91]/40 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-[#174C3B] mb-1">Gói Tư Vấn</label>
+                    <select name="consult_type" class="w-full p-2.5 rounded-xl border border-[#8FAF91]/40 focus:outline-none">
+                        <option value="Gói Đồng Hành 21 Ngày Tối Ưu Hấp Thu">Gói Đồng Hành 21 Ngày Tối Ưu Hấp Thu</option>
+                        <option value="Tư Vấn Đơn Điểm 1-1 (60 Phút Trực Tiếp)">Tư Vấn Đơn Điểm 1-1 (60 Phút)</option>
+                        <option value="Gói Đồng Hành Toàn Diện 1 Tháng Kèm Thực Đơn">Gói Đồng Hành Toàn Diện 1 Tháng</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-[#174C3B] mb-1">Ghi Chú Ban Đầu</label>
+                    <textarea name="feeding_notes" rows="2" placeholder="Ghi chú bệnh sử hoặc hẹn lịch..." class="w-full p-2.5 rounded-xl border border-[#8FAF91]/40 focus:outline-none"></textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="btn-pill-peach w-full justify-center py-2.5 text-xs">
+                        <span>Lưu Hồ Sơ Vào Hệ Thống</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
 <script src="../assets/js/db.js"></script>
 <script>
     const AUTH_KEY = 'thuhien_admin_auth';
+    let trendChartInstance = null;
+    let sourceChartInstance = null;
 
-    // 1. Check Authentication state
+    // 1. Authentication
     function checkAuth() {
         if (sessionStorage.getItem(AUTH_KEY) === 'true') {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
-            renderDashboard();
+            renderAll();
         } else {
             document.getElementById('loginSection').classList.remove('hidden');
             document.getElementById('dashboardSection').classList.add('hidden');
@@ -226,94 +631,256 @@
         checkAuth();
     });
 
-    // 2. Render KPIs & Tables
-    function renderDashboard() {
+    // 2. Navigation Switcher: Marketing vs Operations
+    const navMarketingBtn = document.getElementById('navMarketingBtn');
+    const navOperationsBtn = document.getElementById('navOperationsBtn');
+    const spaceMarketing = document.getElementById('spaceMarketing');
+    const spaceOperations = document.getElementById('spaceOperations');
+
+    navMarketingBtn.addEventListener('click', () => {
+        spaceMarketing.classList.remove('hidden');
+        spaceOperations.classList.add('hidden');
+        
+        navMarketingBtn.className = 'px-4 py-2 rounded-full transition-all bg-[#174C3B] text-white shadow-xs flex items-center gap-1.5';
+        navOperationsBtn.className = 'px-4 py-2 rounded-full transition-all text-[#5F6E66] hover:text-[#174C3B] flex items-center gap-1.5';
+        
+        // Re-render charts to fix responsive layout
+        initCharts();
+    });
+
+    navOperationsBtn.addEventListener('click', () => {
+        spaceOperations.classList.remove('hidden');
+        spaceMarketing.classList.add('hidden');
+        
+        navOperationsBtn.className = 'px-4 py-2 rounded-full transition-all bg-[#174C3B] text-white shadow-xs flex items-center gap-1.5';
+        navMarketingBtn.className = 'px-4 py-2 rounded-full transition-all text-[#5F6E66] hover:text-[#174C3B] flex items-center gap-1.5';
+    });
+
+    // 3. Subtabs in Operations (Bookings vs Leads)
+    const subTabBookingsBtn = document.getElementById('subTabBookingsBtn');
+    const subTabLeadsBtn = document.getElementById('subTabLeadsBtn');
+    const subTabBookings = document.getElementById('subTabBookings');
+    const subTabLeads = document.getElementById('subTabLeads');
+
+    subTabBookingsBtn.addEventListener('click', () => {
+        subTabBookings.classList.remove('hidden');
+        subTabLeads.classList.add('hidden');
+        subTabBookingsBtn.className = 'font-serif font-bold text-lg text-[#174C3B] border-b-2 border-[#174C3B] pb-2 px-1 focus:outline-none flex items-center gap-2';
+        subTabLeadsBtn.className = 'font-serif font-medium text-lg text-[#5F6E66] hover:text-[#174C3B] pb-2 px-1 focus:outline-none flex items-center gap-2';
+    });
+
+    subTabLeadsBtn.addEventListener('click', () => {
+        subTabLeads.classList.remove('hidden');
+        subTabBookings.classList.add('hidden');
+        subTabLeadsBtn.className = 'font-serif font-bold text-lg text-[#174C3B] border-b-2 border-[#174C3B] pb-2 px-1 focus:outline-none flex items-center gap-2';
+        subTabBookingsBtn.className = 'font-serif font-medium text-lg text-[#5F6E66] hover:text-[#174C3B] pb-2 px-1 focus:outline-none flex items-center gap-2';
+    });
+
+    // 4. Render All Workspaces
+    function renderAll() {
         const stats = DB.getStats();
         const bookings = DB.getBookings();
         const leads = DB.getLeads();
+        const analytics = DB.getAnalytics();
 
-        // Render KPI Container
-        document.getElementById('kpiContainer').innerHTML = `
+        // 4.1 Render Marketing Metric Cards
+        document.getElementById('marketingMetricsCards').innerHTML = `
             <div class="p-5 rounded-2xl bg-white border border-[#8FAF91]/30 shadow-xs">
-                <span class="text-[11px] font-bold uppercase text-[#8FAF91] block mb-1">Tổng Lịch Hẹn</span>
-                <div class="font-serif text-3xl font-bold text-[#174C3B]">${stats.totalBookings}</div>
-                <span class="text-[11px] text-[#5F6E66] mt-1 block">Hồ sơ đăng ký</span>
+                <span class="text-[10px] font-bold uppercase text-[#8FAF91] block mb-1">Lượt Truy Cập</span>
+                <div class="font-serif text-2xl lg:text-3xl font-bold text-[#174C3B]">${stats.totalVisitors.toLocaleString()}</div>
+                <span class="text-[11px] text-[#5F6E66] mt-1 block">Người dùng độc bản</span>
             </div>
-            <div class="p-5 rounded-2xl bg-[#FEF3C7] border border-[#FCD34D] shadow-xs">
-                <span class="text-[11px] font-bold uppercase text-[#92400E] block mb-1">Chờ Liên Hệ</span>
-                <div class="font-serif text-3xl font-bold text-[#92400E]">${stats.pending}</div>
-                <span class="text-[11px] text-[#92400E] mt-1 block">Cần kết nối Zalo</span>
-            </div>
-            <div class="p-5 rounded-2xl bg-[#DBEAFE] border border-[#93C5FD] shadow-xs">
-                <span class="text-[11px] font-bold uppercase text-[#1E40AF] block mb-1">Đã Liên Hệ</span>
-                <div class="font-serif text-3xl font-bold text-[#1E40AF]">${stats.contacted}</div>
-                <span class="text-[11px] text-[#1E40AF] mt-1 block">Đã hẹn giờ gọi</span>
-            </div>
-            <div class="p-5 rounded-2xl bg-[#E0E7FF] border border-[#A5B4FC] shadow-xs">
-                <span class="text-[11px] font-bold uppercase text-[#3730A3] block mb-1">Đang Theo Dõi</span>
-                <div class="font-serif text-3xl font-bold text-[#3730A3]">${stats.inProgress}</div>
-                <span class="text-[11px] text-[#3730A3] mt-1 block">Phác đồ 21 ngày</span>
-            </div>
+
             <div class="p-5 rounded-2xl bg-white border border-[#8FAF91]/30 shadow-xs">
-                <span class="text-[11px] font-bold uppercase text-[#F08A4B] block mb-1">Tải Cẩm Nang</span>
-                <div class="font-serif text-3xl font-bold text-[#F08A4B]">${stats.totalLeads}</div>
-                <span class="text-[11px] text-[#5F6E66] mt-1 block">Phụ huynh quan tâm</span>
+                <span class="text-[10px] font-bold uppercase text-[#8FAF91] block mb-1">Xem Trang (PV)</span>
+                <div class="font-serif text-2xl lg:text-3xl font-bold text-[#174C3B]">${stats.pageViews.toLocaleString()}</div>
+                <span class="text-[11px] text-[#5F6E66] mt-1 block">2.3 trang / phiên</span>
             </div>
+
+            <div class="p-5 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91] shadow-xs">
+                <span class="text-[10px] font-bold uppercase text-[#174C3B] block mb-1">Tỷ Lệ Chuyển Đổi</span>
+                <div class="font-serif text-2xl lg:text-3xl font-bold text-[#174C3B]">${stats.conversionRate}%</div>
+                <span class="text-[11px] text-[#5F6E66] mt-1 block">Tải Ebook + Đặt lịch</span>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-[#FAF7F0] border border-[#F08A4B]/40 shadow-xs">
+                <span class="text-[10px] font-bold uppercase text-[#F08A4B] block mb-1">Tải Cẩm Nang Ebook</span>
+                <div class="font-serif text-2xl lg:text-3xl font-bold text-[#F08A4B]">${stats.totalLeads}</div>
+                <span class="text-[11px] text-[#5F6E66] mt-1 block">Khách hàng tiềm năng</span>
+            </div>
+
             <div class="p-5 rounded-2xl bg-white border border-[#8FAF91]/30 shadow-xs">
-                <span class="text-[11px] font-bold uppercase text-[#174C3B] block mb-1">Tỷ Lệ Chuyển Đổi</span>
-                <div class="font-serif text-3xl font-bold text-[#174C3B]">${stats.conversionRate}%</div>
-                <span class="text-[11px] text-[#5F6E66] mt-1 block">${stats.totalViews} lượt truy cập</span>
+                <span class="text-[10px] font-bold uppercase text-[#174C3B] block mb-1">Hồ Sơ Đặt Lịch</span>
+                <div class="font-serif text-2xl lg:text-3xl font-bold text-[#174C3B]">${stats.totalBookings}</div>
+                <span class="text-[11px] text-[#5F6E66] mt-1 block">${stats.pending} lịch mới chờ gọi</span>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-white border border-[#8FAF91]/30 shadow-xs">
+                <span class="text-[10px] font-bold uppercase text-[#8FAF91] block mb-1">Thời Gian Trên Trang</span>
+                <div class="font-serif text-2xl lg:text-3xl font-bold text-[#174C3B]">${stats.avgTimeOnSite}</div>
+                <span class="text-[11px] text-[#5F6E66] mt-1 block">Bounce: ${stats.bounceRate}</span>
             </div>
         `;
 
-        document.getElementById('bookingsCountBadge').innerText = bookings.length;
-        document.getElementById('leadsCountBadge').innerText = leads.length;
+        // 4.2 Render Operations Counts
+        document.getElementById('opsBookingsBadge').innerText = bookings.length;
+        document.getElementById('opsLeadsBadge').innerText = leads.length;
 
-        renderBookingsTable(bookings);
-        renderLeadsTable(leads);
+        // 4.3 Render Tables
+        renderBookingsOpsTable(bookings);
+        renderLeadsOpsTable(leads);
+
+        // 4.4 Render Marketing Charts
+        initCharts();
     }
 
-    function renderBookingsTable(bookings) {
-        const tbody = document.getElementById('bookingsTableBody');
+    // 5. Initialize Charts via Chart.js
+    function initCharts() {
+        const analytics = DB.getAnalytics();
+        
+        // 5.1 Trend Chart
+        const trendCtx = document.getElementById('trafficTrendChart');
+        if (trendCtx) {
+            if (trendChartInstance) trendChartInstance.destroy();
+            trendChartInstance = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: analytics.dailyTrends.dates,
+                    datasets: [
+                        {
+                            label: 'Lượt Xem Trang (PV)',
+                            data: analytics.dailyTrends.views,
+                            borderColor: '#8FAF91',
+                            backgroundColor: 'rgba(143, 175, 145, 0.1)',
+                            fill: true,
+                            tension: 0.35,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Lượt Tải Ebook',
+                            data: analytics.dailyTrends.leads,
+                            borderColor: '#F08A4B',
+                            backgroundColor: 'transparent',
+                            tension: 0.35,
+                            borderWidth: 2,
+                            borderDash: [5, 5]
+                        },
+                        {
+                            label: 'Đăng Ký Đặt Lịch 1-1',
+                            data: analytics.dailyTrends.bookings,
+                            borderColor: '#174C3B',
+                            backgroundColor: 'transparent',
+                            tension: 0.35,
+                            borderWidth: 3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { family: 'Plus Jakarta Sans', size: 11 } }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(143, 175, 145, 0.15)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        // 5.2 Traffic Sources Doughnut Chart
+        const sourceCtx = document.getElementById('trafficSourceChart');
+        if (sourceCtx) {
+            if (sourceChartInstance) sourceChartInstance.destroy();
+            sourceChartInstance = new Chart(sourceCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: analytics.trafficSources.map(s => s.source),
+                    datasets: [{
+                        data: analytics.trafficSources.map(s => s.visits),
+                        backgroundColor: analytics.trafficSources.map(s => s.color),
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    cutout: '72%'
+                }
+            });
+
+            // Custom Legend
+            document.getElementById('trafficSourceLegend').innerHTML = analytics.trafficSources.map(s => `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${s.color}"></span>
+                        <span class="text-[#174C3B] font-medium">${s.source}</span>
+                    </div>
+                    <span class="font-bold text-[#174C3B] font-mono">${s.percent}%</span>
+                </div>
+            `).join('');
+        }
+    }
+
+    // 6. Render Operations Bookings Table
+    function renderBookingsOpsTable(bookings) {
+        const tbody = document.getElementById('bookingsOpsTableBody');
         if (bookings.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-[#5F6E66]">Chưa có lượt đăng ký tư vấn nào.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-[#5F6E66]">Chưa có hồ sơ tư vấn nào.</td></tr>';
             return;
         }
 
         tbody.innerHTML = bookings.map(b => `
-            <tr class="hover:bg-[#FAF7F0] transition-colors booking-row" data-status="${b.status}" data-search="${(b.parent_name + ' ' + b.phone + ' ' + b.baby_name).toLowerCase()}">
-                <td class="p-4 font-mono font-bold text-[#8FAF91]">#${b.id}</td>
+            <tr class="hover:bg-[#FAF7F0] transition-colors booking-ops-row" data-status="${b.status}" data-package="${b.consult_type}" data-search="${(b.parent_name + ' ' + b.phone + ' ' + (b.baby_name || '')).toLowerCase()}">
+                <td class="p-4 font-mono font-bold text-[#8FAF91]">#TH-${b.id}</td>
+                
                 <td class="p-4">
                     <div class="font-bold text-sm text-[#174C3B]">${b.parent_name}</div>
-                    <div class="font-mono text-[#5F6E66]">${b.phone}</div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <span class="font-mono text-[#5F6E66]">${b.phone}</span>
+                        <a href="https://zalo.me/${b.phone.replace(/[^0-9]/g, '')}" target="_blank" class="px-2 py-0.5 rounded-full bg-[#0068FF]/10 text-[#0068FF] text-[10px] font-bold hover:bg-[#0068FF]/20">
+                            Zalo
+                        </a>
+                    </div>
                     ${b.email ? `<div class="text-[11px] text-[#8B9992]">${b.email}</div>` : ''}
-                    <div class="text-[10px] text-[#F08A4B] mt-0.5">Hẹn: ${b.preferred_time || '-'}</div>
+                    <div class="text-[10px] text-[#F08A4B] mt-0.5 font-medium">Hẹn: ${b.preferred_time || '-'}</div>
                 </td>
+
                 <td class="p-4">
-                    <div class="font-bold">${b.baby_name || 'Bé'}</div>
+                    <div class="font-bold text-[#174C3B]">${b.baby_name || 'Bé'}</div>
                     <div class="text-[11px] text-[#5F6E66]">Tuổi: <strong>${b.baby_age}</strong></div>
                     <div class="text-[11px] text-[#5F6E66]">${b.baby_weight ? b.baby_weight + ' / ' : ''}${b.baby_height || ''}</div>
                 </td>
+
                 <td class="p-4 max-w-xs">
-                    <div class="font-medium text-[#174C3B] mb-1">${b.issues || 'Chưa ghi'}</div>
-                    ${b.feeding_notes ? `<div class="text-[11px] text-[#5F6E66] line-clamp-2 italic bg-[#EEF5EA]/60 p-1.5 rounded">"${b.feeding_notes}"</div>` : ''}
+                    <div class="font-medium text-[#174C3B] mb-1 line-clamp-2">${b.issues || 'Chưa ghi'}</div>
+                    ${b.feeding_notes ? `<div class="text-[11px] text-[#5F6E66] line-clamp-1 italic bg-[#EEF5EA]/60 p-1.5 rounded">"${b.feeding_notes}"</div>` : ''}
                 </td>
+
                 <td class="p-4">
                     <span class="inline-block px-2.5 py-1 rounded-lg bg-[#FAF7F0] border border-[#8FAF91]/30 text-[11px] font-medium">${b.consult_type}</span>
                 </td>
+
                 <td class="p-4">
-                    <select onchange="updateStatus(${b.id}, this.value)" class="px-2.5 py-1 rounded-lg text-xs font-semibold focus:outline-none badge-${b.status}">
+                    <select onchange="updateBookingStatus(${b.id}, this.value)" class="px-2.5 py-1 rounded-lg text-xs font-semibold focus:outline-none badge-${b.status}">
                         <option value="pending" ${b.status === 'pending' ? 'selected' : ''}>Chờ liên hệ</option>
                         <option value="contacted" ${b.status === 'contacted' ? 'selected' : ''}>Đã liên hệ</option>
-                        <option value="in_progress" ${b.status === 'in_progress' ? 'selected' : ''}>Đang theo dõi</option>
+                        <option value="in_progress" ${b.status === 'in_progress' ? 'selected' : ''}>Đang theo dõi phác đồ</option>
                         <option value="completed" ${b.status === 'completed' ? 'selected' : ''}>Hoàn thành</option>
                         <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>Đã hủy</option>
                     </select>
                 </td>
+
                 <td class="p-4 text-center">
-                    <div class="flex items-center justify-center gap-2">
+                    <div class="flex items-center justify-center gap-1.5">
                         <button onclick="openDetail(${b.id})" class="px-2.5 py-1 rounded-lg bg-[#EEF5EA] text-[#174C3B] font-semibold hover:bg-[#8FAF91]/30 transition-colors">
-                            Chi Tiết
+                            Hồ Sơ
                         </button>
                         <button onclick="deleteBookingRow(${b.id})" class="text-red-500 hover:text-red-700 p-1" title="Xóa hồ sơ">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -324,51 +891,100 @@
         `).join('');
     }
 
-    function renderLeadsTable(leads) {
-        const tbody = document.getElementById('leadsTableBody');
+    // 7. Render Operations Leads Table
+    function renderLeadsOpsTable(leads) {
+        const tbody = document.getElementById('leadsOpsTableBody');
         if (leads.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-[#5F6E66]">Chưa có lượt tải nào.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="8" class="p-8 text-center text-[#5F6E66]">Chưa có khách hàng nào tải cẩm nang.</td></tr>';
             return;
         }
 
         tbody.innerHTML = leads.map(l => `
-            <tr class="hover:bg-[#FAF7F0]">
-                <td class="p-4 font-mono font-bold text-[#8FAF91]">#${l.id}</td>
+            <tr class="hover:bg-[#FAF7F0] lead-ops-row" data-care="${l.care_status || 'new'}" data-search="${(l.parent_name + ' ' + l.phone).toLowerCase()}">
+                <td class="p-4 font-mono font-bold text-[#8FAF91]">#LD-${l.id}</td>
                 <td class="p-4 font-bold text-[#174C3B]">${l.parent_name}</td>
-                <td class="p-4 font-mono">${l.phone}</td>
+                
+                <td class="p-4">
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono text-[#174C3B]">${l.phone}</span>
+                        <a href="https://zalo.me/${l.phone.replace(/[^0-9]/g, '')}" target="_blank" class="px-2 py-0.5 rounded-full bg-[#0068FF]/10 text-[#0068FF] text-[10px] font-bold hover:bg-[#0068FF]/20">
+                            Zalo
+                        </a>
+                    </div>
+                </td>
+
                 <td class="p-4 text-[#5F6E66]">${l.email || '-'}</td>
-                <td class="p-4">${l.baby_age || '-'}</td>
-                <td class="p-4 text-[11px] text-[#F08A4B] font-semibold">${l.resource_name}</td>
-                <td class="p-4 text-[#8B9992] text-[11px]">${l.created_at}</td>
+                <td class="p-4 font-medium">${l.baby_age || '-'}</td>
+                
+                <td class="p-4">
+                    <select onchange="updateLeadCareStatus(${l.id}, this.value)" class="px-2.5 py-1 rounded-lg text-xs font-semibold focus:outline-none lead-badge-${l.care_status || 'new'}">
+                        <option value="new" ${l.care_status === 'new' ? 'selected' : ''}>Mới tải</option>
+                        <option value="contacted" ${l.care_status === 'contacted' ? 'selected' : ''}>Đã nhắn Zalo</option>
+                        <option value="nurturing" ${l.care_status === 'nurturing' ? 'selected' : ''}>Đang chăm sóc</option>
+                        <option value="converted" ${l.care_status === 'converted' ? 'selected' : ''}>Đã chốt lịch hẹn</option>
+                    </select>
+                </td>
+
+                <td class="p-4 max-w-xs">
+                    <input type="text" value="${l.notes || ''}" placeholder="Ghi chú CSKH..." onblur="updateLeadNoteValue(${l.id}, this.value)" class="w-full px-2.5 py-1 rounded-lg border border-[#8FAF91]/30 bg-transparent text-xs text-[#174C3B] focus:bg-white focus:outline-none">
+                </td>
+
+                <td class="p-4 text-center">
+                    <button onclick="deleteLeadRow(${l.id})" class="text-red-500 hover:text-red-700 p-1" title="Xóa lead">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                </td>
             </tr>
         `).join('');
     }
 
-    // Status & Notes handlers
-    window.updateStatus = function(id, newStatus) {
+    // 8. Actions & Status updates
+    window.updateBookingStatus = function(id, newStatus) {
         DB.updateBookingStatus(id, newStatus);
-        renderDashboard();
+        renderAll();
+    };
+
+    window.updateLeadCareStatus = function(id, newStatus) {
+        DB.updateLeadStatus(id, newStatus);
+        renderAll();
+    };
+
+    window.updateLeadNoteValue = function(id, val) {
+        DB.updateLeadNotes(id, val);
     };
 
     window.deleteBookingRow = function(id) {
         if (confirm('Mẹ có chắc muốn xóa hồ sơ này?')) {
             DB.deleteBooking(id);
-            renderDashboard();
+            renderAll();
         }
     };
 
+    window.deleteLeadRow = function(id) {
+        if (confirm('Xóa thông tin khách hàng này?')) {
+            DB.deleteLead(id);
+            renderAll();
+        }
+    };
+
+    // 9. Detail Modal View
     window.openDetail = function(id) {
         const b = DB.getBookings().find(item => item.id == id);
         if (!b) return;
 
         document.getElementById('detailModalContent').innerHTML = `
-            <div class="mb-4 pb-3 border-b border-[#8FAF91]/30">
-                <span class="text-xs font-bold text-[#8FAF91] uppercase">HỒ SƠ TIẾP NHẬN #TH-${b.id}</span>
-                <h3 class="font-serif text-2xl font-bold text-[#174C3B]">${b.parent_name}</h3>
-                <div class="text-xs text-[#5F6E66]">Số điện thoại: <strong>${b.phone}</strong> | Email: ${b.email || 'Chưa cung cấp'}</div>
+            <div class="mb-4 pb-3 border-b border-[#8FAF91]/30 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-[#8FAF91] uppercase">HỒ SƠ TIẾP NHẬN #TH-${b.id}</span>
+                    <h3 class="font-serif text-2xl font-bold text-[#174C3B]">${b.parent_name}</h3>
+                    <div class="text-xs text-[#5F6E66]">Số điện thoại: <strong>${b.phone}</strong> | Email: ${b.email || 'Chưa cung cấp'}</div>
+                </div>
+                <a href="https://zalo.me/${b.phone.replace(/[^0-9]/g, '')}" target="_blank" class="px-3.5 py-1.5 rounded-full bg-[#0068FF] text-white text-xs font-semibold hover:bg-blue-600 transition-colors">
+                    Nhắn Zalo Ngay
+                </a>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-4 text-xs bg-[#EEF5EA] p-4 rounded-xl">
+            <div class="grid grid-cols-2 gap-4 mb-4 text-xs bg-[#EEF5EA] p-4 rounded-2xl">
                 <div>
                     <span class="text-[#8FAF91] font-bold block">Tên bé & Độ tuổi</span>
                     <div class="font-bold text-[#174C3B] text-sm">${b.baby_name || 'Bé'} • ${b.baby_age}</div>
@@ -381,22 +997,22 @@
 
             <div class="mb-4 text-xs">
                 <span class="font-bold text-[#174C3B] block mb-1">Vấn đề bé đang gặp:</span>
-                <div class="p-3 rounded-lg bg-[#FAF7F0] border border-[#8FAF91]/30 text-[#174C3B] leading-relaxed">
+                <div class="p-3 rounded-xl bg-[#FAF7F0] border border-[#8FAF91]/30 text-[#174C3B] leading-relaxed">
                     ${b.issues || 'Không có mô tả'}
                 </div>
             </div>
 
             <div class="mb-4 text-xs">
                 <span class="font-bold text-[#174C3B] block mb-1">Thói quen ăn uống & Nhật ký mẹ chia sẻ:</span>
-                <div class="p-3 rounded-lg bg-[#FAF7F0] border border-[#8FAF91]/30 text-[#5F6E66] italic leading-relaxed">
+                <div class="p-3 rounded-xl bg-[#FAF7F0] border border-[#8FAF91]/30 text-[#5F6E66] italic leading-relaxed">
                     ${b.feeding_notes || 'Chưa ghi nhật ký chi tiết'}
                 </div>
             </div>
 
             <div class="mb-4 text-xs">
-                <label class="font-bold text-[#174C3B] block mb-1">Ghi chú của Chuyên gia Thu Hiền:</label>
-                <textarea id="adminNotesInput" class="w-full p-2.5 rounded-lg border border-[#8FAF91]/40 text-xs focus:outline-none" rows="3" placeholder="Ghi chú lịch hẹn, phác đồ điều chỉnh...">${b.admin_notes || ''}</textarea>
-                <button class="mt-2 px-3 py-1.5 rounded-lg bg-[#174C3B] text-white text-xs font-semibold" onclick="saveAdminNotes(${b.id})">Lưu Ghi Chú</button>
+                <label class="font-bold text-[#174C3B] block mb-1">Ghi chú chuyên môn & Nhật ký phác đồ của Chuyên gia Thu Hiền:</label>
+                <textarea id="adminNotesInput" class="w-full p-3 rounded-xl border border-[#8FAF91]/40 text-xs focus:outline-none" rows="3" placeholder="Ghi chú phản ứng của bé, điều chỉnh liều vi chất, hẹn lịch gọi...">${b.admin_notes || ''}</textarea>
+                <button class="mt-2 px-4 py-2 rounded-xl bg-[#174C3B] text-white text-xs font-semibold hover:bg-[#1F5A45]" onclick="saveAdminNotes(${b.id})">Lưu Ghi Chú Phác Đồ</button>
             </div>
         `;
         document.getElementById('detailModal').classList.add('active');
@@ -405,55 +1021,88 @@
     window.saveAdminNotes = function(id) {
         const val = document.getElementById('adminNotesInput').value;
         DB.updateBookingNotes(id, val);
-        alert('Đã lưu ghi chú thành công!');
-        renderDashboard();
+        alert('Đã lưu ghi chú phác đồ thành công!');
+        renderAll();
     };
 
     document.getElementById('closeDetailModal').addEventListener('click', () => {
         document.getElementById('detailModal').classList.remove('active');
     });
 
-    window.resetData = function() {
-        if (confirm('Khôi phục lại dữ liệu mẫu ban đầu?')) {
-            DB.resetSampleData();
-            renderDashboard();
-        }
+    // 10. Manual Booking Creation Modal
+    const manualModal = document.getElementById('manualBookingModal');
+    const closeManualModal = document.getElementById('closeManualModal');
+    const manualForm = document.getElementById('manualBookingForm');
+
+    window.openManualBookingModal = function() {
+        manualModal.classList.add('active');
     };
 
-    // Filter & Search
-    document.getElementById('searchInput').addEventListener('input', filterTable);
-    document.getElementById('statusFilter').addEventListener('change', filterTable);
+    closeManualModal.addEventListener('click', () => {
+        manualModal.classList.remove('active');
+    });
 
-    function filterTable() {
-        const q = document.getElementById('searchInput').value.toLowerCase().trim();
-        const st = document.getElementById('statusFilter').value;
-        document.querySelectorAll('.booking-row').forEach(row => {
+    manualForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(manualForm);
+        const newBooking = DB.addBooking({
+            parent_name: fd.get('parent_name'),
+            phone: fd.get('phone'),
+            baby_name: fd.get('baby_name'),
+            baby_age: fd.get('baby_age'),
+            baby_weight: fd.get('baby_weight'),
+            issues: fd.get('issues'),
+            consult_type: fd.get('consult_type'),
+            feeding_notes: fd.get('feeding_notes'),
+            source: 'Thêm thủ công'
+        });
+
+        alert(`Đã thêm thành công hồ sơ #TH-${newBooking.id}!`);
+        manualForm.reset();
+        manualModal.classList.remove('active');
+        renderAll();
+    });
+
+    // 11. Filtering logic for Operations
+    document.getElementById('bookingSearchInput').addEventListener('input', filterBookingRows);
+    document.getElementById('bookingStatusFilter').addEventListener('change', filterBookingRows);
+    document.getElementById('bookingPackageFilter').addEventListener('change', filterBookingRows);
+
+    function filterBookingRows() {
+        const q = document.getElementById('bookingSearchInput').value.toLowerCase().trim();
+        const st = document.getElementById('bookingStatusFilter').value;
+        const pkg = document.getElementById('bookingPackageFilter').value;
+
+        document.querySelectorAll('.booking-ops-row').forEach(row => {
             const matchQ = !q || (row.dataset.search || '').includes(q);
             const matchSt = st === 'all' || row.dataset.status === st;
-            row.style.display = (matchQ && matchSt) ? '' : 'none';
+            const matchPkg = pkg === 'all' || (row.dataset.package || '').includes(pkg);
+            row.style.display = (matchQ && matchSt && matchPkg) ? '' : 'none';
         });
     }
 
-    // Tab switching
-    document.getElementById('tabBookingsBtn').addEventListener('click', () => {
-        document.getElementById('tabBookings').classList.remove('hidden');
-        document.getElementById('tabLeads').classList.add('hidden');
-        document.getElementById('tabBookingsBtn').classList.add('border-b-2', 'border-[#174C3B]', 'font-bold', 'text-[#174C3B]');
-        document.getElementById('tabBookingsBtn').classList.remove('text-[#5F6E66]', 'font-medium');
-        document.getElementById('tabLeadsBtn').classList.remove('border-b-2', 'border-[#174C3B]', 'font-bold', 'text-[#174C3B]');
-        document.getElementById('tabLeadsBtn').classList.add('text-[#5F6E66]', 'font-medium');
-    });
+    document.getElementById('leadSearchInput').addEventListener('input', filterLeadRows);
+    document.getElementById('leadCareFilter').addEventListener('change', filterLeadRows);
 
-    document.getElementById('tabLeadsBtn').addEventListener('click', () => {
-        document.getElementById('tabLeads').classList.remove('hidden');
-        document.getElementById('tabBookings').classList.add('hidden');
-        document.getElementById('tabLeadsBtn').classList.add('border-b-2', 'border-[#174C3B]', 'font-bold', 'text-[#174C3B]');
-        document.getElementById('tabLeadsBtn').classList.remove('text-[#5F6E66]', 'font-medium');
-        document.getElementById('tabBookingsBtn').classList.remove('border-b-2', 'border-[#174C3B]', 'font-bold', 'text-[#174C3B]');
-        document.getElementById('tabBookingsBtn').classList.add('text-[#5F6E66]', 'font-medium');
-    });
+    function filterLeadRows() {
+        const q = document.getElementById('leadSearchInput').value.toLowerCase().trim();
+        const care = document.getElementById('leadCareFilter').value;
 
-    // Start
+        document.querySelectorAll('.lead-ops-row').forEach(row => {
+            const matchQ = !q || (row.dataset.search || '').includes(q);
+            const matchCare = care === 'all' || row.dataset.care === care;
+            row.style.display = (matchQ && matchCare) ? '' : 'none';
+        });
+    }
+
+    window.resetData = function() {
+        if (confirm('Khôi phục lại dữ liệu mẫu đầy đủ ban đầu?')) {
+            DB.resetSampleData();
+            renderAll();
+        }
+    };
+
+    // Initialize
     checkAuth();
 </script>
 
