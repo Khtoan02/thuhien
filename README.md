@@ -11,7 +11,7 @@ Phiên bản này được xây dựng **100% bằng HTML5 thuần, CSS và Java
 * **Phong cách:** Ấm áp – khoa học – gần gũi – tối giản – đáng tin cậy.
 * **Tỷ lệ màu sắc chuẩn:**
   * **70% Cream / Warm White (`#FAF7F0`):** Nền chính trơn sáng, thoáng đãng, padding lớn (`py-24`).
-  * **20% Xanh Đậm (`#174C3B` & `#1F5A45`):** Tiêu đề, logo, viền card, icon y khoa chủ đạo.
+  * **20% Xanh Đậm (`#174C3B` & `#1F5A45`):** Tiêu đề, logo, viền card, icon dinh dưỡng chủ đạo.
   * **10% Cam Đào (`#F08A4B`):** Điểm nhấn keyword, số liệu khoa học, badge nổi bật, nút kêu gọi hành động (CTA).
   * **Màu phụ:** Xanh Sage (`#8FAF91`), Mint nhạt (`#EEF5EA`), Xám xanh (`#5F6E66`).
 * **Visual Icon:** Minh họa vector chuẩn xác: Hệ vi sinh đường ruột, dạ dày, vi chất (Kẽm, Sắt, D3K2), não bộ - trục não ruột, đồng hồ sinh học & giấc ngủ.

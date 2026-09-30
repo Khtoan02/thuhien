@@ -257,29 +257,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const issue = assessmentForm.querySelector('input[name="quiz_issue"]:checked')?.value || 'Biếng ăn';
             const habit = assessmentForm.querySelector('input[name="quiz_habit"]:checked')?.value || 'Xem điện thoại';
 
-            let analysisTitle = "Rối Loạn Trục Não - Ruột & Phản Xạ Nuốt Sinh Học";
-            let analysisDesc = `Bé trong độ tuổi <strong>${age}</strong> đang có biểu hiện <strong>${issue}</strong>, kết hợp với thói quen <strong>${habit}</strong>. Điều này cho thấy hệ thần kinh phế vị của bé đang bị kích thích quá mức trong bữa ăn, làm dạ dày tiết nhiều cortisol và giảm tiết men protease/amylase.`;
+            let analysisTitle = "Góc Nhìn Về Nhịp Sinh Học & Tâm Lý Bàn Ăn";
+            let analysisDesc = `Bé trong độ tuổi <strong>${age}</strong> đang có biểu hiện <strong>${issue}</strong>, kết hợp với thói quen <strong>${habit}</strong>. Điều này cho thấy bé có thể đang gặp áp lực vô hình trong bữa ăn, khiến hệ tiêu hóa chưa thực sự sẵn sàng đón nhận thức ăn một cách tự nhiên.`;
             let recs = [
-                "Cắt giảm triệt để màn hình điện thoại trong bữa ăn, thay bằng quy tắc 20 phút tập trung.",
-                "Tối ưu mật độ dinh dưỡng trong từng thìa nhỏ thay vì ép ăn số lượng lớn.",
-                "Kiểm tra và cân bằng vi chất kẽm sinh học kết hợp phục hồi hệ vi nhung mao ruột non."
+                "Giảm dần sự phụ thuộc vào màn hình điện thoại, tạo không khí bữa ăn vui vẻ và thoải mái.",
+                "Tối ưu mật độ dinh dưỡng trong từng thìa nhỏ thay vì ép con ăn số lượng nhiều.",
+                "Lắng nghe tín hiệu no - đói tự nhiên và xây dựng lại nhịp sinh hoạt ăn ngủ đều đặn."
             ];
 
             if (issue.includes('Táo bón') || issue.includes('phân sống')) {
-                analysisTitle = "Mất Cân Bằng Hệ Vi Sinh & Tỷ Lệ Xơ Hòa Tan";
-                analysisDesc = `Ở độ tuổi <strong>${age}</strong>, hiện tượng tiêu hóa phân sống/táo bón phản ánh niêm mạc đại tràng của bé đang thiếu ẩm và mất cân bằng tỷ lệ chất xơ hòa tan (FOS/GOS). Cơ thể bé không hấp thu trọn vẹn dưỡng chất dù ăn nhiều.`;
+                analysisTitle = "Góc Nhìn Về Chế Độ Ăn & Cân Bằng Tiêu Hóa";
+                analysisDesc = `Ở độ tuổi <strong>${age}</strong>, hiện tượng tiêu hóa phân sống hoặc táo bón thường liên quan đến sự mất cân đối giữa lượng đạm, chất xơ hòa tan và lượng nước hàng ngày. Điều này khiến đường ruột bé khó tiêu hóa trọn vẹn thức ăn.`;
                 recs = [
-                    "Cân đối lại lượng đạm nạp vào, tránh để thận và ruột non bị quá tải protein.",
-                    "Bổ sung nước và chất xơ sinh học đúng nhịp sinh học của nhu động ruột.",
-                    "Tuyệt đối không lạm dụng thụt hậu môn làm mất phản xạ rặn tự nhiên của con."
+                    "Cân đối lại lượng đạm nạp vào mỗi bữa, tránh để hệ tiêu hóa non nớt của bé bị quá tải.",
+                    "Tăng cường bổ sung nước và chất xơ tự nhiên từ rau củ quả phù hợp lứa tuổi.",
+                    "Tạo thói quen vận động nhẹ nhàng và giờ đi vệ sinh cố định hàng ngày cho con."
                 ];
             } else if (issue.includes('Chậm tăng cân') || issue.includes('đứng cân')) {
-                analysisTitle = "Nạn Đói Vi Chất Tiềm Ẩn & Kém Dung Nạp";
-                analysisDesc = `Bé <strong>${age}</strong> đứng cân kéo dài thường do 'nạn đói vi chất tiềm ẩn'. Dù mẹ tẩm bổ nhiều chất béo và đạm, nhưng thiếu cofactor (sắt, kẽm, enzyme sinh học) khiến năng lượng không chuyển hóa vào mô cơ.`;
+                analysisTitle = "Góc Nhìn Về Khả Năng Hấp Thu & Chuyển Hóa";
+                analysisDesc = `Bé <strong>${age}</strong> đứng cân kéo dài thường do sự thiếu hụt các vi chất cần thiết giúp kích hoạt cảm giác thèm ăn tự nhiên, hoặc do cơ cấu bữa ăn chưa cân đối giữa các nhóm dưỡng chất.`;
                 recs = [
-                    "Đo lường chính xác nhu cầu năng lượng theo cân nặng thực tế hiện tại.",
-                    "Điều chỉnh thực đơn tăng mật độ năng lượng mà không làm tăng thể tích dạ dày.",
-                    "Thiết lập phác đồ cá nhân hóa 21 ngày theo dõi phục hồi chỉ số nhân trắc học."
+                    "Đánh giá lại khẩu phần thực tế để đảm bảo đủ chất béo lành mạnh và vi chất thiết yếu.",
+                    "Đa dạng hóa món ăn, đổi mới cách chế biến để kích thích sự hào hứng khám phá của con.",
+                    "Thiết lập lịch trình đồng hành cùng chuyên gia để theo dõi và điều chỉnh từng tuần."
                 ];
             }
 
@@ -291,26 +291,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="flex items-center gap-3 mb-4">
                             <span class="w-10 h-10 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center font-bold text-lg">✦</span>
                             <div>
-                                <span class="text-xs font-bold text-[#F08A4B] uppercase tracking-wider block">Kết Quả Phân Tích Sơ Bộ</span>
+                                <span class="text-xs font-bold text-[#F08A4B] uppercase tracking-wider block">Góc Nhìn Dinh Dưỡng Từ Chuyên Gia</span>
                                 <h4 class="font-serif text-xl font-bold text-[#174C3B]">${analysisTitle}</h4>
                             </div>
                         </div>
                         <p class="text-sm text-[#5F6E66] leading-relaxed mb-5">${analysisDesc}</p>
                         <div class="p-4 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/30 mb-6">
-                            <h5 class="text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-2.5">3 Khuyến Nghị Cấp Thiết Từ Chuyên Gia Thu Hiền:</h5>
+                            <h5 class="text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-2.5">3 Gợi Ý Hữu Ích Dành Cho Mẹ:</h5>
                             <ul class="space-y-2 text-xs text-[#174C3B]">
                                 ${recs.map(r => `<li class="flex items-start gap-2"><span class="text-[#F08A4B] font-bold shrink-0 mt-0.5">•</span><span>${r}</span></li>`).join('')}
                             </ul>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3">
                             <a href="./dat-lich/?issue=${encodeURIComponent(issue)}" class="btn-pill-peach justify-center flex-1">
-                                <span>Nhận Phác Đồ 1-1 Cho Bé</span>
+                                <span>Đăng Ký Tư Vấn Đồng Hành 1-1</span>
                                 <span class="btn-circle-icon"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/></svg></span>
                             </a>
                             <button type="button" data-open-modal="ebook" class="btn-pill-ghost justify-center">
                                 <span>Tải Cẩm Nang 30 Thực Đơn</span>
                             </button>
                         </div>
+                        <p class="text-[11px] text-[#8B9992] text-center mt-4">
+                            *Lưu ý: Đánh giá mang tính tham khảo thói quen ăn uống, không thay thế chẩn đoán hay điều trị y tế.*
+                        </p>
                     </div>
                 `;
                 assessmentResult.classList.remove('hidden');
