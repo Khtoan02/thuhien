@@ -54,7 +54,7 @@
     <!-- Custom Design System Stylesheet -->
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
-<body data-page="home" class="bg-[#FAF7F0] text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-16 md:pb-0">
+<body data-page="home" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-16 md:pb-0">
 
 <!-- ==========================================================================
      FLOATING NAVIGATION ISLAND (Simplified: Logo + Pricing + Đặt Lịch)
@@ -91,23 +91,39 @@
      1. HERO SECTION: NỖI LO ĐƯỢC GỌI TÊN
      ========================================================================== -->
 <section class="relative pt-20 sm:pt-28 md:pt-36 lg:pt-40 pb-28 sm:pb-36 lg:pb-48 overflow-hidden">
-    <!-- Ambient Background Glow -->
-    <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-r from-[#EEF5EA] to-[#FEECE2] blur-3xl opacity-50 pointer-events-none -z-10 rounded-full"></div>
+    <!-- Rich Hero Background Pattern & Textures -->
+    <div class="hero-ambient-pattern"></div>
+    
+    <!-- Decorative Floating Organic Elements (Left & Right for widescreen depth) -->
+    <div class="absolute -left-12 top-1/4 w-72 h-72 rounded-full border border-[#8FAF91]/30 pointer-events-none opacity-40 blur-[1px] hidden lg:block"></div>
+    <div class="absolute -right-16 top-1/3 w-96 h-96 rounded-full border border-[#F08A4B]/25 pointer-events-none opacity-40 blur-[1px] hidden lg:block"></div>
+    
+    <!-- Subtle organic wavy paths on sides -->
+    <svg class="absolute left-6 top-1/2 -translate-y-1/2 w-48 h-96 text-[#8FAF91]/25 pointer-events-none hidden xl:block" viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20 20 C80 120, 10 200, 70 300 S120 380, 180 390" stroke-linecap="round"/>
+        <circle cx="80" cy="120" r="3" fill="currentColor"/>
+        <circle cx="70" cy="300" r="3" fill="currentColor"/>
+    </svg>
+    <svg class="absolute right-6 top-1/2 -translate-y-1/2 w-48 h-96 text-[#F08A4B]/25 pointer-events-none hidden xl:block" viewBox="0 0 200 400" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M180 20 C120 120, 190 200, 130 300 S80 380, 20 390" stroke-linecap="round"/>
+        <circle cx="120" cy="120" r="3" fill="currentColor"/>
+        <circle cx="130" cy="300" r="3" fill="currentColor"/>
+    </svg>
 
-    <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
         
         <!-- Hero Header -->
-        <div class="text-center max-w-4xl mx-auto mb-14 sm:mb-20 lg:mb-24">
+        <div class="text-center max-w-6xl mx-auto mb-14 sm:mb-20 lg:mb-24">
 
-            <!-- Main Headline -->
-            <h1 class="text-4xl sm:text-6xl lg:text-[64px] font-black uppercase text-[#174C3B] tracking-tight leading-[1.16] mb-8 sm:mb-10" style="-webkit-text-stroke: 0.5px currentColor;">
-                BỮA ĂN NHẸ NHÀNG HƠN, <br class="hidden sm:inline">
+            <!-- Main Headline (Double Sized, Heroic & Impactful) -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-[88px] xl:text-[108px] font-black uppercase text-[#174C3B] tracking-tight leading-[1.08] mb-8 sm:mb-10 drop-shadow-xs" style="-webkit-text-stroke: 1px currentColor;">
+                BỮA ĂN NHẸ NHÀNG HƠN, <br class="hidden md:inline">
                 CHA MẸ BỚT LO HƠN
             </h1>
 
             <!-- CTA Actions (Primary: View Method; Secondary: Book Discussion) -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4">
-                <a href="#cach-lam-viec" class="btn-pill-peach w-full sm:w-auto justify-center shadow-md hover:shadow-lg transition-all">
+                <a href="#cach-lam-viec" class="btn-pill-peach w-full sm:w-auto justify-center shadow-md hover:shadow-lg transition-all text-sm sm:text-base py-3 px-6 sm:px-8">
                     <span>Tìm hiểu cách tôi đồng hành</span>
                     <span class="btn-circle-icon">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -116,7 +132,7 @@
                     </span>
                 </a>
 
-                <a href="./dat-lich/" class="btn-pill-ghost w-full sm:w-auto justify-center">
+                <a href="./dat-lich/" class="btn-pill-ghost w-full sm:w-auto justify-center text-sm sm:text-base py-3 px-6 sm:px-8 bg-white/70 backdrop-blur-xs">
                     <span>Đặt lịch trao đổi riêng</span>
                     <span class="btn-circle-icon">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -130,7 +146,7 @@
 
         <!-- Official Showcase Frame: Quiet, Warm & Trustworthy -->
         <div class="relative max-w-5xl mx-auto">
-            <div class="double-bezel overflow-hidden shadow-sm">
+            <div class="double-bezel overflow-hidden shadow-md">
                 <div class="double-bezel-inner p-2 sm:p-3 bg-white overflow-hidden">
                     <img src="./assets/images/thu-hien-hero-banner.png" 
                          alt="Thu Hiền - Đồng hành cùng cha mẹ xây dựng thói quen ăn uống phù hợp cho trẻ" 
