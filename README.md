@@ -10,7 +10,7 @@ Phiên bản này được xây dựng **100% bằng HTML5 thuần, Tailwind CSS
 
 ## 🎨 1. Định Vị & Giá Trị Cốt Lõi (Brand Positioning)
 
-* **Tôi Là Ai:** Thu Hiền là người đồng hành, lắng nghe không phán xét, tiếp sức tinh thần cho người mẹ và hướng dẫn kỹ năng tương tác, kết nối cùng con tại gia đình.
+* **Tôi Là Ai:** Thu Hiền là người đồng hành, lắng nghe thấu cảm, tiếp sức tinh thần cho người mẹ và hướng dẫn kỹ năng tương tác, kết nối cùng con tại gia đình.
 * **Nguyên tắc an toàn pháp lý & y khoa:**
   * Tự kỷ là sự phát triển thần kinh khác biệt bẩm sinh trọn đời, không khẳng định "chữa khỏi" hay "thuốc đặc trị".
   * Không bán sản phẩm chức năng, không thuốc bổ não, không kinh doanh sản phẩm dinh dưỡng.
