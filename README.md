@@ -1,8 +1,9 @@
 # Thu Hiền – Cùng Mẹ Hiểu Con (Pure HTML & Vercel Ready)
 
-Website thương hiệu cá nhân và hệ thống đặt lịch trò chuyện & đồng hành 1-1 cho **Thu Hiền** với thông điệp **"Cùng Mẹ Hiểu Con | Hiểu đúng ♡ Đồng hành thật – Con lớn lên hạnh phúc hơn"**.
+Website cá nhân và hệ thống tiếp nhận trao đổi 1:1 cho **Thu Hiền** với định hướng:  
+> **"Đồng hành cùng cha mẹ xây dựng thói quen ăn uống phù hợp hơn cho trẻ, bằng những bước nhỏ, cá nhân hóa và có thể duy trì trong đời sống thật."**
 
-Dành riêng cho các cha mẹ có con trên phổ tự kỷ (ASD), chậm nói, ít tương tác mắt hoặc gặp khủng hoảng cảm xúc (meltdown), nhạy cảm giác quan tại nhà.
+Dành cho gia đình có trẻ tự kỷ hoặc trẻ có khó khăn ăn uống (ăn chọn lọc, khó thử món mới, bữa ăn kéo dài hoặc căng thẳng). Trang chủ đóng vai trò là một **trang xây dựng niềm tin**, tập trung vào triết lý và phương pháp, không bán gói đại trà hay tạo áp lực mua hàng.
 
 Phiên bản này được xây dựng **thuần HTML5, Tailwind CSS và JavaScript** (hoàn toàn không cần PHP/Backend), triển khai mượt mà lên bất kỳ nền tảng nào: **Vercel, GitHub Pages, Netlify, Cloudflare Pages, ServBay hoặc Hosting thông thường**.
 
