@@ -4,7 +4,7 @@ Website thương hiệu cá nhân và hệ thống đặt lịch trò chuyện &
 
 Dành riêng cho các cha mẹ có con trên phổ tự kỷ (ASD), chậm nói, ít tương tác mắt hoặc gặp khủng hoảng cảm xúc (meltdown), nhạy cảm giác quan tại nhà.
 
-Phiên bản này được xây dựng **100% bằng HTML5 thuần, Tailwind CSS và JavaScript** (hoàn toàn không cần PHP/Backend), triển khai mượt mà lên bất kỳ nền tảng nào: **Vercel, GitHub Pages, Netlify, Cloudflare Pages, ServBay hoặc Hosting thông thường**.
+Phiên bản này được xây dựng **thuần HTML5, Tailwind CSS và JavaScript** (hoàn toàn không cần PHP/Backend), triển khai mượt mà lên bất kỳ nền tảng nào: **Vercel, GitHub Pages, Netlify, Cloudflare Pages, ServBay hoặc Hosting thông thường**.
 
 ---
 

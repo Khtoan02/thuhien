@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 analysisTitle = "Góc Nhìn Về Quá Tải Giác Quan & Kết Nối Ánh Mắt";
                 analysisDesc = `Ở độ tuổi <strong>${age}</strong>, trẻ có nét tự kỷ thường cảm thấy nhìn thẳng vào mắt người khác là một trải nghiệm quá tải giác quan thị giác. Con tránh ánh mắt không phải vì không yêu mẹ, mà vì não bộ con đang tìm cách tự điều hòa để giảm căng thẳng.`;
                 recs = [
-                    "Tuyệt đối không giữ đầu hay ép con nhìn thẳng vào mắt mẹ, điều này khiến con càng thêm sợ hãi.",
+                    "Tránh việc giữ đầu hay ép con nhìn thẳng vào mắt mẹ, điều này dễ làm con căng thẳng hơn.",
                     "Đưa đồ vật con thích lên sát cạnh mắt hoặc miệng của mẹ khi trò chuyện để thu hút ánh nhìn tự nhiên.",
                     "Chơi các trò chơi biến mất - xuất hiện bất ngờ (ú òa, trùm khăn voan) để tạo nụ cười và ánh mắt kết nối."
                 ];
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 analysisTitle = "Góc Nhìn Về Hệ Thần Kinh & Cơn Quá Tải Meltdown";
                 analysisDesc = `Cơn Meltdown ở bé <strong>${age}</strong> là tình trạng 'cháy cầu chì' của hệ thần kinh khi con bị ngập tràn trong cảm xúc hoặc quá tải giác quan. Con không thể tự kiểm soát được hành vi vào lúc đó, nên mọi lời quát mắng hay giải thích lý lẽ đều phản tác dụng.`;
                 recs = [
-                    "Giữ bản thân mẹ bình tĩnh tuyệt đối, mẹ chính là chiếc 'mỏ neo an toàn' để con nương tựa.",
+                    "Giữ bản thân mẹ thật bình tâm, sự dịu dàng của mẹ chính là điểm tựa an toàn cho con.",
                     "Đưa con vào không gian yên tĩnh, giảm ánh sáng và âm thanh, loại bỏ các vật sắc nhọn nguy hiểm.",
                     "Ôm giữ sâu (nếu con cho phép) hoặc ngồi cạnh im lặng bảo bọc cho đến khi nhịp thở của con chậm lại."
                 ];
@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </button>
                         </div>
                         <p class="text-[11px] text-[#8B9992] text-center mt-4">
-                            *Lưu ý: Đánh giá mang tính chất thấu hiểu và gợi ý tương tác tại nhà, không thay thế chẩn đoán hay điều trị y khoa.*
+                            *Lưu ý: Thông tin mang tính chất chia sẻ gợi ý tương tác tại gia đình, không thay thế chẩn đoán y khoa chuyên biệt.*
                         </p>
                     </div>
                 `;
