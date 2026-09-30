@@ -21,7 +21,7 @@
     <!-- Google Fonts Preconnect & Direct Stylesheet (Zero FOUT) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -43,8 +43,8 @@
                         }
                     },
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-                        serif: ['"Fraunces"', 'Georgia', 'serif']
+                        sans: ['"Alata"', 'system-ui', 'sans-serif'],
+                        serif: ['"Alata"', 'sans-serif']
                     }
                 }
             }
@@ -63,21 +63,21 @@
     <nav class="nav-island-inner justify-between">
         <!-- Logo: Favicon as Logo -->
         <a href="./" class="flex items-center gap-3 group text-decoration-none">
-            <img src="./favicon.png" alt="Thu Hiền Logo" class="w-10 h-10 rounded-full object-cover shadow-sm ring-1 ring-[#8FAF91]/40 group-hover:scale-105 transition-transform duration-300">
+            <img src="./favicon.png" alt="Thu Hiền Logo" class="w-10 h-10 rounded-full object-cover shadow-sm ring-2 ring-white/80 group-hover:scale-105 transition-transform duration-300">
             <div class="flex flex-col">
-                <span class="font-serif font-bold text-lg md:text-xl text-[#174C3B] leading-none tracking-tight">Thu Hiền</span>
-                <span class="text-[11px] font-medium text-[#5F6E66] tracking-wide mt-1 uppercase">Cùng Mẹ Hiểu Con</span>
+                <span class="font-bold text-lg md:text-xl text-white leading-none tracking-tight">Thu Hiền</span>
+                <span class="text-[11px] font-medium text-white/90 tracking-wide mt-1 uppercase">Cùng Mẹ Hiểu Con</span>
             </div>
         </a>
 
-        <!-- Header Actions: Chỉ 1 nút Pricing và 1 nút Đặt Lịch -->
+        <!-- Header Actions: 1 nút Pricing và 1 nút Đặt Lịch -->
         <div class="flex items-center gap-2.5 sm:gap-3">
-            <a href="./pricing/" class="px-3.5 sm:px-4 py-2 rounded-full border border-[#8FAF91]/50 hover:border-[#174C3B] text-xs sm:text-sm font-semibold text-[#174C3B] bg-white/70 hover:bg-[#EEF5EA] transition-all flex items-center gap-1.5 shadow-2xs">
+            <a href="./pricing/" class="px-3.5 sm:px-4.5 py-2 rounded-full bg-white hover:bg-[#FAF7F0] text-xs sm:text-sm font-bold text-[#174C3B] shadow-2xs hover:shadow-xs transition-all flex items-center gap-1.5">
                 <span>Bảng Giá / Gói</span>
             </a>
-            <a href="./dat-lich/" class="btn-pill-primary group py-2 px-3.5 sm:px-5">
-                <span class="text-xs sm:text-sm font-semibold">Đặt Lịch 1:1</span>
-                <span class="btn-circle-icon w-6 h-6">
+            <a href="./dat-lich/" class="bg-[#174C3B] hover:bg-[#133F31] text-white py-2 px-3.5 sm:px-5 rounded-full text-xs sm:text-sm font-bold shadow-2xs flex items-center gap-2 group transition-all">
+                <span class="text-xs sm:text-sm font-bold">Đặt Lịch 1:1</span>
+                <span class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
                     </svg>

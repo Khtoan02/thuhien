@@ -4,7 +4,7 @@
    Palette: 70% Warm Cream (#FAF7F0), 20% Deep Green (#174C3B), 10% Peach (#F08A4B)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
 
 :root {
   --color-primary: #174C3B;
@@ -24,8 +24,8 @@
   --color-text-muted: #5F6E66;
   --color-text-dim: #8B9992;
   
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'Alata', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Alata', sans-serif;
   
   --ease-elastic: cubic-bezier(0.32, 0.72, 0, 1);
 }
@@ -38,14 +38,15 @@
 
 html {
   scroll-behavior: smooth;
-  font-family: var(--font-sans);
+  font-family: 'Alata', system-ui, -apple-system, sans-serif;
   background-color: var(--color-cream-bg);
   color: var(--color-text-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+body, button, input, select, textarea {
+  font-family: 'Alata', system-ui, -apple-system, sans-serif;
   min-height: 100dvh;
   line-height: 1.65;
   background-color: var(--color-cream-bg);
@@ -54,11 +55,11 @@ body {
 
 /* Typography Overrides */
 .font-serif {
-  font-family: var(--font-serif);
+  font-family: 'Alata', sans-serif !important;
 }
 
 .font-sans {
-  font-family: var(--font-sans);
+  font-family: 'Alata', sans-serif !important;
 }
 
 /* Subtle Film Grain Texture (Fixed, non-scrolling for performance) */
@@ -217,16 +218,16 @@ body {
 }
 
 .nav-island-inner {
-  background-color: rgba(250, 247, 240, 0.92);
+  background: linear-gradient(135deg, #F08A4B 0%, #EA7A33 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(143, 175, 145, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 9999px;
   padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 10px 30px -10px rgba(23, 76, 59, 0.08);
+  box-shadow: 0 12px 32px -8px rgba(240, 138, 75, 0.45), 0 4px 12px -2px rgba(23, 76, 59, 0.08);
 }
 
 /* Eyebrow Tag */
