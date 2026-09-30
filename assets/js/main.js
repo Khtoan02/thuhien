@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 baby_height: formData.get('baby_height') || '',
                 issues: issues,
                 feeding_notes: formData.get('feeding_notes') || '',
-                consult_type: formData.get('consult_type') || 'Gói Đồng Hành Chuyên Sâu 1 Tháng (Zalo Hằng Ngày)',
+                consult_type: formData.get('consult_type') || 'Gói Đồng Hành Chuyên Sâu 1 Tháng (3.000.000đ)',
                 preferred_time: formData.get('preferred_time') || 'Buổi tối (19h30 - 21h30)'
             };
 
@@ -239,11 +239,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const consultTypeSelect = document.querySelector('select[name="consult_type"]');
     if (selectedPackage && consultTypeSelect) {
         if (selectedPackage === '1thang') {
-            consultTypeSelect.value = 'Gói Đồng Hành Chuyên Sâu 1 Tháng (Zalo Hằng Ngày)';
-        } else if (selectedPackage === '60phut') {
-            consultTypeSelect.value = 'Buổi Trò Chuyện & Tháo Gỡ Ban Đầu (60 Phút 1-1)';
-        } else if (selectedPackage === '3thang') {
-            consultTypeSelect.value = 'Gói Đồng Hành Bền Vững 3 Tháng (Toàn Diện Nền Tảng)';
+            consultTypeSelect.value = 'Gói Đồng Hành Chuyên Sâu 1 Tháng (3.000.000đ)';
+        } else if (selectedPackage === '3ngay' || selectedPackage === '60phut') {
+            consultTypeSelect.value = 'Gói Khởi Động Trải Nghiệm 3 Ngày (500.000đ)';
+        } else if (selectedPackage === 'lienhe' || selectedPackage === '3thang') {
+            consultTypeSelect.value = 'Gói Đồng Hành Dài Hạn / Chuyên Biệt (Liên Hệ)';
         }
     }
 
