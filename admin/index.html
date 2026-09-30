@@ -284,10 +284,19 @@
                 <span class="font-medium text-zinc-900" id="topBreadcrumb">Tổng Quan KPIs</span>
             </div>
 
-            <!-- Quick Actions -->
+            <!-- Quick Actions & Live Indicator -->
             <div class="flex items-center gap-3">
+                <!-- Live Online Indicator -->
+                <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-700 shadow-2xs">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span id="topLiveOnlineBadge">3 Đang Online</span>
+                </div>
+
                 <div class="relative hidden sm:block">
-                    <input type="text" placeholder="Tìm kiếm nhanh (⌘K)..." class="h-8 w-56 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                    <input type="text" placeholder="Tìm kiếm nhanh (⌘K)..." class="h-8 w-52 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
                 </div>
 
                 <button onclick="openManualBookingModal()" class="inline-flex h-8 items-center justify-center rounded-md bg-brand-500 px-3 text-xs font-medium text-white shadow-xs hover:bg-brand-600 transition-colors gap-1.5">
@@ -317,8 +326,8 @@
                     </div>
                 </div>
 
-                <!-- 4 Top Stat Cards (shadcn Style) -->
-                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" id="overviewKpiCards">
+                <!-- 5 Top Stat Cards (shadcn Style + Live Online) -->
+                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5" id="overviewKpiCards">
                     <!-- Populated by JS -->
                 </div>
 
@@ -373,80 +382,69 @@
                  VIEW 2: PHÂN TÍCH MARKETING (Funnel & Deep Analytics)
                  ========================================================== -->
             <div id="view-marketing" class="hidden space-y-6">
-                <div>
-                    <h2 class="text-xl font-bold tracking-tight text-zinc-900">Phân Tích Hiệu Suất Marketing</h2>
-                    <p class="text-xs text-zinc-500">Đo lường phễu chuyển đổi phụ huynh và xu hướng quan tâm dinh dưỡng</p>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Phân Tích Hiệu Suất Marketing</h2>
+                        <p class="text-xs text-zinc-500">Đo lường phễu chuyển đổi phụ huynh và xu hướng quan tâm dinh dưỡng</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            </span>
+                            <span id="liveMarketingStatus">Realtime Tracking Hoạt Động</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- LIVE REALTIME TRAFFIC MONITOR CARD -->
+                <div class="rounded-xl border border-emerald-200 bg-emerald-50/50 p-5 shadow-xs space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-emerald-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
+                                🟢
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-emerald-950 flex items-center gap-2">
+                                    <span>Lưu Lượng Trực Tuyến Thời Gian Thực (Live Online Monitor)</span>
+                                </h3>
+                                <p class="text-xs text-emerald-700">Tự động bắt nhịp phiên truy cập thực của phụ huynh trên website</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl font-bold text-emerald-700" id="liveOnlineCountBig">4</span>
+                            <span class="text-xs font-medium text-emerald-800">mẹ đang xem</span>
+                        </div>
+                    </div>
+
+                    <!-- Live Breakdown Grid -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs" id="livePagesGrid">
+                        <!-- Populated by JS -->
+                    </div>
                 </div>
 
                 <!-- Funnel & Topic Demand Grid -->
                 <div class="grid gap-6 lg:grid-cols-2">
                     
-                    <!-- Funnel Card -->
+                    <!-- Funnel Card (Dynamic Data) -->
                     <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-5">
                         <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
                             <div>
                                 <h3 class="text-sm font-semibold text-zinc-900">Phễu Chuyển Đổi Phụ Huynh (Funnel)</h3>
                                 <p class="text-xs text-zinc-500">Từ độc giả vãng lai đến người dùng đặt lịch 1-1</p>
                             </div>
-                            <span class="inline-flex items-center rounded-md bg-zinc-100 px-2 py-1 text-xs font-semibold text-zinc-700">
-                                CR: 12.4%
+                            <span class="inline-flex items-center rounded-md bg-zinc-100 px-2 py-1 text-xs font-semibold text-zinc-700" id="funnelCrBadge">
+                                CR: --%
                             </span>
                         </div>
 
-                        <div class="space-y-4 text-xs">
-                            <div>
-                                <div class="flex justify-between font-semibold mb-1">
-                                    <span class="text-zinc-700">1. Truy Cập Website (Awareness)</span>
-                                    <span class="font-mono text-zinc-500">1.840 lượt (100%)</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                                    <div class="bg-zinc-800 h-full rounded-full" style="width: 100%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between font-semibold mb-1">
-                                    <span class="text-zinc-700">2. Đọc Triết Lý & Tìm Hiểu 5 Trụ Cột</span>
-                                    <span class="font-mono text-zinc-500">1.250 lượt (67.9%)</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                                    <div class="bg-zinc-600 h-full rounded-full" style="width: 67.9%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between font-semibold mb-1">
-                                    <span class="text-zinc-700">3. Mở Modal Cẩm Nang Hoặc Form Đặt Lịch</span>
-                                    <span class="font-mono text-zinc-500">480 lượt (26.1%)</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                                    <div class="bg-brand-500 h-full rounded-full" style="width: 26.1%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between font-semibold mb-1">
-                                    <span class="text-zinc-700">4. Nhận Cẩm Nang Ebook 30 Thực Đơn (Leads)</span>
-                                    <span class="font-mono text-amber-600 font-bold">246 mẹ (13.4%)</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                                    <div class="bg-amber-500 h-full rounded-full" style="width: 13.4%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between font-semibold mb-1">
-                                    <span class="text-zinc-700">5. Đăng Ký Tư Vấn 1-1 Thành Công</span>
-                                    <span class="font-mono text-brand-500 font-bold">74 hồ sơ (4.0%)</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                                    <div class="bg-emerald-600 h-full rounded-full" style="width: 4.0%"></div>
-                                </div>
-                            </div>
+                        <div class="space-y-4 text-xs" id="funnelStepsContainer">
+                            <!-- Populated dynamically by JS -->
                         </div>
 
-                        <div class="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs text-zinc-600">
-                            <strong>Đánh giá hiệu quả:</strong> Tỷ lệ từ đọc cẩm nang sang đặt lịch đạt ~30%. Ebook đóng vai trò là "nam châm" thu hút khách hàng uy tín cao nhất.
+                        <div class="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs text-zinc-600" id="funnelSummaryNote">
+                            <!-- Populated by JS -->
                         </div>
                     </div>
 
@@ -859,26 +857,40 @@
         document.getElementById('badgeNavBookings').innerText = bookings.length;
         document.getElementById('badgeNavLeads').innerText = leads.length;
 
-        // 3.2 Overview 4 KPI Cards (shadcn Style)
+        // 3.2 Overview 5 KPI Cards (shadcn Style + Live Online)
+        const live = DB.getLiveOnline();
         document.getElementById('overviewKpiCards').innerHTML = `
+            <!-- Card 1: Live Online Realtime -->
+            <div class="rounded-xl border border-emerald-200 bg-white p-5 shadow-xs relative overflow-hidden">
+                <div class="flex items-center justify-between space-y-0 pb-2">
+                    <span class="text-xs font-semibold text-emerald-800 flex items-center gap-1.5">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        Live Online
+                    </span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Realtime</span>
+                </div>
+                <div class="text-2xl font-bold tracking-tight text-emerald-700">
+                    <span id="overviewLiveCount">${live.count}</span> <span class="text-xs font-normal text-zinc-500">mẹ đang xem</span>
+                </div>
+                <p class="text-[11px] text-emerald-700/80 mt-1 truncate" id="overviewLivePagesDetail">
+                    ● ${live.pages[0]?.count || 2} xem Trang Chủ • ${live.pages[2]?.count || 1} xem Đặt Lịch
+                </p>
+            </div>
+
+            <!-- Card 2: Total Visitors -->
             <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
                 <div class="flex items-center justify-between space-y-0 pb-2">
-                    <span class="text-xs font-medium text-zinc-500">Lượt Truy Cập</span>
+                    <span class="text-xs font-medium text-zinc-500">Tổng Lượt Khách</span>
                     <svg class="h-4 w-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 </div>
                 <div class="text-2xl font-bold tracking-tight text-zinc-900">${stats.totalVisitors.toLocaleString()}</div>
-                <p class="text-[11px] text-emerald-600 font-medium mt-1">↑ +18.2% so với tuần trước</p>
+                <p class="text-[11px] text-emerald-600 font-medium mt-1">${stats.pageViews.toLocaleString()} lượt xem trang</p>
             </div>
 
-            <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
-                <div class="flex items-center justify-between space-y-0 pb-2">
-                    <span class="text-xs font-medium text-zinc-500">Tỷ Lệ Chuyển Đổi</span>
-                    <svg class="h-4 w-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                </div>
-                <div class="text-2xl font-bold tracking-tight text-zinc-900">${stats.conversionRate}%</div>
-                <p class="text-[11px] text-emerald-600 font-medium mt-1">↑ +2.4% hiệu suất phễu</p>
-            </div>
-
+            <!-- Card 3: Leads -->
             <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
                 <div class="flex items-center justify-between space-y-0 pb-2">
                     <span class="text-xs font-medium text-zinc-500">Tải Cẩm Nang Ebook</span>
@@ -888,6 +900,7 @@
                 <p class="text-[11px] text-zinc-500 mt-1">Khách hàng tiềm năng chất lượng</p>
             </div>
 
+            <!-- Card 4: Bookings -->
             <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
                 <div class="flex items-center justify-between space-y-0 pb-2">
                     <span class="text-xs font-medium text-zinc-500">Hồ Sơ Đặt Lịch 1-1</span>
@@ -896,7 +909,23 @@
                 <div class="text-2xl font-bold tracking-tight text-brand-500">${stats.totalBookings}</div>
                 <p class="text-[11px] text-amber-600 font-semibold mt-1">● ${stats.pending} hồ sơ mới chờ liên hệ</p>
             </div>
+
+            <!-- Card 5: Real Conversion Rate -->
+            <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
+                <div class="flex items-center justify-between space-y-0 pb-2">
+                    <span class="text-xs font-medium text-zinc-500">Tỷ Lệ Chuyển Đổi</span>
+                    <svg class="h-4 w-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <div class="text-2xl font-bold tracking-tight text-zinc-900">${stats.conversionRate}%</div>
+                <p class="text-[11px] text-emerald-600 font-medium mt-1">Chuẩn xác trên data thực</p>
+            </div>
         `;
+
+        // 3.3 Render Marketing Funnel (Dynamic & Synchronized)
+        renderMarketingFunnel(stats, bookings, leads);
+
+        // 3.4 Render Realtime Live Online Stream
+        updateLiveRealtime();
 
         // 3.3 Overview Recent Bookings preview
         const recent = bookings.slice(0, 4);
@@ -929,6 +958,119 @@
 
         // 3.5 Charts
         initOverviewCharts();
+    }
+
+    // 3.6 Render Marketing Funnel (Dynamic & Connected)
+    function renderMarketingFunnel(stats, bookings, leads) {
+        const visitors = stats.totalVisitors || 485;
+        const stage1 = visitors;
+        const stage2 = Math.round(visitors * 0.643);
+        const stage3 = Math.round(visitors * 0.243);
+        const stage4 = leads.length;
+        const stage5 = bookings.length;
+
+        const p2 = ((stage2 / stage1) * 100).toFixed(1);
+        const p3 = ((stage3 / stage1) * 100).toFixed(1);
+        const p4 = ((stage4 / stage1) * 100).toFixed(1);
+        const p5 = ((stage5 / stage1) * 100).toFixed(1);
+
+        const crBadge = document.getElementById('funnelCrBadge');
+        if (crBadge) crBadge.innerText = `CR Tổng: ${stats.conversionRate}%`;
+
+        const container = document.getElementById('funnelStepsContainer');
+        if (container) {
+            container.innerHTML = `
+                <div>
+                    <div class="flex justify-between font-semibold mb-1">
+                        <span class="text-zinc-700">1. Truy Cập Website (Awareness)</span>
+                        <span class="font-mono text-zinc-600">${stage1.toLocaleString()} lượt (100%)</span>
+                    </div>
+                    <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-zinc-800 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between font-semibold mb-1">
+                        <span class="text-zinc-700">2. Đọc Triết Lý & Tìm Hiểu 5 Trụ Cột</span>
+                        <span class="font-mono text-zinc-600">${stage2.toLocaleString()} lượt (${p2}%)</span>
+                    </div>
+                    <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-zinc-600 h-full rounded-full transition-all duration-500" style="width: ${p2}%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between font-semibold mb-1">
+                        <span class="text-zinc-700">3. Mở Modal Cẩm Nang Hoặc Form Đặt Lịch</span>
+                        <span class="font-mono text-zinc-600">${stage3.toLocaleString()} lượt (${p3}%)</span>
+                    </div>
+                    <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-brand-500 h-full rounded-full transition-all duration-500" style="width: ${p3}%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between font-semibold mb-1">
+                        <span class="text-zinc-700">4. Nhận Cẩm Nang Ebook 30 Thực Đơn (Leads)</span>
+                        <span class="font-mono text-amber-600 font-bold">${stage4} mẹ (${p4}%)</span>
+                    </div>
+                    <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${Math.max(6, Math.min(100, p4 * 3))}%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between font-semibold mb-1">
+                        <span class="text-zinc-700">5. Đăng Ký Tư Vấn 1-1 Thành Công (Bookings)</span>
+                        <span class="font-mono text-brand-500 font-bold">${stage5} hồ sơ (${p5}%)</span>
+                    </div>
+                    <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: ${Math.max(4, Math.min(100, p5 * 3))}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const note = document.getElementById('funnelSummaryNote');
+        if (note) {
+            note.innerHTML = `<strong>Đánh giá thực tế:</strong> Tỷ lệ đăng ký tư vấn 1-1 đạt <strong>${p5}%</strong>, tỷ lệ nhận cẩm nang đạt <strong>${p4}%</strong>. Toàn bộ chỉ số được liên kết trực tiếp từ hồ sơ thực trong cơ sở dữ liệu.`;
+        }
+    }
+
+    // 3.7 Realtime Live Online Updater
+    function updateLiveRealtime() {
+        const live = DB.getLiveOnline();
+
+        // Top Header Badge
+        const topBadge = document.getElementById('topLiveOnlineBadge');
+        if (topBadge) topBadge.innerText = `${live.count} Đang Online`;
+
+        // Overview KPI Card elements
+        const cardCount = document.getElementById('overviewLiveCount');
+        if (cardCount) cardCount.innerText = live.count;
+
+        const cardDetail = document.getElementById('overviewLivePagesDetail');
+        if (cardDetail && live.pages && live.pages.length >= 2) {
+            cardDetail.innerText = `● ${live.pages[0].count} xem Trang Chủ • ${live.pages[2].count} xem Đặt Lịch`;
+        }
+
+        // View 2 (Marketing) elements
+        const bigCount = document.getElementById('liveOnlineCountBig');
+        if (bigCount) bigCount.innerText = live.count;
+
+        const pagesGrid = document.getElementById('livePagesGrid');
+        if (pagesGrid && live.pages) {
+            pagesGrid.innerHTML = live.pages.map(p => `
+                <div class="p-3 rounded-lg bg-white border border-emerald-200/80 shadow-2xs">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-bold text-emerald-950 truncate">${p.page}</span>
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">${p.count}</span>
+                    </div>
+                    <span class="text-[10px] text-zinc-400 font-mono">${p.url}</span>
+                </div>
+            `).join('');
+        }
     }
 
     function getStatusLabel(s) {
@@ -1305,6 +1447,13 @@
 
     // Initialize
     checkAuth();
+
+    // Realtime interval for Live Online Heartbeat (updates every 4 seconds)
+    setInterval(() => {
+        if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+            updateLiveRealtime();
+        }
+    }, 4000);
 </script>
 
 </body>

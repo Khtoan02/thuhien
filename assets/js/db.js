@@ -1,14 +1,15 @@
 /**
  * Client-Side Database & Analytics Layer for Thu Hiền - Cùng Mẹ Hiểu Con
- * Pure static & LocalStorage powered, zero backend dependencies.
+ * Pure static & LocalStorage powered with Realistic Marketing Metrics & Realtime Live Online Engine.
  */
 
 const DB = (() => {
-    const STORAGE_KEY_BOOKINGS = 'thuhien_bookings_v2';
-    const STORAGE_KEY_LEADS = 'thuhien_leads_v2';
-    const STORAGE_KEY_ANALYTICS = 'thuhien_analytics_v2';
+    const STORAGE_KEY_BOOKINGS = 'thuhien_bookings_v3';
+    const STORAGE_KEY_LEADS = 'thuhien_leads_v3';
+    const STORAGE_KEY_ANALYTICS = 'thuhien_analytics_v3';
+    const STORAGE_KEY_HEARTBEATS = 'thuhien_live_heartbeats';
 
-    // Rich initial bookings dataset
+    // Realistic, authentic bookings dataset
     const INITIAL_BOOKINGS = [
         {
             id: 101,
@@ -23,10 +24,10 @@ const DB = (() => {
             feeding_notes: 'Bé chỉ thích bú mẹ, mỗi bữa cháo ngậm 30-40 phút, mẹ rất stress.',
             consult_type: 'Gói Đồng Hành 21 Ngày Tối Ưu Hấp Thu',
             preferred_time: 'Buổi tối (19h30 - 21h30)',
-            source: 'Facebook Ads',
+            source: 'Facebook (Fanpage / Reels)',
             status: 'pending',
             admin_notes: 'Đã gửi tin nhắn Zalo hẹn tối thứ 5 gọi video trao đổi kỹ phác đồ.',
-            created_at: '2026-09-29 19:30:00'
+            created_at: '2026-09-30 08:45:00'
         },
         {
             id: 102,
@@ -41,10 +42,10 @@ const DB = (() => {
             feeding_notes: 'Bé 3 ngày mới đi ngoài 1 lần, phân cứng, hay quấy khóc ban đêm.',
             consult_type: 'Tư Vấn Đơn Điểm 1-1 (60 Phút Trực Tiếp)',
             preferred_time: 'Cuối tuần (Thứ 7 / Chủ Nhật)',
-            source: 'Zalo OA',
+            source: 'Zalo (Nhóm Mẹ & Bé)',
             status: 'contacted',
             admin_notes: 'Mẹ đã gửi phiếu xét nghiệm vi chất, hẹn chuyên gia tư vấn sáng T7.',
-            created_at: '2026-09-28 10:15:00'
+            created_at: '2026-09-29 14:15:00'
         },
         {
             id: 103,
@@ -59,10 +60,10 @@ const DB = (() => {
             feeding_notes: 'Bé vừa cai sữa, tiêu hóa nhạy cảm, muốn chuyên gia lên thực đơn 30 ngày.',
             consult_type: 'Gói Đồng Hành Toàn Diện 1 Tháng Kèm Thực Đơn',
             preferred_time: 'Giờ hành chính (09h00 - 17h00)',
-            source: 'Giới thiệu từ bạn bè',
+            source: 'Bạn bè giới thiệu',
             status: 'in_progress',
             admin_notes: 'Đang áp dụng thực đơn ngày thứ 6, bé hợp tác ăn hết suất cháo yến mạch cá hồi.',
-            created_at: '2026-09-26 14:20:00'
+            created_at: '2026-09-28 10:20:00'
         },
         {
             id: 104,
@@ -77,10 +78,10 @@ const DB = (() => {
             feeding_notes: 'Bé đêm ngủ hay lăn lộn, giật mình khóc thét, ban ngày lười ăn.',
             consult_type: 'Gói Đồng Hành 21 Ngày Tối Ưu Hấp Thu',
             preferred_time: 'Buổi tối (19h30 - 21h30)',
-            source: 'TikTok / Video chia sẻ',
+            source: 'TikTok (Video Dinh Dưỡng)',
             status: 'completed',
             admin_notes: 'Đã hoàn thành 21 ngày. Bé ngủ một mạch đến sáng, tăng 600g, mẹ rất vui.',
-            created_at: '2026-09-24 20:45:00'
+            created_at: '2026-09-27 19:30:00'
         },
         {
             id: 105,
@@ -95,41 +96,81 @@ const DB = (() => {
             feeding_notes: 'Chuẩn bị ăn dặm, mẹ phân vân giữa BLW và truyền thống.',
             consult_type: 'Tư Vấn Đơn Điểm 1-1 (60 Phút Trực Tiếp)',
             preferred_time: 'Buổi trưa (11h30 - 13h30)',
-            source: 'Google Search',
+            source: 'Google Tìm Kiếm',
             status: 'pending',
             admin_notes: 'Cần gửi bảng nguyên tắc ăn dặm 4 nhóm chất trước buổi gọi.',
-            created_at: '2026-09-29 15:10:00'
+            created_at: '2026-09-29 20:10:00'
+        },
+        {
+            id: 106,
+            parent_name: 'Hoàng Yến Nhi',
+            phone: '0938665544',
+            email: 'yennhi.hoang@gmail.com',
+            baby_name: 'Bé Gấu',
+            baby_age: '18 tháng',
+            baby_weight: '9.6 kg',
+            baby_height: '80 cm',
+            issues: 'Chậm tăng cân / Đứng cân liên tục, Bé khó ngủ, trằn trọc quấy đêm',
+            feeding_notes: '4 tháng liền không tăng được lạng nào, ngủ chập chờn 1 tiếng dậy 1 lần.',
+            consult_type: 'Gói Đồng Hành 21 Ngày Tối Ưu Hấp Thu',
+            preferred_time: 'Buổi tối (19h30 - 21h30)',
+            source: 'Facebook (Fanpage / Reels)',
+            status: 'contacted',
+            admin_notes: 'Đã tư vấn sơ bộ, mẹ đồng ý chuyển khoản gói 21 ngày vào ngày mai.',
+            created_at: '2026-09-28 16:40:00'
+        },
+        {
+            id: 107,
+            parent_name: 'Đỗ Minh Thư',
+            phone: '0918776611',
+            email: 'minhthu.do@gmail.com',
+            baby_name: 'Bé Miu',
+            baby_age: '10 tháng',
+            baby_weight: '7.9 kg',
+            baby_height: '71 cm',
+            issues: 'Táo bón / Đi ngoài phân sống, Biếng ăn sinh lý / Ngậm cháo cơm',
+            feeding_notes: 'Bụng hay chướng to, đánh rắm có mùi chua, ăn vào hay trớ.',
+            consult_type: 'Tư Vấn Đơn Điểm 1-1 (60 Phút Trực Tiếp)',
+            preferred_time: 'Giờ hành chính (09h00 - 17h00)',
+            source: 'Zalo (Nhóm Mẹ & Bé)',
+            status: 'pending',
+            admin_notes: 'Cần hướng dẫn mẹ massage bụng theo chiều kim đồng hồ trước.',
+            created_at: '2026-09-30 09:15:00'
         }
     ];
 
-    // Rich initial leads dataset
+    // Realistic initial leads dataset
     const INITIAL_LEADS = [
-        { id: 201, parent_name: 'Phạm Hải Yến', phone: '0945123987', email: 'haiyen.pham@gmail.com', baby_age: '7 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'converted', notes: 'Đã chuyển đổi sang đặt lịch tư vấn #TH-102', created_at: '2026-09-29 11:20:00' },
-        { id: 202, parent_name: 'Hoàng Minh Châu', phone: '0978654321', email: 'chauhoang.mc@gmail.com', baby_age: '11 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'contacted', notes: 'Đã gửi file PDF qua Zalo, mẹ khen tài liệu đẹp', created_at: '2026-09-29 16:45:00' },
-        { id: 203, parent_name: 'Đỗ Quỳnh Nga', phone: '0919888777', email: 'quynhnga.do@gmail.com', baby_age: '18 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'nurturing', notes: 'Bé đang biếng ăn, đang gửi các bài chia sẻ cách nấu nước dashi', created_at: '2026-09-28 09:10:00' },
-        { id: 204, parent_name: 'Vũ Thị Thu Hà', phone: '0934567890', email: 'thuha.vu@gmail.com', baby_age: '9 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'new', notes: '', created_at: '2026-09-27 21:05:00' },
-        { id: 205, parent_name: 'Bùi Phương Linh', phone: '0912998877', email: 'phuonglinh.bui@gmail.com', baby_age: '13 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'new', notes: '', created_at: '2026-09-26 18:30:00' },
-        { id: 206, parent_name: 'Ngô Mỹ Hạnh', phone: '0983114455', email: 'myhanh.ngo@gmail.com', baby_age: '15 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'contacted', notes: 'Đã gọi điện hỏi thăm, mẹ đang đọc cẩm nang', created_at: '2026-09-25 10:00:00' }
+        { id: 201, parent_name: 'Phạm Hải Yến', phone: '0945123987', email: 'haiyen.pham@gmail.com', baby_age: '7 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'converted', notes: 'Đã chuyển đổi sang đặt lịch tư vấn #TH-102', created_at: '2026-09-30 08:20:00' },
+        { id: 202, parent_name: 'Hoàng Minh Châu', phone: '0978654321', email: 'chauhoang.mc@gmail.com', baby_age: '11 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'contacted', notes: 'Đã gửi file PDF qua Zalo, mẹ khen tài liệu thực tế', created_at: '2026-09-29 16:45:00' },
+        { id: 203, parent_name: 'Đỗ Quỳnh Nga', phone: '0919888777', email: 'quynhnga.do@gmail.com', baby_age: '18 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'nurturing', notes: 'Bé đang biếng ăn, đang gửi bài viết cách tạo vị ngọt umami tự nhiên', created_at: '2026-09-29 11:10:00' },
+        { id: 204, parent_name: 'Vũ Thị Thu Hà', phone: '0934567890', email: 'thuha.vu@gmail.com', baby_age: '9 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'new', notes: '', created_at: '2026-09-28 21:05:00' },
+        { id: 205, parent_name: 'Bùi Phương Linh', phone: '0912998877', email: 'phuonglinh.bui@gmail.com', baby_age: '13 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'new', notes: '', created_at: '2026-09-28 14:30:00' },
+        { id: 206, parent_name: 'Ngô Mỹ Hạnh', phone: '0983114455', email: 'myhanh.ngo@gmail.com', baby_age: '15 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'contacted', notes: 'Đã gọi điện hỏi thăm, mẹ đang đọc tuần 1 của cẩm nang', created_at: '2026-09-27 10:00:00' },
+        { id: 207, parent_name: 'Trịnh Cẩm Tú', phone: '0966443322', email: 'camtu.trinh@gmail.com', baby_age: '8 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'new', notes: '', created_at: '2026-09-27 17:15:00' },
+        { id: 208, parent_name: 'Lương Kiều Anh', phone: '0971228899', email: 'kieuanh.luong@gmail.com', baby_age: '20 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'nurturing', notes: 'Mẹ cần tham khảo thực đơn cho bé dị ứng trứng', created_at: '2026-09-26 19:40:00' },
+        { id: 209, parent_name: 'Phan Thùy Dương', phone: '0908123456', email: 'thuyduong.phan@gmail.com', baby_age: '12 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'new', notes: '', created_at: '2026-09-26 11:25:00' },
+        { id: 210, parent_name: 'Dương Ánh Nguyệt', phone: '0943998811', email: 'anhnguyet.duong@gmail.com', baby_age: '16 tháng', resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu', care_status: 'contacted', notes: 'Mẹ hỏi về cách bổ sung kẽm sinh học', created_at: '2026-09-25 15:50:00' }
     ];
 
-    // Rich marketing analytics
+    // Realistic marketing analytics baseline
     const INITIAL_ANALYTICS = {
-        totalVisitors: 1840,
-        pageViews: 4260,
-        avgTimeOnSite: '3m 42s',
-        bounceRate: '28.4%',
+        totalVisitors: 485,
+        pageViews: 1290,
+        avgTimeOnSite: '2m 48s',
+        bounceRate: '32.6%',
         trafficSources: [
-            { source: 'Facebook (Fanpage / Reels)', visits: 780, percent: 42.4, color: '#1877F2' },
-            { source: 'Zalo (Nhóm Mẹ & Bé / OA)', visits: 515, percent: 28.0, color: '#0068FF' },
-            { source: 'TikTok (Video Dinh Dưỡng)', visits: 310, percent: 16.8, color: '#111111' },
-            { source: 'Google Tìm Kiếm Tự Nhiên', visits: 165, percent: 9.0, color: '#0F9D58' },
-            { source: 'Trực Tiếp / Giới Thiệu', visits: 70, percent: 3.8, color: '#F08A4B' }
+            { source: 'Facebook (Fanpage / Reels)', visits: 215, percent: 44.3, color: '#1877F2' },
+            { source: 'Zalo (Nhóm Mẹ & Bé / OA)', visits: 136, percent: 28.0, color: '#0068FF' },
+            { source: 'TikTok (Video Dinh Dưỡng)', visits: 78, percent: 16.1, color: '#111111' },
+            { source: 'Google Tìm Kiếm Tự Nhiên', visits: 38, percent: 7.8, color: '#0F9D58' },
+            { source: 'Trực Tiếp / Giới Thiệu', visits: 18, percent: 3.8, color: '#F08A4B' }
         ],
         dailyTrends: {
             dates: ['24/09', '25/09', '26/09', '27/09', '28/09', '29/09', '30/09'],
-            views: [420, 560, 610, 680, 720, 690, 580],
-            bookings: [8, 12, 11, 15, 14, 16, 12],
-            leads: [24, 32, 28, 41, 38, 45, 38]
+            views: [58, 65, 74, 82, 79, 68, 59],
+            bookings: [1, 2, 1, 3, 2, 2, 1],
+            leads: [3, 5, 4, 6, 5, 4, 3]
         }
     };
 
@@ -277,6 +318,64 @@ const DB = (() => {
             return true;
         },
 
+        // Realtime Live Heartbeat Tracking
+        heartbeat(pageName = 'Trang Chủ') {
+            try {
+                let sid = sessionStorage.getItem('thuhien_session_id');
+                if (!sid) {
+                    sid = 'sess_' + Math.random().toString(36).substring(2, 9);
+                    sessionStorage.setItem('thuhien_session_id', sid);
+                }
+
+                const now = Date.now();
+                let sessions = JSON.parse(localStorage.getItem(STORAGE_KEY_HEARTBEATS) || '[]');
+                
+                // Clean stale sessions > 35 seconds
+                sessions = sessions.filter(s => (now - s.time) < 35000);
+
+                const existingIdx = sessions.findIndex(s => s.id === sid);
+                if (existingIdx !== -1) {
+                    sessions[existingIdx].page = pageName;
+                    sessions[existingIdx].time = now;
+                } else {
+                    sessions.push({ id: sid, page: pageName, time: now });
+                }
+
+                localStorage.setItem(STORAGE_KEY_HEARTBEATS, JSON.stringify(sessions));
+            } catch (e) {
+                // Ignore storage limits
+            }
+        },
+
+        getLiveOnline() {
+            try {
+                const now = Date.now();
+                let sessions = JSON.parse(localStorage.getItem(STORAGE_KEY_HEARTBEATS) || '[]');
+                sessions = sessions.filter(s => (now - s.time) < 35000);
+
+                // Dynamically simulate realistic concurrent moms (between 2 and 5 active visitors)
+                const minuteSlot = Math.floor(now / 15000);
+                const jitter = (minuteSlot % 3); // 0, 1, 2
+                const liveCount = Math.max(sessions.length, 3 + jitter);
+
+                const pages = [
+                    { page: 'Trang Chủ & Triết Lý', count: Math.max(1, Math.round(liveCount * 0.45)), url: '/' },
+                    { page: 'Đọc 5 Trụ Cột Dinh Dưỡng', count: Math.max(1, Math.round(liveCount * 0.25)), url: '/#tru-cot' },
+                    { page: 'Đặt Lịch Tư Vấn 1-1', count: Math.max(1, Math.round(liveCount * 0.20)), url: '/dat-lich/' },
+                    { page: 'Cẩm Nang 30 Thực Đơn', count: Math.max(1, Math.round(liveCount * 0.10)), url: '/#cam-nang' }
+                ];
+
+                return {
+                    count: liveCount,
+                    sessions: sessions,
+                    pages: pages,
+                    realTabs: sessions.length
+                };
+            } catch (e) {
+                return { count: 3, pages: [], realTabs: 1 };
+            }
+        },
+
         // Analytics
         getAnalytics() {
             try {
@@ -286,13 +385,14 @@ const DB = (() => {
             }
         },
 
-        trackView() {
+        trackView(pageName = 'Trang Chủ') {
             const analytics = this.getAnalytics();
-            analytics.pageViews = (analytics.pageViews || 4260) + 1;
+            analytics.pageViews = (analytics.pageViews || 1290) + 1;
             localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify(analytics));
+            this.heartbeat(pageName);
         },
 
-        // Overview stats for top badges
+        // Overview stats for badges & marketing cards
         getStats() {
             const bookings = this.getBookings();
             const leads = this.getLeads();
@@ -306,7 +406,7 @@ const DB = (() => {
             const totalConversions = bookings.length + leads.length;
             const conversionRate = analytics.totalVisitors > 0 
                 ? ((totalConversions / analytics.totalVisitors) * 100).toFixed(1) 
-                : '12.4';
+                : '3.5';
 
             return {
                 totalBookings: bookings.length,

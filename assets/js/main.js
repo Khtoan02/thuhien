@@ -24,9 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
         revealElements.forEach(el => el.classList.add('is-revealed'));
     }
 
-    // 2. Track Page View silently via DB layer
+    // 2. Track Page View & Realtime Live Heartbeat via DB layer
     if (typeof DB !== 'undefined') {
-        DB.trackView();
+        const curPage = document.title.includes('Đặt Lịch') ? 'Đặt Lịch Tư Vấn 1-1' : 'Trang Chủ';
+        DB.trackView(curPage);
+        // Periodic heartbeat every 12 seconds to keep session alive
+        setInterval(() => {
+            DB.heartbeat(curPage);
+        }, 12000);
     }
 
     // 3. Interactive Checkbox Pills
