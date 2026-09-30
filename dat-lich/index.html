@@ -57,92 +57,31 @@
 
 <!-- Floating Navigation Island -->
 <header class="nav-island">
-    <nav class="nav-island-inner">
-        <!-- Logo -->
+    <nav class="nav-island-inner justify-between">
+        <!-- Logo: Favicon as Logo -->
         <a href="../" class="flex items-center gap-3 group text-decoration-none">
-            <div class="w-10 h-10 rounded-full bg-[#174C3B] text-[#FAF7F0] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-300">
-                <svg class="w-5 h-5 text-[#FAF7F0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 0 0 9-9c0-4.97-4.03-9-9-9s-9 4.03-9 9a9 9 0 0 0 9 9z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 7c2 2 3 5 3 7s-1 4-3 5"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 12c-2 0-4-1.5-4-3.5"/>
-                </svg>
-            </div>
+            <img src="../favicon.png" alt="Thu Hiền Logo" class="w-10 h-10 rounded-full object-cover shadow-sm ring-1 ring-[#8FAF91]/40 group-hover:scale-105 transition-transform duration-300">
             <div class="flex flex-col">
                 <span class="font-serif font-bold text-lg md:text-xl text-[#174C3B] leading-none tracking-tight">Thu Hiền</span>
-                <span class="text-[11px] font-medium text-[#5F6E66] tracking-wide mt-1 uppercase">Cùng Mẹ Hiểu Con</span>
+                <span class="text-[11px] font-medium text-[#5F6E66] tracking-wide mt-1 uppercase">Dinh Dưỡng & Bữa Ăn Của Con</span>
             </div>
         </a>
 
-        <!-- Desktop Menu Links -->
-        <div class="hidden md:flex items-center gap-7 text-[14.5px] font-medium text-[#5F6E66]">
-            <a href="../" class="hover:text-[#174C3B] transition-colors">Trang Chủ</a>
-            <a href="../#toi-la-ai" class="hover:text-[#174C3B] transition-colors">Tôi Là Ai?</a>
-            <a href="../#loi-nhan-me" class="hover:text-[#174C3B] transition-colors">Lời Nhắn Mẹ</a>
-            <a href="../#nen-tang" class="hover:text-[#174C3B] transition-colors">4 Nền Tảng</a>
-            <a href="../#cam-nhan" class="hover:text-[#174C3B] transition-colors">Cảm Nhận</a>
-            <a href="../#cam-nang" class="hover:text-[#174C3B] transition-colors">Cẩm Nang</a>
-            <a href="./" class="hover:text-[#174C3B] transition-colors text-[#174C3B] font-semibold">Đặt Lịch</a>
-        </div>
-
-        <!-- Desktop Action CTA -->
-        <div class="hidden sm:flex items-center gap-3">
-            <a href="./" class="btn-pill-primary group">
-                <span class="text-sm">Đặt Lịch 1-1</span>
-                <span class="btn-circle-icon">
+        <!-- Header Actions: Chỉ 1 nút Trang Chủ và 1 nút Bảng Giá / Gói -->
+        <div class="flex items-center gap-2.5 sm:gap-3">
+            <a href="../" class="px-3.5 sm:px-4 py-2 rounded-full border border-[#8FAF91]/50 hover:border-[#174C3B] text-xs sm:text-sm font-semibold text-[#174C3B] bg-white/70 hover:bg-[#EEF5EA] transition-all flex items-center gap-1.5 shadow-2xs">
+                <span>Trang Chủ</span>
+            </a>
+            <a href="../pricing/" class="btn-pill-primary group py-2 px-3.5 sm:px-5">
+                <span class="text-xs sm:text-sm font-semibold">Bảng Giá / Gói</span>
+                <span class="btn-circle-icon w-6 h-6">
                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
                     </svg>
                 </span>
             </a>
         </div>
-
-        <!-- Mobile Menu Toggle Button -->
-        <button id="mobileMenuBtn" class="md:hidden w-10 h-10 rounded-full flex items-center justify-center border border-[#8FAF91]/30 text-[#174C3B] focus:outline-none" aria-label="Toggle navigation">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-        </button>
     </nav>
-
-    <!-- Mobile Drawer Overlay -->
-    <div id="mobileDrawer" class="hidden fixed inset-0 z-40 bg-[#FAF7F0]/95 backdrop-blur-xl p-6 flex flex-col justify-between">
-        <div>
-            <div class="flex items-center justify-between pb-6 border-b border-[#8FAF91]/20">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-serif font-bold">TH</div>
-                    <div>
-                        <div class="font-serif font-bold text-lg text-[#174C3B]">Thu Hiền</div>
-                        <div class="text-[11px] text-[#5F6E66]">Cùng Mẹ Hiểu Con</div>
-                    </div>
-                </div>
-                <button id="mobileDrawerClose" class="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center text-[#174C3B]">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <div class="flex flex-col gap-5 pt-8 text-lg font-medium text-[#174C3B]">
-                <a href="../" class="hover:text-[#F08A4B] transition-colors">Trang Chủ</a>
-                <a href="../#toi-la-ai" class="hover:text-[#F08A4B] transition-colors">Tôi Là Ai?</a>
-                <a href="../#loi-nhan-me" class="hover:text-[#F08A4B] transition-colors">Lời Nhắn Gửi Mẹ</a>
-                <a href="../#nen-tang" class="hover:text-[#F08A4B] transition-colors">4 Nền Tảng Đồng Hành</a>
-                <a href="../#cam-nhan" class="hover:text-[#F08A4B] transition-colors">Góc Cảm Nhận Của Mẹ</a>
-                <a href="../#cam-nang" class="hover:text-[#F08A4B] transition-colors">Cẩm Nang Dành Cho Mẹ</a>
-                <a href="./" class="hover:text-[#F08A4B] transition-colors">Đăng Ký Trò Chuyện 1-1</a>
-                <a href="../admin/" class="hover:text-[#F08A4B] transition-colors text-sm text-[#5F6E66] pt-4 border-t border-[#8FAF91]/20">Trang Quản Trị</a>
-            </div>
-        </div>
-        <div class="pt-6">
-            <a href="./" class="btn-pill-peach w-full justify-center">
-                <span>Đặt Lịch Trò Chuyện 1-1</span>
-                <span class="btn-circle-icon">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
-                    </svg>
-                </span>
-            </a>
-        </div>
-    </div>
 </header>
 
 <!-- ==========================================================================
@@ -403,14 +342,14 @@
         <div class="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-[#8FAF91]/20">
             <div class="md:col-span-5 space-y-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-[#174C3B] text-[#FAF7F0] flex items-center justify-center font-serif font-bold text-lg">TH</div>
+                    <img src="../favicon.png" alt="Thu Hiền" class="w-10 h-10 rounded-full object-cover shadow-sm ring-1 ring-[#8FAF91]/40">
                     <div>
                         <span class="font-serif font-bold text-xl text-[#174C3B] block">Thu Hiền</span>
-                        <span class="text-xs font-semibold text-[#F08A4B] tracking-wider uppercase">Cùng Mẹ Hiểu Con</span>
+                        <span class="text-xs font-semibold text-[#F08A4B] tracking-wider uppercase">Dinh Dưỡng & Bữa Ăn Của Con</span>
                     </div>
                 </div>
                 <p class="text-[#5F6E66] text-sm leading-relaxed max-w-sm pt-2">
-                    Điểm tựa bình an cho người mẹ trên hành trình cùng con tự kỷ (ASD). Lắng nghe thấu cảm, hướng dẫn tương tác và kết nối yêu thương tại nhà.
+                    Đồng hành cùng cha mẹ xây dựng thói quen ăn uống phù hợp hơn cho trẻ, bằng những bước nhỏ, cá nhân hóa và có thể duy trì trong đời sống thật.
                 </p>
             </div>
 
@@ -418,10 +357,12 @@
                 <h4 class="font-serif font-bold text-[#174C3B] text-base mb-4">Nội Dung Chính</h4>
                 <ul class="space-y-2.5 text-sm text-[#5F6E66]">
                     <li><a href="../" class="hover:text-[#174C3B] transition-colors">Trang Chủ</a></li>
-                    <li><a href="../#toi-la-ai" class="hover:text-[#174C3B] transition-colors">Tôi Là Ai?</a></li>
-                    <li><a href="../#loi-nhan-me" class="hover:text-[#174C3B] transition-colors">Lời Nhắn Gửi Mẹ</a></li>
-                    <li><a href="../#nen-tang" class="hover:text-[#174C3B] transition-colors">4 Nền Tảng Đồng Hành</a></li>
-                    <li><a href="../#cam-nang" class="hover:text-[#174C3B] transition-colors">Cẩm Nang Dành Cho Mẹ</a></li>
+                    <li><a href="../#dong-cam" class="hover:text-[#174C3B] transition-colors">Khối Đồng Cảm</a></li>
+                    <li><a href="../#goc-nhin" class="hover:text-[#174C3B] transition-colors">Thay Đổi Cách Nhìn</a></li>
+                    <li><a href="../#cach-lam-viec" class="hover:text-[#174C3B] transition-colors">Phương Pháp Tiếp Cận</a></li>
+                    <li><a href="../#quy-trinh" class="hover:text-[#174C3B] transition-colors">Quy Trình Đồng Hành</a></li>
+                    <li><a href="../pricing/" class="hover:text-[#174C3B] transition-colors font-medium">Bảng Giá / Gói Dịch Vụ</a></li>
+                    <li><a href="./" class="hover:text-[#F08A4B] font-semibold transition-colors">Đặt Lịch 1:1</a></li>
                 </ul>
             </div>
 
@@ -429,15 +370,15 @@
                 <h4 class="font-serif font-bold text-[#174C3B] text-base mb-4">Kết Nối Trực Tiếp</h4>
                 <div class="space-y-3 text-sm text-[#5F6E66]">
                     <div class="font-semibold text-[#174C3B]">Ưu tiên nhắn tin qua Zalo riêng</div>
-                    <div class="text-xs text-[#8FAF91]">thuhien.cungmehieucon@gmail.com</div>
+                    <div class="text-xs text-[#8FAF91]">thuhien.dinhduong@gmail.com</div>
                 </div>
             </div>
         </div>
 
         <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#5F6E66]">
             <p>
-                © 2026 Thu Hiền – Cùng Mẹ Hiểu Con. Mọi quyền được bảo lưu.
-                <span class="block sm:inline sm:ml-2 text-[#8B9992]">*Lưu ý: Thu Hiền chia sẻ kinh nghiệm thực tế, hỗ trợ tâm lý và hướng dẫn kỹ năng tương tác mẹ-con tại nhà, không đưa ra chẩn đoán y khoa và không thay thế phác đồ điều trị của các cơ sở y tế chuyên khoa.*</span>
+                © 2026 Thu Hiền – Dinh Dưỡng & Thói Quen Ăn Uống. Mọi quyền được bảo lưu.
+                <span class="block sm:inline sm:ml-2 text-[#8B9992]">*Lưu ý: Thu Hiền hỗ trợ tư vấn dinh dưỡng và xây dựng thói quen ăn uống tại nhà, không đưa ra chẩn đoán y khoa và không thay thế phác đồ điều trị của các cơ sở y tế.*</span>
             </p>
             <div class="flex items-center gap-4 text-xs">
                 <a href="../admin/" class="hover:text-[#174C3B] opacity-70 hover:opacity-100 transition-opacity">Quản Trị Báo Cáo</a>
@@ -449,18 +390,6 @@
 <!-- Scripts -->
 <script src="../assets/js/db.js"></script>
 <script src="../assets/js/main.js"></script>
-<script>
-    const mobileBtn = document.getElementById('mobileMenuBtn');
-    const mobileClose = document.getElementById('mobileDrawerClose');
-    const mobileDrawer = document.getElementById('mobileDrawer');
-    if (mobileBtn && mobileDrawer) {
-        mobileBtn.addEventListener('click', () => mobileDrawer.classList.remove('hidden'));
-        mobileClose.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
-        mobileDrawer.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
-        });
-    }
-</script>
 
 </body>
 </html>
