@@ -1,6 +1,6 @@
 /**
- * Core JavaScript for Thu Hiền - Cùng Mẹ Hiểu Con
- * Handles: Scroll reveals, lead modals, interactive pills, AJAX form processing & toasts
+ * Core UI JavaScript for Thu Hiền - Cùng Mẹ Hiểu Con (Pure Static Edition)
+ * Handles: Scroll reveals, lead modals, interactive pills, LocalStorage persistence & toasts
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -24,11 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
         revealElements.forEach(el => el.classList.add('is-revealed'));
     }
 
-    // 2. Track Page View silently
-    try {
-        const pageName = document.body.dataset.page || 'home';
-        fetch(`/api?action=track_view&page=${encodeURIComponent(pageName)}`).catch(() => {});
-    } catch(e) {}
+    // 2. Track Page View silently via DB layer
+    if (typeof DB !== 'undefined') {
+        DB.trackView();
+    }
 
     // 3. Interactive Checkbox Pills
     document.querySelectorAll('.checkbox-pill').forEach(pill => {
@@ -75,129 +74,121 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Booking Form Submission (AJAX)
+    // 5. Booking Form Submission (Pure Client-Side + LocalStorage)
     const bookingForm = document.getElementById('consultBookingForm');
     if (bookingForm) {
-        bookingForm.addEventListener('submit', async (e) => {
+        bookingForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const submitBtn = bookingForm.querySelector('button[type="submit"]');
             const originalBtnHtml = submitBtn.innerHTML;
 
-            // Collect form data
+            // Collect form values
             const formData = new FormData(bookingForm);
-            formData.append('action', 'submit_booking');
+            const issues = [];
+            bookingForm.querySelectorAll('input[name="issues[]"]:checked').forEach(cb => {
+                issues.push(cb.value);
+            });
 
-            // Visual loading state
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `
-                <span>Đang gửi thông tin...</span>
-                <span class="btn-circle-icon">
-                    <svg class="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                    </svg>
-                </span>
-            `;
+            const bookingData = {
+                parent_name: formData.get('parent_name') || '',
+                phone: formData.get('phone') || '',
+                email: formData.get('email') || '',
+                baby_name: formData.get('baby_name') || '',
+                baby_age: formData.get('baby_age') || '',
+                baby_weight: formData.get('baby_weight') || '',
+                baby_height: formData.get('baby_height') || '',
+                issues: issues,
+                feeding_notes: formData.get('feeding_notes') || '',
+                consult_type: formData.get('consult_type') || 'Gói Đồng Hành 21 Ngày Tối Ưu Hấp Thu',
+                preferred_time: formData.get('preferred_time') || 'Buổi tối (19h30 - 21h30)'
+            };
 
-            try {
-                const response = await fetch('/api?action=submit_booking', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-
-                if (result.success) {
-                    showToast(result.message, 'success');
-                    bookingForm.reset();
-                    // Reset checked state on pills
-                    bookingForm.querySelectorAll('.checkbox-pill').forEach(p => p.classList.remove('checked'));
-                    
-                    // Show success confirmation screen inside the form card
-                    const formContainer = bookingForm.closest('.booking-card-inner');
-                    if (formContainer) {
-                        formContainer.innerHTML = `
-                            <div class="text-center py-12 px-6">
-                                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center border border-[#8FAF91]/40 shadow-sm">
-                                    <svg class="w-10 h-10 text-[#174C3B]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                </div>
-                                <span class="eyebrow-badge mb-3">TIẾP NHẬN THÀNH CÔNG #TH-${result.booking_id}</span>
-                                <h3 class="font-serif text-2xl md:text-3xl text-[#174C3B] font-bold mb-4">Cảm ơn Mẹ đã tin tưởng gửi gắm!</h3>
-                                <p class="text-[#5F6E66] max-w-lg mx-auto mb-6 text-base leading-relaxed">
-                                    Chuyên gia Dinh dưỡng Thu Hiền đã ghi nhận tình trạng của bé. Chuyên gia sẽ liên hệ trực tiếp qua số Zalo/SĐT để trao đổi và lên lịch hẹn cụ thể trong thời gian sớm nhất.
-                                </p>
-                                <div class="inline-flex flex-col sm:flex-row gap-4 justify-center items-center">
-                                    <a href="/" class="btn-pill-primary">
-                                        <span>Về Trang Chủ</span>
-                                    </a>
-                                    <a href="https://zalo.me" target="_blank" rel="noopener" class="btn-pill-peach">
-                                        <span>Nhắn Zalo Trực Tiếp</span>
-                                    </a>
-                                </div>
-                            </div>
-                        `;
-                    }
-                } else {
-                    showToast(result.message || 'Không thể gửi thông tin, vui lòng thử lại.', 'error');
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalBtnHtml;
-                }
-            } catch (err) {
-                showToast('Đã xảy ra lỗi kết nối. Vui lòng thử lại sau!', 'error');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnHtml;
+            if (!bookingData.parent_name || !bookingData.phone) {
+                showToast('Vui lòng điền họ tên mẹ và số điện thoại liên hệ.', 'error');
+                return;
             }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Đang ghi nhận thông tin...</span>';
+
+            setTimeout(() => {
+                // Save to client-side DB
+                const savedBooking = DB.addBooking(bookingData);
+
+                showToast('Đăng ký thành công! Chuyên gia Thu Hiền sẽ liên hệ qua Zalo.', 'success');
+                
+                // Show confirmation screen
+                const formContainer = bookingForm.closest('.booking-card-inner');
+                if (formContainer) {
+                    formContainer.innerHTML = `
+                        <div class="text-center py-12 px-6">
+                            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center border border-[#8FAF91]/40 shadow-sm">
+                                <svg class="w-10 h-10 text-[#174C3B]" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="eyebrow-badge mb-3">TIẾP NHẬN THÀNH CÔNG #TH-${savedBooking.id}</span>
+                            <h3 class="font-serif text-2xl md:text-3xl text-[#174C3B] font-bold mb-4">Cảm ơn Mẹ đã tin tưởng gửi gắm!</h3>
+                            <p class="text-[#5F6E66] max-w-lg mx-auto mb-6 text-base leading-relaxed">
+                                Chuyên gia Dinh dưỡng Thu Hiền đã ghi nhận tình trạng của bé. Chuyên gia sẽ liên hệ trực tiếp qua số Zalo/SĐT để trao đổi và lên lịch hẹn cụ thể trong thời gian sớm nhất.
+                            </p>
+                            <div class="inline-flex flex-col sm:flex-row gap-4 justify-center items-center">
+                                <a href="/" class="btn-pill-primary">
+                                    <span>Về Trang Chủ</span>
+                                </a>
+                                <a href="https://zalo.me" target="_blank" rel="noopener" class="btn-pill-peach">
+                                    <span>Nhắn Zalo Trực Tiếp</span>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }
+            }, 500);
         });
     }
 
-    // 6. Ebook Form Submission (AJAX)
+    // 6. Ebook Form Submission (Pure Client-Side + LocalStorage)
     const ebookForm = document.getElementById('ebookLeadForm');
     if (ebookForm) {
-        ebookForm.addEventListener('submit', async (e) => {
+        ebookForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const submitBtn = ebookForm.querySelector('button[type="submit"]');
-            const originalHtml = submitBtn.innerHTML;
-
+            
             const formData = new FormData(ebookForm);
-            formData.append('action', 'submit_ebook');
+            const leadData = {
+                parent_name: formData.get('parent_name') || '',
+                phone: formData.get('phone') || '',
+                email: formData.get('email') || '',
+                baby_age: formData.get('baby_age') || '',
+                resource_name: 'Cẩm nang 30 Thực đơn Đột phá Hấp thu'
+            };
+
+            if (!leadData.parent_name || !leadData.phone) {
+                showToast('Vui lòng nhập họ tên mẹ và số Zalo.', 'error');
+                return;
+            }
 
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<span>Đang khởi tạo tài liệu...</span>';
 
-            try {
-                const response = await fetch('/api?action=submit_ebook', {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-
-                if (result.success) {
-                    showToast(result.message, 'success');
-                    ebookForm.innerHTML = `
-                        <div class="text-center py-8">
-                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                                </svg>
-                            </div>
-                            <h4 class="font-serif text-xl font-bold text-[#174C3B] mb-2">Tài liệu đã sẵn sàng!</h4>
-                            <p class="text-[#5F6E66] text-sm mb-6">Mẹ hãy bấm nút bên dưới để tải trực tiếp file cẩm nang 30 thực đơn về điện thoại nhé.</p>
-                            <a href="data:text/plain;charset=utf-8,Cam%20Nang%20Dinh%20Duong%20Thu%20Hien%20-%20Cung%20Me%20Hieu%20Con" download="Cam-Nang-Dinh-Duong-Thu-Hien.pdf" class="btn-pill-peach">
-                                <span>Tải Cẩm Nang Ngay (PDF)</span>
-                            </a>
+            setTimeout(() => {
+                DB.addLead(leadData);
+                showToast('Cẩm nang đã sẵn sàng để tải về!', 'success');
+                ebookForm.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                            </svg>
                         </div>
-                    `;
-                } else {
-                    showToast(result.message || 'Lỗi gửi yêu cầu', 'error');
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalHtml;
-                }
-            } catch (err) {
-                showToast('Lỗi mạng, vui lòng thử lại!', 'error');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalHtml;
-            }
+                        <h4 class="font-serif text-xl font-bold text-[#174C3B] mb-2">Tài liệu đã sẵn sàng!</h4>
+                        <p class="text-[#5F6E66] text-sm mb-6">Mẹ hãy bấm nút bên dưới để tải trực tiếp file cẩm nang 30 thực đơn về điện thoại nhé.</p>
+                        <a href="data:text/plain;charset=utf-8,Cam%20Nang%20Dinh%20Duong%20Thu%20Hien%20-%20Cung%20Me%20Hieu%20Con" download="Cam-Nang-Dinh-Duong-Thu-Hien.pdf" class="btn-pill-peach">
+                            <span>Tải Cẩm Nang Ngay (PDF)</span>
+                        </a>
+                    </div>
+                `;
+            }, 400);
         });
     }
 
@@ -227,7 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         toastContainer.appendChild(toast);
         
-        // Trigger animation
         requestAnimationFrame(() => {
             toast.classList.remove('translate-y-4', 'opacity-0');
         });
