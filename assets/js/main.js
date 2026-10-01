@@ -35,7 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? 'Lời Khuyên Dinh Dưỡng GFCF' 
                     : (document.title.includes('Chuyên Gia') 
                         ? 'Chuyên Gia Bùi Thu Hiền' 
-                        : 'Trang Chủ')));
+                        : (document.title.includes('Cộng Đồng') || document.title.includes('Kênh') || document.title.includes('Social')
+                            ? 'Kênh & Cộng Đồng'
+                            : 'Trang Chủ'))));
         DB.trackView(curPage);
         // Periodic heartbeat every 12 seconds to keep session alive
         setInterval(() => {

@@ -133,10 +133,13 @@ const DB = (() => {
             zalo_link: 'https://zalo.me/0988776655',
             zalo_number: '0988776655',
             facebook_url: 'https://www.facebook.com/thuhien.cungmehieucon',
-            tiktok_url: 'https://www.tiktok.com/@thuhien_cungmehieucon',
-            youtube_url: 'https://www.youtube.com/@thuhien_cungmehieucon',
+            tiktok_url: 'https://www.tiktok.com/@thuhien.cungmehieucon',
+            youtube_url: 'https://www.youtube.com/@thuhien.cungmehieucon',
             email_contact: 'thuhien.cungmehieucon@gmail.com',
-            support_hours: '08:00 - 21:30 (Thứ 2 - Chủ Nhật)'
+            support_hours: '08:00 - 21:30 (Thứ 2 - Chủ Nhật)',
+            community_facebook_group: 'https://hieucontugoc.online/facebook-group',
+            community_website: 'https://hieucontugoc.online/',
+            community_zalo_group: 'https://hieucontugoc.online/zalo-group'
         },
         integrations: {
             google_analytics_id: '',

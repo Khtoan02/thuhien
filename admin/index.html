@@ -1011,9 +1011,28 @@
                             </div>
                         </div>
 
+                        <!-- Cộng Đồng Hiểu Con Từ Gốc Fields -->
+                        <div class="pt-3 border-t border-zinc-100 space-y-3">
+                            <span class="text-xs font-bold text-brand-600 block uppercase tracking-wide">✦ CỘNG ĐỒNG "HIỂU CON TỪ GỐC"</span>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Link Group Facebook Hiểu Con Từ Gốc</label>
+                                <input type="url" id="communityFbGroup" placeholder="https://hieucontugoc.online/facebook-group" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-semibold text-zinc-700">Link Website Cộng Đồng</label>
+                                    <input type="url" id="communityWebsite" placeholder="https://hieucontugoc.online/" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-semibold text-zinc-700">Link Nhóm Zalo Cộng Đồng</label>
+                                    <input type="url" id="communityZaloGroup" placeholder="https://hieucontugoc.online/zalo-group" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="pt-2">
                             <button onclick="saveSocialSettings()" class="inline-flex h-9 w-full items-center justify-center rounded-md bg-brand-500 px-4 text-xs font-medium text-white shadow-xs hover:bg-brand-600 transition-colors">
-                                Cập Nhật Toàn Bộ Kênh Social
+                                Cập Nhật Toàn Bộ Kênh Social & Cộng Đồng
                             </button>
                         </div>
                     </div>
@@ -2684,6 +2703,9 @@
         if (document.getElementById('socialYoutubeUrl')) document.getElementById('socialYoutubeUrl').value = soc.youtube_url || '';
         if (document.getElementById('socialEmailDisplay')) document.getElementById('socialEmailDisplay').value = soc.contact_email || '';
         if (document.getElementById('socialSupportHours')) document.getElementById('socialSupportHours').value = soc.support_hours || '';
+        if (document.getElementById('communityFbGroup')) document.getElementById('communityFbGroup').value = soc.community_facebook_group || 'https://hieucontugoc.online/facebook-group';
+        if (document.getElementById('communityWebsite')) document.getElementById('communityWebsite').value = soc.community_website || 'https://hieucontugoc.online/';
+        if (document.getElementById('communityZaloGroup')) document.getElementById('communityZaloGroup').value = soc.community_zalo_group || 'https://hieucontugoc.online/zalo-group';
 
         updateSocialLivePreview();
     };
@@ -2724,12 +2746,15 @@
             tiktok_url: document.getElementById('socialTiktokUrl').value.trim(),
             youtube_url: document.getElementById('socialYoutubeUrl').value.trim(),
             contact_email: document.getElementById('socialEmailDisplay').value.trim(),
-            support_hours: document.getElementById('socialSupportHours').value.trim()
+            support_hours: document.getElementById('socialSupportHours').value.trim(),
+            community_facebook_group: (document.getElementById('communityFbGroup') && document.getElementById('communityFbGroup').value.trim()) || 'https://hieucontugoc.online/facebook-group',
+            community_website: (document.getElementById('communityWebsite') && document.getElementById('communityWebsite').value.trim()) || 'https://hieucontugoc.online/',
+            community_zalo_group: (document.getElementById('communityZaloGroup') && document.getElementById('communityZaloGroup').value.trim()) || 'https://hieucontugoc.online/zalo-group'
         };
 
         DB.saveSettings({ social: newSocial });
         if (typeof DB.applySocialLinks === 'function') DB.applySocialLinks();
-        alert('Đã lưu cấu hình kênh Social và liên hệ thành công!');
+        alert('Đã lưu cấu hình kênh Social và Cộng Đồng Hiểu Con Từ Gốc thành công!');
     };
 
     // 11.4 INTEGRATIONS (3RD PARTY SCRIPTS)
