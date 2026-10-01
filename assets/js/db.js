@@ -361,6 +361,22 @@ const DB = (() => {
         }
         if (!localStorage.getItem(STORAGE_KEY_SETTINGS)) {
             localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
+        } else {
+            try {
+                const s = JSON.parse(localStorage.getItem(STORAGE_KEY_SETTINGS));
+                let changed = false;
+                if (s?.social?.youtube_url && s.social.youtube_url.includes('thuhien_cungmehieucon')) {
+                    s.social.youtube_url = 'https://www.youtube.com/@thuhien.cungmehieucon';
+                    changed = true;
+                }
+                if (s?.social?.tiktok_url && s.social.tiktok_url.includes('thuhien_cungmehieucon')) {
+                    s.social.tiktok_url = 'https://www.tiktok.com/@thuhien.cungmehieucon';
+                    changed = true;
+                }
+                if (changed) {
+                    localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(s));
+                }
+            } catch (e) {}
         }
         if (!localStorage.getItem(STORAGE_KEY_ADMIN_CRED)) {
             localStorage.setItem(STORAGE_KEY_ADMIN_CRED, JSON.stringify(DEFAULT_ADMIN_CRED));
@@ -765,10 +781,17 @@ const DB = (() => {
         getSettings() {
             try {
                 const s = JSON.parse(localStorage.getItem(STORAGE_KEY_SETTINGS));
+                const soc = { ...DEFAULT_SETTINGS.social, ...(s?.social || {}) };
+                if (soc.youtube_url && soc.youtube_url.includes('thuhien_cungmehieucon')) {
+                    soc.youtube_url = 'https://www.youtube.com/@thuhien.cungmehieucon';
+                }
+                if (soc.tiktok_url && soc.tiktok_url.includes('thuhien_cungmehieucon')) {
+                    soc.tiktok_url = 'https://www.tiktok.com/@thuhien.cungmehieucon';
+                }
                 return {
                     email: { ...DEFAULT_SETTINGS.email, ...(s?.email || {}) },
                     resources: s?.resources || DEFAULT_SETTINGS.resources,
-                    social: { ...DEFAULT_SETTINGS.social, ...(s?.social || {}) },
+                    social: soc,
                     integrations: { ...DEFAULT_SETTINGS.integrations, ...(s?.integrations || {}) },
                     security: { ...DEFAULT_SETTINGS.security, ...(s?.security || {}) }
                 };
