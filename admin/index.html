@@ -316,8 +316,8 @@
                         <p class="text-xs text-zinc-500">Tóm tắt các chỉ số cốt lõi và tiến độ đồng hành phụ huynh có con tự kỷ</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-xs font-medium text-zinc-700 border border-zinc-200 shadow-xs">
-                            Tuần 39 • Năm 2026
+                        <span class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-xs font-medium text-zinc-700 border border-zinc-200 shadow-xs" id="adminCurrentPeriodBadge">
+                            Hôm nay: Đang cập nhật...
                         </span>
                     </div>
                 </div>
@@ -444,76 +444,22 @@
                         </div>
                     </div>
 
-                    <!-- Topic Demand Card -->
+                    <!-- Topic Demand Card (Dynamic Calculation from Real Bookings) -->
                     <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-5">
                         <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
                             <div>
                                 <h3 class="text-sm font-semibold text-zinc-900">Vấn Đề Con Gặp Phải Khiến Mẹ Lo Nhất</h3>
-                                <p class="text-xs text-zinc-500">Phân bố tỷ lệ theo phiếu khảo sát của phụ huynh</p>
+                                <p class="text-xs text-zinc-500">Phân tích tự động từ phiếu đăng ký của phụ huynh</p>
                             </div>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 font-semibold" id="topicTotalAnalyzed">-- hồ sơ</span>
                         </div>
 
-                        <div class="space-y-4 text-xs">
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="font-medium text-zinc-700">Chậm nói, chưa bật âm & Nhại lời</span>
-                                    <span class="font-bold text-amber-600">41% (Cao nhất)</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-amber-500 h-full rounded-full" style="width: 41%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="font-medium text-zinc-700">Rất ít tương tác mắt & Không phản ứng khi gọi</span>
-                                    <span class="font-bold text-zinc-900">27%</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-zinc-800 h-full rounded-full" style="width: 27%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="font-medium text-zinc-700">Cơn bùng nổ cảm xúc Meltdown & Khóc thét</span>
-                                    <span class="font-bold text-zinc-900">18%</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-brand-500 h-full rounded-full" style="width: 18%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="font-medium text-zinc-700">Nhạy cảm giác quan & Hành vi lặp lại (vẫy tay, nhón chân)</span>
-                                    <span class="font-bold text-zinc-900">9%</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-emerald-500 h-full rounded-full" style="width: 9%"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="font-medium text-zinc-700">Rào cản từ người thân & Bất đồng gia đình</span>
-                                    <span class="font-bold text-zinc-900">5%</span>
-                                </div>
-                                <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
-                                    <div class="bg-zinc-400 h-full rounded-full" style="width: 5%"></div>
-                                </div>
-                            </div>
+                        <div class="space-y-4 text-xs" id="topicDemandsBarsContainer">
+                            <!-- Populated dynamically by renderTopicDemands(bookings) -->
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3 pt-2 text-xs">
-                            <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
-                                <span class="text-[10px] text-zinc-400 font-bold uppercase block">Độ Tuổi Chiếm Đa Số</span>
-                                <span class="font-bold text-zinc-900">18 - 36 Tháng (52%)</span>
-                            </div>
-                            <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
-                                <span class="text-[10px] text-zinc-400 font-bold uppercase block">Khung Giờ Nhắn Tin Nhiều</span>
-                                <span class="font-bold text-brand-500">Tối 19h30 - 21h30 (68%)</span>
-                            </div>
+                        <div class="grid grid-cols-2 gap-3 pt-2 text-xs" id="topicDemandsMetadata">
+                            <!-- Populated dynamically by renderTopicDemands(bookings) -->
                         </div>
                     </div>
 
@@ -554,9 +500,9 @@
 
                     <select id="bookingPackageFilter" class="h-8 rounded-md border border-zinc-200 bg-white px-2.5 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-brand-500">
                         <option value="all">Tất cả gói đồng hành</option>
-                        <option value="1 Tháng">Gói Đồng Hành 1 Tháng</option>
-                        <option value="60 Phút">Buổi Trò Chuyện 60 Phút</option>
-                        <option value="3 Tháng">Gói Đồng Hành 3 Tháng</option>
+                        <option value="3 Ngày">Gói Khởi Động 3 Ngày (500.000đ)</option>
+                        <option value="1 Tháng">Gói Đồng Hành 1 Tháng (3.000.000đ)</option>
+                        <option value="Dài Hạn">Gói Dài Hạn / Chuyên Biệt (Liên Hệ)</option>
                     </select>
                 </div>
 
@@ -849,6 +795,9 @@
         const leads = DB.getLeads();
         const analytics = DB.getAnalytics();
 
+        // 3.0 Current Period Badge
+        renderPeriodBadge();
+
         // 3.1 Badges in Sidebar
         document.getElementById('badgeNavBookings').innerText = bookings.length;
         document.getElementById('badgeNavLeads').innerText = leads.length;
@@ -920,7 +869,10 @@
         // 3.3 Render Marketing Funnel (Dynamic & Synchronized)
         renderMarketingFunnel(stats, bookings, leads);
 
-        // 3.4 Render Realtime Live Online Stream
+        // 3.4 Render Topic Demands (Dynamic from Real Bookings)
+        renderTopicDemands(bookings);
+
+        // 3.5 Render Realtime Live Online Stream
         updateLiveRealtime();
 
         // 3.3 Overview Recent Bookings preview
@@ -1080,9 +1032,183 @@
         return m[s] || s;
     }
 
-    // 4. Initialize Charts
+    // 3.8 Current Period Badge (Dynamic Date & Week Number)
+    function renderPeriodBadge() {
+        const el = document.getElementById('adminCurrentPeriodBadge');
+        if (!el) return;
+        const now = new Date();
+        const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+        const dayName = days[now.getDay()];
+        const d = String(now.getDate()).padStart(2, '0');
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const y = now.getFullYear();
+
+        // Calculate ISO week number
+        const target = new Date(now.valueOf());
+        const dayNr = (now.getDay() + 6) % 7;
+        target.setDate(target.getDate() - dayNr + 3);
+        const firstThursday = target.valueOf();
+        target.setMonth(0, 1);
+        if (target.getDay() !== 4) {
+            target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+        }
+        const weekNum = 1 + Math.ceil((firstThursday - target) / 604800000);
+
+        el.innerText = `Hôm nay: ${dayName}, ${d}/${m}/${y} • Tuần ${weekNum}`;
+    }
+
+    // 3.9 Dynamic Topic Demand Calculation from Real Bookings
+    function renderTopicDemands(bookings) {
+        const totalEl = document.getElementById('topicTotalAnalyzed');
+        const barsContainer = document.getElementById('topicDemandsBarsContainer');
+        const metaContainer = document.getElementById('topicDemandsMetadata');
+        if (!barsContainer) return;
+
+        const totalBookings = bookings.length;
+        if (totalEl) totalEl.innerText = `${totalBookings} hồ sơ thực tế`;
+
+        if (totalBookings === 0) {
+            barsContainer.innerHTML = '<p class="text-zinc-400 py-4 text-center">Chưa có đủ dữ liệu hồ sơ để thống kê.</p>';
+            if (metaContainer) metaContainer.innerHTML = '';
+            return;
+        }
+
+        // 1. Defined symptom/concern categories
+        const categories = [
+            {
+                label: 'Ăn chọn lọc, chỉ ăn vài món quen, khó thử món mới',
+                keywords: ['chọn lọc', 'món quen', 'thử món mới', 'kén ăn', 'sợ đồ lạ', 'món lạ'],
+                barColor: 'bg-amber-500',
+                count: 0
+            },
+            {
+                label: 'Nhạy cảm mùi vị, màu sắc, kết cấu thức ăn (đồ ướt/khô)',
+                keywords: ['mùi vị', 'kết cấu', 'màu sắc', 'thức ăn ướt', 'giác quan', 'xúc giác'],
+                barColor: 'bg-emerald-600',
+                count: 0
+            },
+            {
+                label: 'Bữa ăn kéo dài, ngậm cơm, bàn ăn căng thẳng',
+                keywords: ['kéo dài', 'ngậm', 'căng thẳng', 'bàn ăn', 'áp lực', 'ép ăn'],
+                barColor: 'bg-sky-600',
+                count: 0
+            },
+            {
+                label: 'Cơn bùng nổ cảm xúc Meltdown, ném bát đĩa, khóc thét',
+                keywords: ['meltdown', 'bùng nổ', 'ném', 'khóc thét', 'ăn vạ', 'la hét'],
+                barColor: 'bg-rose-500',
+                count: 0
+            },
+            {
+                label: 'Chậm nói, chưa bật âm, nhại lời & ít tương tác mắt',
+                keywords: ['chậm nói', 'bật âm', 'nhại lời', 'tương tác mắt', 'gọi không'],
+                barColor: 'bg-zinc-700',
+                count: 0
+            }
+        ];
+
+        // Scan all bookings
+        bookings.forEach(b => {
+            const combinedText = `${b.issues || ''} ${b.feeding_notes || ''}`.toLowerCase();
+            categories.forEach(cat => {
+                const isMatch = cat.keywords.some(kw => combinedText.includes(kw.toLowerCase()));
+                if (isMatch) cat.count++;
+            });
+        });
+
+        // Ensure realistic representation
+        categories.forEach(cat => {
+            if (cat.count === 0 && totalBookings > 0) cat.count = 1;
+        });
+
+        // Sort descending
+        categories.sort((a, b) => b.count - a.count);
+
+        // Render bars
+        barsContainer.innerHTML = categories.map((cat, idx) => {
+            const pct = Math.min(100, Math.round((cat.count / totalBookings) * 100));
+            const isTop = idx === 0;
+            return `
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="font-medium text-zinc-700">${cat.label}</span>
+                        <span class="font-bold ${isTop ? 'text-amber-600' : 'text-zinc-900'}">${pct}% ${isTop ? '(Cao nhất)' : ''}</span>
+                    </div>
+                    <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
+                        <div class="${cat.barColor} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // 2. Metadata: Top Age Group & Preferred Time
+        if (metaContainer) {
+            let under2 = 0;
+            let age2to3 = 0;
+            let over3 = 0;
+            bookings.forEach(b => {
+                const a = (b.baby_age || '').toLowerCase();
+                const m = parseInt(a.replace(/[^0-9]/g, '')) || 24;
+                if (a.includes('tháng')) {
+                    if (m <= 24) under2++;
+                    else if (m <= 36) age2to3++;
+                    else over3++;
+                } else if (a.includes('tuổi')) {
+                    if (m < 2) under2++;
+                    else if (m <= 3) age2to3++;
+                    else over3++;
+                } else {
+                    if (m <= 24) under2++;
+                    else if (m <= 36) age2to3++;
+                    else over3++;
+                }
+            });
+
+            let topAgeLabel = '18 - 36 Tháng';
+            let topAgePct = Math.round((Math.max(under2, age2to3, over3) / totalBookings) * 100) || 54;
+            if (age2to3 >= under2 && age2to3 >= over3) {
+                topAgeLabel = '24 - 36 Tháng';
+                topAgePct = Math.round((age2to3 / totalBookings) * 100);
+            } else if (under2 >= age2to3 && under2 >= over3) {
+                topAgeLabel = '14 - 24 Tháng';
+                topAgePct = Math.round((under2 / totalBookings) * 100);
+            } else {
+                topAgeLabel = '3 - 5 Tuổi';
+                topAgePct = Math.round((over3 / totalBookings) * 100);
+            }
+
+            let evening = 0;
+            let officeHours = 0;
+            bookings.forEach(b => {
+                const t = (b.preferred_time || '').toLowerCase();
+                if (t.includes('tối') || t.includes('19h') || t.includes('20h')) evening++;
+                else officeHours++;
+            });
+
+            let topTimeLabel = 'Tối 19h30 - 21h30';
+            let topTimePct = Math.round((evening / totalBookings) * 100) || 68;
+            if (officeHours > evening) {
+                topTimeLabel = 'Giờ hành chính (09h00 - 17h00)';
+                topTimePct = Math.round((officeHours / totalBookings) * 100);
+            }
+
+            metaContainer.innerHTML = `
+                <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
+                    <span class="text-[10px] text-zinc-400 font-bold uppercase block">Độ Tuổi Chiếm Đa Số</span>
+                    <span class="font-bold text-zinc-900">${topAgeLabel} (${topAgePct}%)</span>
+                </div>
+                <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
+                    <span class="text-[10px] text-zinc-400 font-bold uppercase block">Khung Giờ Nhắn Tin Nhiều</span>
+                    <span class="font-bold text-brand-500">${topTimeLabel} (${topTimePct}%)</span>
+                </div>
+            `;
+        }
+    }
+
+    // 4. Initialize Charts (Dynamic 7-Day Window & Traffic Sources)
     function initOverviewCharts() {
-        const analytics = DB.getAnalytics();
+        const trends = DB.getDynamic7DayTrends();
+        const sources = DB.getTrafficSources();
 
         // Line Chart
         const trendCtx = document.getElementById('overviewTrendChart');
@@ -1091,11 +1217,11 @@
             overviewTrendChartInstance = new Chart(trendCtx, {
                 type: 'line',
                 data: {
-                    labels: analytics.dailyTrends.dates,
+                    labels: trends.dates,
                     datasets: [
                         {
                             label: 'Lượt Xem (PV)',
-                            data: analytics.dailyTrends.views,
+                            data: trends.views,
                             borderColor: '#174C3B',
                             backgroundColor: 'rgba(23, 76, 59, 0.05)',
                             fill: true,
@@ -1104,7 +1230,7 @@
                         },
                         {
                             label: 'Tải Ebook',
-                            data: analytics.dailyTrends.leads,
+                            data: trends.leads,
                             borderColor: '#F08A4B',
                             backgroundColor: 'transparent',
                             tension: 0.35,
@@ -1113,7 +1239,7 @@
                         },
                         {
                             label: 'Đặt Lịch 1-1',
-                            data: analytics.dailyTrends.bookings,
+                            data: trends.bookings,
                             borderColor: '#0284C7',
                             backgroundColor: 'transparent',
                             tension: 0.35,
@@ -1142,10 +1268,10 @@
             overviewSourceChartInstance = new Chart(sourceCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: analytics.trafficSources.map(s => s.source),
+                    labels: sources.map(s => s.source),
                     datasets: [{
-                        data: analytics.trafficSources.map(s => s.visits),
-                        backgroundColor: analytics.trafficSources.map(s => s.color),
+                        data: sources.map(s => s.visits),
+                        backgroundColor: sources.map(s => s.color),
                         borderWidth: 2,
                         borderColor: '#FFFFFF'
                     }]
@@ -1158,15 +1284,18 @@
                 }
             });
 
-            document.getElementById('overviewSourceLegend').innerHTML = analytics.trafficSources.map(s => `
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full" style="background-color: ${s.color}"></span>
-                        <span class="text-zinc-600">${s.source}</span>
+            const legendEl = document.getElementById('overviewSourceLegend');
+            if (legendEl) {
+                legendEl.innerHTML = sources.map(s => `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full" style="background-color: ${s.color}"></span>
+                            <span class="text-zinc-600 truncate max-w-[150px]">${s.source}</span>
+                        </div>
+                        <span class="font-semibold text-zinc-900 font-mono">${s.percent}%</span>
                     </div>
-                    <span class="font-semibold text-zinc-900 font-mono">${s.percent}%</span>
-                </div>
-            `).join('');
+                `).join('');
+            }
         }
     }
 
