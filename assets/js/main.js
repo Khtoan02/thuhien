@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Track Page View & Realtime Live Heartbeat via DB layer
     if (typeof DB !== 'undefined') {
-        const curPage = document.title.includes('Đặt Lịch') ? 'Đặt Lịch Trò Chuyện 1-1' : (document.title.includes('Bảng Giá') ? 'Bảng Giá & Gói Dịch Vụ' : 'Trang Chủ');
+        const curPage = document.title.includes('Đặt Lịch') ? 'Đặt Lịch Trò Chuyện 1-1' : (document.title.includes('Bảng Giá') ? 'Bảng Giá & Gói Dịch Vụ' : (document.title.includes('Dinh Dưỡng') ? 'Lời Khuyên Dinh Dưỡng GFCF' : 'Trang Chủ'));
         DB.trackView(curPage);
         // Periodic heartbeat every 12 seconds to keep session alive
         setInterval(() => {
