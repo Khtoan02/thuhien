@@ -1215,6 +1215,7 @@ const DB = (() => {
 
             // 5. Vercel Web Analytics
             if (integ.vercel_analytics_enabled && !document.getElementById('vercel-insights-thuhien')) {
+                window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
                 const s = document.createElement('script');
                 s.id = 'vercel-insights-thuhien';
                 s.defer = true;
