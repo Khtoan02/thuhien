@@ -132,9 +132,9 @@ const DB = (() => {
             hotline_display: '0988 776 655',
             zalo_link: 'https://zalo.me/0988776655',
             zalo_number: '0988776655',
-            facebook_url: 'https://www.facebook.com/thuhien.cungmehieucon',
-            tiktok_url: 'https://www.tiktok.com/@thuhien.cungmehieucon',
-            youtube_url: 'https://www.youtube.com/@thuhien.cungmehieucon',
+            facebook_url: 'https://www.facebook.com/thuhien.cungmehieucon?sub_confirmation=1',
+            tiktok_url: 'https://www.tiktok.com/@thuhien.cungmehieucon?is_from_webapp=1&sender_device=pc&sub_confirmation=1',
+            youtube_url: 'https://www.youtube.com/@thuhien.cungmehieucon?sub_confirmation=1',
             email_contact: 'thuhien.cungmehieucon@gmail.com',
             support_hours: '08:00 - 21:30 (Thứ 2 - Chủ Nhật)',
             community_facebook_group: 'https://hieucontugoc.online/facebook-group',
@@ -1295,22 +1295,31 @@ const DB = (() => {
 
             // Update Facebook links
             if (soc.facebook_url) {
+                const fbUrl = soc.facebook_url.includes('sub_confirmation=1') 
+                    ? soc.facebook_url 
+                    : `${soc.facebook_url}${soc.facebook_url.includes('?') ? '&' : '?'}sub_confirmation=1`;
                 document.querySelectorAll('a[href*="facebook.com"]').forEach(a => {
-                    a.href = soc.facebook_url;
+                    a.href = fbUrl;
                 });
             }
 
             // Update TikTok links
             if (soc.tiktok_url) {
+                const ttUrl = soc.tiktok_url.includes('sub_confirmation=1')
+                    ? soc.tiktok_url
+                    : `${soc.tiktok_url}${soc.tiktok_url.includes('?') ? '&' : '?'}is_from_webapp=1&sender_device=pc&sub_confirmation=1`;
                 document.querySelectorAll('a[href*="tiktok.com"]').forEach(a => {
-                    a.href = soc.tiktok_url;
+                    a.href = ttUrl;
                 });
             }
 
             // Update YouTube links
             if (soc.youtube_url) {
+                const ytUrl = soc.youtube_url.includes('sub_confirmation=1') 
+                    ? soc.youtube_url 
+                    : `${soc.youtube_url}${soc.youtube_url.includes('?') ? '&' : '?'}sub_confirmation=1`;
                 document.querySelectorAll('a[href*="youtube.com"]').forEach(a => {
-                    a.href = soc.youtube_url;
+                    a.href = ytUrl;
                 });
             }
 
