@@ -45,12 +45,16 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body, button, input, select, textarea {
+body {
   font-family: 'Alata', system-ui, -apple-system, sans-serif;
   min-height: 100dvh;
   line-height: 1.65;
   background-color: var(--color-cream-bg);
   overflow-x: hidden;
+}
+
+button, input, select, textarea {
+  font-family: 'Alata', system-ui, -apple-system, sans-serif;
 }
 
 /* Typography Overrides */
