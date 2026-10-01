@@ -27,12 +27,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Track Page View & Realtime Live Heartbeat via DB layer
     if (typeof DB !== 'undefined') {
-        const curPage = document.title.includes('Đặt Lịch') ? 'Đặt Lịch Trò Chuyện 1-1' : 'Trang Chủ';
+        const curPage = document.title.includes('Đặt Lịch') ? 'Đặt Lịch Trò Chuyện 1-1' : (document.title.includes('Bảng Giá') ? 'Bảng Giá & Gói Dịch Vụ' : 'Trang Chủ');
         DB.trackView(curPage);
         // Periodic heartbeat every 12 seconds to keep session alive
         setInterval(() => {
             DB.heartbeat(curPage);
         }, 12000);
+
+        // Apply dynamic third-party integrations and social links
+        try {
+            if (typeof DB.applyIntegrations === 'function') DB.applyIntegrations();
+            if (typeof DB.applySocialLinks === 'function') DB.applySocialLinks();
+        } catch (e) {
+            console.warn('Error applying integrations/social:', e);
+        }
     }
 
     // 3. Interactive Checkbox Pills
@@ -120,6 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Save to client-side DB
                 const savedBooking = DB.addBooking(bookingData);
 
+                // Dispatch email notification via configured provider
+                try {
+                    if (typeof DB.sendNotificationEmail === 'function') {
+                        DB.sendNotificationEmail('booking', savedBooking);
+                    }
+                } catch (err) {
+                    console.warn('Email dispatch notice:', err);
+                }
+
                 showToast('Đăng ký thành công! Thu Hiền sẽ liên hệ riêng qua Zalo cùng Mẹ.', 'success');
                 
                 // Show confirmation screen
@@ -159,13 +176,19 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const submitBtn = ebookForm.querySelector('button[type="submit"]');
             
+            // Get active resource from settings
+            const activeRes = (typeof DB !== 'undefined' && typeof DB.getActiveResource === 'function') ? DB.getActiveResource() : null;
+            const resTitle = activeRes && activeRes.title ? activeRes.title : 'Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà';
+            const fileUrl = activeRes && activeRes.file_url ? activeRes.file_url : 'data:text/plain;charset=utf-8,Cam%20Nang%20Nhung%20Buoc%20Dau%20Dong%20Hanh%20Cung%20Con%20Tu%20Ky%20Tai%20Nha%20-%20Thu%20Hien';
+            const btnLabel = activeRes && activeRes.button_text ? activeRes.button_text : 'Tải Cẩm Nang Ngay (PDF)';
+
             const formData = new FormData(ebookForm);
             const leadData = {
                 parent_name: formData.get('parent_name') || '',
                 phone: formData.get('phone') || '',
                 email: formData.get('email') || '',
                 baby_age: formData.get('baby_age') || '',
-                resource_name: 'Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà'
+                resource_name: resTitle
             };
 
             if (!leadData.parent_name || !leadData.phone) {
@@ -178,7 +201,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
                 DB.addLead(leadData);
+
+                // Dispatch email notification via configured provider
+                try {
+                    if (typeof DB.sendNotificationEmail === 'function') {
+                        DB.sendNotificationEmail('lead', leadData);
+                    }
+                } catch (err) {
+                    console.warn('Email dispatch notice:', err);
+                }
+
                 showToast('Cẩm nang đã sẵn sàng để tải về!', 'success');
+                const isExternal = fileUrl.startsWith('http://') || fileUrl.startsWith('https://');
                 ebookForm.innerHTML = `
                     <div class="text-center py-8">
                         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center">
@@ -187,9 +221,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             </svg>
                         </div>
                         <h4 class="font-serif text-xl font-bold text-[#174C3B] mb-2">Tài liệu đã sẵn sàng!</h4>
-                        <p class="text-[#5F6E66] text-sm mb-6">Mẹ hãy bấm nút bên dưới để tải trực tiếp file cẩm nang về điện thoại nhé.</p>
-                        <a href="data:text/plain;charset=utf-8,Cam%20Nang%20Nhung%20Buoc%20Dau%20Dong%20Hanh%20Cung%20Con%20Tu%20Ky%20Tai%20Nha%20-%20Thu%20Hien" download="Cam-Nang-Dong-Hanh-Con-Tu-Ky-Thu-Hien.pdf" class="btn-pill-peach">
-                            <span>Tải Cẩm Nang Ngay (PDF)</span>
+                        <p class="text-[#5F6E66] text-sm mb-6">Mẹ hãy bấm nút bên dưới để mở hoặc tải tài liệu trực tiếp về thiết bị nhé.</p>
+                        <a href="${fileUrl}" ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : 'download="Cam-Nang-Dong-Hanh-Con-Tu-Ky-Thu-Hien.pdf"'} class="btn-pill-peach">
+                            <span>${btnLabel}</span>
                         </a>
                     </div>
                 `;

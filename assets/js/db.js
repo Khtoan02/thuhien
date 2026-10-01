@@ -9,6 +9,152 @@ const DB = (() => {
     const STORAGE_KEY_LEADS = 'thuhien_leads_v6';
     const STORAGE_KEY_ANALYTICS = 'thuhien_analytics_v6';
     const STORAGE_KEY_HEARTBEATS = 'thuhien_live_heartbeats_v6';
+    const STORAGE_KEY_SETTINGS = 'thuhien_settings_v1';
+    const STORAGE_KEY_EMAIL_LOGS = 'thuhien_email_logs_v1';
+    const STORAGE_KEY_SECURITY_LOGS = 'thuhien_security_logs_v1';
+    const STORAGE_KEY_ADMIN_CRED = 'thuhien_admin_cred_v1';
+    const STORAGE_KEY_LOGIN_ATTEMPTS = 'thuhien_login_attempts_v1';
+
+    // Synchronous standard SHA-256 algorithm (zero-dependency, browser & node compatible)
+    function sha256(ascii) {
+        function rightRotate(value, amount) {
+            return (value >>> amount) | (value << (32 - amount));
+        }
+        var mathPow = Math.pow;
+        var maxWord = mathPow(2, 32);
+        var lengthProperty = "length";
+        var i, j;
+        var result = "";
+        var words = [];
+        var asciiBitLength = ascii[lengthProperty] * 8;
+        var hash = [];
+        var k = [];
+        var primeCounter = 0;
+        var isComposite = {};
+        for (var candidate = 2; primeCounter < 64; candidate++) {
+            if (!isComposite[candidate]) {
+                for (i = 0; i < 313; i += candidate) {
+                    isComposite[i] = candidate;
+                }
+                hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+                k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+            }
+        }
+        ascii += "\x80";
+        while (ascii[lengthProperty] % 64 - 56) ascii += "\x00";
+        for (i = 0; i < ascii[lengthProperty]; i++) {
+            j = ascii.charCodeAt(i);
+            if (j >> 8) return;
+            words[i >> 2] |= j << ((3 - i) % 4) * 8;
+        }
+        words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
+        words[words[lengthProperty]] = (asciiBitLength);
+        for (j = 0; j < words[lengthProperty];) {
+            var w = words.slice(j, j += 16);
+            var oldHash = hash;
+            hash = hash.slice(0, 8);
+            for (i = 0; i < 64; i++) {
+                var i2 = i + j;
+                var w15 = w[i - 15], w2 = w[i - 2];
+                var a = hash[0], e = hash[4];
+                var temp1 = hash[7]
+                    + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+                    + ((e & hash[5]) ^ ((~e) & hash[6]))
+                    + k[i]
+                    + (w[i] = (i < 16) ? w[i] : (
+                            w[i - 16]
+                            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+                            + w[i - 7]
+                            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+                        ) | 0
+                    );
+                var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+                    + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+                hash = [(temp1 + temp2) | 0].concat(hash);
+                hash[4] = (hash[4] + temp1) | 0;
+            }
+            for (i = 0; i < 8; i++) {
+                hash[i] = (hash[i] + oldHash[i]) | 0;
+            }
+        }
+        for (i = 0; i < 8; i++) {
+            for (i2 = 3; i2 >= 0; i2--) {
+                var c = (hash[i] >> (i2 * 8)) & 255;
+                result += ((c < 16 ? "0" : "") + c.toString(16));
+            }
+        }
+        return result;
+    }
+
+    const DEFAULT_ADMIN_CRED = {
+        username: 'admin',
+        salt: 'thuhien_salt_secure_2026',
+        hash: '7880e57d1f3c390da434aa0b239ed21cf99946f056212a404079509cb3d5b42f' // thuhien2026
+    };
+
+    const DEFAULT_SETTINGS = {
+        email: {
+            provider: 'webhook', // 'webhook' | 'emailjs' | 'formspree' | 'resend'
+            admin_notify_email: 'thuhien.cungmehieucon@gmail.com',
+            notify_on_booking: true,
+            notify_on_lead: true,
+            emailjs_service_id: '',
+            emailjs_template_booking: '',
+            emailjs_template_lead: '',
+            emailjs_public_key: '',
+            webhook_url: '',
+            auto_reply_lead: true,
+            auto_reply_lead_subject: 'Cẩm Nang Đồng Hành Cùng Con Tại Nhà - Thu Hiền gửi Mẹ',
+            auto_reply_lead_body: 'Chào Mẹ {parent_name},\n\nCảm ơn Mẹ đã quan tâm đến tài liệu "{resource_name}".\nMẹ có thể tải trực tiếp cẩm nang tại đường dẫn sau:\n{resource_url}\n\nChúc Mẹ và bé {baby_age} luôn kiên nhẫn và bình an trên hành trình này!\n\nThương mến,\nThu Hiền - Cùng Mẹ Hiểu Con\nHotline/Zalo: {hotline}'
+        },
+        resources: [
+            {
+                id: 'res_1',
+                title: 'Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà',
+                description: 'Ebook đúc kết từ 5 năm đồng hành thực tế, từng bước giúp mẹ hạ nhiệt lo âu và kết nối với con',
+                file_url: 'https://drive.google.com/file/d/1DemoDriveFileCamNangThuHien2026/view?usp=sharing',
+                button_text: 'Tải Cẩm Nang Ngay (Miễn Phí)',
+                badge: 'Bản Cập Nhật 2026',
+                active: true
+            },
+            {
+                id: 'res_2',
+                title: '30 Thực Đơn Trực Quan Cho Trẻ Kén Ăn & Nhạy Cảm Mùi Vị',
+                description: 'Thực đơn phân cấp màu sắc và kết cấu giúp con làm quen thức ăn mới từng bước',
+                file_url: '',
+                button_text: 'Nhận Thực Đơn 30 Ngày',
+                badge: 'Độc Quyền',
+                active: false
+            }
+        ],
+        social: {
+            hotline: '0988.776.655',
+            hotline_display: '0988 776 655',
+            zalo_link: 'https://zalo.me/0988776655',
+            zalo_number: '0988776655',
+            facebook_url: 'https://www.facebook.com/thuhien.cungmehieucon',
+            tiktok_url: 'https://www.tiktok.com/@thuhien_cungmehieucon',
+            youtube_url: 'https://www.youtube.com/@thuhien_cungmehieucon',
+            email_contact: 'thuhien.cungmehieucon@gmail.com',
+            support_hours: '08:00 - 21:30 (Thứ 2 - Chủ Nhật)'
+        },
+        integrations: {
+            google_analytics_id: '',
+            google_tag_manager_id: '',
+            facebook_pixel_id: '',
+            tiktok_pixel_id: '',
+            vercel_analytics_enabled: true,
+            custom_head_scripts: '',
+            custom_body_scripts: ''
+        },
+        security: {
+            max_failed_attempts: 5,
+            lockout_minutes: 15,
+            session_timeout_minutes: 30,
+            require_captcha: true,
+            honeypot_enabled: true
+        }
+    };
 
     // Helper to format date YYYY-MM-DD HH:mm:ss relative to now
     function getRelativeDateStr(daysAgo = 0, hours = 9, minutes = 15) {
@@ -209,6 +355,18 @@ const DB = (() => {
         }
         if (!localStorage.getItem(STORAGE_KEY_HEARTBEATS)) {
             localStorage.setItem(STORAGE_KEY_HEARTBEATS, JSON.stringify([]));
+        }
+        if (!localStorage.getItem(STORAGE_KEY_SETTINGS)) {
+            localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
+        }
+        if (!localStorage.getItem(STORAGE_KEY_ADMIN_CRED)) {
+            localStorage.setItem(STORAGE_KEY_ADMIN_CRED, JSON.stringify(DEFAULT_ADMIN_CRED));
+        }
+        if (!localStorage.getItem(STORAGE_KEY_EMAIL_LOGS)) {
+            localStorage.setItem(STORAGE_KEY_EMAIL_LOGS, JSON.stringify([]));
+        }
+        if (!localStorage.getItem(STORAGE_KEY_SECURITY_LOGS)) {
+            localStorage.setItem(STORAGE_KEY_SECURITY_LOGS, JSON.stringify([]));
         }
     }
 
@@ -596,6 +754,549 @@ const DB = (() => {
             localStorage.setItem(STORAGE_KEY_BOOKINGS, JSON.stringify(DEMO_BOOKINGS));
             localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify(DEMO_LEADS));
             localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify(DEMO_ANALYTICS));
+        },
+
+        // ====================================================================
+        // SETTINGS & CONFIGURATION ENGINE
+        // ====================================================================
+        getSettings() {
+            try {
+                const s = JSON.parse(localStorage.getItem(STORAGE_KEY_SETTINGS));
+                return {
+                    email: { ...DEFAULT_SETTINGS.email, ...(s?.email || {}) },
+                    resources: s?.resources || DEFAULT_SETTINGS.resources,
+                    social: { ...DEFAULT_SETTINGS.social, ...(s?.social || {}) },
+                    integrations: { ...DEFAULT_SETTINGS.integrations, ...(s?.integrations || {}) },
+                    security: { ...DEFAULT_SETTINGS.security, ...(s?.security || {}) }
+                };
+            } catch (e) {
+                return DEFAULT_SETTINGS;
+            }
+        },
+
+        saveSettings(newSettings) {
+            try {
+                const current = this.getSettings();
+                const merged = {
+                    email: { ...current.email, ...(newSettings.email || {}) },
+                    resources: newSettings.resources || current.resources,
+                    social: { ...current.social, ...(newSettings.social || {}) },
+                    integrations: { ...current.integrations, ...(newSettings.integrations || {}) },
+                    security: { ...current.security, ...(newSettings.security || {}) }
+                };
+                localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(merged));
+                this.logSecurityEvent('SETTINGS_UPDATED', 'SUCCESS', 'Cập nhật cấu hình hệ thống');
+                return true;
+            } catch (e) {
+                return false;
+            }
+        },
+
+        resetSettings() {
+            localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
+            return DEFAULT_SETTINGS;
+        },
+
+        getActiveResource() {
+            const settings = this.getSettings();
+            return (settings.resources || []).find(r => r.active || r.is_active) || settings.resources[0] || null;
+        },
+
+        updateResource(id, updatedFields) {
+            const settings = this.getSettings();
+            const list = settings.resources || [];
+            const idx = list.findIndex(r => r.id === id);
+            if (idx !== -1) {
+                const willBeActive = updatedFields.active || updatedFields.is_active;
+                if (willBeActive) {
+                    list.forEach(item => {
+                        item.active = false;
+                        item.is_active = false;
+                    });
+                }
+                list[idx] = { 
+                    ...list[idx], 
+                    ...updatedFields,
+                    active: willBeActive !== undefined ? willBeActive : (list[idx].active || list[idx].is_active),
+                    is_active: willBeActive !== undefined ? willBeActive : (list[idx].is_active || list[idx].active)
+                };
+                settings.resources = list;
+                this.saveSettings(settings);
+                return true;
+            }
+            return false;
+        },
+
+        addResource(resourceData) {
+            const settings = this.getSettings();
+            const list = settings.resources || [];
+            const isActive = resourceData.active !== undefined ? resourceData.active : (resourceData.is_active !== undefined ? resourceData.is_active : true);
+            if (isActive) {
+                list.forEach(item => {
+                    item.active = false;
+                    item.is_active = false;
+                });
+            }
+            const newRes = {
+                id: 'res_' + Date.now(),
+                title: resourceData.title || 'Tài Liệu Mới',
+                description: resourceData.description || '',
+                file_url: resourceData.file_url || '',
+                button_text: resourceData.button_text || 'Tải Cẩm Nang Ngay (PDF)',
+                badge: resourceData.badge || 'Mới',
+                active: isActive,
+                is_active: isActive
+            };
+            list.push(newRes);
+            settings.resources = list;
+            this.saveSettings(settings);
+            return newRes;
+        },
+
+        deleteResource(id) {
+            const settings = this.getSettings();
+            settings.resources = (settings.resources || []).filter(r => r.id !== id);
+            this.saveSettings(settings);
+            return true;
+        },
+
+        // ====================================================================
+        // EMAIL & AUTOMATION ENGINE
+        // ====================================================================
+        getEmailLogs() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY_EMAIL_LOGS)) || [];
+            } catch (e) {
+                return [];
+            }
+        },
+
+        clearEmailLogs() {
+            localStorage.setItem(STORAGE_KEY_EMAIL_LOGS, JSON.stringify([]));
+            return true;
+        },
+
+        async sendNotificationEmail(type, payload) {
+            const settings = this.getSettings();
+            const emailCfg = settings.email;
+            const nowStr = new Date().toLocaleString('vi-VN');
+
+            let subject = '';
+            let bodyText = '';
+            const logs = this.getEmailLogs();
+
+            if (type === 'booking') {
+                if (!emailCfg.notify_on_booking) return null;
+                subject = `[Lịch Hẹn Mới] Phụ huynh ${payload.parent_name} - ${payload.consult_type}`;
+                bodyText = `THÔNG BÁO LỊCH HẸN TƯ VẤN 1-1 MỚI\n\n` +
+                    `- Họ tên mẹ: ${payload.parent_name}\n` +
+                    `- SĐT / Zalo: ${payload.phone}\n` +
+                    `- Email: ${payload.email || 'Không có'}\n` +
+                    `- Thông tin bé: ${payload.baby_name || 'Bé'} (${payload.baby_age || '-'})\n` +
+                    `- Biểu hiện của con: ${payload.issues || '-'}\n` +
+                    `- Chia sẻ của mẹ: ${payload.feeding_notes || '-'}\n` +
+                    `- Gói đồng hành: ${payload.consult_type}\n` +
+                    `- Khung giờ mong muốn: ${payload.preferred_time}\n` +
+                    `- Thời gian gửi: ${payload.created_at || nowStr}`;
+            } else if (type === 'lead') {
+                if (!emailCfg.notify_on_lead) return null;
+                subject = `[Tải Cẩm Nang Mới] Phụ huynh ${payload.parent_name} - ${payload.phone}`;
+                bodyText = `THÔNG BÁO TẢI CẨM NANG / TÀI LIỆU MỚI\n\n` +
+                    `- Họ tên mẹ: ${payload.parent_name}\n` +
+                    `- Số Zalo: ${payload.phone}\n` +
+                    `- Email: ${payload.email || 'Không có'}\n` +
+                    `- Độ tuổi bé: ${payload.baby_age || '-'}\n` +
+                    `- Tài liệu nhận: ${payload.resource_name}\n` +
+                    `- Thời gian gửi: ${payload.created_at || nowStr}`;
+            } else if (type === 'test') {
+                subject = `[Kiểm Tra Hệ Thống] Email thử nghiệm từ Website Thu Hiền`;
+                bodyText = `Xin chào,\n\nĐây là email kiểm tra kết nối từ hệ thống quản trị Thu Hiền - Cùng Mẹ Hiểu Con.\nNếu bạn nhận được email này, cấu hình thông báo đã hoạt động thành công!\n\nThời gian: ${nowStr}`;
+            }
+
+            const targetRecipient = payload.recipient || emailCfg.admin_notify_email;
+            const logEntry = {
+                id: Date.now(),
+                type: type,
+                recipient: targetRecipient,
+                subject: subject,
+                provider: emailCfg.provider,
+                status: 'Sent (Đã ghi nhận)',
+                created_at: nowStr,
+                details: bodyText
+            };
+
+            // Attempt delivery via Webhook if configured
+            if (emailCfg.provider === 'webhook' && emailCfg.webhook_url) {
+                try {
+                    await fetch(emailCfg.webhook_url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            event: type,
+                            subject: subject,
+                            recipient: targetRecipient,
+                            payload: payload,
+                            text: bodyText,
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+                    logEntry.status = 'Delivered (Webhook thành công)';
+                } catch (err) {
+                    logEntry.status = 'Error (Webhook không phản hồi: ' + err.message + ')';
+                }
+            } else if (emailCfg.provider === 'emailjs' && emailCfg.emailjs_service_id && emailCfg.emailjs_public_key) {
+                if (typeof window !== 'undefined' && window.emailjs) {
+                    try {
+                        const templateId = type === 'booking' ? emailCfg.emailjs_template_booking : emailCfg.emailjs_template_lead;
+                        await window.emailjs.send(emailCfg.emailjs_service_id, templateId, {
+                            to_email: targetRecipient,
+                            subject: subject,
+                            message: bodyText,
+                            ...payload
+                        }, emailCfg.emailjs_public_key);
+                        logEntry.status = 'Delivered (EmailJS thành công)';
+                    } catch (err) {
+                        logEntry.status = 'Error (EmailJS: ' + err.message + ')';
+                    }
+                } else {
+                    logEntry.status = 'Simulated (Chờ nạp SDK EmailJS)';
+                }
+            } else {
+                logEntry.status = 'Simulated (Lưu hệ thống nội bộ)';
+            }
+
+            logs.unshift(logEntry);
+            if (logs.length > 50) logs.pop();
+            localStorage.setItem(STORAGE_KEY_EMAIL_LOGS, JSON.stringify(logs));
+            return logEntry;
+        },
+
+        async testEmail(targetEmail) {
+            return await this.sendNotificationEmail('test', {
+                recipient: targetEmail || this.getSettings().email.admin_notify_email,
+                parent_name: 'Quản Trị Viên'
+            });
+        },
+
+        // ====================================================================
+        // SECURITY & ANTI-BOT ENGINE
+        // ====================================================================
+        getSecurityLogs() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY_SECURITY_LOGS)) || [];
+            } catch (e) {
+                return [];
+            }
+        },
+
+        clearSecurityLogs() {
+            localStorage.setItem(STORAGE_KEY_SECURITY_LOGS, JSON.stringify([]));
+            return true;
+        },
+
+        logSecurityEvent(action, status, details) {
+            try {
+                const logs = this.getSecurityLogs();
+                const nowStr = new Date().toLocaleString('vi-VN');
+                const userAgent = typeof navigator !== 'undefined' ? (navigator.userAgent || '').substring(0, 100) : 'Server/Node';
+                logs.unshift({
+                    id: Date.now(),
+                    action: action,
+                    status: status,
+                    details: details,
+                    userAgent: userAgent,
+                    timestamp: nowStr
+                });
+                if (logs.length > 100) logs.pop();
+                localStorage.setItem(STORAGE_KEY_SECURITY_LOGS, JSON.stringify(logs));
+            } catch (e) {}
+        },
+
+        getLoginLockoutState() {
+            try {
+                const data = JSON.parse(localStorage.getItem(STORAGE_KEY_LOGIN_ATTEMPTS) || '{"count": 0, "lockUntil": 0}');
+                const now = Date.now();
+                if (data.lockUntil && now < data.lockUntil) {
+                    const remainingSeconds = Math.ceil((data.lockUntil - now) / 1000);
+                    return { isLocked: true, locked: true, remainingSeconds: remainingSeconds, count: data.count };
+                }
+                return { isLocked: false, locked: false, remainingSeconds: 0, count: data.count || 0 };
+            } catch (e) {
+                return { isLocked: false, locked: false, remainingSeconds: 0, count: 0 };
+            }
+        },
+
+        verifyAdminLogin(username, password, honeypotValue, captchaAnswer, expectedCaptchaAnswer, elapsedMs) {
+            const lockout = this.getLoginLockoutState();
+            if (lockout.isLocked) {
+                const mins = Math.ceil(lockout.remainingSeconds / 60);
+                this.logSecurityEvent('LOGIN_ATTEMPT_BLOCKED', 'BLOCKED', `Thử đăng nhập khi tài khoản đang bị khóa (${lockout.remainingSeconds}s còn lại)`);
+                return {
+                    success: false,
+                    code: 'LOCKED',
+                    message: `Tài khoản tạm khóa do nghi vấn bot spam. Vui lòng thử lại sau ${mins} phút.`
+                };
+            }
+
+            // 1. Honeypot check (Invisible field filled by bots)
+            if (honeypotValue && honeypotValue.trim().length > 0) {
+                this.logSecurityEvent('BOT_HONEYPOT_DETECTED', 'BLOCKED', `Bot đã điền vào trường bẫy ẩn: "${honeypotValue.substring(0, 30)}"`);
+                return {
+                    success: false,
+                    code: 'BOT_DETECTED',
+                    message: 'Yêu cầu bị từ chối bởi hệ thống phòng thủ Anti-Bot.'
+                };
+            }
+
+            // 2. Timing check (< 800ms indicates automated script)
+            if (elapsedMs && elapsedMs < 800) {
+                this.logSecurityEvent('BOT_TIMING_FAST', 'BLOCKED', `Thời gian gửi form quá nhanh: ${elapsedMs}ms`);
+                return {
+                    success: false,
+                    code: 'BOT_TIMING',
+                    message: 'Phát hiện hành vi tự động. Vui lòng thao tác bình thường.'
+                };
+            }
+
+            // 3. Captcha check
+            if (expectedCaptchaAnswer !== undefined && String(captchaAnswer || '').trim() !== String(expectedCaptchaAnswer).trim()) {
+                this.logSecurityEvent('CAPTCHA_FAILED', 'FAILED', `Nhập sai mã xác thực: "${captchaAnswer}" (cần: "${expectedCaptchaAnswer}")`);
+                return {
+                    success: false,
+                    code: 'CAPTCHA_FAILED',
+                    message: 'Câu trả lời xác thực chống bot chưa chính xác.'
+                };
+            }
+
+            // 4. Validate Credentials with Salted SHA-256
+            const creds = JSON.parse(localStorage.getItem(STORAGE_KEY_ADMIN_CRED) || JSON.stringify(DEFAULT_ADMIN_CRED));
+            const inputHash = sha256(String(password).trim() + creds.salt);
+
+            if (username.trim() === creds.username && inputHash === creds.hash) {
+                localStorage.removeItem(STORAGE_KEY_LOGIN_ATTEMPTS);
+                this.logSecurityEvent('LOGIN_SUCCESS', 'SUCCESS', `Đăng nhập thành công với user "${username}"`);
+                try {
+                    sessionStorage.setItem('thuhien_admin_auth', 'true');
+                    sessionStorage.setItem('thuhien_admin_auth_time', String(Date.now()));
+                } catch (e) {}
+                return { success: true };
+            } else {
+                let attempts = JSON.parse(localStorage.getItem(STORAGE_KEY_LOGIN_ATTEMPTS) || '{"count": 0, "lockUntil": 0}');
+                attempts.count = (attempts.count || 0) + 1;
+                
+                if (attempts.count >= 5) {
+                    attempts.lockUntil = Date.now() + 15 * 60 * 1000;
+                    localStorage.setItem(STORAGE_KEY_LOGIN_ATTEMPTS, JSON.stringify(attempts));
+                    this.logSecurityEvent('ACCOUNT_LOCKED_BRUTEFORCE', 'LOCKED', 'Đã nhập sai 5 lần. Kích hoạt khóa 15 phút.');
+                    return {
+                        success: false,
+                        code: 'LOCKED',
+                        message: 'Bạn đã nhập sai 5 lần liên tiếp. Hệ thống khóa đăng nhập 15 phút để phòng chống bot brute-force!'
+                    };
+                } else {
+                    localStorage.setItem(STORAGE_KEY_LOGIN_ATTEMPTS, JSON.stringify(attempts));
+                    this.logSecurityEvent('LOGIN_FAILED', 'FAILED', `Sai tài khoản hoặc mật khẩu (Lần ${attempts.count}/5)`);
+                    return {
+                        success: false,
+                        code: 'INVALID_CREDENTIALS',
+                        message: `Tài khoản hoặc mật khẩu không chính xác! (Còn ${5 - attempts.count} lần thử)`
+                    };
+                }
+            }
+        },
+
+        changeAdminCredentials(currentPassword, newUsername, newPassword) {
+            const creds = JSON.parse(localStorage.getItem(STORAGE_KEY_ADMIN_CRED) || JSON.stringify(DEFAULT_ADMIN_CRED));
+            const currentHash = sha256(String(currentPassword).trim() + creds.salt);
+
+            if (currentHash !== creds.hash) {
+                this.logSecurityEvent('CHANGE_PASSWORD_FAILED', 'FAILED', 'Nhập sai mật khẩu hiện tại khi đổi thông tin');
+                return { success: false, message: 'Mật khẩu hiện tại không đúng!' };
+            }
+
+            if (!newUsername || newUsername.trim().length < 3) {
+                return { success: false, message: 'Tên đăng nhập mới phải có ít nhất 3 ký tự!' };
+            }
+
+            if (!newPassword || newPassword.trim().length < 6) {
+                return { success: false, message: 'Mật khẩu mới phải có ít nhất 6 ký tự!' };
+            }
+
+            const newSalt = 'thuhien_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now();
+            const newHash = sha256(String(newPassword).trim() + newSalt);
+
+            const newCreds = {
+                username: newUsername.trim(),
+                salt: newSalt,
+                hash: newHash
+            };
+
+            localStorage.setItem(STORAGE_KEY_ADMIN_CRED, JSON.stringify(newCreds));
+            this.logSecurityEvent('CREDENTIALS_CHANGED', 'SUCCESS', `Đổi tài khoản thành công sang "${newCreds.username}"`);
+            return { success: true, message: 'Đổi thông tin đăng nhập thành công!' };
+        },
+
+        // ====================================================================
+        // FRONTEND INTEGRATIONS & SOCIAL LINK BINDINGS
+        // ====================================================================
+        applyIntegrations() {
+            if (typeof document === 'undefined') return;
+            const settings = this.getSettings();
+            const integ = settings.integrations;
+
+            // 1. Google Analytics (GA4)
+            if (integ.google_analytics_id && !document.getElementById('ga-script-thuhien')) {
+                const gaId = integ.google_analytics_id.trim();
+                const s = document.createElement('script');
+                s.id = 'ga-script-thuhien';
+                s.async = true;
+                s.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+                document.head.appendChild(s);
+
+                const inline = document.createElement('script');
+                inline.innerHTML = `
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${gaId}');
+                `;
+                document.head.appendChild(inline);
+            }
+
+            // 2. Google Tag Manager (GTM)
+            if (integ.google_tag_manager_id && !document.getElementById('gtm-script-thuhien')) {
+                const gtmId = integ.google_tag_manager_id.trim();
+                const s = document.createElement('script');
+                s.id = 'gtm-script-thuhien';
+                s.innerHTML = `
+                    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                    })(window,document,'script','dataLayer','${gtmId}');
+                `;
+                document.head.appendChild(s);
+            }
+
+            // 3. Meta (Facebook) Pixel
+            if (integ.facebook_pixel_id && !document.getElementById('fb-pixel-thuhien')) {
+                const pixelId = integ.facebook_pixel_id.trim();
+                const s = document.createElement('script');
+                s.id = 'fb-pixel-thuhien';
+                s.innerHTML = `
+                    !function(f,b,e,v,n,t,s)
+                    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+                    n.queue=[];t=b.createElement(e);t.async=!0;
+                    t.src=v;s=b.getElementsByTagName(e)[0];
+                    s.parentNode.insertBefore(t,s)}(window, document,'script',
+                    'https://connect.facebook.net/en_US/fbevents.js');
+                    fbq('init', '${pixelId}');
+                    fbq('track', 'PageView');
+                `;
+                document.head.appendChild(s);
+            }
+
+            // 4. TikTok Pixel
+            if (integ.tiktok_pixel_id && !document.getElementById('tt-pixel-thuhien')) {
+                const ttId = integ.tiktok_pixel_id.trim();
+                const s = document.createElement('script');
+                s.id = 'tt-pixel-thuhien';
+                s.innerHTML = `
+                    !function (w, d, t) {
+                    w.TiktokAnalyticsObject=t;var tt=w[t]=w[t]||[];tt.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],tt.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<tt.methods.length;i++)tt.setAndDefer(tt,tt.methods[i]);tt.instance=function(t){for(var e=tt._i[t]||[],n=0;n<tt.methods.length;n++)tt.setAndDefer(e,tt.methods[n]);return e},tt.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";tt._i=tt._i||{},tt._i[e]=[],tt._i[e]._u=i,s=d.createElement("script"),s.type="text/javascript",s.async=!0,s.src=i+"?sdkid="+e+"&lib="+t;var o=d.getElementsByTagName("script")[0];o.parentNode.insertBefore(s,o)};
+                    tt.load('${ttId}');
+                    tt.page();
+                    }(window, document, 'ttq');
+                `;
+                document.head.appendChild(s);
+            }
+
+            // 5. Vercel Web Analytics
+            if (integ.vercel_analytics_enabled && !document.getElementById('vercel-insights-thuhien')) {
+                const s = document.createElement('script');
+                s.id = 'vercel-insights-thuhien';
+                s.defer = true;
+                s.src = '/_vercel/insights/script.js';
+                document.head.appendChild(s);
+            }
+
+            // 6. Custom Head Scripts
+            if (integ.custom_head_scripts && !document.getElementById('custom-head-thuhien')) {
+                const container = document.createElement('div');
+                container.id = 'custom-head-thuhien';
+                container.style.display = 'none';
+                container.innerHTML = integ.custom_head_scripts;
+                document.head.appendChild(container);
+                container.querySelectorAll('script').forEach(sc => {
+                    const run = document.createElement('script');
+                    if (sc.src) run.src = sc.src;
+                    else run.textContent = sc.textContent;
+                    document.head.appendChild(run);
+                });
+            }
+
+            // 7. Custom Body Scripts
+            if (integ.custom_body_scripts && !document.getElementById('custom-body-thuhien')) {
+                const container = document.createElement('div');
+                container.id = 'custom-body-thuhien';
+                container.style.display = 'none';
+                container.innerHTML = integ.custom_body_scripts;
+                document.body.appendChild(container);
+                container.querySelectorAll('script').forEach(sc => {
+                    const run = document.createElement('script');
+                    if (sc.src) run.src = sc.src;
+                    else run.textContent = sc.textContent;
+                    document.body.appendChild(run);
+                });
+            }
+        },
+
+        applySocialLinks() {
+            if (typeof document === 'undefined') return;
+            const settings = this.getSettings();
+            const soc = settings.social;
+
+            // Update Zalo links
+            if (soc.zalo_link || soc.zalo_number) {
+                const zLink = soc.zalo_link || `https://zalo.me/${soc.zalo_number.replace(/[^0-9]/g, '')}`;
+                document.querySelectorAll('a[href*="zalo.me"]').forEach(a => {
+                    a.href = zLink;
+                });
+            }
+
+            // Update Facebook links
+            if (soc.facebook_url) {
+                document.querySelectorAll('a[href*="facebook.com"]').forEach(a => {
+                    a.href = soc.facebook_url;
+                });
+            }
+
+            // Update TikTok links
+            if (soc.tiktok_url) {
+                document.querySelectorAll('a[href*="tiktok.com"]').forEach(a => {
+                    a.href = soc.tiktok_url;
+                });
+            }
+
+            // Update YouTube links
+            if (soc.youtube_url) {
+                document.querySelectorAll('a[href*="youtube.com"]').forEach(a => {
+                    a.href = soc.youtube_url;
+                });
+            }
+
+            // Update Hotline tel: links & text
+            if (soc.hotline) {
+                const cleanPhone = soc.hotline.replace(/[^0-9]/g, '');
+                document.querySelectorAll('a[href^="tel:"]').forEach(a => {
+                    a.href = `tel:${cleanPhone}`;
+                    if (a.dataset.dynamicPhone !== 'false' && a.innerText.match(/[0-9]{3}/)) {
+                        a.innerText = soc.hotline_display || soc.hotline;
+                    }
+                });
+            }
         }
     };
 })();

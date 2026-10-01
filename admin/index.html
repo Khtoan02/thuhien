@@ -108,12 +108,12 @@
 <body class="h-full text-zinc-900 antialiased selection:bg-brand-500/10 selection:text-brand-500">
 
 <!-- ==========================================================================
-     LOGIN MODAL / SCREEN (shadcn clean card)
+     LOGIN MODAL / SCREEN (Hardened Anti-Bot Shield & shadcn clean card)
      ========================================================================== -->
 <div id="loginSection" class="min-h-screen flex items-center justify-center p-6 bg-zinc-50">
     <div class="w-full max-w-sm rounded-xl border border-zinc-200 bg-white p-6 shadow-sm">
         
-        <div class="flex flex-col space-y-1.5 text-center pb-6 border-b border-zinc-100">
+        <div class="flex flex-col space-y-1.5 text-center pb-5 border-b border-zinc-100">
             <div class="w-10 h-10 rounded-lg bg-brand-500 text-white flex items-center justify-center mx-auto mb-2 font-bold text-sm shadow-xs">
                 TH
             </div>
@@ -121,10 +121,28 @@
             <p class="text-xs text-zinc-500">Hệ thống báo cáo Chuyên gia Thu Hiền</p>
         </div>
 
-        <form id="adminLoginForm" class="space-y-4 pt-6 text-left">
+        <!-- Lockout Banner (Dynamic countdown when brute-force detected) -->
+        <div id="lockoutBanner" class="hidden my-4 p-3.5 rounded-lg bg-rose-50 border border-rose-200 text-xs text-rose-800 space-y-1">
+            <div class="flex items-center gap-1.5 font-bold text-rose-900">
+                <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                <span>Hệ thống tạm khóa bảo vệ!</span>
+            </div>
+            <p class="text-[11px] leading-relaxed">Đã nhập sai quá 5 lần. Vui lòng chờ <span id="lockoutRemainingText" class="font-bold font-mono">15:00</span> trước khi thử lại.</p>
+        </div>
+
+        <!-- Error Message Alert -->
+        <div id="loginErrorAlert" class="hidden my-3 p-3 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-900 font-medium"></div>
+
+        <form id="adminLoginForm" class="space-y-4 pt-4 text-left">
+            <!-- Invisible Bot Honeypot Field (Bots fill this, humans do not) -->
+            <div style="position: absolute; left: -9999px; opacity: 0; pointer-events: none; width: 0; height: 0;" aria-hidden="true">
+                <label for="adminHpCheck">Leave this empty</label>
+                <input type="text" name="_hp_check_admin" id="adminHpCheck" tabindex="-1" autocomplete="off" value="">
+            </div>
+
             <div class="space-y-1.5">
-                <label class="text-xs font-semibold text-zinc-700">Tài Khoản</label>
-                <input type="text" id="adminUsername" required value="admin" class="flex h-9 w-full rounded-md border border-zinc-200 bg-transparent px-3 py-1 text-sm shadow-xs placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <label class="text-xs font-semibold text-zinc-700">Tài Khoản Quản Trị</label>
+                <input type="text" id="adminUsername" required value="admin" autocomplete="username" class="flex h-9 w-full rounded-md border border-zinc-200 bg-transparent px-3 py-1 text-sm shadow-xs placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
             </div>
 
             <div class="space-y-1.5">
@@ -132,17 +150,42 @@
                     <label class="text-xs font-semibold text-zinc-700">Mật Khẩu</label>
                     <span class="text-[11px] text-zinc-400">Mặc định: <code>thuhien2026</code></span>
                 </div>
-                <input type="password" id="adminPassword" required placeholder="••••••••" class="flex h-9 w-full rounded-md border border-zinc-200 bg-transparent px-3 py-1 text-sm shadow-xs placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <input type="password" id="adminPassword" required placeholder="••••••••" autocomplete="current-password" class="flex h-9 w-full rounded-md border border-zinc-200 bg-transparent px-3 py-1 text-sm shadow-xs placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
             </div>
 
-            <button type="submit" class="inline-flex h-9 w-full items-center justify-center rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-brand-600 focus:outline-none transition-colors">
+            <!-- Anti-Bot Interactive Math Challenge -->
+            <div class="space-y-1.5 pt-1">
+                <div class="flex items-center justify-between">
+                    <label class="text-xs font-semibold text-zinc-700 flex items-center gap-1.5">
+                        <span>Xác Thực Chống Bot</span>
+                        <span class="inline-flex items-center rounded px-1.5 py-0.2 text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">Shield</span>
+                    </label>
+                    <button type="button" id="refreshCaptchaBtn" class="text-[11px] text-brand-500 hover:text-brand-600 inline-flex items-center gap-1" title="Đổi câu hỏi khác">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        <span>Đổi câu</span>
+                    </button>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div id="captchaQuestionBadge" class="h-9 px-3 rounded-md bg-zinc-100 border border-zinc-200 flex items-center justify-center font-mono font-bold text-zinc-800 text-sm tracking-widest shrink-0 select-none">
+                        -- + -- = ?
+                    </div>
+                    <input type="number" id="adminCaptchaInput" required placeholder="Nhập kết quả" class="flex h-9 w-full rounded-md border border-zinc-200 bg-transparent px-3 py-1 text-sm shadow-xs placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+            </div>
+
+            <button type="submit" id="adminLoginSubmitBtn" class="inline-flex h-9 w-full items-center justify-center rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-brand-600 focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                 Đăng Nhập
             </button>
         </form>
 
-        <div class="pt-6 border-t border-zinc-100 mt-6 text-center">
-            <a href="../" class="text-xs text-zinc-500 hover:text-zinc-900 transition-colors">
-                ← Quay lại Trang Chủ
+        <!-- Security Features Micro Footer -->
+        <div class="mt-5 pt-4 border-t border-zinc-100 flex items-center justify-between text-[11px] text-zinc-400">
+            <span class="flex items-center gap-1">
+                <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span>Salted SHA-256</span>
+            </span>
+            <a href="../" class="hover:text-zinc-900 transition-colors">
+                ← Về Trang Chủ
             </a>
         </div>
     </div>
@@ -223,10 +266,55 @@
                     </nav>
                 </div>
 
-                <!-- Category 3: HỆ THỐNG -->
+                <!-- Category 3: CẤU HÌNH & TÍCH HỢP -->
                 <div>
                     <span class="px-3 text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">
-                        Hệ Thống
+                        Cấu Hình & Tích Hợp
+                    </span>
+                    <nav class="space-y-0.5">
+                        <button onclick="switchView('settings-email')" id="nav-settings-email" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-colors text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900">
+                            <div class="flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                <span>Hệ Thống Email</span>
+                            </div>
+                        </button>
+
+                        <button onclick="switchView('settings-resources')" id="nav-settings-resources" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-colors text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900">
+                            <div class="flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                <span>Tài Liệu & Nút Tải File</span>
+                            </div>
+                        </button>
+
+                        <button onclick="switchView('settings-social')" id="nav-settings-social" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-colors text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900">
+                            <div class="flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                                <span>Kênh Social & Liên Hệ</span>
+                            </div>
+                        </button>
+
+                        <button onclick="switchView('settings-integrations')" id="nav-settings-integrations" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-colors text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900">
+                            <div class="flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                                <span>Mã Nhúng Bên Thứ 3</span>
+                            </div>
+                            <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">Scripts</span>
+                        </button>
+
+                        <button onclick="switchView('settings-security')" id="nav-settings-security" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-colors text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900">
+                            <div class="flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                <span>Bảo Mật & Mật Khẩu</span>
+                            </div>
+                            <span class="text-[10px] px-1.5 py-0.2 rounded bg-amber-50 text-amber-700 font-bold border border-amber-200">Shield</span>
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Category 4: DỮ LIỆU & HỆ THỐNG -->
+                <div>
+                    <span class="px-3 text-[10px] font-bold text-zinc-400 uppercase tracking-wider block mb-1">
+                        Dữ Liệu & Hệ Thống
                     </span>
                     <nav class="space-y-0.5">
                         <button onclick="switchView('data')" id="nav-data" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-colors text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900">
@@ -632,6 +720,567 @@
                 </div>
             </div>
 
+            <!-- ==========================================================
+                 VIEW 6: CÀI ĐẶT EMAIL & THÔNG BÁO (settings-email)
+                 ========================================================== -->
+            <div id="view-settings-email" class="hidden space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Hệ Thống Email & Thông Báo</h2>
+                        <p class="text-xs text-zinc-500">Cấu hình gửi email tự động khi có lịch hẹn tư vấn mới hoặc phụ huynh tải tài liệu</p>
+                    </div>
+                    <button onclick="saveEmailSettings()" class="inline-flex h-8 items-center justify-center rounded-md bg-brand-500 px-4 text-xs font-medium text-white shadow-xs hover:bg-brand-600 transition-colors">
+                        Lưu Cấu Hình Email
+                    </button>
+                </div>
+
+                <div class="grid gap-6 lg:grid-cols-12">
+                    <!-- Left: Provider & Setup (7 cols) -->
+                    <div class="lg:col-span-7 space-y-6">
+                        <!-- Provider Card -->
+                        <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                            <h3 class="text-sm font-semibold text-zinc-900 pb-2 border-b border-zinc-100 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                <span>Nhà Cung Cấp Email (Email Service Provider)</span>
+                            </h3>
+
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Dịch Vụ Gửi Email</label>
+                                <select id="emailProviderSelect" onchange="toggleEmailProviderFields()" class="flex h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                    <option value="webhook">Webhook Tự Động (Make.com / Zapier / N8N / Google Apps Script)</option>
+                                    <option value="emailjs">EmailJS (Gửi trực tiếp từ trình duyệt)</option>
+                                    <option value="formspree">Formspree (Endpoint Form)</option>
+                                    <option value="resend">Resend API (Gửi qua Resend API Key)</option>
+                                </select>
+                                <p class="text-[11px] text-zinc-400">Chọn giải pháp gửi thư phù hợp với hạ tầng triển khai tĩnh.</p>
+                            </div>
+
+                            <!-- Dynamic fields based on provider -->
+                            <div id="providerFieldsWebhook" class="space-y-1.5 pt-2">
+                                <label class="text-xs font-semibold text-zinc-700">Webhook URL Nhận Dữ Liệu *</label>
+                                <input type="url" id="emailWebhookUrl" placeholder="https://hook.eu1.make.com/xxxxxxxxx hoặc Google Apps Script Web App" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                <p class="text-[11px] text-zinc-400">Khi có sự kiện mới, website sẽ gửi HTTP POST payload JSON đến webhook này để tự động chuyển thư đến Gmail.</p>
+                            </div>
+
+                            <div id="providerFieldsEmailJS" class="hidden space-y-3 pt-2">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-semibold text-zinc-700">Service ID</label>
+                                        <input type="text" id="emailjsServiceId" placeholder="service_xxxx" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-semibold text-zinc-700">Template ID</label>
+                                        <input type="text" id="emailjsTemplateId" placeholder="template_xxxx" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                    </div>
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="text-xs font-semibold text-zinc-700">Public Key (User ID)</label>
+                                    <input type="text" id="emailjsPublicKey" placeholder="pk_live_xxxx" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                </div>
+                            </div>
+
+                            <div id="providerFieldsFormspree" class="hidden space-y-1.5 pt-2">
+                                <label class="text-xs font-semibold text-zinc-700">Formspree Endpoint URL</label>
+                                <input type="url" id="formspreeEndpoint" placeholder="https://formspree.io/f/xxxxxx" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+
+                            <div id="providerFieldsResend" class="hidden space-y-1.5 pt-2">
+                                <label class="text-xs font-semibold text-zinc-700">Resend API Key</label>
+                                <input type="password" id="resendApiKey" placeholder="re_1234567890abcdef" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                        </div>
+
+                        <!-- Notification Rules & Routing -->
+                        <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                            <h3 class="text-sm font-semibold text-zinc-900 pb-2 border-b border-zinc-100 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                                <span>Email Nhận Thông Báo & Quy Tắc Gửi</span>
+                            </h3>
+
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Email Chuyên Gia Nhận Thông Báo *</label>
+                                <input type="email" id="adminNotifyEmail" placeholder="thuhien.cungmehieucon@gmail.com" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                <p class="text-[11px] text-zinc-400">Các thông báo đặt lịch mới và khách hàng tiềm năng sẽ được gửi đến hộp thư này.</p>
+                            </div>
+
+                            <div class="space-y-3 pt-2">
+                                <label class="flex items-center gap-3 p-3 rounded-lg border border-zinc-200 bg-zinc-50/60 cursor-pointer hover:bg-zinc-100/60 transition-colors">
+                                    <input type="checkbox" id="notifyOnBookingCheckbox" class="w-4 h-4 text-brand-500 rounded border-zinc-300 focus:ring-brand-500">
+                                    <div>
+                                        <span class="text-xs font-bold text-zinc-900 block">Gửi thông báo khi có lịch hẹn tư vấn mới</span>
+                                        <span class="text-[11px] text-zinc-500">Bao gồm tên mẹ, số Zalo, độ tuổi bé và mô tả biểu hiện cần hỗ trợ.</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 rounded-lg border border-zinc-200 bg-zinc-50/60 cursor-pointer hover:bg-zinc-100/60 transition-colors">
+                                    <input type="checkbox" id="notifyOnLeadCheckbox" class="w-4 h-4 text-brand-500 rounded border-zinc-300 focus:ring-brand-500">
+                                    <div>
+                                        <span class="text-xs font-bold text-zinc-900 block">Gửi thông báo khi có phụ huynh tải cẩm nang</span>
+                                        <span class="text-[11px] text-zinc-500">Ghi nhận thông tin số Zalo của phụ huynh để chăm sóc sau.</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Test Email & Log (5 cols) -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <!-- Quick Test Card -->
+                        <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                            <h3 class="text-sm font-semibold text-zinc-900 pb-2 border-b border-zinc-100 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-brand-peach" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                                <span>Kiểm Tra Gửi Thử Email (Test Mail)</span>
+                            </h3>
+                            <p class="text-xs text-zinc-500 leading-relaxed">
+                                Kiểm tra xem kết nối email đã hoạt động chính xác hay chưa trước khi chạy chiến dịch thực tế.
+                            </p>
+
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Email Nhận Thử Nghiệm</label>
+                                <input type="email" id="testEmailInput" placeholder="nhap-email-kiem-tra@gmail.com" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+
+                            <button onclick="handleSendTestEmail()" id="btnSendTestEmail" class="w-full inline-flex h-9 items-center justify-center rounded-md bg-zinc-900 px-4 text-xs font-medium text-white shadow-xs hover:bg-zinc-800 transition-colors">
+                                Gửi Email Thử Nghiệm Ngay
+                            </button>
+
+                            <div id="testEmailResultBox" class="hidden p-3 rounded-lg text-xs font-medium"></div>
+                        </div>
+
+                        <!-- Provider Info Helper -->
+                        <div class="rounded-xl border border-zinc-200 bg-zinc-50/70 p-5 shadow-xs space-y-2 text-xs text-zinc-600">
+                            <h4 class="font-bold text-zinc-800 flex items-center gap-1.5">
+                                <span>💡 Hướng Dẫn Tích Hợp Nhanh</span>
+                            </h4>
+                            <p class="leading-relaxed">
+                                <strong>Webhook:</strong> Dễ dàng kết nối Make.com hoặc Zapier để bắn email đến Gmail cá nhân miễn phí và gửi tin nhắn thông báo về Zalo / Telegram.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>EmailJS / Resend:</strong> Nếu muốn gửi thẳng email HTML đến hộp thư của mẹ mà không cần máy chủ backend.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Logs Table -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+                        <div>
+                            <h3 class="text-sm font-semibold text-zinc-900">Nhật Ký Gửi Email (Email Delivery Logs)</h3>
+                            <p class="text-xs text-zinc-500">Lịch sử các sự kiện thông báo email được kích hoạt từ website</p>
+                        </div>
+                        <button onclick="handleClearEmailLogs()" class="text-xs text-zinc-500 hover:text-red-600 font-medium transition-colors">
+                            Xóa Nhật Ký
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs" id="emailLogsTable">
+                            <thead class="bg-zinc-50 text-zinc-500 uppercase font-semibold tracking-wider border-b border-zinc-200">
+                                <tr>
+                                    <th class="p-3 pl-4">Thời Gian</th>
+                                    <th class="p-3">Sự Kiện</th>
+                                    <th class="p-3">Người Nhận</th>
+                                    <th class="p-3">Phương Thức</th>
+                                    <th class="p-3">Trạng Thái</th>
+                                    <th class="p-3 pr-4">Nội Dung Chi Tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-zinc-100 text-zinc-800" id="emailLogsTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+                 VIEW 7: QUẢN LÝ TÀI LIỆU & NÚT TẢI (settings-resources)
+                 ========================================================== -->
+            <div id="view-settings-resources" class="hidden space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Quản Lý Tài Liệu & Nút Tải Cẩm Nang</h2>
+                        <p class="text-xs text-zinc-500">Cấu hình link file tải (Google Drive, PDF, Cloud) và chữ nút bấm (CTA) hiển thị trên website</p>
+                    </div>
+                    <button onclick="openResourceModal()" class="inline-flex h-8 items-center justify-center rounded-md bg-brand-500 px-4 text-xs font-medium text-white shadow-xs hover:bg-brand-600 transition-colors gap-1.5">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                        <span>+ Thêm Tài Liệu Mới</span>
+                    </button>
+                </div>
+
+                <!-- Google Drive Tip Banner -->
+                <div class="rounded-xl border border-blue-200 bg-blue-50/60 p-4 text-xs text-blue-900 flex items-start gap-3">
+                    <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">ℹ</span>
+                    <div class="leading-relaxed">
+                        <span class="font-bold block text-blue-950">Mẹo gắn file Google Drive hoặc PDF trực tiếp:</span>
+                        Mẹ có thể chia sẻ file Google Drive ở chế độ <em>"Bất kỳ ai có đường liên kết đều có thể xem"</em> và dán link vào ô <strong>Đường dẫn File</strong>. Khi phụ huynh điền form nhận cẩm nang trên website, nút tải sẽ tự động mở file này mà không cần code lại trang!
+                    </div>
+                </div>
+
+                <!-- Resources List Table -->
+                <div class="rounded-xl border border-zinc-200 bg-white shadow-xs overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs" id="resourcesTable">
+                            <thead class="bg-zinc-50 text-zinc-500 uppercase font-semibold tracking-wider border-b border-zinc-200">
+                                <tr>
+                                    <th class="p-3.5 pl-4">Tên Tài Liệu</th>
+                                    <th class="p-3.5">Mô Tả</th>
+                                    <th class="p-3.5">Chữ Nút Bấm (CTA)</th>
+                                    <th class="p-3.5">Đường Dẫn File</th>
+                                    <th class="p-3.5 text-center">Trạng Thái Website</th>
+                                    <th class="p-3.5 pr-4 text-right">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-zinc-100 text-zinc-800" id="resourcesTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+                 VIEW 8: KÊNH MẠNG XÃ HỘI & LIÊN HỆ (settings-social)
+                 ========================================================== -->
+            <div id="view-settings-social" class="hidden space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Kênh Mạng Xã Hội & Kênh Liên Hệ</h2>
+                        <p class="text-xs text-zinc-500">Đồng bộ Hotline, Zalo, Fanpage Facebook, TikTok, YouTube trên toàn bộ website</p>
+                    </div>
+                    <button onclick="saveSocialSettings()" class="inline-flex h-8 items-center justify-center rounded-md bg-brand-500 px-4 text-xs font-medium text-white shadow-xs hover:bg-brand-600 transition-colors">
+                        Lưu Thay Đổi Kênh Social
+                    </button>
+                </div>
+
+                <div class="grid gap-6 lg:grid-cols-12">
+                    <!-- Form (7 cols) -->
+                    <div class="lg:col-span-7 rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                        <h3 class="text-sm font-semibold text-zinc-900 pb-2 border-b border-zinc-100 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                            <span>Thông Tin Hotline & Tài Khoản Mạng Xã Hội</span>
+                        </h3>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Hotline Gọi Điện (SĐT thật)</label>
+                                <input type="tel" id="socialHotline" placeholder="0987654321" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Hotline Hiển Thị (Định dạng đẹp)</label>
+                                <input type="text" id="socialHotlineDisplay" placeholder="0987.654.321" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Số Điện Thoại Zalo</label>
+                                <input type="tel" id="socialZaloNumber" placeholder="0987654321" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Đường Dẫn Zalo Trực Tiếp (Link Zalo.me)</label>
+                                <input type="url" id="socialZaloLink" placeholder="https://zalo.me/0987654321" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-zinc-700">Đường Dẫn Facebook (Fanpage / Group)</label>
+                            <input type="url" id="socialFacebookUrl" placeholder="https://facebook.com/thuhien.cungmehieucon" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Kênh TikTok</label>
+                                <input type="url" id="socialTiktokUrl" placeholder="https://tiktok.com/@thuhien.cungmehieucon" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Kênh YouTube</label>
+                                <input type="url" id="socialYoutubeUrl" placeholder="https://youtube.com/@thuhien.cungmehieucon" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Email Hiển Thị Chân Trang</label>
+                                <input type="email" id="socialEmailDisplay" placeholder="thuhien.cungmehieucon@gmail.com" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-semibold text-zinc-700">Khung Giờ Hỗ Trợ Phụ Huynh</label>
+                                <input type="text" id="socialSupportHours" placeholder="8:00 - 21:30 hàng ngày" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <button onclick="saveSocialSettings()" class="inline-flex h-9 w-full items-center justify-center rounded-md bg-brand-500 px-4 text-xs font-medium text-white shadow-xs hover:bg-brand-600 transition-colors">
+                                Cập Nhật Toàn Bộ Kênh Social
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Live Preview Card (5 cols) -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                            <h3 class="text-sm font-semibold text-zinc-900 pb-2 border-b border-zinc-100 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <span>Xem Trước Hiển Thị Nút Bấm Trên Website</span>
+                            </h3>
+
+                            <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-3 text-xs">
+                                <div class="font-bold text-zinc-700">Nút Nhắn Zalo Nhanh:</div>
+                                <a id="previewZaloBtn" href="#" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0068FF] text-white font-medium shadow-sm hover:opacity-95">
+                                    <span>💬 Nhắn Zalo: <span id="previewZaloText" class="font-mono">...</span></span>
+                                </a>
+
+                                <div class="font-bold text-zinc-700 pt-2">Nút Hotline Tư Vấn:</div>
+                                <a id="previewHotlineBtn" href="#" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#174C3B] text-white font-medium shadow-sm hover:opacity-95">
+                                    <span>📞 Hotline: <span id="previewHotlineText" class="font-mono">...</span></span>
+                                </a>
+
+                                <div class="font-bold text-zinc-700 pt-2">Các Kênh Truyền Thông:</div>
+                                <div class="flex items-center gap-2 pt-1" id="previewSocialIcons">
+                                    <a id="previewFbBtn" href="#" target="_blank" class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs" title="Facebook">f</a>
+                                    <a id="previewTiktokBtn" href="#" target="_blank" class="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs" title="TikTok">♪</a>
+                                    <a id="previewYtBtn" href="#" target="_blank" class="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs" title="YouTube">▶</a>
+                                </div>
+                            </div>
+
+                            <p class="text-[11px] text-zinc-400 leading-relaxed">
+                                *Khi lưu thay đổi, website sẽ tự động cập nhật mọi thẻ liên kết Zalo, Hotline, Facebook mà không cần tải lại toàn bộ cấu trúc trang.*
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+                 VIEW 9: MÃ NHÚNG BÊN THỨ 3 & TRACKING (settings-integrations)
+                 ========================================================== -->
+            <div id="view-settings-integrations" class="hidden space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Mã Nhúng Bên Thứ 3 & Đo Lường Analytics</h2>
+                        <p class="text-xs text-zinc-500">Gắn các mã theo dõi Google Analytics 4, Tag Manager, Facebook Pixel, TikTok Pixel, Vercel và Custom Script</p>
+                    </div>
+                    <button onclick="saveIntegrationsSettings()" class="inline-flex h-8 items-center justify-center rounded-md bg-brand-500 px-4 text-xs font-medium text-white shadow-xs hover:bg-brand-600 transition-colors">
+                        Lưu & Kích Hoạt Mã Nhúng
+                    </button>
+                </div>
+
+                <div class="grid gap-6 lg:grid-cols-2">
+                    <!-- Standard Pixels & Tags -->
+                    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                        <h3 class="text-sm font-semibold text-zinc-900 pb-2 border-b border-zinc-100 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                            <span>Thẻ Tiếp Thị & Đo Lường Tiêu Chuẩn</span>
+                        </h3>
+
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-zinc-700 flex items-center justify-between">
+                                <span>Google Analytics 4 (GA4 ID)</span>
+                                <span class="text-[10px] text-zinc-400 font-mono">G-XXXXXXXXXX</span>
+                            </label>
+                            <input type="text" id="integGa4Id" placeholder="G-ABC123XYZ4" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500">
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-zinc-700 flex items-center justify-between">
+                                <span>Google Tag Manager (GTM ID)</span>
+                                <span class="text-[10px] text-zinc-400 font-mono">GTM-XXXXXXX</span>
+                            </label>
+                            <input type="text" id="integGtmId" placeholder="GTM-K9X2MN7" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500">
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-zinc-700 flex items-center justify-between">
+                                <span>Meta (Facebook) Pixel ID</span>
+                                <span class="text-[10px] text-zinc-400 font-mono">123456789012345</span>
+                            </label>
+                            <input type="text" id="integFbPixelId" placeholder="102938475610293" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500">
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-zinc-700 flex items-center justify-between">
+                                <span>TikTok Pixel ID</span>
+                                <span class="text-[10px] text-zinc-400 font-mono">CXXXXXXXXXXXXXXXXX</span>
+                            </label>
+                            <input type="text" id="integTiktokPixelId" placeholder="C9ABCDEFG12345" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500">
+                        </div>
+
+                        <div class="pt-2">
+                            <label class="flex items-center gap-3 p-3 rounded-lg border border-zinc-200 bg-zinc-50/60 cursor-pointer hover:bg-zinc-100/60 transition-colors">
+                                <input type="checkbox" id="integVercelAnalyticsCheckbox" class="w-4 h-4 text-brand-500 rounded border-zinc-300 focus:ring-brand-500">
+                                <div>
+                                    <span class="text-xs font-bold text-zinc-900 block">Kích hoạt Vercel Web Analytics & Insights</span>
+                                    <span class="text-[11px] text-zinc-500">Tự động nạp script `_vercel/insights/script.js` khi triển khai trên Vercel.</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Custom Raw Scripts -->
+                    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                        <h3 class="text-sm font-semibold text-zinc-900 pb-2 border-b border-zinc-100 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                            <span>Mã Tuỳ Chỉnh (Custom Head & Body Scripts)</span>
+                        </h3>
+
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-zinc-700 flex items-center justify-between">
+                                <span>Mã nhúng vào thẻ &lt;head&gt; (Google Search Console, Bing, Clarity...)</span>
+                            </label>
+                            <textarea id="integCustomHead" rows="4" placeholder="<!-- Dán mã script hoặc meta tag tại đây -->&#10;<meta name='google-site-verification' content='...' />" class="w-full rounded-md border border-zinc-200 p-2.5 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"></textarea>
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-zinc-700 flex items-center justify-between">
+                                <span>Mã nhúng vào thẻ &lt;body&gt; (Live Chat Widget, Subiz, Tawk.to...)</span>
+                            </label>
+                            <textarea id="integCustomBody" rows="4" placeholder="<!-- Dán widget script hoặc mã chatbox tại đây -->&#10;&lt;script&gt;/* Widget code */&lt;/script&gt;" class="w-full rounded-md border border-zinc-200 p-2.5 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500"></textarea>
+                        </div>
+
+                        <div class="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-xs text-emerald-800">
+                            <strong>Lưu ý:</strong> Khi bạn nhấn <em>"Lưu & Kích Hoạt"</em>, các thẻ tracking sẽ được nạp ngay lập tức trên mọi trang của website.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+                 VIEW 10: BẢO MẬT & ĐỔI MẬT KHẨU (settings-security)
+                 ========================================================== -->
+            <div id="view-settings-security" class="hidden space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold tracking-tight text-zinc-900">Trung Tâm Bảo Mật & Quản Trị Truy Cập</h2>
+                    <p class="text-xs text-zinc-500">Bảo vệ trang quản trị trước bot tự động, brute-force tấn công và quản lý mật khẩu an toàn với Salted SHA-256</p>
+                </div>
+
+                <div class="grid gap-6 lg:grid-cols-12">
+                    <!-- Left: Change Password (6 cols) -->
+                    <div class="lg:col-span-6 rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                        <h3 class="text-sm font-semibold text-zinc-900 pb-2 border-b border-zinc-100 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                            <span>Đổi Tài Khoản & Mật Khẩu Quản Trị</span>
+                        </h3>
+
+                        <form id="changePasswordForm" class="space-y-3.5 text-xs">
+                            <div class="space-y-1">
+                                <label class="font-semibold text-zinc-700">Tên Đăng Nhập Mới</label>
+                                <input type="text" id="secNewUsername" required value="admin" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+
+                            <div class="space-y-1">
+                                <label class="font-semibold text-zinc-700">Mật Khẩu Hiện Tại *</label>
+                                <input type="password" id="secCurrentPassword" required placeholder="Nhập mật khẩu hiện tại đang dùng" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="space-y-1">
+                                    <label class="font-semibold text-zinc-700">Mật Khẩu Mới *</label>
+                                    <input type="password" id="secNewPassword" required minlength="6" placeholder="Tối thiểu 6 ký tự" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                </div>
+                                <div class="space-y-1">
+                                    <label class="font-semibold text-zinc-700">Xác Nhận Mật Khẩu Mới *</label>
+                                    <input type="password" id="secConfirmPassword" required minlength="6" placeholder="Nhập lại mật khẩu mới" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                </div>
+                            </div>
+
+                            <div id="changePassMessage" class="hidden p-3 rounded-lg text-xs font-medium"></div>
+
+                            <div class="pt-2">
+                                <button type="submit" class="inline-flex h-9 w-full items-center justify-center rounded-md bg-brand-500 px-4 text-xs font-medium text-white shadow-xs hover:bg-brand-600 transition-colors">
+                                    Cập Nhật Tài Khoản & Mật Khẩu
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Right: Anti-Bot Shield Status (6 cols) -->
+                    <div class="lg:col-span-6 rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                        <h3 class="text-sm font-semibold text-zinc-900 pb-2 border-b border-zinc-100 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                <span>Trạng Thái Lá Chắn Anti-Bot (Security Shield)</span>
+                            </div>
+                            <span class="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+                                Đang Bảo Vệ 100%
+                            </span>
+                        </h3>
+
+                        <div class="space-y-3 text-xs">
+                            <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-100 flex items-start justify-between">
+                                <div>
+                                    <span class="font-bold text-zinc-900 block">Mã Hóa Mật Khẩu Salted SHA-256</span>
+                                    <span class="text-zinc-500 text-[11px]">Tuyệt đối không lưu mật khẩu dạng chữ thô (plaintext) trong LocalStorage.</span>
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 shrink-0">BẬT</span>
+                            </div>
+
+                            <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-100 flex items-start justify-between">
+                                <div>
+                                    <span class="font-bold text-zinc-900 block">Bẫy Bot Ẩn (Honeypot Trap)</span>
+                                    <span class="text-zinc-500 text-[11px]">Trường ẩn vô hình với mắt người. Bot tự động quét và điền sẽ bị từ chối ngay.</span>
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 shrink-0">BẬT</span>
+                            </div>
+
+                            <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-100 flex items-start justify-between">
+                                <div>
+                                    <span class="font-bold text-zinc-900 block">Phép Tính Xác Thực Tương Tác (Math Challenge)</span>
+                                    <span class="text-zinc-500 text-[11px]">Buộc người dùng thực tế phải giải câu hỏi số học ngẫu nhiên trước khi đăng nhập.</span>
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 shrink-0">BẬT</span>
+                            </div>
+
+                            <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-100 flex items-start justify-between">
+                                <div>
+                                    <span class="font-bold text-zinc-900 block">Chống Brute-Force & Khóa 15 Phút</span>
+                                    <span class="text-zinc-500 text-[11px]">Nếu nhập sai 5 lần liên tiếp, hệ thống khóa đăng nhập trong 15 phút.</span>
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 shrink-0">BẬT</span>
+                            </div>
+
+                            <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-100 flex items-start justify-between">
+                                <div>
+                                    <span class="font-bold text-zinc-900 block">Tự Động Đăng Xuất Khi Không Hoạt Động</span>
+                                    <span class="text-zinc-500 text-[11px]">Tự động ngắt phiên an toàn sau 30 phút không có thao tác để tránh lộ máy.</span>
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 shrink-0">30 PHÚT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Audit Logs Table -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+                        <div>
+                            <h3 class="text-sm font-semibold text-zinc-900">Lịch Sử Kiểm Toán An Ninh (Security Audit Logs)</h3>
+                            <p class="text-xs text-zinc-500">Ghi nhận mọi lần đăng nhập, nỗ lực truy cập của bot và cảnh báo hệ thống</p>
+                        </div>
+                        <button onclick="handleClearSecurityLogs()" class="text-xs text-zinc-500 hover:text-red-600 font-medium transition-colors">
+                            Xóa Lịch Sử
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs" id="securityLogsTable">
+                            <thead class="bg-zinc-50 text-zinc-500 uppercase font-semibold tracking-wider border-b border-zinc-200">
+                                <tr>
+                                    <th class="p-3 pl-4">Thời Gian</th>
+                                    <th class="p-3">Hành Động</th>
+                                    <th class="p-3">Kết Quả</th>
+                                    <th class="p-3 pr-4">Mô Tả Chi Tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-zinc-100 text-zinc-800" id="securityLogsTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
     </div>
@@ -719,6 +1368,60 @@
     </div>
 </div>
 
+<!-- Resource Modal (Add / Edit Resource) -->
+<div id="resourceModal" class="modal-overlay">
+    <div class="modal-content max-w-lg p-6">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100 mb-4">
+            <div>
+                <h3 class="text-base font-bold text-zinc-900" id="resourceModalTitle">Thêm Tài Liệu Mới</h3>
+                <p class="text-xs text-zinc-500">Cấu hình liên kết cẩm nang và nút tải về trên website</p>
+            </div>
+            <button onclick="closeResourceModal()" class="text-zinc-400 hover:text-zinc-600 text-sm p-1">✕</button>
+        </div>
+
+        <form id="resourceForm" onsubmit="handleSaveResource(event)" class="space-y-3.5 text-xs">
+            <input type="hidden" id="resEditId" value="">
+
+            <div class="space-y-1">
+                <label class="font-semibold text-zinc-700">Tên / Tiêu Đề Tài Liệu *</label>
+                <input type="text" id="resTitle" required placeholder="Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+
+            <div class="space-y-1">
+                <label class="font-semibold text-zinc-700">Mô Tả Ngắn</label>
+                <input type="text" id="resDescription" placeholder="Tài liệu PDF hướng dẫn cha mẹ can thiệp sớm tại nhà" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+
+            <div class="space-y-1">
+                <label class="font-semibold text-zinc-700">Đường Dẫn File (Link Google Drive / PDF / Cloud) *</label>
+                <input type="text" id="resFileUrl" required placeholder="https://drive.google.com/file/d/xxxxxx/view?usp=sharing" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                <p class="text-[10px] text-zinc-400">Dán link Google Drive hoặc file PDF máy chủ đám mây.</p>
+            </div>
+
+            <div class="space-y-1">
+                <label class="font-semibold text-zinc-700">Chữ Nút Bấm Kêu Gọi Hành Động (CTA Button) *</label>
+                <input type="text" id="resButtonText" required value="Tải Cẩm Nang Ngay (PDF)" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+
+            <div class="pt-1">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="resIsActive" class="w-4 h-4 text-brand-500 rounded border-zinc-300 focus:ring-brand-500">
+                    <span class="text-xs font-semibold text-zinc-800">Đặt làm tài liệu kích hoạt hiển thị trên Website</span>
+                </label>
+            </div>
+
+            <div class="pt-2 flex items-center justify-end gap-2">
+                <button type="button" onclick="closeResourceModal()" class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-700 hover:bg-zinc-50">
+                    Hủy Bỏ
+                </button>
+                <button type="submit" class="inline-flex h-8 items-center justify-center rounded-md bg-brand-500 px-4 text-xs font-medium text-white shadow-xs hover:bg-brand-600 transition-colors">
+                    Lưu Tài Liệu
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- ==========================================================================
      CORE JAVASCRIPT & SHADCN CONTROLLERS
      ========================================================================== -->
@@ -728,8 +1431,62 @@
     let overviewTrendChartInstance = null;
     let overviewSourceChartInstance = null;
 
+    // Anti-Bot & Captcha State
+    let currentCaptcha = { a: 0, b: 0, answer: 0 };
+    let loginFormRenderTime = Date.now();
+
+    function generateCaptcha() {
+        const a = Math.floor(Math.random() * 8) + 2; // 2..9
+        const b = Math.floor(Math.random() * 8) + 1; // 1..8
+        currentCaptcha = { a, b, answer: a + b };
+        const badge = document.getElementById('captchaQuestionBadge');
+        if (badge) badge.innerText = `${a} + ${b} = ?`;
+        const input = document.getElementById('adminCaptchaInput');
+        if (input) input.value = '';
+    }
+
+    const refreshCaptchaBtn = document.getElementById('refreshCaptchaBtn');
+    if (refreshCaptchaBtn) {
+        refreshCaptchaBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            generateCaptcha();
+        });
+    }
+
+    function updateLockoutUI() {
+        const state = (typeof DB !== 'undefined' && typeof DB.getLoginLockoutState === 'function') 
+            ? DB.getLoginLockoutState() 
+            : { locked: false, remainingSeconds: 0 };
+        const banner = document.getElementById('lockoutBanner');
+        const submitBtn = document.getElementById('adminLoginSubmitBtn');
+        const remText = document.getElementById('lockoutRemainingText');
+
+        if (state.locked) {
+            if (banner) banner.classList.remove('hidden');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Tạm Khóa Bảo Vệ';
+            }
+            if (remText) {
+                const m = Math.floor(state.remainingSeconds / 60);
+                const s = state.remainingSeconds % 60;
+                remText.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            }
+        } else {
+            if (banner) banner.classList.add('hidden');
+            if (submitBtn && submitBtn.disabled && submitBtn.innerText === 'Tạm Khóa Bảo Vệ') {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Đăng Nhập';
+            }
+        }
+    }
+
     // 1. Authentication Check
     function checkAuth() {
+        loginFormRenderTime = Date.now();
+        generateCaptcha();
+        updateLockoutUI();
+
         if (sessionStorage.getItem(AUTH_KEY) === 'true') {
             document.getElementById('loginSection').classList.add('hidden');
             document.getElementById('dashboardSection').classList.remove('hidden');
@@ -742,13 +1499,29 @@
 
     document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
         e.preventDefault();
+        const errBox = document.getElementById('loginErrorAlert');
+        if (errBox) errBox.classList.add('hidden');
+
         const u = document.getElementById('adminUsername').value.trim();
         const p = document.getElementById('adminPassword').value.trim();
-        if (u === 'admin' && p === 'thuhien2026') {
+        const hp = document.getElementById('adminHpCheck') ? document.getElementById('adminHpCheck').value : '';
+        const captchaAns = document.getElementById('adminCaptchaInput') ? document.getElementById('adminCaptchaInput').value.trim() : '';
+        const elapsed = Date.now() - loginFormRenderTime;
+
+        const res = DB.verifyAdminLogin(u, p, hp, captchaAns, currentCaptcha.answer, elapsed);
+
+        if (res.success) {
             sessionStorage.setItem(AUTH_KEY, 'true');
+            sessionStorage.setItem('thuhien_admin_auth_time', String(Date.now()));
+            if (errBox) errBox.classList.add('hidden');
             checkAuth();
         } else {
-            alert('Tài khoản hoặc mật khẩu không chính xác!');
+            if (errBox) {
+                errBox.innerText = res.message || 'Đăng nhập không thành công!';
+                errBox.classList.remove('hidden');
+            }
+            generateCaptcha();
+            updateLockoutUI();
         }
     });
 
@@ -757,14 +1530,44 @@
         checkAuth();
     });
 
+    // Inactivity Auto-logout (30 minutes)
+    let lastActivityTime = Date.now();
+    ['mousemove', 'keydown', 'click', 'scroll'].forEach(evt => {
+        window.addEventListener(evt, () => {
+            lastActivityTime = Date.now();
+        }, { passive: true });
+    });
+
+    setInterval(() => {
+        if (sessionStorage.getItem(AUTH_KEY) === 'true') {
+            const inactiveMs = Date.now() - lastActivityTime;
+            if (inactiveMs > 30 * 60 * 1000) {
+                sessionStorage.removeItem(AUTH_KEY);
+                if (typeof DB.logSecurityEvent === 'function') {
+                    DB.logSecurityEvent('SESSION_TIMEOUT', 'TIMEOUT', 'Tự động ngắt phiên sau 30 phút không hoạt động');
+                }
+                alert('Phiên làm việc đã hết hạn sau 30 phút không có thao tác để đảm bảo an toàn. Vui lòng đăng nhập lại.');
+                checkAuth();
+            }
+        }
+    }, 30000);
+
     // 2. View Switcher (Sidebar navigation)
-    const views = ['overview', 'marketing', 'bookings', 'leads', 'data'];
+    const views = [
+        'overview', 'marketing', 'bookings', 'leads', 'data',
+        'settings-email', 'settings-resources', 'settings-social', 'settings-integrations', 'settings-security'
+    ];
     const breadcrumbLabels = {
         'overview': 'Tổng Quan KPIs',
         'marketing': 'Phân Tích Marketing & Phễu Chuyển Đổi',
         'bookings': 'Quản Lý Lịch Hẹn Tư Vấn 1-1',
         'leads': 'Khách Hàng Tải Cẩm Nang Ebook',
-        'data': 'Quản Trị Dữ Liệu & Xuất Báo Cáo'
+        'data': 'Quản Trị Dữ Liệu & Xuất Báo Cáo',
+        'settings-email': 'Hệ Thống Email & Thông Báo',
+        'settings-resources': 'Tài Liệu & Nút Tải File',
+        'settings-social': 'Kênh Social & Mạng Xã Hội',
+        'settings-integrations': 'Mã Nhúng Bên Thứ 3 (Scripts & Pixels)',
+        'settings-security': 'Bảo Mật & Đổi Mật Khẩu Quản Trị'
     };
 
     window.switchView = function(viewName) {
@@ -790,6 +1593,16 @@
         
         if (viewName === 'overview') {
             initOverviewCharts();
+        } else if (viewName === 'settings-email') {
+            renderSettingsEmail();
+        } else if (viewName === 'settings-resources') {
+            renderSettingsResources();
+        } else if (viewName === 'settings-social') {
+            renderSettingsSocial();
+        } else if (viewName === 'settings-integrations') {
+            renderSettingsIntegrations();
+        } else if (viewName === 'settings-security') {
+            renderSettingsSecurity();
         }
     };
 
@@ -1588,6 +2401,440 @@
             const matchCare = care === 'all' || row.dataset.care === care;
             row.style.display = (matchQ && matchCare) ? '' : 'none';
         });
+    }
+
+    // ========================================================================
+    // 11. CONTROLLERS CHO CÀI ĐẶT EMAIL, TÀI LIỆU, SOCIAL, SCRIPTS, BẢO MẬT
+    // ========================================================================
+
+    // 11.1 EMAIL SETTINGS
+    window.renderSettingsEmail = function() {
+        const settings = DB.getSettings();
+        const em = settings.email || {};
+
+        const provSelect = document.getElementById('emailProviderSelect');
+        if (provSelect) provSelect.value = em.provider || 'webhook';
+
+        if (document.getElementById('emailWebhookUrl')) document.getElementById('emailWebhookUrl').value = em.webhook_url || '';
+        if (document.getElementById('emailjsServiceId')) document.getElementById('emailjsServiceId').value = em.emailjs_service_id || '';
+        if (document.getElementById('emailjsTemplateId')) document.getElementById('emailjsTemplateId').value = em.emailjs_template_id || '';
+        if (document.getElementById('emailjsPublicKey')) document.getElementById('emailjsPublicKey').value = em.emailjs_public_key || '';
+        if (document.getElementById('formspreeEndpoint')) document.getElementById('formspreeEndpoint').value = em.formspree_endpoint || '';
+        if (document.getElementById('resendApiKey')) document.getElementById('resendApiKey').value = em.resend_api_key || '';
+
+        if (document.getElementById('adminNotifyEmail')) document.getElementById('adminNotifyEmail').value = em.admin_notify_email || 'thuhien.cungmehieucon@gmail.com';
+        if (document.getElementById('notifyOnBookingCheckbox')) document.getElementById('notifyOnBookingCheckbox').checked = em.notify_on_booking !== false;
+        if (document.getElementById('notifyOnLeadCheckbox')) document.getElementById('notifyOnLeadCheckbox').checked = em.notify_on_lead !== false;
+
+        toggleEmailProviderFields();
+        renderEmailLogsTable();
+    };
+
+    window.toggleEmailProviderFields = function() {
+        const provider = document.getElementById('emailProviderSelect') ? document.getElementById('emailProviderSelect').value : 'webhook';
+        const fields = {
+            'webhook': document.getElementById('providerFieldsWebhook'),
+            'emailjs': document.getElementById('providerFieldsEmailJS'),
+            'formspree': document.getElementById('providerFieldsFormspree'),
+            'resend': document.getElementById('providerFieldsResend')
+        };
+
+        Object.keys(fields).forEach(key => {
+            if (fields[key]) {
+                fields[key].classList.toggle('hidden', key !== provider);
+            }
+        });
+    };
+
+    window.saveEmailSettings = function() {
+        const current = DB.getSettings();
+        const provider = document.getElementById('emailProviderSelect').value;
+        const adminEmail = document.getElementById('adminNotifyEmail').value.trim();
+
+        if (adminEmail && !adminEmail.includes('@')) {
+            alert('Vui lòng nhập đúng định dạng email thông báo!');
+            return;
+        }
+
+        const newEmailSettings = {
+            provider: provider,
+            admin_notify_email: adminEmail || 'thuhien.cungmehieucon@gmail.com',
+            notify_on_booking: document.getElementById('notifyOnBookingCheckbox').checked,
+            notify_on_lead: document.getElementById('notifyOnLeadCheckbox').checked,
+            webhook_url: document.getElementById('emailWebhookUrl').value.trim(),
+            emailjs_service_id: document.getElementById('emailjsServiceId').value.trim(),
+            emailjs_template_id: document.getElementById('emailjsTemplateId').value.trim(),
+            emailjs_public_key: document.getElementById('emailjsPublicKey').value.trim(),
+            formspree_endpoint: document.getElementById('formspreeEndpoint').value.trim(),
+            resend_api_key: document.getElementById('resendApiKey').value.trim()
+        };
+
+        DB.saveSettings({ email: newEmailSettings });
+        alert('Đã lưu cấu hình hệ thống Email thành công!');
+    };
+
+    window.handleSendTestEmail = function() {
+        const targetInput = document.getElementById('testEmailInput');
+        const targetEmail = targetInput ? targetInput.value.trim() : '';
+        const resultBox = document.getElementById('testEmailResultBox');
+        const btn = document.getElementById('btnSendTestEmail');
+
+        if (!targetEmail || !targetEmail.includes('@')) {
+            alert('Vui lòng nhập một địa chỉ email hợp lệ để nhận thử nghiệm!');
+            return;
+        }
+
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'Đang gửi email thử nghiệm...';
+        }
+
+        setTimeout(() => {
+            const res = DB.testEmail(targetEmail);
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = 'Gửi Email Thử Nghiệm Ngay';
+            }
+
+            if (resultBox) {
+                resultBox.classList.remove('hidden');
+                if (res.success) {
+                    resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
+                    resultBox.innerText = `✓ ${res.message}`;
+                } else {
+                    resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
+                    resultBox.innerText = `✕ Lỗi: ${res.message}`;
+                }
+            }
+            renderEmailLogsTable();
+        }, 600);
+    };
+
+    window.handleClearEmailLogs = function() {
+        if (confirm('Xác nhận xóa sạch lịch sử nhật ký gửi email?')) {
+            DB.clearEmailLogs();
+            renderEmailLogsTable();
+        }
+    };
+
+    function renderEmailLogsTable() {
+        const tableBody = document.getElementById('emailLogsTableBody');
+        if (!tableBody) return;
+
+        const logs = DB.getEmailLogs();
+        if (logs.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-zinc-400">Chưa có nhật ký gửi email nào được ghi nhận.</td></tr>';
+            return;
+        }
+
+        tableBody.innerHTML = logs.map(l => {
+            const isSuccess = l.status === 'SENT' || l.status === 'QUEUED';
+            const badgeClass = isSuccess ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200';
+            const typeLabel = l.type === 'BOOKING_ALERT' ? 'Lịch Hẹn Mới' : (l.type === 'LEAD_ALERT' ? 'Lead Tải Cẩm Nang' : 'Thử Nghiệm');
+            
+            return `
+                <tr class="hover:bg-zinc-50/80 transition-colors">
+                    <td class="p-3 pl-4 font-mono text-[11px] text-zinc-500 whitespace-nowrap">${l.timestamp}</td>
+                    <td class="p-3 font-semibold text-zinc-800">${typeLabel}</td>
+                    <td class="p-3 font-mono text-zinc-600">${l.recipient}</td>
+                    <td class="p-3 font-mono text-zinc-500 uppercase text-[11px]">${l.provider}</td>
+                    <td class="p-3">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${badgeClass}">
+                            ${l.status}
+                        </span>
+                    </td>
+                    <td class="p-3 pr-4 text-zinc-600 text-[11px] truncate max-w-xs" title="${l.details || ''}">
+                        ${l.details || '-'}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    // 11.2 RESOURCE MANAGER
+    window.renderSettingsResources = function() {
+        const settings = DB.getSettings();
+        const resources = settings.resources || [];
+        const tableBody = document.getElementById('resourcesTableBody');
+        if (!tableBody) return;
+
+        if (resources.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-zinc-400">Chưa có tài liệu nào. Bấm "+ Thêm Tài Liệu Mới" để tạo.</td></tr>';
+            return;
+        }
+
+        tableBody.innerHTML = resources.map(r => `
+            <tr class="hover:bg-zinc-50/80 transition-colors">
+                <td class="p-3.5 pl-4">
+                    <div class="font-bold text-zinc-900">${r.title}</div>
+                    <span class="text-[10px] text-zinc-400 font-mono">ID: ${r.id}</span>
+                </td>
+                <td class="p-3.5 text-zinc-600 text-xs max-w-xs">${r.description || '-'}</td>
+                <td class="p-3.5 font-medium text-brand-500">${r.button_text}</td>
+                <td class="p-3.5 font-mono text-xs max-w-xs truncate">
+                    <a href="${r.file_url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline inline-flex items-center gap-1">
+                        <span class="truncate max-w-[200px]">${r.file_url}</span>
+                        <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                    </a>
+                </td>
+                <td class="p-3.5 text-center">
+                    ${r.is_active 
+                        ? '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">● Đang Kích Hoạt</span>'
+                        : `<button onclick="toggleResourceActive('${r.id}')" class="text-[11px] text-zinc-500 hover:text-brand-500 underline font-medium">Bật Hiển Thị</button>`
+                    }
+                </td>
+                <td class="p-3.5 pr-4 text-right space-x-2 whitespace-nowrap">
+                    <button onclick="openResourceModal('${r.id}')" class="text-xs text-brand-500 font-semibold hover:underline">Sửa</button>
+                    ${resources.length > 1 ? `<button onclick="deleteResourceItem('${r.id}')" class="text-xs text-rose-600 font-semibold hover:underline">Xóa</button>` : ''}
+                </td>
+            </tr>
+        `).join('');
+    };
+
+    const resModal = document.getElementById('resourceModal');
+    window.openResourceModal = function(id = null) {
+        if (!resModal) return;
+        const titleEl = document.getElementById('resourceModalTitle');
+        const idInput = document.getElementById('resEditId');
+        const tInput = document.getElementById('resTitle');
+        const dInput = document.getElementById('resDescription');
+        const fInput = document.getElementById('resFileUrl');
+        const bInput = document.getElementById('resButtonText');
+        const aInput = document.getElementById('resIsActive');
+
+        if (id) {
+            const settings = DB.getSettings();
+            const r = (settings.resources || []).find(item => item.id == id);
+            if (r) {
+                titleEl.innerText = 'Chỉnh Sửa Tài Liệu';
+                idInput.value = r.id;
+                tInput.value = r.title || '';
+                dInput.value = r.description || '';
+                fInput.value = r.file_url || '';
+                bInput.value = r.button_text || 'Tải Cẩm Nang Ngay (PDF)';
+                aInput.checked = !!r.is_active;
+            }
+        } else {
+            titleEl.innerText = 'Thêm Tài Liệu Mới';
+            idInput.value = '';
+            tInput.value = '';
+            dInput.value = '';
+            fInput.value = '';
+            bInput.value = 'Tải Cẩm Nang Ngay (PDF)';
+            aInput.checked = true;
+        }
+
+        resModal.classList.add('active');
+    };
+
+    window.closeResourceModal = function() {
+        if (resModal) resModal.classList.remove('active');
+    };
+
+    window.handleSaveResource = function(e) {
+        e.preventDefault();
+        const id = document.getElementById('resEditId').value;
+        const resData = {
+            title: document.getElementById('resTitle').value.trim(),
+            description: document.getElementById('resDescription').value.trim(),
+            file_url: document.getElementById('resFileUrl').value.trim(),
+            button_text: document.getElementById('resButtonText').value.trim() || 'Tải Cẩm Nang Ngay (PDF)',
+            is_active: document.getElementById('resIsActive').checked
+        };
+
+        if (!resData.title || !resData.file_url) {
+            alert('Vui lòng điền tên tài liệu và đường dẫn tải file!');
+            return;
+        }
+
+        if (id) {
+            DB.updateResource(id, resData);
+        } else {
+            DB.addResource(resData);
+        }
+
+        closeResourceModal();
+        renderSettingsResources();
+        alert('Đã cập nhật danh sách tài liệu thành công!');
+    };
+
+    window.toggleResourceActive = function(id) {
+        DB.updateResource(id, { is_active: true });
+        renderSettingsResources();
+    };
+
+    window.deleteResourceItem = function(id) {
+        if (confirm('Xác nhận xóa tài liệu này?')) {
+            DB.deleteResource(id);
+            renderSettingsResources();
+        }
+    };
+
+    // 11.3 SOCIAL SETTINGS
+    window.renderSettingsSocial = function() {
+        const settings = DB.getSettings();
+        const soc = settings.social || {};
+
+        if (document.getElementById('socialHotline')) document.getElementById('socialHotline').value = soc.hotline || '';
+        if (document.getElementById('socialHotlineDisplay')) document.getElementById('socialHotlineDisplay').value = soc.hotline_display || '';
+        if (document.getElementById('socialZaloNumber')) document.getElementById('socialZaloNumber').value = soc.zalo_number || '';
+        if (document.getElementById('socialZaloLink')) document.getElementById('socialZaloLink').value = soc.zalo_link || '';
+        if (document.getElementById('socialFacebookUrl')) document.getElementById('socialFacebookUrl').value = soc.facebook_url || '';
+        if (document.getElementById('socialTiktokUrl')) document.getElementById('socialTiktokUrl').value = soc.tiktok_url || '';
+        if (document.getElementById('socialYoutubeUrl')) document.getElementById('socialYoutubeUrl').value = soc.youtube_url || '';
+        if (document.getElementById('socialEmailDisplay')) document.getElementById('socialEmailDisplay').value = soc.contact_email || '';
+        if (document.getElementById('socialSupportHours')) document.getElementById('socialSupportHours').value = soc.support_hours || '';
+
+        updateSocialLivePreview();
+    };
+
+    window.updateSocialLivePreview = function() {
+        const hDisp = (document.getElementById('socialHotlineDisplay') && document.getElementById('socialHotlineDisplay').value) || '0987.654.321';
+        const hRaw = (document.getElementById('socialHotline') && document.getElementById('socialHotline').value) || '0987654321';
+        const zNum = (document.getElementById('socialZaloNumber') && document.getElementById('socialZaloNumber').value) || '0987654321';
+        const zLink = (document.getElementById('socialZaloLink') && document.getElementById('socialZaloLink').value) || `https://zalo.me/${zNum.replace(/[^0-9]/g, '')}`;
+        const fbUrl = (document.getElementById('socialFacebookUrl') && document.getElementById('socialFacebookUrl').value) || '#';
+        const ttUrl = (document.getElementById('socialTiktokUrl') && document.getElementById('socialTiktokUrl').value) || '#';
+        const ytUrl = (document.getElementById('socialYoutubeUrl') && document.getElementById('socialYoutubeUrl').value) || '#';
+
+        if (document.getElementById('previewZaloText')) document.getElementById('previewZaloText').innerText = zNum;
+        if (document.getElementById('previewZaloBtn')) document.getElementById('previewZaloBtn').href = zLink;
+
+        if (document.getElementById('previewHotlineText')) document.getElementById('previewHotlineText').innerText = hDisp;
+        if (document.getElementById('previewHotlineBtn')) document.getElementById('previewHotlineBtn').href = `tel:${hRaw.replace(/[^0-9]/g, '')}`;
+
+        if (document.getElementById('previewFbBtn')) document.getElementById('previewFbBtn').href = fbUrl;
+        if (document.getElementById('previewTiktokBtn')) document.getElementById('previewTiktokBtn').href = ttUrl;
+        if (document.getElementById('previewYtBtn')) document.getElementById('previewYtBtn').href = ytUrl;
+    };
+
+    // Live preview event listeners
+    ['socialHotline', 'socialHotlineDisplay', 'socialZaloNumber', 'socialZaloLink', 'socialFacebookUrl', 'socialTiktokUrl', 'socialYoutubeUrl'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', updateSocialLivePreview);
+    });
+
+    window.saveSocialSettings = function() {
+        const newSocial = {
+            hotline: document.getElementById('socialHotline').value.trim(),
+            hotline_display: document.getElementById('socialHotlineDisplay').value.trim(),
+            zalo_number: document.getElementById('socialZaloNumber').value.trim(),
+            zalo_link: document.getElementById('socialZaloLink').value.trim(),
+            facebook_url: document.getElementById('socialFacebookUrl').value.trim(),
+            tiktok_url: document.getElementById('socialTiktokUrl').value.trim(),
+            youtube_url: document.getElementById('socialYoutubeUrl').value.trim(),
+            contact_email: document.getElementById('socialEmailDisplay').value.trim(),
+            support_hours: document.getElementById('socialSupportHours').value.trim()
+        };
+
+        DB.saveSettings({ social: newSocial });
+        if (typeof DB.applySocialLinks === 'function') DB.applySocialLinks();
+        alert('Đã lưu cấu hình kênh Social và liên hệ thành công!');
+    };
+
+    // 11.4 INTEGRATIONS (3RD PARTY SCRIPTS)
+    window.renderSettingsIntegrations = function() {
+        const settings = DB.getSettings();
+        const integ = settings.integrations || {};
+
+        if (document.getElementById('integGa4Id')) document.getElementById('integGa4Id').value = integ.google_analytics_id || '';
+        if (document.getElementById('integGtmId')) document.getElementById('integGtmId').value = integ.google_tag_manager_id || '';
+        if (document.getElementById('integFbPixelId')) document.getElementById('integFbPixelId').value = integ.facebook_pixel_id || '';
+        if (document.getElementById('integTiktokPixelId')) document.getElementById('integTiktokPixelId').value = integ.tiktok_pixel_id || '';
+        if (document.getElementById('integVercelAnalyticsCheckbox')) document.getElementById('integVercelAnalyticsCheckbox').checked = !!integ.vercel_analytics_enabled;
+        if (document.getElementById('integCustomHead')) document.getElementById('integCustomHead').value = integ.custom_head_scripts || '';
+        if (document.getElementById('integCustomBody')) document.getElementById('integCustomBody').value = integ.custom_body_scripts || '';
+    };
+
+    window.saveIntegrationsSettings = function() {
+        const newInteg = {
+            google_analytics_id: document.getElementById('integGa4Id').value.trim(),
+            google_tag_manager_id: document.getElementById('integGtmId').value.trim(),
+            facebook_pixel_id: document.getElementById('integFbPixelId').value.trim(),
+            tiktok_pixel_id: document.getElementById('integTiktokPixelId').value.trim(),
+            vercel_analytics_enabled: document.getElementById('integVercelAnalyticsCheckbox').checked,
+            custom_head_scripts: document.getElementById('integCustomHead').value.trim(),
+            custom_body_scripts: document.getElementById('integCustomBody').value.trim()
+        };
+
+        DB.saveSettings({ integrations: newInteg });
+        if (typeof DB.applyIntegrations === 'function') DB.applyIntegrations();
+        alert('Đã lưu cấu hình và kích hoạt các mã nhúng tracking thành công!');
+    };
+
+    // 11.5 SECURITY & PASSWORD
+    window.renderSettingsSecurity = function() {
+        renderSecurityLogsTable();
+    };
+
+    const changePassForm = document.getElementById('changePasswordForm');
+    if (changePassForm) {
+        changePassForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const curr = document.getElementById('secCurrentPassword').value;
+            const newUser = document.getElementById('secNewUsername').value.trim();
+            const newP = document.getElementById('secNewPassword').value;
+            const confP = document.getElementById('secConfirmPassword').value;
+            const msgBox = document.getElementById('changePassMessage');
+
+            if (newP !== confP) {
+                if (msgBox) {
+                    msgBox.className = 'p-3 rounded-lg text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
+                    msgBox.innerText = 'Xác nhận mật khẩu mới không khớp!';
+                    msgBox.classList.remove('hidden');
+                }
+                return;
+            }
+
+            const res = DB.changeAdminCredentials(curr, newUser, newP);
+            if (msgBox) {
+                msgBox.classList.remove('hidden');
+                if (res.success) {
+                    msgBox.className = 'p-3 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
+                    msgBox.innerText = `✓ ${res.message}`;
+                    changePassForm.reset();
+                } else {
+                    msgBox.className = 'p-3 rounded-lg text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
+                    msgBox.innerText = `✕ ${res.message}`;
+                }
+            }
+            renderSecurityLogsTable();
+        });
+    }
+
+    window.handleClearSecurityLogs = function() {
+        if (confirm('Xác nhận xóa sạch lịch sử kiểm toán an ninh?')) {
+            DB.clearSecurityLogs();
+            renderSecurityLogsTable();
+        }
+    };
+
+    function renderSecurityLogsTable() {
+        const tableBody = document.getElementById('securityLogsTableBody');
+        if (!tableBody) return;
+
+        const logs = DB.getSecurityLogs();
+        if (logs.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-zinc-400">Chưa có sự kiện an ninh nào được ghi nhận.</td></tr>';
+            return;
+        }
+
+        tableBody.innerHTML = logs.map(l => {
+            const isOk = l.status === 'SUCCESS';
+            const badgeClass = isOk ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200';
+            return `
+                <tr class="hover:bg-zinc-50/80 transition-colors">
+                    <td class="p-3 pl-4 font-mono text-[11px] text-zinc-500 whitespace-nowrap">${l.timestamp}</td>
+                    <td class="p-3 font-mono font-bold text-xs text-zinc-800">${l.action}</td>
+                    <td class="p-3">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${badgeClass}">
+                            ${l.status}
+                        </span>
+                    </td>
+                    <td class="p-3 pr-4 text-zinc-600 text-xs">${l.details || '-'}</td>
+                </tr>
+            `;
+        }).join('');
     }
 
     window.clearAllDataToZero = function() {
