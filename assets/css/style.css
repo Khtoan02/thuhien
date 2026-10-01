@@ -58,6 +58,10 @@ button, input, select, textarea {
 }
 
 /* Typography Overrides */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
 .font-serif {
   font-family: 'Alata', sans-serif !important;
 }
