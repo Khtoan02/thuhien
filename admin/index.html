@@ -616,12 +616,17 @@
 
                     <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs flex flex-col justify-between">
                         <div class="space-y-1">
-                            <h3 class="text-sm font-semibold text-zinc-900">Khôi Phục Dữ Liệu Mẫu</h3>
-                            <p class="text-xs text-zinc-500">Nạp lại bộ dữ liệu kiểm thử chuẩn ban đầu để xem đầy đủ các biểu đồ thống kê.</p>
+                            <h3 class="text-sm font-semibold text-zinc-900">Quản Trị Đo Lường & Dữ Liệu</h3>
+                            <p class="text-xs text-zinc-500">Xóa trắng toàn bộ dữ liệu (đưa về 0) để bắt đầu đo lường thực tế, hoặc nạp lại dữ liệu thử nghiệm.</p>
                         </div>
-                        <button onclick="resetData()" class="mt-4 inline-flex h-9 items-center justify-center rounded-md border border-zinc-200 bg-white px-4 text-xs font-medium text-zinc-700 hover:bg-zinc-50 transition-colors">
-                            Nạp Lại Dữ Liệu Mẫu
-                        </button>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <button onclick="clearAllDataToZero()" class="inline-flex h-9 items-center justify-center rounded-md bg-rose-600 px-3.5 text-xs font-medium text-white hover:bg-rose-700 transition-colors">
+                                Đưa Về 0 (Khởi Chạy)
+                            </button>
+                            <button onclick="resetData()" class="inline-flex h-9 items-center justify-center rounded-md border border-zinc-200 bg-white px-3.5 text-xs font-medium text-zinc-700 hover:bg-zinc-50 transition-colors">
+                                Nạp Dữ Liệu Demo
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -821,7 +826,7 @@
                     <span id="overviewLiveCount">${live.count}</span> <span class="text-xs font-normal text-zinc-500">mẹ đang xem</span>
                 </div>
                 <p class="text-[11px] text-emerald-700/80 mt-1 truncate" id="overviewLivePagesDetail">
-                    ● ${live.pages[0]?.count || 2} xem Trang Chủ • ${live.pages[2]?.count || 1} xem Đặt Lịch
+                    ${live.count > 0 ? `● ${live.pages[0]?.count || 0} xem Trang Chủ • ${live.pages[2]?.count || 0} xem Đặt Lịch` : 'Chưa có phiên truy cập đang hoạt động'}
                 </p>
             </div>
 
@@ -875,52 +880,59 @@
         // 3.5 Render Realtime Live Online Stream
         updateLiveRealtime();
 
-        // 3.3 Overview Recent Bookings preview
+        // 3.6 Overview Recent Bookings preview
         const recent = bookings.slice(0, 4);
-        document.getElementById('overviewRecentBookings').innerHTML = recent.map(b => `
-            <div class="py-3 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center font-bold text-zinc-700 text-xs">
-                        ${b.parent_name.charAt(0)}
-                    </div>
-                    <div>
-                        <div class="font-semibold text-zinc-900">${b.parent_name}</div>
-                        <div class="text-[11px] text-zinc-500">${b.phone} • Bé ${b.baby_name || 'Bé'} (${b.baby_age})</div>
-                    </div>
-                </div>
+        const recentEl = document.getElementById('overviewRecentBookings');
+        if (recentEl) {
+            if (recent.length === 0) {
+                recentEl.innerHTML = '<div class="py-8 text-center text-zinc-400 text-xs">Chưa có lịch hẹn tư vấn nào. Dữ liệu sẽ xuất hiện khi phụ huynh đăng ký.</div>';
+            } else {
+                recentEl.innerHTML = recent.map(b => `
+                    <div class="py-3 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center font-bold text-zinc-700 text-xs">
+                                ${b.parent_name.charAt(0)}
+                            </div>
+                            <div>
+                                <div class="font-semibold text-zinc-900">${b.parent_name}</div>
+                                <div class="text-[11px] text-zinc-500">${b.phone} • Bé ${b.baby_name || 'Bé'} (${b.baby_age})</div>
+                            </div>
+                        </div>
 
-                <div class="flex items-center gap-3">
-                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-${b.status}">
-                        ${getStatusLabel(b.status)}
-                    </span>
-                    <button onclick="openDetail(${b.id})" class="text-xs text-brand-500 font-semibold hover:underline">
-                        Chi tiết
-                    </button>
-                </div>
-            </div>
-        `).join('');
+                        <div class="flex items-center gap-3">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold badge-${b.status}">
+                                ${getStatusLabel(b.status)}
+                            </span>
+                            <button onclick="openDetail(${b.id})" class="text-xs text-brand-500 font-semibold hover:underline">
+                                Chi tiết
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
 
-        // 3.4 Render Tables
+        // 3.7 Render Tables
         renderBookingsTable(bookings);
         renderLeadsTable(leads);
 
-        // 3.5 Charts
+        // 3.8 Charts
         initOverviewCharts();
     }
 
     // 3.6 Render Marketing Funnel (Dynamic & Connected)
     function renderMarketingFunnel(stats, bookings, leads) {
-        const visitors = stats.totalVisitors || 485;
+        const visitors = stats.totalVisitors || 0;
         const stage1 = visitors;
-        const stage2 = Math.round(visitors * 0.643);
-        const stage3 = Math.round(visitors * 0.243);
+        const stage2 = stage1 > 0 ? Math.round(visitors * 0.643) : 0;
+        const stage3 = stage1 > 0 ? Math.round(visitors * 0.243) : 0;
         const stage4 = leads.length;
         const stage5 = bookings.length;
 
-        const p2 = ((stage2 / stage1) * 100).toFixed(1);
-        const p3 = ((stage3 / stage1) * 100).toFixed(1);
-        const p4 = ((stage4 / stage1) * 100).toFixed(1);
-        const p5 = ((stage5 / stage1) * 100).toFixed(1);
+        const p2 = stage1 > 0 ? ((stage2 / stage1) * 100).toFixed(1) : '0.0';
+        const p3 = stage1 > 0 ? ((stage3 / stage1) * 100).toFixed(1) : '0.0';
+        const p4 = stage1 > 0 ? ((stage4 / stage1) * 100).toFixed(1) : '0.0';
+        const p5 = stage1 > 0 ? ((stage5 / stage1) * 100).toFixed(1) : '0.0';
 
         const crBadge = document.getElementById('funnelCrBadge');
         if (crBadge) crBadge.innerText = `CR Tổng: ${stats.conversionRate}%`;
@@ -931,10 +943,10 @@
                 <div>
                     <div class="flex justify-between font-semibold mb-1">
                         <span class="text-zinc-700">1. Truy Cập Website (Awareness)</span>
-                        <span class="font-mono text-zinc-600">${stage1.toLocaleString()} lượt (100%)</span>
+                        <span class="font-mono text-zinc-600">${stage1.toLocaleString()} lượt (${stage1 > 0 ? '100%' : '0%'})</span>
                     </div>
                     <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-zinc-800 h-full rounded-full transition-all duration-500" style="width: 100%"></div>
+                        <div class="bg-zinc-800 h-full rounded-full transition-all duration-500" style="width: ${stage1 > 0 ? 100 : 0}%"></div>
                     </div>
                 </div>
 
@@ -964,7 +976,7 @@
                         <span class="font-mono text-amber-600 font-bold">${stage4} mẹ (${p4}%)</span>
                     </div>
                     <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${Math.max(6, Math.min(100, p4 * 3))}%"></div>
+                        <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${stage1 > 0 ? Math.max(2, Math.min(100, p4 * 3)) : 0}%"></div>
                     </div>
                 </div>
 
@@ -974,7 +986,7 @@
                         <span class="font-mono text-brand-500 font-bold">${stage5} hồ sơ (${p5}%)</span>
                     </div>
                     <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: ${Math.max(4, Math.min(100, p5 * 3))}%"></div>
+                        <div class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: ${stage1 > 0 ? Math.max(2, Math.min(100, p5 * 3)) : 0}%"></div>
                     </div>
                 </div>
             `;
@@ -982,7 +994,11 @@
 
         const note = document.getElementById('funnelSummaryNote');
         if (note) {
-            note.innerHTML = `<strong>Đánh giá thực tế:</strong> Tỷ lệ đăng ký trò chuyện 1-1 đạt <strong>${p5}%</strong>, tỷ lệ nhận cẩm nang đạt <strong>${p4}%</strong>. Toàn bộ chỉ số được liên kết trực tiếp từ hồ sơ thực trong cơ sở dữ liệu.`;
+            if (stage1 === 0) {
+                note.innerHTML = `<strong>Sẵn sàng khởi chạy:</strong> Hệ thống đã đưa toàn bộ chỉ số về 0 để đo lường dữ liệu truy cập thực tế của chiến dịch quảng bá.`;
+            } else {
+                note.innerHTML = `<strong>Đánh giá thực tế:</strong> Tỷ lệ đăng ký trò chuyện 1-1 đạt <strong>${p5}%</strong>, tỷ lệ nhận cẩm nang đạt <strong>${p4}%</strong>. Toàn bộ chỉ số được liên kết trực tiếp từ hồ sơ thực trong cơ sở dữ liệu.`;
+            }
         }
     }
 
@@ -999,8 +1015,10 @@
         if (cardCount) cardCount.innerText = live.count;
 
         const cardDetail = document.getElementById('overviewLivePagesDetail');
-        if (cardDetail && live.pages && live.pages.length >= 2) {
-            cardDetail.innerText = `● ${live.pages[0].count} xem Trang Chủ • ${live.pages[2].count} xem Đặt Lịch`;
+        if (cardDetail) {
+            cardDetail.innerText = live.count > 0 
+                ? `● ${live.pages[0]?.count || 0} xem Trang Chủ • ${live.pages[2]?.count || 0} xem Đặt Lịch` 
+                : 'Chưa có phiên truy cập đang hoạt động';
         }
 
         // View 2 (Marketing) elements
@@ -1068,8 +1086,19 @@
         if (totalEl) totalEl.innerText = `${totalBookings} hồ sơ thực tế`;
 
         if (totalBookings === 0) {
-            barsContainer.innerHTML = '<p class="text-zinc-400 py-4 text-center">Chưa có đủ dữ liệu hồ sơ để thống kê.</p>';
-            if (metaContainer) metaContainer.innerHTML = '';
+            barsContainer.innerHTML = '<div class="py-8 text-center text-zinc-400 text-xs">Chưa có hồ sơ đăng ký nào. Tỷ lệ vấn đề sẽ tự động phân tích khi phụ huynh gửi phiếu.</div>';
+            if (metaContainer) {
+                metaContainer.innerHTML = `
+                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
+                        <span class="text-[10px] text-zinc-400 font-bold uppercase block">Độ Tuổi Chiếm Đa Số</span>
+                        <span class="font-bold text-zinc-400">Chờ dữ liệu...</span>
+                    </div>
+                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
+                        <span class="text-[10px] text-zinc-400 font-bold uppercase block">Khung Giờ Nhắn Tin Nhiều</span>
+                        <span class="font-bold text-zinc-400">Chờ dữ liệu...</span>
+                    </div>
+                `;
+            }
             return;
         }
 
@@ -1254,7 +1283,7 @@
                         legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
                     },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: '#F4F4F5' } },
+                        y: { beginAtZero: true, grid: { color: '#F4F4F5' }, ticks: { stepSize: 1 } },
                         x: { grid: { display: false } }
                     }
                 }
@@ -1265,13 +1294,15 @@
         const sourceCtx = document.getElementById('overviewSourceChart');
         if (sourceCtx) {
             if (overviewSourceChartInstance) overviewSourceChartInstance.destroy();
+            const totalVisits = sources.reduce((sum, s) => sum + s.visits, 0);
+
             overviewSourceChartInstance = new Chart(sourceCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: sources.map(s => s.source),
+                    labels: totalVisits > 0 ? sources.map(s => s.source) : ['Chưa có traffic'],
                     datasets: [{
-                        data: sources.map(s => s.visits),
-                        backgroundColor: sources.map(s => s.color),
+                        data: totalVisits > 0 ? sources.map(s => s.visits) : [1],
+                        backgroundColor: totalVisits > 0 ? sources.map(s => s.color) : ['#F4F4F5'],
                         borderWidth: 2,
                         borderColor: '#FFFFFF'
                     }]
@@ -1279,7 +1310,10 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { enabled: totalVisits > 0 }
+                    },
                     cutout: '74%'
                 }
             });
@@ -1292,7 +1326,7 @@
                             <span class="w-2 h-2 rounded-full" style="background-color: ${s.color}"></span>
                             <span class="text-zinc-600 truncate max-w-[150px]">${s.source}</span>
                         </div>
-                        <span class="font-semibold text-zinc-900 font-mono">${s.percent}%</span>
+                        <span class="font-semibold text-zinc-900 font-mono">${s.visits} (${s.percent}%)</span>
                     </div>
                 `).join('');
             }
@@ -1556,10 +1590,19 @@
         });
     }
 
+    window.clearAllDataToZero = function() {
+        if (confirm('Xác nhận đưa toàn bộ chỉ số về 0 để bắt đầu đo lường thực tế khi website ra mắt?')) {
+            DB.clearAllData();
+            renderAll();
+            alert('Đã đưa toàn bộ chỉ số về 0 thành công! Hệ thống sẵn sàng đo lường dữ liệu thực tế.');
+        }
+    };
+
     window.resetData = function() {
-        if (confirm('Khôi phục toàn bộ dữ liệu kiểm thử chuẩn?')) {
+        if (confirm('Khôi phục toàn bộ dữ liệu kiểm thử demo chuẩn?')) {
             DB.resetSampleData();
             renderAll();
+            alert('Đã nạp lại dữ liệu demo thành công!');
         }
     };
 

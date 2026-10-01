@@ -5,10 +5,10 @@
  */
 
 const DB = (() => {
-    const STORAGE_KEY_BOOKINGS = 'thuhien_bookings_v5';
-    const STORAGE_KEY_LEADS = 'thuhien_leads_v5';
-    const STORAGE_KEY_ANALYTICS = 'thuhien_analytics_v5';
-    const STORAGE_KEY_HEARTBEATS = 'thuhien_live_heartbeats';
+    const STORAGE_KEY_BOOKINGS = 'thuhien_bookings_v6';
+    const STORAGE_KEY_LEADS = 'thuhien_leads_v6';
+    const STORAGE_KEY_ANALYTICS = 'thuhien_analytics_v6';
+    const STORAGE_KEY_HEARTBEATS = 'thuhien_live_heartbeats_v6';
 
     // Helper to format date YYYY-MM-DD HH:mm:ss relative to now
     function getRelativeDateStr(daysAgo = 0, hours = 9, minutes = 15) {
@@ -23,8 +23,8 @@ const DB = (() => {
         return `${y}-${m}-${day} ${hh}:${mm}:00`;
     }
 
-    // Realistic, authentic bookings dataset aligned with Thu Hiền's feeding & autism companionship focus
-    const INITIAL_BOOKINGS = [
+    // Demo dataset for testing/preview purposes if requested by admin
+    const DEMO_BOOKINGS = [
         {
             id: 101,
             parent_name: 'Nguyễn Thị Hoài An',
@@ -153,8 +153,8 @@ const DB = (() => {
         }
     ];
 
-    // Realistic initial leads dataset
-    const INITIAL_LEADS = [
+    // Demo dataset for testing/preview purposes if requested by admin
+    const DEMO_LEADS = [
         { id: 201, parent_name: 'Phạm Hải Yến', phone: '0945123987', email: 'haiyen.pham@gmail.com', baby_age: '26 tháng', resource_name: 'Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà', care_status: 'converted', notes: 'Đã chuyển đổi sang đặt lịch gói 1 tháng #TH-101', created_at: getRelativeDateStr(0, 8, 20) },
         { id: 202, parent_name: 'Hoàng Minh Châu', phone: '0978654321', email: 'chauhoang.mc@gmail.com', baby_age: '30 tháng', resource_name: 'Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà', care_status: 'contacted', notes: 'Đã gửi file cẩm nang qua Zalo, mẹ cảm ơn vì hướng dẫn giúp mẹ bớt lo âu', created_at: getRelativeDateStr(1, 16, 45) },
         { id: 203, parent_name: 'Đỗ Quỳnh Nga', phone: '0919888777', email: 'quynhnga.do@gmail.com', baby_age: '2 tuổi', resource_name: 'Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà', care_status: 'nurturing', notes: 'Bé nhạy cảm kết cấu thức ăn, đang gửi video hướng dẫn làm quen mùi vị', created_at: getRelativeDateStr(2, 11, 10) },
@@ -164,8 +164,7 @@ const DB = (() => {
         { id: 207, parent_name: 'Trịnh Cẩm Tú', phone: '0966443322', email: 'camtu.trinh@gmail.com', baby_age: '19 tháng', resource_name: 'Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà', care_status: 'new', notes: '', created_at: getRelativeDateStr(6, 17, 15) }
     ];
 
-    // Baseline marketing analytics
-    const INITIAL_ANALYTICS = {
+    const DEMO_ANALYTICS = {
         totalVisitors: 512,
         pageViews: 1380,
         avgTimeOnSite: '3m 24s',
@@ -173,7 +172,32 @@ const DB = (() => {
         dailyViews: {}
     };
 
+    // Official production defaults: All metrics start at 0
+    const INITIAL_BOOKINGS = [];
+    const INITIAL_LEADS = [];
+    const INITIAL_ANALYTICS = {
+        totalVisitors: 0,
+        pageViews: 0,
+        avgTimeOnSite: '0s',
+        bounceRate: '0.0%',
+        dailyViews: {}
+    };
+
     function init() {
+        // Clear all older test versions from localStorage so user browser is 100% fresh
+        const legacyKeys = [
+            'thuhien_bookings', 'thuhien_leads', 'thuhien_analytics', 'thuhien_live_heartbeats',
+            'thuhien_bookings_v2', 'thuhien_leads_v2', 'thuhien_analytics_v2',
+            'thuhien_bookings_v3', 'thuhien_leads_v3', 'thuhien_analytics_v3',
+            'thuhien_bookings_v4', 'thuhien_leads_v4', 'thuhien_analytics_v4',
+            'thuhien_bookings_v5', 'thuhien_leads_v5', 'thuhien_analytics_v5'
+        ];
+        legacyKeys.forEach(k => {
+            try {
+                localStorage.removeItem(k);
+            } catch (e) {}
+        });
+
         if (!localStorage.getItem(STORAGE_KEY_BOOKINGS)) {
             localStorage.setItem(STORAGE_KEY_BOOKINGS, JSON.stringify(INITIAL_BOOKINGS));
         }
@@ -182,6 +206,9 @@ const DB = (() => {
         }
         if (!localStorage.getItem(STORAGE_KEY_ANALYTICS)) {
             localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify(INITIAL_ANALYTICS));
+        }
+        if (!localStorage.getItem(STORAGE_KEY_HEARTBEATS)) {
+            localStorage.setItem(STORAGE_KEY_HEARTBEATS, JSON.stringify([]));
         }
     }
 
@@ -358,24 +385,28 @@ const DB = (() => {
                 let sessions = JSON.parse(localStorage.getItem(STORAGE_KEY_HEARTBEATS) || '[]');
                 sessions = sessions.filter(s => (now - s.time) < 45000);
 
-                // Use actual active sessions if available, with a realistic baseline of 2-4 concurrent users
                 const realCount = sessions.length;
-                const liveCount = Math.max(realCount, 2 + (Math.floor(now / 12000) % 3));
+
+                const pageCounts = {};
+                sessions.forEach(s => {
+                    const p = s.page || 'Trang Chủ';
+                    pageCounts[p] = (pageCounts[p] || 0) + 1;
+                });
 
                 const pages = [
-                    { page: 'Trang Chủ & Lộ Trình Bữa Ăn', count: Math.max(1, Math.round(liveCount * 0.5)), url: '/' },
-                    { page: 'Bảng Giá & Gói Dịch Vụ', count: Math.max(1, Math.round(liveCount * 0.25)), url: '/pricing/' },
-                    { page: 'Đặt Lịch Trò Chuyện 1-1', count: Math.max(1, Math.round(liveCount * 0.25)), url: '/dat-lich/' }
+                    { page: 'Trang Chủ & Lộ Trình Bữa Ăn', count: pageCounts['Trang Chủ'] || 0, url: '/' },
+                    { page: 'Bảng Giá & Gói Dịch Vụ', count: pageCounts['Bảng Giá'] || 0, url: '/pricing/' },
+                    { page: 'Đặt Lịch Trò Chuyện 1-1', count: pageCounts['Đặt Lịch'] || 0, url: '/dat-lich/' }
                 ];
 
                 return {
-                    count: liveCount,
+                    count: realCount,
                     sessions: sessions,
                     pages: pages,
                     realTabs: realCount
                 };
             } catch (e) {
-                return { count: 3, pages: [], realTabs: 1 };
+                return { count: 0, pages: [], realTabs: 0 };
             }
         },
 
@@ -390,11 +421,11 @@ const DB = (() => {
 
         trackView(pageName = 'Trang Chủ') {
             const analytics = this.getAnalytics();
-            analytics.pageViews = (analytics.pageViews || 1380) + 1;
+            analytics.pageViews = (analytics.pageViews || 0) + 1;
             
             // Increment totalVisitors if new session
             if (!sessionStorage.getItem('thuhien_visitor_counted')) {
-                analytics.totalVisitors = (analytics.totalVisitors || 512) + 1;
+                analytics.totalVisitors = (analytics.totalVisitors || 0) + 1;
                 sessionStorage.setItem('thuhien_visitor_counted', 'true');
             }
 
@@ -408,7 +439,7 @@ const DB = (() => {
             this.heartbeat(pageName);
         },
 
-        // Dynamic 7-Day Rolling Trend Window (always ending today!)
+        // Dynamic 7-Day Rolling Trend Window (starts from 0, tracks real data)
         getDynamic7DayTrends() {
             const bookings = this.getBookings();
             const leads = this.getLeads();
@@ -439,34 +470,34 @@ const DB = (() => {
                 const lCount = leads.filter(l => (l.created_at || '').startsWith(ymd)).length;
                 leadCounts.push(lCount);
 
-                // Dynamic Page Views
-                const baseDayViews = [68, 74, 85, 92, 88, 79, 71];
+                // Real tracked Page Views only (starts from 0)
                 const tracked = dailyViews[dateKey] || 0;
-                views.push(baseDayViews[6 - i] + tracked + (bCount * 8) + (lCount * 4));
+                views.push(tracked);
             }
 
             return { dates, views, bookings: bookingCounts, leads: leadCounts };
         },
 
-        // Dynamic Traffic Sources computed from actual data
+        // Dynamic Traffic Sources computed from actual data (starts from 0)
         getTrafficSources() {
             const bookings = this.getBookings();
+            const leads = this.getLeads();
             const sourceMap = {
-                'Facebook': { count: 245, color: '#1877F2', label: 'Facebook (Fanpage / Video)' },
-                'Zalo': { count: 135, color: '#0068FF', label: 'Zalo (Nhóm Đồng Hành Cha Mẹ)' },
-                'TikTok': { count: 72, color: '#111111', label: 'TikTok (Video Chia Sẻ)' },
-                'Google': { count: 42, color: '#0F9D58', label: 'Google Tìm Kiếm Tự Nhiên' },
-                'Giới Thiệu': { count: 28, color: '#F08A4B', label: 'Bạn Bè / Mẹ Khác Giới Thiệu' }
+                'Facebook': { count: 0, color: '#1877F2', label: 'Facebook (Fanpage / Video)' },
+                'Zalo': { count: 0, color: '#0068FF', label: 'Zalo (Nhóm Đồng Hành Cha Mẹ)' },
+                'TikTok': { count: 0, color: '#111111', label: 'TikTok (Video Chia Sẻ)' },
+                'Google': { count: 0, color: '#0F9D58', label: 'Google Tìm Kiếm Tự Nhiên' },
+                'Giới Thiệu': { count: 0, color: '#F08A4B', label: 'Bạn Bè / Mẹ Khác Giới Thiệu' }
             };
 
-            // Aggregate actual sources from bookings
-            bookings.forEach(b => {
-                const src = (b.source || '').toLowerCase();
-                if (src.includes('facebook')) sourceMap['Facebook'].count += 4;
-                else if (src.includes('zalo')) sourceMap['Zalo'].count += 4;
-                else if (src.includes('tiktok')) sourceMap['TikTok'].count += 4;
-                else if (src.includes('google')) sourceMap['Google'].count += 4;
-                else sourceMap['Giới Thiệu'].count += 4;
+            // Aggregate actual sources from real bookings & leads
+            [...bookings, ...leads].forEach(item => {
+                const src = (item.source || item.resource_name || '').toLowerCase();
+                if (src.includes('facebook')) sourceMap['Facebook'].count += 1;
+                else if (src.includes('zalo')) sourceMap['Zalo'].count += 1;
+                else if (src.includes('tiktok')) sourceMap['TikTok'].count += 1;
+                else if (src.includes('google')) sourceMap['Google'].count += 1;
+                else if (src.includes('bạn') || src.includes('giới thiệu')) sourceMap['Giới Thiệu'].count += 1;
             });
 
             let total = 0;
@@ -478,11 +509,11 @@ const DB = (() => {
 
             return items.map(it => ({
                 ...it,
-                percent: total > 0 ? ((it.visits / total) * 100).toFixed(1) : '0'
+                percent: total > 0 ? ((it.visits / total) * 100).toFixed(1) : '0.0'
             }));
         },
 
-        // Overview stats for badges & marketing cards
+        // Overview stats for badges & marketing cards (starts from 0)
         getStats() {
             const bookings = this.getBookings();
             const leads = this.getLeads();
@@ -494,10 +525,10 @@ const DB = (() => {
             const completed = bookings.filter(b => b.status === 'completed').length;
 
             const totalConversions = bookings.length + leads.length;
-            const totalVisitors = analytics.totalVisitors || 512;
+            const totalVisitors = analytics.totalVisitors || 0;
             const conversionRate = totalVisitors > 0 
                 ? ((totalConversions / totalVisitors) * 100).toFixed(1) 
-                : '3.8';
+                : '0.0';
 
             return {
                 totalBookings: bookings.length,
@@ -507,10 +538,10 @@ const DB = (() => {
                 completed,
                 totalLeads: leads.length,
                 totalVisitors,
-                pageViews: analytics.pageViews || 1380,
+                pageViews: analytics.pageViews || 0,
                 conversionRate,
-                avgTimeOnSite: analytics.avgTimeOnSite || '3m 24s',
-                bounceRate: analytics.bounceRate || '27.6%'
+                avgTimeOnSite: analytics.avgTimeOnSite || '0s',
+                bounceRate: analytics.bounceRate || '0.0%'
             };
         },
 
@@ -541,10 +572,30 @@ const DB = (() => {
             document.body.removeChild(link);
         },
 
+        // Pure Zero Reset: wipes all data clean for official public launch
+        clearAllData() {
+            localStorage.setItem(STORAGE_KEY_BOOKINGS, JSON.stringify([]));
+            localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify([]));
+            localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify({
+                totalVisitors: 0,
+                pageViews: 0,
+                avgTimeOnSite: '0s',
+                bounceRate: '0.0%',
+                dailyViews: {}
+            }));
+            localStorage.setItem(STORAGE_KEY_HEARTBEATS, JSON.stringify([]));
+            try {
+                sessionStorage.removeItem('thuhien_visitor_counted');
+                sessionStorage.removeItem('thuhien_session_id');
+            } catch (e) {}
+            return true;
+        },
+
+        // Restore Demo testing dataset if desired
         resetSampleData() {
-            localStorage.setItem(STORAGE_KEY_BOOKINGS, JSON.stringify(INITIAL_BOOKINGS));
-            localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify(INITIAL_LEADS));
-            localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify(INITIAL_ANALYTICS));
+            localStorage.setItem(STORAGE_KEY_BOOKINGS, JSON.stringify(DEMO_BOOKINGS));
+            localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify(DEMO_LEADS));
+            localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify(DEMO_ANALYTICS));
         }
     };
 })();
