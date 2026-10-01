@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyên Gia Dinh Dưỡng Bùi Thu Hiền | Cùng Mẹ Hiểu Con</title>
+    <meta name="description" content="Chuyên gia dinh dưỡng Bùi Thu Hiền - Cố vấn chuyên môn Thắp Đèn Xanh & Chuyên Gia Của Mẹ. Đã can thiệp cho hơn 3.000 trẻ đặc biệt, đào tạo bởi chuyên gia quốc tế, vinh dự nhận Giấy khen Thầy thuốc đồng hành.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+
+    <!-- OpenGraph & Meta -->
+    <meta property="og:title" content="Chuyên Gia Dinh Dưỡng Bùi Thu Hiền | Cùng Mẹ Hiểu Con">
+    <meta property="og:description" content="Hồ sơ năng lực & hành trình chuyên môn của Chuyên gia Dinh dưỡng Bùi Thu Hiền trong lĩnh vực can thiệp dinh dưỡng cho trẻ tự kỷ, tăng động và rối loạn phát triển.">
+    <meta property="og:image" content="../assets/images/thu-hien-hero-banner.png">
+    <meta property="og:type" content="profile">
+    <meta name="theme-color" content="#174C3B">
+
+    <!-- Google Fonts Preconnect & Direct Stylesheet (Zero FOUT) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#174C3B',
+                            primaryLight: '#1F5A45',
+                            sage: '#8FAF91',
+                            sageLight: '#A9C2A4',
+                            mintSub: '#EEF5EA',
+                            creamBg: '#FAF7F0',
+                            peach: '#F08A4B',
+                            peachHover: '#E07837',
+                            textMuted: '#5F6E66'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Alata"', 'system-ui', 'sans-serif'],
+                        serif: ['"Alata"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-page="expert" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-16 md:pb-0">
+
+<!-- ==========================================================================
+     FLOATING NAVIGATION ISLAND
+     ========================================================================== -->
+<header class="nav-island">
+    <nav class="nav-island-inner justify-between">
+        <!-- Logo: Favicon as Logo -->
+        <a href="../" class="flex items-center gap-3 group text-decoration-none">
+            <img src="../favicon.png" alt="Thu Hiền Logo" class="w-10 h-10 rounded-full object-cover shadow-sm ring-2 ring-white/80 group-hover:scale-105 transition-transform duration-300">
+            <div class="flex flex-col">
+                <span class="font-bold text-lg md:text-xl text-white leading-none tracking-tight">Thu Hiền</span>
+                <span class="text-[11px] font-medium text-white/90 tracking-wide mt-1 uppercase">Cùng Mẹ Hiểu Con</span>
+            </div>
+        </a>
+
+        <!-- Header Actions: Trang Chủ, Chuyên Gia, Dinh Dưỡng, Bảng Giá và Đặt Lịch -->
+        <div class="flex items-center gap-1.5 sm:gap-2.5">
+            <a href="../" class="px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden md:inline-flex">
+                Trang Chủ
+            </a>
+            <a href="./" class="px-3.5 sm:px-4.5 py-2 rounded-full bg-white text-[#174C3B] text-xs sm:text-sm font-bold shadow-2xs">
+                Chuyên Gia
+            </a>
+            <a href="../dinh-duong/" class="px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden sm:inline-flex">
+                Lời Khuyên Dinh Dưỡng
+            </a>
+            <a href="../pricing/" class="px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden sm:inline-flex">
+                Bảng Giá
+            </a>
+            <a href="../dat-lich/" class="bg-[#174C3B] hover:bg-[#133F31] text-white py-2 px-3 sm:px-4.5 rounded-full text-xs sm:text-sm font-bold shadow-2xs flex items-center gap-1.5 group transition-all">
+                <span>Đặt Lịch 1:1</span>
+                <span class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                    </svg>
+                </span>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<!-- ==========================================================================
+     1. HERO PROFILE SECTION: CHUYÊN GIA BÙI THU HIỀN
+     ========================================================================== -->
+<section class="relative pt-12 sm:pt-16 md:pt-20 pb-16 md:pb-24 overflow-hidden">
+    <div class="hero-ambient-pattern"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        
+        <!-- Eyebrow Badge -->
+        <div class="text-center mb-6 sm:mb-8">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EEF5EA] border border-[#8FAF91]/40 text-[#174C3B] text-xs sm:text-sm font-bold shadow-2xs">
+                <span class="w-2 h-2 rounded-full bg-[#F08A4B] animate-pulse"></span>
+                <span>HỒ SƠ NĂNG LỰC & CHUYÊN MÔN</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl lg:text-[50px] font-black uppercase text-[#174C3B] tracking-tight leading-[1.15] mt-4 mb-4">
+                CHUYÊN GIA DINH DƯỠNG BÙI THU HIỀN
+            </h1>
+            <p class="text-base sm:text-lg text-[#5F6E66] max-w-3xl mx-auto leading-relaxed">
+                Đồng hành cùng cha mẹ hiểu con từ gốc — Phục hồi trục Não - Ruột, hóa giải kén ăn và bùng nổ cảm xúc bằng phương pháp can thiệp dinh dưỡng khoa học, thấu cảm và cá nhân hóa.
+            </p>
+        </div>
+
+        <!-- Split Grid Hero: Portrait Card & Core Credentials -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mt-10">
+            
+            <!-- Left Column: Portrait Showcase Frame -->
+            <div class="lg:col-span-5">
+                <div class="double-bezel overflow-hidden shadow-lg bg-white/80">
+                    <div class="double-bezel-inner p-3 sm:p-4 bg-white overflow-hidden relative">
+                        <!-- Portrait Image -->
+                        <div class="rounded-2xl overflow-hidden bg-[#FAF7F0] border border-[#8FAF91]/30 relative aspect-4/5">
+                            <img src="../assets/images/thu-hien-hero-banner.png" 
+                                 alt="Chuyên gia Dinh dưỡng Bùi Thu Hiền" 
+                                 class="w-full h-full object-cover object-top hover:scale-102 transition-transform duration-500">
+                            
+                            <!-- Overlay Badge Bottom -->
+                            <div class="absolute bottom-3 left-3 right-3 bg-white/95 backdrop-blur-md p-3.5 rounded-xl border border-[#8FAF91]/30 shadow-md">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-bold text-[#174C3B] text-base leading-snug">BÙI THU HIỀN</h3>
+                                        <p class="text-xs text-[#F08A4B] font-semibold">Chuyên Gia Dinh Dưỡng Trẻ Đặc Biệt</p>
+                                    </div>
+                                    <div class="w-8 h-8 rounded-full bg-[#EEF5EA] flex items-center justify-center text-sm shadow-2xs">
+                                        🩺
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recognition Banner Under Image -->
+                        <div class="mt-4 p-3.5 rounded-xl bg-[#EEF5EA] border border-[#8FAF91]/30 flex items-center gap-3">
+                            <span class="text-2xl">🎖️</span>
+                            <div class="text-xs leading-snug">
+                                <strong class="text-[#174C3B] block">Giấy khen “Thầy thuốc đồng hành”</strong>
+                                <span class="text-[#5F6E66]">Trao tặng bởi Hội Thầy thuốc trẻ Việt Nam</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Mission, Key Pillars & Actions -->
+            <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Quick Metric Counter Cards (2x2 Grid) -->
+                <div class="grid grid-cols-2 gap-3.5 sm:gap-4">
+                    <!-- Metric 1 -->
+                    <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#8FAF91]/35 shadow-xs hover:border-[#174C3B]/50 transition-all">
+                        <div class="text-2xl sm:text-3xl font-black text-[#174C3B] leading-none mb-1">
+                            3.000+
+                        </div>
+                        <div class="text-xs font-bold text-[#F08A4B] uppercase tracking-wide mb-1">
+                            Trẻ Can Thiệp
+                        </div>
+                        <div class="text-xs text-[#5F6E66] leading-tight">
+                            Đã đánh giá, tư vấn và can thiệp dinh dưỡng cho hơn 3.000 trẻ đặc biệt.
+                        </div>
+                    </div>
+
+                    <!-- Metric 2 -->
+                    <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#8FAF91]/35 shadow-xs hover:border-[#174C3B]/50 transition-all">
+                        <div class="text-2xl sm:text-3xl font-black text-[#174C3B] leading-none mb-1">
+                            2 Cộng Đồng
+                        </div>
+                        <div class="text-xs font-bold text-[#F08A4B] uppercase tracking-wide mb-1">
+                            Cố Vấn Chuyên Môn
+                        </div>
+                        <div class="text-xs text-[#5F6E66] leading-tight">
+                            Cộng đồng Thắp Đèn Xanh & Chuyên Gia Của Mẹ, Hiểu Con Từ Gốc.
+                        </div>
+                    </div>
+
+                    <!-- Metric 3 -->
+                    <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#8FAF91]/35 shadow-xs hover:border-[#174C3B]/50 transition-all">
+                        <div class="text-2xl sm:text-3xl font-black text-[#174C3B] leading-none mb-1">
+                            Quốc Tế
+                        </div>
+                        <div class="text-xs font-bold text-[#F08A4B] uppercase tracking-wide mb-1">
+                            Tập Huấn Nâng Cao
+                        </div>
+                        <div class="text-xs text-[#5F6E66] leading-tight">
+                            Được đào tạo, tập huấn chuyên sâu bởi chuyên gia nước ngoài về trẻ rối loạn phát triển.
+                        </div>
+                    </div>
+
+                    <!-- Metric 4 -->
+                    <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#8FAF91]/35 shadow-xs hover:border-[#174C3B]/50 transition-all">
+                        <div class="text-2xl sm:text-3xl font-black text-[#174C3B] leading-none mb-1">
+                            Lan Tỏa
+                        </div>
+                        <div class="text-xs font-bold text-[#F08A4B] uppercase tracking-wide mb-1">
+                            Đào Tạo Cộng Đồng
+                        </div>
+                        <div class="text-xs text-[#5F6E66] leading-tight">
+                            Thực hiện các chương trình tập huấn nâng cao nhận thức dinh dưỡng cho trẻ đặc biệt.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core Narrative Card -->
+                <div class="p-5 sm:p-6 rounded-2xl bg-white/90 border border-[#8FAF91]/30 shadow-xs space-y-3">
+                    <h3 class="font-bold text-base sm:text-lg text-[#174C3B] flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-[#174C3B]"></span>
+                        <span>Đồng Hành Bằng Trái Tim Người Làm Nghề Y & Sự Kiên Nhẫn Của Người Mẹ</span>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Với niềm tin sâu sắc rằng <strong class="text-[#174C3B]">"Đường ruột là bộ não thứ hai"</strong>, Chuyên gia Bùi Thu Hiền không chỉ đơn thuần kê thực đơn, mà cùng phụ huynh bóc tách từng nút thắt: từ chứng loạn khuẩn đường ruột, dị ứng protein tiềm ẩn (Gluten, Casein, Đậu nành) cho đến những ngưỡng phản vệ giác quan phức tạp. Mục tiêu là giúp mỗi đứa trẻ ăn được vui, ngủ được sâu và sẵn sàng kết nối cùng thế giới xung quanh.
+                    </p>
+                </div>
+
+                <!-- CTA Buttons Group -->
+                <div class="flex flex-col sm:flex-row items-center gap-3.5 pt-2">
+                    <a href="../dat-lich/" class="btn-pill-peach justify-center w-full sm:w-auto px-7 py-3 text-sm">
+                        <span>Đặt Lịch Tư Vấn 1:1 Cùng Chuyên Gia</span>
+                        <span class="btn-circle-icon">
+                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <button type="button" data-open-modal="ebook" class="w-full sm:w-auto px-6 py-3 rounded-full border border-[#174C3B]/30 hover:border-[#174C3B] text-[#174C3B] bg-white font-bold text-xs sm:text-sm shadow-2xs hover:bg-[#EEF5EA] transition-all text-center">
+                        📖 Nhận Cẩm Nang Dinh Dưỡng (PDF)
+                    </button>
+                    <a href="../dinh-duong/" class="w-full sm:w-auto px-5 py-3 rounded-full text-xs sm:text-sm font-semibold text-[#5F6E66] hover:text-[#174C3B] transition-colors text-center">
+                        Xem lời khuyên GFCF+SF →
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     2. BENTO GRID: 6 TRỤ CỘT NĂNG LỰC & UY TÍN CHUYÊN MÔN
+     ========================================================================== -->
+<section class="py-16 md:py-24 bg-white border-y border-[#8FAF91]/25 relative">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        
+        <div class="max-w-3xl mx-auto text-center mb-14">
+            <span class="eyebrow-badge mb-3">MINH BẠCH & UY TÍN NGHỀ NGHIỆP</span>
+            <h2 class="text-2xl sm:text-4xl lg:text-[42px] font-black uppercase text-[#174C3B] tracking-tight leading-tight mb-4">
+                6 ĐIỂM TỰA NĂNG LỰC CỦA CHUYÊN GIA BÙI THU HIỀN
+            </h2>
+            <p class="text-sm sm:text-base text-[#5F6E66] leading-relaxed">
+                Nền tảng học thuật chuẩn quốc tế kết hợp cùng trải nghiệm thực chiến dày dặn từ hàng ngàn ca can thiệp thực tế.
+            </p>
+        </div>
+
+        <!-- 6 Pillars Bento Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Pillar 1: Cố vấn 2 cộng đồng lớn -->
+            <div class="p-6 sm:p-7 rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/35 shadow-xs hover:shadow-md hover:border-[#174C3B]/40 transition-all flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center text-2xl border border-[#8FAF91]/30">
+                        🤝
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-[#F08A4B] block mb-1">Vai Trò Cố Vấn</span>
+                        <h3 class="font-bold text-lg sm:text-xl text-[#174C3B] leading-snug">
+                            Cố Vấn Chuyên Môn Của 2 Cộng Đồng Lớn
+                        </h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Đảm nhận vai trò Cố vấn chuyên môn về dinh dưỡng của cộng đồng <strong class="text-[#174C3B]">Thắp Đèn Xanh</strong> và cộng đồng <strong class="text-[#174C3B]">Chuyên Gia Của Mẹ, Hiểu con từ gốc</strong>. Nơi chia sẻ kiến thức chuẩn y khoa, định hướng phác đồ và hỗ trợ hàng chục ngàn cha mẹ đang có con rối loạn phổ tự kỷ, tăng động và chậm phát triển.
+                    </p>
+                </div>
+                <div class="pt-4 mt-4 border-t border-[#8FAF91]/20 flex items-center gap-2 text-xs font-bold text-[#174C3B]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>Thắp Đèn Xanh & Chuyên Gia Của Mẹ</span>
+                </div>
+            </div>
+
+            <!-- Pillar 2: Hơn 3.000 trẻ can thiệp -->
+            <div class="p-6 sm:p-7 rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/35 shadow-xs hover:shadow-md hover:border-[#174C3B]/40 transition-all flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center text-2xl border border-[#8FAF91]/30">
+                        👶
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-[#F08A4B] block mb-1">Trải Nghiệm Thực Chiến</span>
+                        <h3 class="font-bold text-lg sm:text-xl text-[#174C3B] leading-snug">
+                            Can Thiệp Hơn 3.000 Trẻ Đặc Biệt
+                        </h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Đã trực tiếp thực hiện <strong class="text-[#174C3B]">đánh giá, tư vấn và can thiệp dinh dưỡng cho hơn 3.000 trẻ đặc biệt</strong>. Từ các bé kén ăn cực độ chỉ ăn 1-2 món, trẻ dị ứng đường ruột nặng, rối loạn phân (táo bón, tiêu chảy dai dẳng) đến trẻ có cơn bùng nổ meltdown liên tục sau mỗi bữa ăn.
+                    </p>
+                </div>
+                <div class="pt-4 mt-4 border-t border-[#8FAF91]/20 flex items-center gap-2 text-xs font-bold text-[#174C3B]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>Tự kỷ (ASD), Tăng động (ADHD), Chậm nói</span>
+                </div>
+            </div>
+
+            <!-- Pillar 3: Đào tạo quốc tế -->
+            <div class="p-6 sm:p-7 rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/35 shadow-xs hover:shadow-md hover:border-[#174C3B]/40 transition-all flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center text-2xl border border-[#8FAF91]/30">
+                        🌐
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-[#F08A4B] block mb-1">Chuẩn Mực Khoa Học</span>
+                        <h3 class="font-bold text-lg sm:text-xl text-[#174C3B] leading-snug">
+                            Đào Tạo Chuyên Sâu Bởi Chuyên Gia Nước Ngoài
+                        </h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Được đào tạo, tập huấn chuyên sâu và nâng cao kiến thức về <strong class="text-[#174C3B]">trẻ rối loạn phát triển bởi các chuyên gia nước ngoài</strong>. Nắm vững cơ chế sinh học phân tử của Trục Não - Ruột (Gut-Brain Axis), cơ chế giải độc gan và các phác đồ dinh dưỡng y học chức năng tiên tiến trên thế giới.
+                    </p>
+                </div>
+                <div class="pt-4 mt-4 border-t border-[#8FAF91]/20 flex items-center gap-2 text-xs font-bold text-[#174C3B]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>Kiến thức quốc tế, ứng dụng tại Việt Nam</span>
+                </div>
+            </div>
+
+            <!-- Pillar 4: Chương trình tập huấn nâng cao nhận thức -->
+            <div class="p-6 sm:p-7 rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/35 shadow-xs hover:shadow-md hover:border-[#174C3B]/40 transition-all flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center text-2xl border border-[#8FAF91]/30">
+                        🎤
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-[#F08A4B] block mb-1">Đào Tạo & Cộng Đồng</span>
+                        <h3 class="font-bold text-lg sm:text-xl text-[#174C3B] leading-snug">
+                            Thực Hiện Các Chương Trình Tập Huấn
+                        </h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Trực tiếp xây dựng và thực hiện <strong class="text-[#174C3B]">các chương trình tập huấn nâng cao nhận thức về chăm sóc dinh dưỡng cho trẻ đặc biệt</strong>. Khách mời và người hướng dẫn cho các khóa học của cha mẹ, giáo viên can thiệp đặc biệt tại các trung tâm giáo dục hòa nhập trên cả nước.
+                    </p>
+                </div>
+                <div class="pt-4 mt-4 border-t border-[#8FAF91]/20 flex items-center gap-2 text-xs font-bold text-[#174C3B]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>Tập huấn phụ huynh & giáo viên can thiệp</span>
+                </div>
+            </div>
+
+            <!-- Pillar 5: Giấy khen Thầy thuốc đồng hành -->
+            <div class="p-6 sm:p-7 rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/35 shadow-xs hover:shadow-md hover:border-[#174C3B]/40 transition-all flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center text-2xl border border-[#8FAF91]/30">
+                        🎖️
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-[#F08A4B] block mb-1">Sự Ghi Nhận Xã Hội</span>
+                        <h3 class="font-bold text-lg sm:text-xl text-[#174C3B] leading-snug">
+                            Giấy Khen “Thầy Thuốc Đồng Hành”
+                        </h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Được trao tặng giấy khen cao quý <strong class="text-[#174C3B]">“Thầy thuốc đồng hành”</strong> của <strong class="text-[#174C3B]">Hội Thầy thuốc trẻ Việt Nam</strong>. Đây là minh chứng cho sự dấn thân bền bỉ, cái tâm trong sáng và những đóng góp tích cực cho sức khỏe cộng đồng trẻ em yếu thế.
+                    </p>
+                </div>
+                <div class="pt-4 mt-4 border-t border-[#8FAF91]/20 flex items-center gap-2 text-xs font-bold text-[#174C3B]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>Hội Thầy thuốc trẻ Việt Nam trao tặng</span>
+                </div>
+            </div>
+
+            <!-- Pillar 6: Triết lý cá nhân hóa không áp đặt -->
+            <div class="p-6 sm:p-7 rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/35 shadow-xs hover:shadow-md hover:border-[#174C3B]/40 transition-all flex flex-col justify-between">
+                <div class="space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center text-2xl border border-[#8FAF91]/30">
+                        🌱
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-[#F08A4B] block mb-1">Phương Châm Đồng Hành</span>
+                        <h3 class="font-bold text-lg sm:text-xl text-[#174C3B] leading-snug">
+                            Hiểu Con Từ Gốc - Tôn Trọng Ngưỡng Cảm Giác
+                        </h3>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Không dùng thực đơn mẫu rập khuôn. Mọi thay đổi đều được <strong class="text-[#174C3B]">bước nhỏ, cá nhân hóa</strong> dựa trên phản ứng phân, giấc ngủ và ngưỡng giác quan (kết cấu, mùi, vị) của từng bé. Giúp mẹ nhẹ nhõm, con hợp tác tự nhiên mà không cần nước mắt trong bữa ăn.
+                    </p>
+                </div>
+                <div class="pt-4 mt-4 border-t border-[#8FAF91]/20 flex items-center gap-2 text-xs font-bold text-[#174C3B]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>Không ép ăn - Không bùng nổ - Bền vững</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     3. CHIỀU SÂU CHUYÊN MÔN: TẠI SAO DINH DƯỠNG LÀ GỐC RỄ?
+     ========================================================================== -->
+<section class="py-16 md:py-24 relative overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        
+        <div class="bg-white rounded-3xl border border-[#8FAF91]/35 p-8 sm:p-12 shadow-sm relative overflow-hidden">
+            <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-[#EEF5EA] rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                
+                <div class="lg:col-span-7 space-y-5">
+                    <span class="eyebrow-badge">GÓC NHÌN CHUYÊN GIA</span>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-[#174C3B] leading-tight">
+                        "Khi Đường Ruột Của Con Khỏe Mạnh, Não Bộ Mới Có Thể An Yên Để Học Hỏi"
+                    </h2>
+                    
+                    <p class="text-sm sm:text-base text-[#5F6E66] leading-relaxed">
+                        Rất nhiều cha mẹ chia sẻ với Bùi Thu Hiền rằng họ đã đưa con đi học can thiệp ngôn ngữ, điều hòa cảm giác suốt nhiều tháng nhưng con vẫn thường xuyên mất tập trung, bứt rứt, ngủ chập chờn và hay la hét.
+                    </p>
+
+                    <p class="text-sm sm:text-base text-[#5F6E66] leading-relaxed">
+                        Thực tế y khoa chứng minh: <strong class="text-[#174C3B]">Hơn 80% trẻ tự kỷ gặp các vấn đề về tiêu hóa</strong> như rò rỉ ruột (Leaky Gut), mất cân bằng hệ vi sinh, hoặc kém hấp thu. Khi thành ruột bị tổn thương, các peptide chưa tiêu hóa hết từ Gluten (lúa mì) và Casein (sữa bò) có thể thẩm thấu vào máu và vượt qua hàng rào máu não, tạo ra phản ứng như các chất kích thích gây hưng cảm, hành vi lặp lại hoặc giảm khả năng giao tiếp ánh mắt.
+                    </p>
+
+                    <div class="p-4 rounded-2xl bg-[#FAF7F0] border-l-4 border-[#F08A4B] text-xs sm:text-sm text-[#174C3B] font-medium leading-relaxed">
+                        <em>"Dinh dưỡng không đối đầu hay thay thế các giờ can thiệp tâm lý, mà là bệ phóng sinh học giúp não bộ của con đạt trạng thái tốt nhất để tiếp nhận các bài học hành vi."</em>
+                        <span class="block mt-1 font-bold text-[#F08A4B]">— Bùi Thu Hiền</span>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="p-5 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/30 space-y-2">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm">1</span>
+                            <h4 class="font-bold text-sm text-[#174C3B]">Giảm Tải Độc Tố & Viêm Đường Ruột</h4>
+                        </div>
+                        <p class="text-xs text-[#5F6E66] leading-relaxed">
+                            Cắt giảm thực phẩm gây viêm (Gluten, Casein, Đậu nành, Phụ gia nhân tạo) giúp bảo vệ lớp niêm mạc ruột non mỏng manh của con.
+                        </p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/30 space-y-2">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-sm">2</span>
+                            <h4 class="font-bold text-sm text-[#174C3B]">Ổn Định Dẫn Truyền Thần Kinh</h4>
+                        </div>
+                        <p class="text-xs text-[#5F6E66] leading-relaxed">
+                            90% Serotonin (hormone điều hòa cảm xúc và giấc ngủ) được sản xuất tại ruột. Ruột khỏe giúp con ngủ sâu, giảm cáu gắt và bớt tăng động.
+                        </p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/30 space-y-2">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">3</span>
+                            <h4 class="font-bold text-sm text-[#174C3B]">Mở Rộng Phổ Ăn Uống An Toàn</h4>
+                        </div>
+                        <p class="text-xs text-[#5F6E66] leading-relaxed">
+                            Huấn luyện vị giác và cảm giác nhẹ nhàng, giúp con làm quen các món ăn dinh dưỡng mới mà không bị kích ứng hay nôn ói.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     4. QUY TRÌNH 4 BƯỚC TƯ VẤN & CAN THIỆP 1:1 CÙNG BÙI THU HIỀN
+     ========================================================================== -->
+<section class="py-16 md:py-24 bg-[#FAF7F0] border-t border-[#8FAF91]/25">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        
+        <div class="max-w-3xl mx-auto text-center mb-14">
+            <span class="eyebrow-badge mb-3">LỘ TRÌNH KHOA HỌC</span>
+            <h2 class="text-2xl sm:text-4xl font-black uppercase text-[#174C3B] tracking-tight leading-tight mb-4">
+                QUY TRÌNH ĐỒNG HÀNH 4 BƯỚC TẬN TÂM
+            </h2>
+            <p class="text-sm sm:text-base text-[#5F6E66] leading-relaxed">
+                Mỗi gia đình có một thói quen sinh hoạt và mỗi em bé có một ngưỡng tiếp nhận khác nhau. Chuyên gia Bùi Thu Hiền thiết kế lộ trình chuyển dịch từng bước nhỏ.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Step 1 -->
+            <div class="p-6 rounded-3xl bg-white border border-[#8FAF91]/30 shadow-xs relative">
+                <div class="w-10 h-10 rounded-2xl bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm mb-4">
+                    01
+                </div>
+                <h3 class="font-bold text-base text-[#174C3B] mb-2">Khảo Sát Toàn Diện</h3>
+                <p class="text-xs text-[#5F6E66] leading-relaxed">
+                    Thu thập nhật ký ăn uống 3 ngày, hình thái phân (theo thang Bristol), lịch trình sinh hoạt, giấc ngủ và tiền sử dị ứng thực phẩm của trẻ.
+                </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="p-6 rounded-3xl bg-white border border-[#8FAF91]/30 shadow-xs relative">
+                <div class="w-10 h-10 rounded-2xl bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm mb-4">
+                    02
+                </div>
+                <h3 class="font-bold text-base text-[#174C3B] mb-2">Đánh Giá Ngưỡng Cảm Giác</h3>
+                <p class="text-xs text-[#5F6E66] leading-relaxed">
+                    Xác định nhóm dị ứng tiềm ẩn và phân tích ngưỡng từ chối (kết cấu giòn, sệt, nhiệt độ, màu sắc) để hiểu con kén ăn vì tâm lý hay vì đau rát ruột.
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="p-6 rounded-3xl bg-white border border-[#8FAF91]/30 shadow-xs relative">
+                <div class="w-10 h-10 rounded-2xl bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm mb-4">
+                    03
+                </div>
+                <h3 class="font-bold text-base text-[#174C3B] mb-2">Thiết Lập Thực Đơn Tuần</h3>
+                <p class="text-xs text-[#5F6E66] leading-relaxed">
+                    Lên thực đơn chuyển đổi an toàn (không cắt đột ngột). Cung cấp công thức chế biến món ngon, dễ nấu ngay từ nguyên liệu chợ truyền thống.
+                </p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="p-6 rounded-3xl bg-white border border-[#8FAF91]/30 shadow-xs relative">
+                <div class="w-10 h-10 rounded-2xl bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm mb-4">
+                    04
+                </div>
+                <h3 class="font-bold text-base text-[#174C3B] mb-2">Đồng Hành & Tinh Chỉnh</h3>
+                <p class="text-xs text-[#5F6E66] leading-relaxed">
+                    Trò chuyện định kỳ, theo dõi tiến độ mỗi tuần, gỡ rối khi con phản kháng và điều chỉnh lượng vi chất phù hợp với tốc độ hồi phục của con.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="mt-12 text-center">
+            <a href="../pricing/" class="inline-flex items-center gap-2 text-sm font-bold text-[#174C3B] hover:text-[#F08A4B] transition-colors">
+                <span>Xem chi tiết các gói đồng hành 3 ngày, 1 tháng & cam kết hoàn tiền 100%</span>
+                <span>→</span>
+            </a>
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     5. CẢM NHẬN TỪ PHỤ HUYNH TRONG CỘNG ĐỒNG
+     ========================================================================== -->
+<section class="py-16 md:py-24 bg-white border-t border-[#8FAF91]/25">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        
+        <div class="max-w-3xl mx-auto text-center mb-14">
+            <span class="eyebrow-badge mb-3">TIẾNG NÓI TỪ CỘNG ĐỒNG</span>
+            <h2 class="text-2xl sm:text-4xl font-black uppercase text-[#174C3B] tracking-tight leading-tight mb-4">
+                SỰ AN TÂM CỦA CHA MẸ LÀ MỤC TIÊU LỚN NHẤT
+            </h2>
+            <p class="text-sm sm:text-base text-[#5F6E66] leading-relaxed">
+                Những chia sẻ từ các bậc phụ huynh trong cộng đồng Thắp Đèn Xanh và Chuyên Gia Của Mẹ sau khi đồng hành cùng Bùi Thu Hiền.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Review 1 -->
+            <div class="p-6 rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/30 shadow-xs flex flex-col justify-between">
+                <div class="space-y-3">
+                    <div class="flex text-amber-400 text-sm">★★★★★</div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] italic leading-relaxed">
+                        "Trước đây con trai 3 tuổi của mình táo bón kinh niên, 4-5 ngày mới đi một lần, mỗi lần đi là con khóc thét. Sau 3 tuần được cô Hiền hướng dẫn chuyển đổi sữa hạt và tinh bột không chứa gluten, trộm vía con đi ngoài đều mỗi ngày, phân đẹp, đêm ngủ ngon không quấy khóc nữa."
+                    </p>
+                </div>
+                <div class="pt-4 mt-4 border-t border-[#8FAF91]/20 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-xs">
+                        MH
+                    </div>
+                    <div>
+                        <strong class="text-xs text-[#174C3B] block">Mẹ Mai Hương (Hà Nội)</strong>
+                        <span class="text-[11px] text-[#5F6E66]">Bé Bon - 3 tuổi (Cộng đồng Thắp Đèn Xanh)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="p-6 rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/30 shadow-xs flex flex-col justify-between">
+                <div class="space-y-3">
+                    <div class="flex text-amber-400 text-sm">★★★★★</div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] italic leading-relaxed">
+                        "Bé nhà mình kén ăn kinh khủng, chỉ ăn cơm chan nước tương hoặc xúc xích rán. Cô Hiền không hề bắt mình phải cắt phựt các món bé thích mà dạy mình cách kết hợp vị giác, 'ngụy trang' rau củ từng thìa nhỏ. Giờ con đã chịu ăn cá hồi và canh bí đỏ rồi!"
+                    </p>
+                </div>
+                <div class="pt-4 mt-4 border-t border-[#8FAF91]/20 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-xs">
+                        TL
+                    </div>
+                    <div>
+                        <strong class="text-xs text-[#174C3B] block">Mẹ Thùy Linh (Đà Nẵng)</strong>
+                        <span class="text-[11px] text-[#5F6E66]">Bé Bắp - 4 tuổi rưỡi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="p-6 rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/30 shadow-xs flex flex-col justify-between">
+                <div class="space-y-3">
+                    <div class="flex text-amber-400 text-sm">★★★★★</div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] italic leading-relaxed">
+                        "Điều mình trân quý nhất ở chuyên gia Bùi Thu Hiền là sự lắng nghe và giải thích cực kỳ cặn kẽ vì sao con có phản ứng như vậy. Không phán xét cách nuôi con của mẹ, luôn động viên mẹ giữ vững tâm lý. Nhờ cô mà cả nhà bớt áp lực mỗi giờ cơm."
+                    </p>
+                </div>
+                <div class="pt-4 mt-4 border-t border-[#8FAF91]/20 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-xs">
+                        PA
+                    </div>
+                    <div>
+                        <strong class="text-xs text-[#174C3B] block">Mẹ Phương Anh (TP.HCM)</strong>
+                        <span class="text-[11px] text-[#5F6E66]">Cộng đồng Chuyên Gia Của Mẹ</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     6. ACTION CTA: ĐẶT LỊCH TƯ VẤN 1:1
+     ========================================================================== -->
+<section class="py-16 md:py-20 bg-[#174C3B] text-white relative overflow-hidden">
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10 space-y-6">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 text-white text-xs font-bold">
+            ✦ BẮT ĐẦU TỪ HÔM NAY VÌ CON
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-serif font-bold text-white leading-tight">
+            Ba Mẹ Cần Một Người Đồng Hành Thấu Hiểu Để Gỡ Bỏ Áp Lực Bữa Ăn?
+        </h2>
+        <p class="text-sm sm:text-base text-white/80 max-w-2xl mx-auto leading-relaxed">
+            Chuyên gia Dinh dưỡng Bùi Thu Hiền sẵn sàng lắng nghe mọi khó khăn của gia đình và cùng ba mẹ tìm ra lộ trình dịu dàng nhất cho con.
+        </p>
+
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="../dat-lich/" class="btn-pill-peach justify-center w-full sm:w-auto px-8 py-3.5 text-base">
+                <span>Đặt Lịch Tư Vấn 1-1 Cùng Bùi Thu Hiền</span>
+                <span class="btn-circle-icon">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                    </svg>
+                </span>
+            </a>
+            <button type="button" data-open-modal="ebook" class="px-6 py-3.5 rounded-full border border-white/30 text-white font-bold text-sm hover:bg-white/10 transition-colors w-full sm:w-auto">
+                Tải Cẩm Nang Đồng Hành (PDF)
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     7. FOOTER
+     ========================================================================== -->
+<footer class="border-t border-[#8FAF91]/30 bg-[#FAF7F0] pt-16 pb-12 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-14 border-b border-[#8FAF91]/20">
+            <div class="md:col-span-6 space-y-3">
+                <div class="flex items-center gap-3">
+                    <img src="../favicon.png" alt="Thu Hiền Logo" class="w-9 h-9 rounded-full object-cover shadow-sm ring-1 ring-[#8FAF91]/40">
+                    <div>
+                        <span class="font-bold text-lg text-[#174C3B] block">Thu Hiền</span>
+                        <span class="text-xs font-semibold text-[#F08A4B] tracking-wider uppercase">Cùng Mẹ Hiểu Con</span>
+                    </div>
+                </div>
+                <p class="text-[#5F6E66] text-xs sm:text-sm leading-relaxed max-w-sm pt-1">
+                    Đồng hành cùng cha mẹ xây dựng thói quen ăn uống phù hợp hơn cho trẻ đặc biệt, bằng những bước nhỏ, cá nhân hóa và có thể duy trì trong đời sống thật.
+                </p>
+            </div>
+
+            <div class="md:col-span-6 flex flex-col md:items-end justify-between space-y-3">
+                <div class="text-xs text-[#5F6E66] space-y-1 md:text-right">
+                    <span class="block text-[#8FAF91] font-semibold uppercase text-[10px]">Kết Nối Trao Đổi</span>
+                    <span class="font-semibold text-[#174C3B] block">thuhien.cungmehieucon@gmail.com</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-2.5 pt-2">
+                    <a href="../" class="px-4 py-2 rounded-full border border-[#8FAF91]/40 text-xs font-semibold text-[#174C3B] bg-white hover:bg-[#EEF5EA] transition-colors">
+                        ← Về Trang Chủ
+                    </a>
+                    <a href="../dinh-duong/" class="px-4 py-2 rounded-full border border-[#8FAF91]/40 text-xs font-semibold text-[#174C3B] bg-white hover:bg-[#EEF5EA] transition-colors">
+                        Lời Khuyên Dinh Dưỡng
+                    </a>
+                    <a href="../pricing/" class="px-4 py-2 rounded-full border border-[#8FAF91]/40 text-xs font-semibold text-[#174C3B] bg-white hover:bg-[#EEF5EA] transition-colors">
+                        Bảng Giá / Gói
+                    </a>
+                    <a href="../dat-lich/" class="btn-pill-peach text-xs py-2 px-4">
+                        <span>Đặt Lịch Trao Đổi</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-8 text-center text-[11px] text-[#5F6E66]">
+            © 2026 Thu Hiền – Cùng Mẹ Hiểu Con. Mọi quyền được bảo lưu.
+            <span class="block mt-1 text-[#8B9992]">*Lưu ý: Hướng dẫn dinh dưỡng mang tính chất đồng hành khoa học gia đình, không thay thế chẩn đoán y khoa chuyên sâu.*</span>
+        </div>
+    </div>
+</footer>
+
+<!-- Lead Magnet Modal (Ebook) -->
+<div id="ebookModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 [&.active]:opacity-100 [&.active]:pointer-events-auto">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-[#8FAF91]/30 relative transform scale-95 transition-transform duration-300 [div.active_&]:scale-100">
+        <button type="button" data-close-modal="ebook" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-100 text-zinc-500 hover:text-zinc-800 flex items-center justify-center text-sm font-bold">✕</button>
+        
+        <div class="text-center mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center mx-auto mb-3 font-bold text-xl">📖</div>
+            <h3 class="font-serif text-xl font-bold text-[#174C3B]">Nhận Cẩm Nang Dinh Dưỡng</h3>
+            <p class="text-xs text-[#5F6E66] mt-1">File PDF thực đơn mẫu và hướng dẫn GFCF+SF gửi trực tiếp đến Zalo của Mẹ.</p>
+        </div>
+
+        <form id="ebookLeadForm" class="space-y-3.5 text-xs">
+            <div>
+                <label class="font-semibold text-zinc-700 block mb-1">Họ Tên Mẹ *</label>
+                <input type="text" name="parent_name" required placeholder="Ví dụ: Nguyễn Thị Mai" class="w-full h-9 rounded-xl border border-zinc-200 px-3 focus:outline-none focus:ring-1 focus:ring-[#174C3B]">
+            </div>
+            <div>
+                <label class="font-semibold text-zinc-700 block mb-1">Số Zalo Nhận Tài Liệu *</label>
+                <input type="tel" name="phone" required placeholder="09xx xxx xxx" class="w-full h-9 rounded-xl border border-zinc-200 px-3 focus:outline-none focus:ring-1 focus:ring-[#174C3B]">
+            </div>
+            <div>
+                <label class="font-semibold text-zinc-700 block mb-1">Độ Tuổi Bé</label>
+                <input type="text" name="baby_age" placeholder="Ví dụ: 3 tuổi" class="w-full h-9 rounded-xl border border-zinc-200 px-3 focus:outline-none focus:ring-1 focus:ring-[#174C3B]">
+            </div>
+            <button type="submit" class="btn-pill-peach w-full justify-center py-2.5 mt-2">
+                <span>Tải Cẩm Nang Ngay</span>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="../assets/js/db.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
