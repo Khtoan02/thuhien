@@ -172,37 +172,23 @@
         <span>Ba mẹ đã từng thực hiện đánh giá?</span>
         <a href="../tra-cuu/" class="text-[#F08A4B] hover:underline flex items-center gap-1">Tra cứu kết quả qua SĐT tại đây →</a>
     </div>
-
-    <!-- Progress Indicator Bar (Sticky for comfortable user feedback) -->
-    <div class="mt-8 max-w-xl mx-auto bg-white/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-[#8FAF91]/30 shadow-sm sticky top-20 z-20 transition-all">
-        <div class="flex items-center justify-between text-xs font-bold text-[#174C3B] mb-2">
-            <span class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-[#F08A4B] animate-pulse"></span>
-                <span>Tiến trình hoàn thành phiếu:</span>
-            </span>
-            <span id="progressText">0 / 28 câu hỏi (0%)</span>
-        </div>
-        <div class="w-full bg-[#FAF7F0] h-2.5 rounded-full overflow-hidden border border-[#8FAF91]/20">
-            <div id="progressBar" class="bg-gradient-to-r from-[#174C3B] via-[#8FAF91] to-[#F08A4B] h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
-        </div>
-    </div>
 </section>
 
 <!-- ==========================================================================
      MAIN FORM CONTENT
      ========================================================================== -->
-<main class="max-w-4xl mx-auto px-4 sm:px-6 space-y-8 sm:space-y-10">
+<main class="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
 
-    <form id="assessmentForm" onsubmit="event.preventDefault(); calculateAndShowResults();">
+    <form id="assessmentForm" class="space-y-8 sm:space-y-12" onsubmit="event.preventDefault(); calculateAndShowResults();">
 
         <!-- ======================================================================
              SECTION 1: THÔNG TIN CƠ BẢN CỦA TRẺ & CHA MẸ
              ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
-                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">1</span>
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">1</span>
                 <div>
-                    <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Thông Tin Trẻ & Phụ Huynh</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">THÔNG TIN TRẺ & PHỤ HUYNH</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Giúp lưu thông tin và đưa ra định hướng chuẩn xác theo độ tuổi của bé</p>
                 </div>
             </div>
@@ -266,9 +252,9 @@
              ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
-                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">2</span>
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">2</span>
                 <div>
-                    <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Tình Trạng Ăn Uống & Tiêu Hóa Tổng Quát</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">TÌNH TRẠNG ĂN UỐNG & TIÊU HÓA TỔNG QUÁT</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Khai thác nếp ăn hàng ngày, khả năng nhai nuốt và đường ruột của con</p>
                 </div>
             </div>
@@ -462,9 +448,9 @@
              ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
-                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">3</span>
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">3</span>
                 <div>
-                    <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Vấn Đề Dinh Dưỡng, Cảm Giác & Vận Động</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">VẤN ĐỀ DINH DƯỠNG, CẢM GIÁC & VẬN ĐỘNG</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Ba mẹ vui lòng chọn phương án phản ánh đúng nhất tình trạng của bé gần đây</p>
                 </div>
             </div>
@@ -669,7 +655,7 @@
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
                 <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">4</span>
                 <div>
-                    <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Khai Thác Bổ Sung & Tiền Sử Dùng Vi Chất</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">KHAI THÁC BỔ SUNG & TIỀN SỬ DÙNG VI CHẤT</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Ghi nhận thêm thông tin để định hướng tư vấn chuẩn xác theo thể trạng của bé</p>
                 </div>
             </div>
@@ -917,11 +903,11 @@
     <!-- ==========================================================================
          SECTION 5: LIVE RESULT CARD (Rendered after calculation)
          ========================================================================== -->
-    <div id="resultCard" class="hidden bg-white rounded-3xl p-6 sm:p-10 border-2 shadow-xl transition-all duration-500">
+    <div id="resultCard" class="hidden bg-white rounded-3xl p-6 sm:p-10 border-2 shadow-xl transition-all duration-500 mt-10 sm:mt-14">
         <!-- Result Header -->
         <div class="text-center pb-6 border-b border-zinc-100">
-            <h2 class="text-2xl sm:text-3xl font-black text-[#174C3B] mb-2">
-                Kết Quả Đánh Giá Tình Trạng Dinh Dưỡng
+            <h2 class="text-xl sm:text-2xl font-black text-[#174C3B] uppercase tracking-wide mb-2">
+                KẾT QUẢ ĐÁNH GIÁ TÌNH TRẠNG DINH DƯỠNG
             </h2>
             <p class="text-sm text-[#5F6E66]">
                 Dành cho bé: <strong id="resChildName" class="text-[#174C3B]">-</strong> (<span id="resChildAge">-</span>) • Phụ huynh: <strong id="resParentName" class="text-[#174C3B]">-</strong>
@@ -1096,20 +1082,8 @@
         updateProgress();
     }
 
-    // Progress bar calculator across all 28 interactive questions
-    function updateProgress() {
-        const choiceCount = Object.keys(assessmentState.scores).length; // covers q1, q2, q4, q6 and q7_1 .. q7_14
-        const digestCount = assessmentState.answers['q3_digest'] ? 1 : 0;
-        const suppCount = Array.from(document.querySelectorAll('.supp-select')).filter(s => s.value && s.value.trim() !== '').length;
-        
-        const answeredCount = choiceCount + digestCount + suppCount;
-        const percent = Math.min(100, Math.round((answeredCount / TOTAL_QUESTIONS) * 100));
-        
-        const bar = document.getElementById('progressBar');
-        const text = document.getElementById('progressText');
-        if (bar) bar.style.width = percent + '%';
-        if (text) text.innerText = `${answeredCount} / ${TOTAL_QUESTIONS} câu hỏi (${percent}%)`;
-    }
+    // Progress indicator removed as requested by user
+    function updateProgress() {}
 
     // Current evaluated payload cache
     let currentEvaluationPayload = null;
