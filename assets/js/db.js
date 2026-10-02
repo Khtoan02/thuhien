@@ -430,10 +430,20 @@ const DB = (() => {
             try {
                 const s = JSON.parse(localStorage.getItem(STORAGE_KEY_SETTINGS));
                 let changed = false;
-                if (!s.pages || !Array.isArray(s.pages) || s.pages.length === 0 || !s.pages_schema_v || s.pages_schema_v < 2) {
+                if (!s.pages || !Array.isArray(s.pages) || s.pages.length === 0) {
                     s.pages = DEFAULT_SETTINGS.pages;
                     s.pages_schema_v = 2;
                     changed = true;
+                } else {
+                    if (!s.pages_schema_v || s.pages_schema_v < 2) {
+                        s.pages_schema_v = 2;
+                        DEFAULT_SETTINGS.pages.forEach(defP => {
+                            if (!s.pages.some(p => p.id === defP.id || p.slug === defP.slug)) {
+                                s.pages.push(defP);
+                            }
+                        });
+                        changed = true;
+                    }
                 }
                 if (!s.pages_behavior) {
                     s.pages_behavior = DEFAULT_SETTINGS.pages_behavior;
@@ -881,21 +891,161 @@ const DB = (() => {
             }
         },
 
+        // ====================================================================
+        // REALTIME SYNCHRONIZATION ENGINE (Cross-tab & Multi-window)
+        // ====================================================================
+        _syncListeners: [],
+        _bc: null,
+        _realtimeInitialized: false,
+
+        onSync(cb) {
+            if (typeof cb === 'function') {
+                this._syncListeners.push(cb);
+            }
+        },
+
+        broadcastChange(type, data) {
+            const payload = { type, data, timestamp: Date.now() };
+
+            // 1. Notify internal subscribers in current window
+            this._syncListeners.forEach(cb => {
+                try { cb(payload); } catch (e) {}
+            });
+
+            // 2. Dispatch custom event on current window
+            if (typeof window !== 'undefined') {
+                try {
+                    window.dispatchEvent(new CustomEvent('thuhien_db_sync', { detail: payload }));
+                } catch (e) {}
+            }
+
+            // 3. Broadcast to other tabs/windows via BroadcastChannel
+            try {
+                if (typeof BroadcastChannel !== 'undefined') {
+                    if (!this._bc) {
+                        this._bc = new BroadcastChannel('thuhien_realtime_bus');
+                    }
+                    this._bc.postMessage(payload);
+                }
+            } catch (e) {}
+
+            // 4. Trigger localStorage storage event for cross-tab fallback
+            try {
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.setItem('thuhien_realtime_ping', JSON.stringify({
+                        type,
+                        ts: Date.now()
+                    }));
+                }
+            } catch (e) {}
+        },
+
+        initRealtimeListener() {
+            if (typeof window === 'undefined') return;
+            if (this._realtimeInitialized) return;
+            this._realtimeInitialized = true;
+
+            const handleIncoming = (payload) => {
+                if (!payload || !payload.type) return;
+                this._syncListeners.forEach(cb => {
+                    try { cb(payload); } catch (e) {}
+                });
+                try {
+                    window.dispatchEvent(new CustomEvent('thuhien_db_sync', { detail: payload }));
+                } catch (e) {}
+
+                // If on public page, immediately update UI when settings or page status changes
+                if (!window.location.pathname.includes('/admin')) {
+                    if (payload.type === 'page_status' || payload.type === 'settings_changed' || payload.type === 'settings') {
+                        if (typeof this.applyPageStatusControl === 'function') {
+                            this.applyPageStatusControl();
+                        }
+                    }
+                }
+            };
+
+            // BroadcastChannel listener
+            try {
+                if (typeof BroadcastChannel !== 'undefined') {
+                    if (!this._bc) {
+                        this._bc = new BroadcastChannel('thuhien_realtime_bus');
+                    }
+                    this._bc.onmessage = (event) => {
+                        handleIncoming(event.data);
+                    };
+                }
+            } catch (e) {}
+
+            // Storage event listener
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'thuhien_realtime_ping') {
+                    try {
+                        const ping = JSON.parse(e.newValue);
+                        handleIncoming(ping);
+                    } catch (err) {}
+                } else if (e.key === STORAGE_KEY_SETTINGS) {
+                    handleIncoming({ type: 'settings_changed', data: this.getSettings() });
+                } else if (e.key === STORAGE_KEY_BOOKINGS) {
+                    handleIncoming({ type: 'bookings_changed' });
+                } else if (e.key === STORAGE_KEY_LEADS) {
+                    handleIncoming({ type: 'leads_changed' });
+                }
+            });
+        },
+
+        showToast(message, type = 'success') {
+            if (typeof document === 'undefined') return;
+            const existing = document.getElementById('thuhien-live-toast');
+            if (existing) existing.remove();
+
+            const isSuccess = type === 'success';
+            const isWarn = type === 'warning' || type === 'amber';
+            const bg = isSuccess ? '#064e3b' : (isWarn ? '#78350f' : '#18181b');
+            const border = isSuccess ? '#047857' : (isWarn ? '#b45309' : '#3f3f46');
+            const color = isSuccess ? '#6ee7b7' : (isWarn ? '#fcd34d' : '#f4f4f5');
+
+            const toast = document.createElement('div');
+            toast.id = 'thuhien-live-toast';
+            toast.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999999;background:${bg};border:1px solid ${border};color:#ffffff;padding:8px 18px;border-radius:9999px;font-size:12px;font-family:Alata,sans-serif;font-weight:600;box-shadow:0 10px 25px rgba(0,0,0,0.3);display:flex;align-items:center;gap:8px;transition:all 0.25s ease;`;
+
+            const iconSvg = isSuccess 
+                ? `<svg style="width:14px;height:14px;color:${color};flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`
+                : `<svg style="width:14px;height:14px;color:${color};flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+
+            toast.innerHTML = `
+                ${iconSvg}
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                if (toast && toast.parentElement) {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translate(-50%, 10px)';
+                    setTimeout(() => toast.remove(), 250);
+                }
+            }, 3000);
+        },
+
         saveSettings(newSettings) {
             try {
                 const current = this.getSettings();
                 const merged = {
+                    ...current,
+                    ...newSettings,
                     email: { ...current.email, ...(newSettings.email || {}) },
                     resources: newSettings.resources || current.resources,
                     social: { ...current.social, ...(newSettings.social || {}) },
                     integrations: { ...current.integrations, ...(newSettings.integrations || {}) },
                     security: { ...current.security, ...(newSettings.security || {}) },
                     pages: newSettings.pages || current.pages,
+                    pages_schema_v: 2,
                     pages_behavior: newSettings.pages_behavior || current.pages_behavior,
                     pages_maintenance_message: newSettings.pages_maintenance_message !== undefined ? newSettings.pages_maintenance_message : current.pages_maintenance_message
                 };
                 localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(merged));
                 this.logSecurityEvent('SETTINGS_UPDATED', 'SUCCESS', 'Cập nhật cấu hình hệ thống');
+                this.broadcastChange('settings_changed', merged);
                 return true;
             } catch (e) {
                 return false;
@@ -904,6 +1054,7 @@ const DB = (() => {
 
         resetSettings() {
             localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
+            this.broadcastChange('settings_changed', DEFAULT_SETTINGS);
             return DEFAULT_SETTINGS;
         },
 
@@ -988,8 +1139,10 @@ const DB = (() => {
             }
             target.enabled = Boolean(enabled);
             settings.pages = list;
+            settings.pages_schema_v = 2;
             this.saveSettings(settings);
             this.logSecurityEvent('PAGE_STATUS_CHANGED', 'SUCCESS', `Trang "${target.title}" đã chuyển sang trạng thái: ${target.enabled ? 'CÔNG KHAI (Publics)' : 'TẠM ẨN (Chưa Publics)'}`);
+            this.broadcastChange('page_status', { id, enabled: target.enabled, page: target, pages: list });
             return { success: true, page: target };
         },
 
@@ -1506,6 +1659,9 @@ const DB = (() => {
         applyPageStatusControl() {
             if (typeof document === 'undefined' || typeof window === 'undefined') return;
 
+            // Ensure realtime cross-tab listener is running
+            this.initRealtimeListener();
+
             const currentPath = window.location.pathname;
             // Never restrict or insert bar inside the admin panel
             if (currentPath.includes('/admin')) return;
@@ -1539,44 +1695,48 @@ const DB = (() => {
                 return isSubdir ? '../' + clean : './' + clean;
             };
 
-            // 1. Navigation links control for disabled pages
+            // 1. Navigation links control for all pages (show/hide dynamically)
             pages.forEach(p => {
-                if (p.enabled === false && p.slug !== 'home') {
-                    document.querySelectorAll('a').forEach(a => {
-                        const h = a.getAttribute('href') || '';
-                        const t = (a.innerText || '').trim();
-                        const matchesHref = h.includes('/' + p.slug) || h.includes(p.path) || (h.includes(p.slug));
-                        const matchesText = (p.slug === 'chuyen-gia' && (t === 'Chuyên Gia' || t.startsWith('Chuyên Gia'))) ||
-                                            (p.slug === 'pricing' && (t === 'Bảng Giá' || t.startsWith('Bảng Giá'))) ||
-                                            (p.slug === 'dinh-duong' && (t === 'Dinh Dưỡng' || t.startsWith('Dinh Dưỡng'))) ||
-                                            (p.slug === 'cong-dong' && (t === 'Kênh & Cộng Đồng' || t.startsWith('Kênh & Cộng Đồng'))) ||
-                                            (p.slug === 'dat-lich' && (t === 'Đặt Lịch 1:1' || t.startsWith('Đặt Lịch')));
+                const isPageDisabled = (p.enabled === false && p.slug !== 'home');
+                document.querySelectorAll('a').forEach(a => {
+                    const h = a.getAttribute('href') || '';
+                    const t = (a.innerText || '').trim();
+                    const matchesHref = h.includes('/' + p.slug) || h.includes(p.path) || (h.includes(p.slug));
+                    const matchesText = (p.slug === 'chuyen-gia' && (t === 'Chuyên Gia' || t.startsWith('Chuyên Gia'))) ||
+                                        (p.slug === 'pricing' && (t === 'Bảng Giá' || t.startsWith('Bảng Giá'))) ||
+                                        (p.slug === 'dinh-duong' && (t === 'Dinh Dưỡng' || t.startsWith('Dinh Dưỡng'))) ||
+                                        (p.slug === 'cong-dong' && (t === 'Kênh & Cộng Đồng' || t.startsWith('Kênh & Cộng Đồng'))) ||
+                                        (p.slug === 'dat-lich' && (t === 'Đặt Lịch 1:1' || t.startsWith('Đặt Lịch')));
 
-                        const isNavLink = matchesHref || (matchesText && (a.closest('.nav-island') || a.closest('header') || a.closest('footer') || a.closest('nav')));
+                    const isNavLink = matchesHref || (matchesText && (a.closest('.nav-island') || a.closest('header') || a.closest('footer') || a.closest('nav')));
 
-                        if (isNavLink) {
-                            if (!isAdmin) {
-                                // Regular public visitor: completely hide the link
-                                const parentLi = a.closest('li');
-                                if (parentLi) {
-                                    parentLi.style.display = 'none';
-                                } else {
-                                    a.style.display = 'none';
-                                }
+                    if (isNavLink) {
+                        const parentLi = a.closest('li');
+                        const targetEl = parentLi || a;
+                        if (!isAdmin) {
+                            if (isPageDisabled) {
+                                targetEl.style.display = 'none';
                             } else {
-                                // Admin: keep link visible with a small indicator badge so admin can navigate & edit!
-                                if (!a.dataset.adminPageBadge) {
-                                    a.dataset.adminPageBadge = 'true';
-                                    a.title = 'Trang này đang TẠM ẨN (chỉ Quản trị viên nhìn thấy để chỉnh sửa)';
-                                    const tag = document.createElement('span');
-                                    tag.className = 'ml-1 px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-400 text-amber-950 uppercase tracking-tighter align-middle shadow-xs';
-                                    tag.innerText = 'Ẩn';
-                                    a.appendChild(tag);
+                                targetEl.style.display = '';
+                            }
+                        } else {
+                            targetEl.style.display = '';
+                            let badge = a.querySelector('.thuhien-admin-badge');
+                            if (isPageDisabled) {
+                                if (!badge) {
+                                    badge = document.createElement('span');
+                                    badge.className = 'thuhien-admin-badge ml-1 px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-400 text-amber-950 uppercase tracking-tighter align-middle shadow-xs';
+                                    badge.innerText = 'Ẩn';
+                                    a.appendChild(badge);
                                 }
+                                a.title = 'Trang này đang TẠM ẨN (chỉ Quản trị viên nhìn thấy để chỉnh sửa)';
+                            } else {
+                                if (badge) badge.remove();
+                                a.title = '';
                             }
                         }
-                    });
-                }
+                    }
+                });
             });
 
             // 2. Identify the active page
@@ -1615,7 +1775,7 @@ const DB = (() => {
                 };
             }
 
-            // 3. If page is disabled and user is NOT admin -> block and show maintenance/redirect
+            // 3. Visitor access check
             if (activePage && activePage.enabled === false && !isAdmin) {
                 if (behavior === 'redirect_home') {
                     window.location.replace(getRelUrl('/'));
@@ -1623,7 +1783,7 @@ const DB = (() => {
                 } else {
                     document.title = 'Trang Đang Được Hoàn Thiện | Thu Hiền';
                     document.body.innerHTML = `
-                        <div class="min-h-screen bg-[#FAF7F0] flex flex-col justify-between text-[#174C3B] selection:bg-[#F08A4B]/20 font-sans p-6 sm:p-12 relative overflow-hidden">
+                        <div id="thuhien-maintenance-screen" class="min-h-screen bg-[#FAF7F0] flex flex-col justify-between text-[#174C3B] selection:bg-[#F08A4B]/20 font-sans p-6 sm:p-12 relative overflow-hidden">
                             <div class="w-full max-w-2xl mx-auto my-auto py-12 text-center">
                                 <div class="w-16 h-16 rounded-2xl bg-[#E7F0EB] text-[#174C3B] flex items-center justify-center mx-auto mb-6 shadow-xs border border-[#C5DCCF]/50">
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -1646,7 +1806,7 @@ const DB = (() => {
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
                                         </svg>
                                     </a>
-                                    <a href="https://zalo.me/0987654321" target="_blank" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white text-[#174C3B] border border-[#C5DCCF] text-xs sm:text-sm font-bold hover:bg-[#F4F8F5] transition-all">
+                                    <a href="https://zalo.me/0988776655" target="_blank" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white text-[#174C3B] border border-[#C5DCCF] text-xs sm:text-sm font-bold hover:bg-[#F4F8F5] transition-all">
                                         Liên Hệ Với Thu Hiền
                                     </a>
                                 </div>
@@ -1658,10 +1818,16 @@ const DB = (() => {
                     `;
                     return;
                 }
+            } else if (activePage && activePage.enabled !== false && !isAdmin) {
+                // If maintenance screen was showing and page became public -> reload to restore real content!
+                if (document.getElementById('thuhien-maintenance-screen')) {
+                    window.location.reload();
+                    return;
+                }
             }
 
-            // 4. If user is Admin -> Render the interactive Admin Top Bar on public pages
-            if (isAdmin && !document.getElementById('thuhien-admin-bar')) {
+            // 4. If user is Admin -> Render or update the interactive Admin Top Bar
+            if (isAdmin) {
                 const adminUrl = getRelUrl('/admin/');
                 const isCurrentDisabled = activePage.enabled === false;
                 const isCorePage = activePage.can_disable === false;
@@ -1672,9 +1838,13 @@ const DB = (() => {
                     el.style.top = '3.75rem';
                 });
 
-                const adminBar = document.createElement('div');
-                adminBar.id = 'thuhien-admin-bar';
-                adminBar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:999999;height:42px;background:#18181b;color:#fafafa;font-family:Alata,system-ui,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+                let adminBar = document.getElementById('thuhien-admin-bar');
+                if (!adminBar) {
+                    adminBar = document.createElement('div');
+                    adminBar.id = 'thuhien-admin-bar';
+                    adminBar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:999999;height:42px;background:#18181b;color:#fafafa;font-family:Alata,system-ui,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+                    document.body.prepend(adminBar);
+                }
                 adminBar.className = isCurrentDisabled ? 'border-b-2 border-b-amber-500' : 'border-b border-zinc-800';
 
                 adminBar.innerHTML = `
@@ -1763,7 +1933,7 @@ const DB = (() => {
                                                         }
                                                         ${p.can_disable === false
                                                             ? '<span style="font-size:10px;color:#71717a;width:38px;text-align:center;">Khóa</span>'
-                                                            : `<button onclick="DB.togglePage('${p.id}', ${!isPub}); window.location.reload();" style="padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;border:none;background:${isPub ? '#3f3f46' : '#059669'};color:${isPub ? '#e4e4e7' : '#ffffff'};">
+                                                            : `<button onclick="DB.togglePage('${p.id}', ${!isPub}); DB.applyPageStatusControl(); DB.showToast('Đã ' + (${!isPub} ? 'công khai' : 'tạm ẩn') + ' trang ${p.title}!', ${!isPub} ? 'success' : 'warning');" style="padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;border:none;background:${isPub ? '#3f3f46' : '#059669'};color:${isPub ? '#e4e4e7' : '#ffffff'};">
                                                                 ${isPub ? 'Tắt' : 'Bật'}
                                                                </button>`
                                                         }
@@ -1774,7 +1944,7 @@ const DB = (() => {
                                     </div>
 
                                     <div style="padding-top:8px;margin-top:6px;border-top:1px solid #27272a;display:flex;align-items:center;justify-content:space-between;font-size:11px;">
-                                        <span style="color:#71717a;font-size:10px;">Bấm Bật/Tắt để lưu ngay</span>
+                                        <span style="color:#71717a;font-size:10px;">Bấm Bật/Tắt cập nhật realtime</span>
                                         <a href="${adminUrl}?tab=settings-pages" style="color:#f08a4b;text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:3px;">
                                             <span>Quản lý trong Admin</span>
                                             <span>↗</span>
@@ -1803,13 +1973,15 @@ const DB = (() => {
                     </div>
                 `;
 
-                document.body.prepend(adminBar);
-
-                // If currently viewing a disabled page, also inject a friendly non-blocking notice for the admin
-                if (isCurrentDisabled && !document.getElementById('admin-hidden-page-toast')) {
-                    const toast = document.createElement('div');
-                    toast.id = 'admin-hidden-page-toast';
-                    toast.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:999998;background:#78350f;color:#fef3c7;border:1px solid #b45309;padding:10px 14px;border-radius:10px;font-size:12px;box-shadow:0 10px 20px rgba(0,0,0,0.25);max-width:360px;line-height:1.4;display:flex;align-items:start;gap:8px;';
+                // Update or remove toast for hidden page
+                let toast = document.getElementById('admin-hidden-page-toast');
+                if (isCurrentDisabled) {
+                    if (!toast) {
+                        toast = document.createElement('div');
+                        toast.id = 'admin-hidden-page-toast';
+                        toast.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:999998;background:#78350f;color:#fef3c7;border:1px solid #b45309;padding:10px 14px;border-radius:10px;font-size:12px;box-shadow:0 10px 20px rgba(0,0,0,0.25);max-width:360px;line-height:1.4;display:flex;align-items:start;gap:8px;';
+                        document.body.appendChild(toast);
+                    }
                     toast.innerHTML = `
                         <span style="font-weight:700;color:#f59e0b;font-size:14px;line-height:1;">!</span>
                         <div style="flex:1;">
@@ -1818,17 +1990,20 @@ const DB = (() => {
                         </div>
                         <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#fde68a;cursor:pointer;font-size:13px;padding:0 2px;">✕</button>
                     `;
-                    document.body.appendChild(toast);
+                } else if (toast) {
+                    toast.remove();
                 }
 
-                // Event listener: Toggle current page
+                // Event listener: Toggle current page directly
                 const btnToggleCur = document.getElementById('adminBarBtnToggleCur');
                 if (btnToggleCur) {
-                    btnToggleCur.addEventListener('click', () => {
-                        const nextState = isCurrentDisabled;
+                    btnToggleCur.onclick = (e) => {
+                        e.preventDefault();
+                        const nextState = isCurrentDisabled; // if currently disabled -> enable it (true)
                         DB.togglePage(activePage.id, nextState);
-                        window.location.reload();
-                    });
+                        DB.applyPageStatusControl();
+                        DB.showToast(`Đã ${nextState ? 'công khai' : 'tạm ẩn'} trang "${activePage.title}" thành công!`, nextState ? 'success' : 'warning');
+                    };
                 }
 
                 // Event listener: Dropdown menu toggle
@@ -1836,7 +2011,7 @@ const DB = (() => {
                 const menuDd = document.getElementById('adminBarDropdownMenu');
                 const arrowDd = document.getElementById('adminBarDropdownArrow');
                 if (btnDd && menuDd) {
-                    btnDd.addEventListener('click', (e) => {
+                    btnDd.onclick = (e) => {
                         e.stopPropagation();
                         const isHidden = menuDd.classList.contains('hidden');
                         if (isHidden) {
@@ -1846,10 +2021,10 @@ const DB = (() => {
                             menuDd.classList.add('hidden');
                             if (arrowDd) arrowDd.style.transform = 'rotate(0deg)';
                         }
-                    });
+                    };
 
                     document.addEventListener('click', (e) => {
-                        if (!menuDd.contains(e.target) && e.target !== btnDd) {
+                        if (menuDd && !menuDd.contains(e.target) && e.target !== btnDd) {
                             menuDd.classList.add('hidden');
                             if (arrowDd) arrowDd.style.transform = 'rotate(0deg)';
                         }
@@ -1859,19 +2034,25 @@ const DB = (() => {
                 // Event listener: Logout admin
                 const btnLogout = document.getElementById('adminBarBtnLogout');
                 if (btnLogout) {
-                    btnLogout.addEventListener('click', () => {
+                    btnLogout.onclick = () => {
                         if (confirm('Đăng xuất phiên Admin để kiểm tra giao diện dưới góc nhìn của khách vãng lai?')) {
                             sessionStorage.removeItem('thuhien_admin_auth');
                             localStorage.removeItem('thuhien_admin_auth');
+                            // Remove ?admin=1 from URL if present
+                            try {
+                                const url = new URL(window.location.href);
+                                url.searchParams.delete('admin');
+                                window.history.replaceState({}, '', url.pathname + url.search);
+                            } catch (e) {}
                             window.location.reload();
                         }
-                    });
+                    };
                 }
 
                 // Event listener: Collapse & Expand Admin Bar
                 const btnCollapse = document.getElementById('adminBarBtnCollapse');
                 if (btnCollapse) {
-                    btnCollapse.addEventListener('click', () => {
+                    btnCollapse.onclick = () => {
                         adminBar.style.display = 'none';
                         document.body.style.paddingTop = '0px';
                         document.querySelectorAll('.nav-island').forEach(el => {
@@ -1887,18 +2068,27 @@ const DB = (() => {
                                 <svg style="width:13px;height:13px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                                 <span>Mở Admin Bar</span>
                             `;
-                            expandBtn.addEventListener('click', () => {
+                            expandBtn.onclick = () => {
                                 expandBtn.remove();
                                 adminBar.style.display = 'block';
                                 document.body.style.paddingTop = '42px';
                                 document.querySelectorAll('.nav-island').forEach(el => {
                                     el.style.top = '3.75rem';
                                 });
-                            });
+                            };
                             document.body.appendChild(expandBtn);
                         }
-                    });
+                    };
                 }
+            } else {
+                const existingBar = document.getElementById('thuhien-admin-bar');
+                if (existingBar) existingBar.remove();
+                const existingToast = document.getElementById('admin-hidden-page-toast');
+                if (existingToast) existingToast.remove();
+                document.body.style.paddingTop = '0px';
+                document.querySelectorAll('.nav-island').forEach(el => {
+                    el.style.top = '1.25rem';
+                });
             }
         }
     };

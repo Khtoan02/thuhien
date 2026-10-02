@@ -1631,7 +1631,7 @@
 <!-- ==========================================================================
      CORE JAVASCRIPT & SHADCN CONTROLLERS
      ========================================================================== -->
-<script src="../assets/js/db.js?v=2.1"></script>
+<script src="../assets/js/db.js?v=2.2"></script>
 <script>
     const AUTH_KEY = 'thuhien_admin_auth';
     let overviewTrendChartInstance = null;
@@ -3269,6 +3269,25 @@
             switchView(tabParam);
         }
     } catch (e) {}
+
+    // Realtime synchronization across tabs and windows
+    if (typeof DB !== 'undefined' && typeof DB.onSync === 'function') {
+        DB.onSync((event) => {
+            if (event.type === 'page_status' || event.type === 'settings' || event.type === 'settings_changed') {
+                if (typeof renderSettingsPages === 'function') {
+                    renderSettingsPages();
+                }
+            }
+            if (event.type === 'bookings_changed' || event.type === 'leads_changed') {
+                if (typeof renderOverview === 'function') renderOverview();
+                if (typeof renderBookings === 'function') renderBookings();
+                if (typeof renderLeads === 'function') renderLeads();
+            }
+        });
+        if (typeof DB.initRealtimeListener === 'function') {
+            DB.initRealtimeListener();
+        }
+    }
 
     // Realtime interval for Live Online Heartbeat (updates every 4 seconds)
     setInterval(() => {
