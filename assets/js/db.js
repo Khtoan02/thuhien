@@ -156,7 +156,71 @@ const DB = (() => {
             session_timeout_minutes: 30,
             require_captcha: true,
             honeypot_enabled: true
-        }
+        },
+        pages: [
+            {
+                id: 'home',
+                title: 'Trang Chủ',
+                path: '/',
+                slug: 'home',
+                enabled: true,
+                can_disable: false,
+                category: 'Trang Chính',
+                description: 'Trang thông tin tổng quan giới thiệu dịch vụ và đồng hành cùng phụ huynh'
+            },
+            {
+                id: 'chuyen-gia',
+                title: 'Chuyên Gia Bùi Thu Hiền',
+                path: '/chuyen-gia/',
+                slug: 'chuyen-gia',
+                enabled: true,
+                can_disable: true,
+                category: 'Hồ Sơ Chuyên Môn',
+                description: 'Hồ sơ năng lực, 4 điểm tựa kinh nghiệm và phong cách làm việc'
+            },
+            {
+                id: 'dinh-duong',
+                title: 'Lời Khuyên Dinh Dưỡng',
+                path: '/dinh-duong/',
+                slug: 'dinh-duong',
+                enabled: true,
+                can_disable: true,
+                category: 'Kiến Thức Khoa Học',
+                description: 'Chế độ ăn GFCF+SF, thực phẩm khuyên dùng và nhóm cần hạn chế'
+            },
+            {
+                id: 'cong-dong',
+                title: 'Kênh & Cộng Đồng',
+                path: '/cong-dong/',
+                slug: 'cong-dong',
+                enabled: true,
+                can_disable: true,
+                category: 'Mạng Xã Hội',
+                description: 'Cộng đồng Hiểu Con Từ Gốc và kênh TikTok, YouTube, Facebook có embed'
+            },
+            {
+                id: 'pricing',
+                title: 'Bảng Giá & Gói Dịch Vụ',
+                path: '/pricing/',
+                slug: 'pricing',
+                enabled: true,
+                can_disable: true,
+                category: 'Dịch Vụ & Chi Phí',
+                description: 'Bảng giá các gói đồng hành 3 ngày, 1 tháng và cam kết hoàn tiền 100%'
+            },
+            {
+                id: 'dat-lich',
+                title: 'Đặt Lịch Tư Vấn 1:1',
+                path: '/dat-lich/',
+                slug: 'dat-lich',
+                enabled: true,
+                can_disable: true,
+                category: 'Đặt Lịch & Biểu Mẫu',
+                description: 'Form khảo sát tình trạng bé và đăng ký giờ hẹn trao đổi riêng'
+            }
+        ],
+        pages_behavior: 'maintenance_screen', // 'maintenance_screen' | 'redirect_home'
+        pages_maintenance_message: 'Trang này hiện đang được Chuyên gia Bùi Thu Hiền và đội ngũ hoàn thiện nội dung để mang đến trải nghiệm chuẩn mực nhất cho phụ huynh. Ba mẹ vui lòng quay lại sau nhé!'
     };
 
     // Helper to format date YYYY-MM-DD HH:mm:ss relative to now
@@ -365,6 +429,18 @@ const DB = (() => {
             try {
                 const s = JSON.parse(localStorage.getItem(STORAGE_KEY_SETTINGS));
                 let changed = false;
+                if (!s.pages || !Array.isArray(s.pages) || s.pages.length === 0) {
+                    s.pages = DEFAULT_SETTINGS.pages;
+                    changed = true;
+                }
+                if (!s.pages_behavior) {
+                    s.pages_behavior = DEFAULT_SETTINGS.pages_behavior;
+                    changed = true;
+                }
+                if (!s.pages_maintenance_message) {
+                    s.pages_maintenance_message = DEFAULT_SETTINGS.pages_maintenance_message;
+                    changed = true;
+                }
                 if (s?.social?.youtube_url && s.social.youtube_url.includes('thuhien_cungmehieucon')) {
                     s.social.youtube_url = 'https://www.youtube.com/@thuhien.cungmehieucon';
                     changed = true;
@@ -793,7 +869,10 @@ const DB = (() => {
                     resources: s?.resources || DEFAULT_SETTINGS.resources,
                     social: soc,
                     integrations: { ...DEFAULT_SETTINGS.integrations, ...(s?.integrations || {}) },
-                    security: { ...DEFAULT_SETTINGS.security, ...(s?.security || {}) }
+                    security: { ...DEFAULT_SETTINGS.security, ...(s?.security || {}) },
+                    pages: s?.pages || DEFAULT_SETTINGS.pages,
+                    pages_behavior: s?.pages_behavior || DEFAULT_SETTINGS.pages_behavior,
+                    pages_maintenance_message: s?.pages_maintenance_message !== undefined ? s.pages_maintenance_message : DEFAULT_SETTINGS.pages_maintenance_message
                 };
             } catch (e) {
                 return DEFAULT_SETTINGS;
@@ -808,7 +887,10 @@ const DB = (() => {
                     resources: newSettings.resources || current.resources,
                     social: { ...current.social, ...(newSettings.social || {}) },
                     integrations: { ...current.integrations, ...(newSettings.integrations || {}) },
-                    security: { ...current.security, ...(newSettings.security || {}) }
+                    security: { ...current.security, ...(newSettings.security || {}) },
+                    pages: newSettings.pages || current.pages,
+                    pages_behavior: newSettings.pages_behavior || current.pages_behavior,
+                    pages_maintenance_message: newSettings.pages_maintenance_message !== undefined ? newSettings.pages_maintenance_message : current.pages_maintenance_message
                 };
                 localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(merged));
                 this.logSecurityEvent('SETTINGS_UPDATED', 'SUCCESS', 'Cập nhật cấu hình hệ thống');
@@ -883,6 +965,78 @@ const DB = (() => {
             const settings = this.getSettings();
             settings.resources = (settings.resources || []).filter(r => r.id !== id);
             this.saveSettings(settings);
+            return true;
+        },
+
+        // ====================================================================
+        // PAGE MANAGEMENT & PUBLICS CONTROL ENGINE
+        // ====================================================================
+        getPages() {
+            const settings = this.getSettings();
+            return settings.pages || DEFAULT_SETTINGS.pages;
+        },
+
+        togglePage(id, enabled) {
+            const settings = this.getSettings();
+            const list = settings.pages || DEFAULT_SETTINGS.pages;
+            const target = list.find(p => p.id === id);
+            if (!target) return { success: false, message: 'Không tìm thấy trang yêu cầu' };
+            if (target.can_disable === false && !enabled) {
+                return { success: false, message: 'Trang Chủ là trang bắt buộc của hệ thống, không thể tắt!' };
+            }
+            target.enabled = Boolean(enabled);
+            settings.pages = list;
+            this.saveSettings(settings);
+            this.logSecurityEvent('PAGE_STATUS_CHANGED', 'SUCCESS', `Trang "${target.title}" đã chuyển sang trạng thái: ${target.enabled ? 'CÔNG KHAI (Publics)' : 'TẠM ẨN (Chưa Publics)'}`);
+            return { success: true, page: target };
+        },
+
+        updatePage(id, updatedFields) {
+            const settings = this.getSettings();
+            const list = settings.pages || DEFAULT_SETTINGS.pages;
+            const idx = list.findIndex(p => p.id === id);
+            if (idx === -1) return false;
+            list[idx] = { ...list[idx], ...updatedFields };
+            settings.pages = list;
+            this.saveSettings(settings);
+            this.logSecurityEvent('PAGE_UPDATED', 'SUCCESS', `Cập nhật thông tin trang "${list[idx].title}"`);
+            return true;
+        },
+
+        addCustomPage(pageData) {
+            const settings = this.getSettings();
+            const list = settings.pages || DEFAULT_SETTINGS.pages;
+            const newId = 'page_' + Date.now();
+            const cleanSlug = (pageData.slug || pageData.title || newId).toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+            const newPage = {
+                id: newId,
+                title: pageData.title || 'Trang Mới',
+                path: pageData.path || `/${cleanSlug}/`,
+                slug: cleanSlug,
+                enabled: pageData.enabled !== undefined ? Boolean(pageData.enabled) : true,
+                can_disable: true,
+                is_custom: true,
+                category: pageData.category || 'Trang Tùy Chỉnh',
+                description: pageData.description || 'Trang mới được tạo từ trang quản trị'
+            };
+            list.push(newPage);
+            settings.pages = list;
+            this.saveSettings(settings);
+            this.logSecurityEvent('PAGE_CREATED', 'SUCCESS', `Tạo trang mới "${newPage.title}" (${newPage.path})`);
+            return newPage;
+        },
+
+        deletePage(id) {
+            const settings = this.getSettings();
+            const list = settings.pages || DEFAULT_SETTINGS.pages;
+            const target = list.find(p => p.id === id);
+            if (!target) return false;
+            if (!target.is_custom && target.can_disable === false) {
+                return false;
+            }
+            settings.pages = list.filter(p => p.id !== id);
+            this.saveSettings(settings);
+            this.logSecurityEvent('PAGE_DELETED', 'SUCCESS', `Xóa trang "${target.title}"`);
             return true;
         },
 
@@ -1332,6 +1486,138 @@ const DB = (() => {
                         a.innerText = soc.hotline_display || soc.hotline;
                     }
                 });
+            }
+        },
+
+        // ====================================================================
+        // ADMIN AUTHENTICATION CHECK & PAGE STATUS ROUTER
+        // ====================================================================
+        isAdminAuthenticated() {
+            try {
+                return (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('thuhien_admin_auth') === 'true') ||
+                       (typeof localStorage !== 'undefined' && localStorage.getItem('thuhien_admin_auth') === 'true');
+            } catch (e) {
+                return false;
+            }
+        },
+
+        applyPageStatusControl() {
+            if (typeof document === 'undefined' || typeof window === 'undefined') return;
+
+            const currentPath = window.location.pathname;
+            // Never restrict or intercept the admin panel
+            if (currentPath.includes('/admin')) return;
+
+            const settings = this.getSettings();
+            const pages = settings.pages || DEFAULT_SETTINGS.pages;
+            const behavior = settings.pages_behavior || 'maintenance_screen';
+            const maintenanceMsg = settings.pages_maintenance_message || DEFAULT_SETTINGS.pages_maintenance_message;
+            const isAdmin = this.isAdminAuthenticated();
+
+            // 1. Hide navigation links for disabled pages across the site
+            pages.forEach(p => {
+                if (p.enabled === false) {
+                    const selector = `a[href*="/${p.slug}"], a[href*="./${p.slug}"], a[href*="../${p.slug}"], a[href="${p.path}"], a[href="./${p.path.replace(/^\//, '')}"]`;
+                    document.querySelectorAll(selector).forEach(a => {
+                        if (p.slug === 'home') return;
+                        const parentLi = a.closest('li');
+                        if (parentLi) {
+                            parentLi.style.display = 'none';
+                        } else {
+                            a.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
+            // 2. Identify if the current page itself is disabled
+            let activePage = pages.find(p => p.slug !== 'home' && (
+                currentPath.includes('/' + p.slug + '/') || 
+                currentPath.endsWith('/' + p.slug) || 
+                currentPath.includes('/' + p.slug + '.html')
+            ));
+
+            if (!activePage) {
+                const isHome = currentPath === '/' || 
+                               currentPath.endsWith('/thuhien/') || 
+                               currentPath.endsWith('/thuhien/index.html') || 
+                               currentPath.endsWith('/index.html');
+                if (isHome) {
+                    activePage = pages.find(p => p.slug === 'home');
+                }
+            }
+
+            if (activePage && activePage.enabled === false) {
+                if (isAdmin) {
+                    // Admin Preview Mode banner
+                    if (!document.getElementById('admin-preview-bar')) {
+                        const bar = document.createElement('div');
+                        bar.id = 'admin-preview-bar';
+                        bar.className = 'fixed top-0 left-0 right-0 z-[999999] bg-amber-500 text-zinc-950 px-4 py-2.5 text-xs font-semibold flex flex-wrap items-center justify-between gap-2 shadow-lg border-b border-amber-600/40';
+                        bar.innerHTML = `
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-amber-950 text-amber-200 flex items-center justify-center text-[10px] font-bold shrink-0">!</span>
+                                <span><strong>CHẾ ĐỘ XEM TRƯỚC (ADMIN PREVIEW):</strong> Trang này đang ở trạng thái <strong>TẠM ẨN (Chưa Publics)</strong> với khách truy cập thông thường.</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button id="adminPreviewPublishBtn" class="px-3 py-1 rounded bg-zinc-900 text-white hover:bg-zinc-800 text-xs font-bold transition-colors shadow-xs">Bật Công Khai</button>
+                                <a href="../admin/" class="px-3 py-1 rounded bg-amber-600 text-white hover:bg-amber-700 text-xs font-bold transition-colors">Về Trang Quản Trị ↗</a>
+                            </div>
+                        `;
+                        document.body.prepend(bar);
+                        document.body.style.paddingTop = '42px';
+
+                        const pubBtn = document.getElementById('adminPreviewPublishBtn');
+                        if (pubBtn) {
+                            pubBtn.addEventListener('click', () => {
+                                DB.togglePage(activePage.id, true);
+                                window.location.reload();
+                            });
+                        }
+                    }
+                } else {
+                    // Public user accessing un-published / hidden page
+                    if (behavior === 'redirect_home') {
+                        window.location.replace('../');
+                    } else {
+                        // Render clean Coming Soon / Maintenance view
+                        document.title = 'Trang Đang Được Hoàn Thiện | Thu Hiền';
+                        document.body.innerHTML = `
+                            <div class="min-h-screen bg-[#FAF7F0] flex flex-col justify-between text-[#174C3B] selection:bg-[#F08A4B]/20 font-sans p-6 sm:p-12 relative overflow-hidden">
+                                <div class="w-full max-w-2xl mx-auto my-auto py-12 text-center">
+                                    <div class="w-16 h-16 rounded-2xl bg-[#E7F0EB] text-[#174C3B] flex items-center justify-center mx-auto mb-6 shadow-xs border border-[#C5DCCF]/50">
+                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                        </svg>
+                                    </div>
+                                    <span class="inline-block px-3 py-1 rounded-full bg-[#E7F0EB] text-[#174C3B] text-xs font-bold uppercase tracking-wider mb-4">
+                                        Nội Dung Đang Hoàn Thiện
+                                    </span>
+                                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#174C3B] mb-4">
+                                        ${activePage.title}
+                                    </h1>
+                                    <p class="text-sm sm:text-base text-[#5F6E66] max-w-lg mx-auto leading-relaxed mb-8">
+                                        ${maintenanceMsg}
+                                    </p>
+                                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                                        <a href="../" class="w-full sm:w-auto px-6 py-3 rounded-full bg-[#174C3B] text-white text-xs sm:text-sm font-bold shadow-md hover:bg-[#133F31] transition-all flex items-center justify-center gap-2">
+                                            <span>Quay Về Trang Chủ</span>
+                                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                                            </svg>
+                                        </a>
+                                        <a href="https://zalo.me/0987654321" target="_blank" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white text-[#174C3B] border border-[#C5DCCF] text-xs sm:text-sm font-bold hover:bg-[#F4F8F5] transition-all">
+                                            Liên Hệ Với Thu Hiền
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="text-center text-xs text-[#8B9992] pt-6 border-t border-[#E7F0EB]">
+                                    © 2026 Thu Hiền – Cùng Mẹ Hiểu Con. Đồng hành cùng cha mẹ có con tự kỷ.
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
             }
         }
     };

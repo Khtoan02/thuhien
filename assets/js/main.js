@@ -44,12 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
             DB.heartbeat(curPage);
         }, 12000);
 
-        // Apply dynamic third-party integrations and social links
+        // Apply dynamic third-party integrations, social links and page status router
         try {
+            if (typeof DB.applyPageStatusControl === 'function') DB.applyPageStatusControl();
             if (typeof DB.applyIntegrations === 'function') DB.applyIntegrations();
             if (typeof DB.applySocialLinks === 'function') DB.applySocialLinks();
         } catch (e) {
-            console.warn('Error applying integrations/social:', e);
+            console.warn('Error applying integrations/social/pages:', e);
         }
     }
 
