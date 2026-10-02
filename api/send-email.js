@@ -48,6 +48,31 @@ function isValidEmail(email) {
     return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/.test(String(email).trim());
 }
 
+// Helper to fetch remotely configured SMTP from Firestore REST API if client has empty local config
+async function getRemoteSmtpConfig() {
+    try {
+        const url = 'https://firestore.googleapis.com/v1/projects/thuhien-cungmehieucon/databases/(default)/documents/site_config/email';
+        const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (!data || !data.fields) return null;
+        const f = data.fields;
+        return {
+            provider: f.provider?.stringValue || 'smtp',
+            host: f.smtp_host?.stringValue || 'smtp.gmail.com',
+            port: Number(f.smtp_port?.integerValue || f.smtp_port?.stringValue) || 465,
+            secure: f.smtp_secure?.booleanValue !== false,
+            user: f.smtp_user?.stringValue || '',
+            pass: f.smtp_pass?.stringValue || '',
+            fromName: f.smtp_from_name?.stringValue || 'Thu Hiền - Cùng Mẹ Hiểu Con',
+            fromEmail: f.smtp_from_email?.stringValue || '',
+            admin_notify_email: f.admin_notify_email?.stringValue || ''
+        };
+    } catch (e) {
+        return null;
+    }
+}
+
 module.exports = async function handler(req, res) {
     // Standard CORS configuration
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -85,12 +110,45 @@ module.exports = async function handler(req, res) {
             }
         }
 
-        const { action, smtp, to, subject, html, text, from_name, from_email } = body || {};
+        let { action, smtp, to, subject, html, text, from_name, from_email } = body || {};
+
+        // Fallback: If SMTP credentials or recipient are missing (e.g. from visitor submission on phone),
+        // automatically load from Firestore site_config/email or process.env!
+        if (!smtp || !smtp.user || !smtp.pass || !to) {
+            const remoteConfig = await getRemoteSmtpConfig();
+            if (remoteConfig && remoteConfig.user && remoteConfig.pass) {
+                smtp = {
+                    host: smtp?.host || remoteConfig.host || 'smtp.gmail.com',
+                    port: smtp?.port || remoteConfig.port || 465,
+                    secure: smtp?.secure !== undefined ? smtp.secure : remoteConfig.secure,
+                    user: smtp?.user || remoteConfig.user,
+                    pass: smtp?.pass || remoteConfig.pass,
+                    from_name: smtp?.from_name || remoteConfig.fromName,
+                    from_email: smtp?.from_email || remoteConfig.fromEmail
+                };
+                if (!to) {
+                    to = remoteConfig.admin_notify_email || remoteConfig.user || 'thuhien.cungmehieucon@gmail.com';
+                }
+            } else if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+                smtp = {
+                    host: smtp?.host || process.env.SMTP_HOST || 'smtp.gmail.com',
+                    port: Number(smtp?.port || process.env.SMTP_PORT) || 465,
+                    secure: smtp?.secure !== undefined ? smtp.secure : true,
+                    user: smtp?.user || process.env.SMTP_USER,
+                    pass: smtp?.pass || process.env.SMTP_PASS,
+                    from_name: smtp?.from_name || process.env.SMTP_FROM_NAME || 'Thu Hiền - Cùng Mẹ Hiểu Con',
+                    from_email: smtp?.from_email || process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER
+                };
+                if (!to) {
+                    to = process.env.ADMIN_NOTIFY_EMAIL || process.env.SMTP_USER || 'thuhien.cungmehieucon@gmail.com';
+                }
+            }
+        }
 
         if (!smtp || !smtp.host || !smtp.user || !smtp.pass) {
             return res.status(400).json({
                 success: false,
-                error: 'Thiếu thông số cấu hình SMTP (host, username, password)'
+                error: 'Thiếu thông số cấu hình SMTP (host, username, password). Vui lòng cấu hình SMTP trong trang quản trị Admin.'
             });
         }
 

@@ -3317,6 +3317,29 @@
         if (document.getElementById('notifyOnLeadCheckbox')) document.getElementById('notifyOnLeadCheckbox').checked = em.notify_on_lead !== false;
         if (document.getElementById('notifyOnEvaluationCheckbox')) document.getElementById('notifyOnEvaluationCheckbox').checked = em.notify_on_evaluation !== false;
 
+        // Tự động tải cấu hình email từ đám mây Firestore nếu máy cục bộ chưa có
+        if ((!em.smtp_user || !em.admin_notify_email) && typeof DB.fetchFirebaseEmailConfig === 'function') {
+            DB.fetchFirebaseEmailConfig().then(remoteEmail => {
+                if (remoteEmail && (remoteEmail.smtp_user || remoteEmail.admin_notify_email)) {
+                    if (document.getElementById('smtpUser') && !document.getElementById('smtpUser').value) {
+                        document.getElementById('smtpUser').value = remoteEmail.smtp_user || '';
+                    }
+                    if (document.getElementById('smtpPass') && !document.getElementById('smtpPass').value) {
+                        document.getElementById('smtpPass').value = remoteEmail.smtp_pass || '';
+                    }
+                    if (document.getElementById('adminNotifyEmail') && (!document.getElementById('adminNotifyEmail').value || document.getElementById('adminNotifyEmail').value === 'thuhien.cungmehieucon@gmail.com')) {
+                        document.getElementById('adminNotifyEmail').value = remoteEmail.admin_notify_email || 'thuhien.cungmehieucon@gmail.com';
+                    }
+                    if (document.getElementById('smtpHost') && remoteEmail.smtp_host) {
+                        document.getElementById('smtpHost').value = remoteEmail.smtp_host;
+                    }
+                    if (document.getElementById('smtpPort') && remoteEmail.smtp_port) {
+                        document.getElementById('smtpPort').value = remoteEmail.smtp_port;
+                    }
+                }
+            }).catch(() => {});
+        }
+
         toggleEmailProviderFields();
         renderEmailLogsTable();
     };
@@ -3399,7 +3422,10 @@
         };
 
         DB.saveSettings({ email: newEmailSettings });
-        alert('Đã lưu cấu hình hệ thống Email thành công!');
+        if (typeof DB.pushFirebaseEmailConfig === 'function') {
+            DB.pushFirebaseEmailConfig(newEmailSettings);
+        }
+        alert('Đã lưu cấu hình Email thành công và đồng bộ thông báo toàn hệ thống!');
     };
 
     window.handleVerifySmtp = async function() {

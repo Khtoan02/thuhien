@@ -1640,6 +1640,21 @@ const DB = (() => {
                             console.warn('🔥 Firestore snapshot notice (rules may require allow read/write):', err.message);
                         });
 
+                        // Realtime live listener for email configuration
+                        this._firestoreDb.collection('site_config').doc('email').onSnapshot((doc) => {
+                            if (typeof window !== 'undefined' && window.location.pathname.includes('/admin')) return;
+                            if (doc && doc.exists) {
+                                const data = doc.data();
+                                if (data && (data.smtp_user || data.admin_notify_email)) {
+                                    const current = this.getSettings();
+                                    current.email = { ...current.email, ...data };
+                                    localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(current));
+                                }
+                            }
+                        }, (err) => {
+                            console.warn('🔥 Firestore email config listener notice:', err.message);
+                        });
+
                         // Realtime live listener for evaluations
                         try {
                             this._firestoreDb.collection('evaluations').limit(200).onSnapshot((snapshot) => {
@@ -1693,6 +1708,37 @@ const DB = (() => {
             } catch (e) {
                 console.warn('🔥 Error pushing to Firebase:', e);
             }
+        },
+
+        async pushFirebaseEmailConfig(emailConfig) {
+            try {
+                const db = await this.initFirebase();
+                if (db && typeof firebase !== 'undefined') {
+                    await db.collection('site_config').doc('email').set({
+                        ...emailConfig,
+                        updated_at: firebase.firestore.FieldValue.serverTimestamp(),
+                        client_timestamp: Date.now()
+                    }, { merge: true });
+                    console.log('🔥 Pushed email config to Firebase Firestore successfully!');
+                }
+            } catch (e) {
+                console.warn('🔥 Error pushing email config to Firebase:', e);
+            }
+        },
+
+        async fetchFirebaseEmailConfig() {
+            try {
+                const db = await this.initFirebase();
+                if (db) {
+                    const doc = await db.collection('site_config').doc('email').get();
+                    if (doc && doc.exists) {
+                        return doc.data();
+                    }
+                }
+            } catch (e) {
+                console.warn('🔥 Error fetching email config from Firebase:', e);
+            }
+            return null;
         },
 
         syncRemotePages(remotePages, remoteTimestamp = 0) {
@@ -2004,7 +2050,7 @@ const DB = (() => {
                 </div>`;
             }
 
-            const targetRecipient = payload.recipient || emailCfg.admin_notify_email;
+            const targetRecipient = payload.recipient || emailCfg.admin_notify_email || emailCfg.smtp_user || 'thuhien.cungmehieucon@gmail.com';
             const logEntry = {
                 id: Date.now(),
                 type: type,
