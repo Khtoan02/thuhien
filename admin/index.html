@@ -1263,6 +1263,21 @@
                                 </div>
                             </label>
                         </div>
+
+                        <!-- Vercel Global Config Store -->
+                        <div class="pt-3 border-t border-zinc-100 space-y-2">
+                            <label class="text-xs font-semibold text-zinc-700 flex items-center justify-between">
+                                <span class="flex items-center gap-1.5 font-bold">
+                                    <svg class="w-3.5 h-3.5 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L24 22H0L12 1Z"/></svg>
+                                    <span>Vercel API Token (Đồng bộ Global Config)</span>
+                                </span>
+                                <span class="text-[10px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded font-mono">Store: thuhien-cungmehieucon</span>
+                            </label>
+                            <input type="password" id="integVercelApiToken" placeholder="Dán Vercel Access Token vào đây (hoặc cài VERCEL_API_TOKEN trên Vercel Env)" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            <p class="text-[11px] text-zinc-500 leading-relaxed">
+                                Cho phép Admin ghi đè trạng thái Bật / Ẩn trang trực tiếp lên Vercel Global Config toàn cầu mỗi khi thao tác.
+                            </p>
+                        </div>
                     </div>
 
                     <!-- Custom Raw Scripts -->
@@ -2966,6 +2981,7 @@
         if (document.getElementById('integFbPixelId')) document.getElementById('integFbPixelId').value = integ.facebook_pixel_id || '';
         if (document.getElementById('integTiktokPixelId')) document.getElementById('integTiktokPixelId').value = integ.tiktok_pixel_id || '';
         if (document.getElementById('integVercelAnalyticsCheckbox')) document.getElementById('integVercelAnalyticsCheckbox').checked = !!integ.vercel_analytics_enabled;
+        if (document.getElementById('integVercelApiToken')) document.getElementById('integVercelApiToken').value = integ.vercel_api_token || '';
         if (document.getElementById('integCustomHead')) document.getElementById('integCustomHead').value = integ.custom_head_scripts || '';
         if (document.getElementById('integCustomBody')) document.getElementById('integCustomBody').value = integ.custom_body_scripts || '';
     };
@@ -2977,6 +2993,7 @@
             facebook_pixel_id: document.getElementById('integFbPixelId').value.trim(),
             tiktok_pixel_id: document.getElementById('integTiktokPixelId').value.trim(),
             vercel_analytics_enabled: document.getElementById('integVercelAnalyticsCheckbox').checked,
+            vercel_api_token: document.getElementById('integVercelApiToken') ? document.getElementById('integVercelApiToken').value.trim() : '',
             custom_head_scripts: document.getElementById('integCustomHead').value.trim(),
             custom_body_scripts: document.getElementById('integCustomBody').value.trim()
         };

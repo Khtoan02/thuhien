@@ -1,0 +1,23 @@
+{
+  "name": "thuhien",
+  "version": "1.0.0",
+  "description": "Website cá nhân và hệ thống tiếp nhận trao đổi 1:1 cho **Thu Hiền** với định hướng:   > **\"Đồng hành cùng cha mẹ xây dựng thói quen ăn uống phù hợp hơn cho trẻ, bằng những bước nhỏ, cá nhân hóa và có thể duy trì trong đời sống thật.\"**",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Khtoan02/thuhien.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Khtoan02/thuhien/issues"
+  },
+  "homepage": "https://github.com/Khtoan02/thuhien#readme",
+  "dependencies": {
+    "@vercel/global-config": "^1.5.1"
+  }
+}

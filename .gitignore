@@ -13,3 +13,6 @@ data/*.db-wal
 *.log
 .vscode/
 .idea/
+node_modules/
+.vercel/
+

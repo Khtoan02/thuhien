@@ -1143,6 +1143,9 @@ const DB = (() => {
             this.saveSettings(settings);
             this.logSecurityEvent('PAGE_STATUS_CHANGED', 'SUCCESS', `Trang "${target.title}" đã chuyển sang trạng thái: ${target.enabled ? 'CÔNG KHAI (Publics)' : 'TẠM ẨN (Chưa Publics)'}`);
             this.broadcastChange('page_status', { id, enabled: target.enabled, page: target, pages: list });
+            if (typeof this.pushGlobalConfig === 'function') {
+                this.pushGlobalConfig(list);
+            }
             return { success: true, page: target };
         },
 
@@ -1155,7 +1158,69 @@ const DB = (() => {
             settings.pages = list;
             this.saveSettings(settings);
             this.logSecurityEvent('PAGE_UPDATED', 'SUCCESS', `Cập nhật thông tin trang "${list[idx].title}"`);
+            if (typeof this.pushGlobalConfig === 'function') {
+                this.pushGlobalConfig(list);
+            }
             return true;
+        },
+
+        async syncRemoteGlobalConfig() {
+            try {
+                const res = await fetch('/api/config');
+                if (!res.ok) return null;
+                const data = await res.json();
+                if (data && data.success && Array.isArray(data.pages)) {
+                    const current = this.getSettings();
+                    const pageMap = {};
+                    data.pages.forEach(p => { pageMap[p.id] = p.enabled; });
+
+                    let hasChange = false;
+                    const updated = (current.pages || DEFAULT_SETTINGS.pages).map(p => {
+                        if (pageMap[p.id] !== undefined && p.enabled !== pageMap[p.id]) {
+                            hasChange = true;
+                            return { ...p, enabled: pageMap[p.id] };
+                        }
+                        return p;
+                    });
+
+                    if (hasChange) {
+                        current.pages = updated;
+                        this.saveSettings(current);
+                        if (typeof this.applyPageStatusControl === 'function') {
+                            this.applyPageStatusControl();
+                        }
+                    }
+                    return data;
+                }
+            } catch (e) {
+                // Ignore when running locally without Vercel Serverless
+            }
+            return null;
+        },
+
+        async pushGlobalConfig(pages) {
+            try {
+                const settings = this.getSettings();
+                const vercelToken = (settings.integrations && settings.integrations.vercel_api_token) || '';
+                const res = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-vercel-token': vercelToken
+                    },
+                    body: JSON.stringify({ pages })
+                });
+                const data = await res.json();
+                if (data && data.success) {
+                    this.showToast('Đã đồng bộ lên Vercel Global Config toàn cầu!', 'success');
+                } else if (data && data.needs_token) {
+                    console.info('Vercel Global Config: Cần cấu hình VERCEL_API_TOKEN để ghi trực tiếp từ browser.');
+                }
+                return data;
+            } catch (e) {
+                console.warn('Vercel Global Config push failed:', e);
+                return null;
+            }
         },
 
         addCustomPage(pageData) {
@@ -2094,19 +2159,22 @@ const DB = (() => {
     };
 })();
 
-// Auto-initialize page status and admin bar on load
+// Auto-initialize page status and admin bar on load, plus sync remote Vercel Global Config
 if (typeof document !== 'undefined') {
+    const runInitSync = () => {
+        if (typeof DB !== 'undefined') {
+            if (typeof DB.applyPageStatusControl === 'function') {
+                DB.applyPageStatusControl();
+            }
+            if (typeof DB.syncRemoteGlobalConfig === 'function') {
+                DB.syncRemoteGlobalConfig();
+            }
+        }
+    };
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof DB !== 'undefined' && typeof DB.applyPageStatusControl === 'function') {
-                DB.applyPageStatusControl();
-            }
-        });
+        document.addEventListener('DOMContentLoaded', runInitSync);
     } else {
-        setTimeout(() => {
-            if (typeof DB !== 'undefined' && typeof DB.applyPageStatusControl === 'function') {
-                DB.applyPageStatusControl();
-            }
-        }, 0);
+        setTimeout(runInitSync, 0);
     }
 }
