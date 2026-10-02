@@ -76,8 +76,13 @@ module.exports = async function handler(req, res) {
     if (req.method === 'GET') {
         try {
             let pages = null;
-            if (process.env.GLOBAL_CONFIG || process.env.EDGE_CONFIG) {
-                pages = await get('pages_config');
+            const connStr = process.env.GLOBAL_CONFIG || process.env.EDGE_CONFIG || 'https://global-config.vercel.com/ecfg_ulbt6vypngndqhq63ysoj9a8hrlj?token=b14d8d5f-7708-4a77-8b64-b219550d8e4c';
+            try {
+                const { createClient } = require('@vercel/global-config');
+                const client = createClient(connStr);
+                pages = await client.get('pages_config');
+            } catch (gcErr) {
+                console.warn('Global config read error:', gcErr.message);
             }
 
             if (!pages || !Array.isArray(pages)) {
