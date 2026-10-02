@@ -1,5 +1,18 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "thuhien.vercel.app"
+        }
+      ],
+      "destination": "https://www.thuhien.online/$1",
+      "permanent": false
+    }
+  ]
 }

@@ -173,7 +173,7 @@ const DB = (() => {
                 title: 'Chuyên Gia Bùi Thu Hiền',
                 path: '/chuyen-gia/',
                 slug: 'chuyen-gia',
-                enabled: true,
+                enabled: false,
                 can_disable: true,
                 category: 'Hồ Sơ Chuyên Môn',
                 description: 'Hồ sơ năng lực, 4 điểm tựa kinh nghiệm và phong cách làm việc'
@@ -203,7 +203,7 @@ const DB = (() => {
                 title: 'Bảng Giá & Gói Dịch Vụ',
                 path: '/pricing/',
                 slug: 'pricing',
-                enabled: true,
+                enabled: false,
                 can_disable: true,
                 category: 'Dịch Vụ & Chi Phí',
                 description: 'Bảng giá các gói đồng hành 3 ngày, 1 tháng và cam kết hoàn tiền 100%'
@@ -219,6 +219,7 @@ const DB = (() => {
                 description: 'Form khảo sát tình trạng bé và đăng ký giờ hẹn trao đổi riêng'
             }
         ],
+        pages_schema_v: 2,
         pages_behavior: 'maintenance_screen', // 'maintenance_screen' | 'redirect_home'
         pages_maintenance_message: 'Trang này hiện đang được Chuyên gia Bùi Thu Hiền và đội ngũ hoàn thiện nội dung để mang đến trải nghiệm chuẩn mực nhất cho phụ huynh. Ba mẹ vui lòng quay lại sau nhé!'
     };
@@ -429,8 +430,9 @@ const DB = (() => {
             try {
                 const s = JSON.parse(localStorage.getItem(STORAGE_KEY_SETTINGS));
                 let changed = false;
-                if (!s.pages || !Array.isArray(s.pages) || s.pages.length === 0) {
+                if (!s.pages || !Array.isArray(s.pages) || s.pages.length === 0 || !s.pages_schema_v || s.pages_schema_v < 2) {
                     s.pages = DEFAULT_SETTINGS.pages;
+                    s.pages_schema_v = 2;
                     changed = true;
                 }
                 if (!s.pages_behavior) {
@@ -1508,6 +1510,15 @@ const DB = (() => {
             // Never restrict or insert bar inside the admin panel
             if (currentPath.includes('/admin')) return;
 
+            // Auto-detect admin authentication via URL param ?admin=1 or #admin
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('admin') === '1' || window.location.hash === '#admin') {
+                    sessionStorage.setItem('thuhien_admin_auth', 'true');
+                    localStorage.setItem('thuhien_admin_auth', 'true');
+                }
+            } catch (e) {}
+
             const settings = this.getSettings();
             const pages = settings.pages || DEFAULT_SETTINGS.pages;
             const behavior = settings.pages_behavior || 'maintenance_screen';
@@ -1530,27 +1541,38 @@ const DB = (() => {
 
             // 1. Navigation links control for disabled pages
             pages.forEach(p => {
-                if (p.enabled === false) {
-                    const selector = `a[href*="/${p.slug}"], a[href*="./${p.slug}"], a[href*="../${p.slug}"], a[href="${p.path}"], a[href="./${p.path.replace(/^\//, '')}"]`;
-                    document.querySelectorAll(selector).forEach(a => {
-                        if (p.slug === 'home') return;
-                        if (!isAdmin) {
-                            // Regular public visitor: completely hide the link
-                            const parentLi = a.closest('li');
-                            if (parentLi) {
-                                parentLi.style.display = 'none';
+                if (p.enabled === false && p.slug !== 'home') {
+                    document.querySelectorAll('a').forEach(a => {
+                        const h = a.getAttribute('href') || '';
+                        const t = (a.innerText || '').trim();
+                        const matchesHref = h.includes('/' + p.slug) || h.includes(p.path) || (h.includes(p.slug));
+                        const matchesText = (p.slug === 'chuyen-gia' && (t === 'Chuyên Gia' || t.startsWith('Chuyên Gia'))) ||
+                                            (p.slug === 'pricing' && (t === 'Bảng Giá' || t.startsWith('Bảng Giá'))) ||
+                                            (p.slug === 'dinh-duong' && (t === 'Dinh Dưỡng' || t.startsWith('Dinh Dưỡng'))) ||
+                                            (p.slug === 'cong-dong' && (t === 'Kênh & Cộng Đồng' || t.startsWith('Kênh & Cộng Đồng'))) ||
+                                            (p.slug === 'dat-lich' && (t === 'Đặt Lịch 1:1' || t.startsWith('Đặt Lịch')));
+
+                        const isNavLink = matchesHref || (matchesText && (a.closest('.nav-island') || a.closest('header') || a.closest('footer') || a.closest('nav')));
+
+                        if (isNavLink) {
+                            if (!isAdmin) {
+                                // Regular public visitor: completely hide the link
+                                const parentLi = a.closest('li');
+                                if (parentLi) {
+                                    parentLi.style.display = 'none';
+                                } else {
+                                    a.style.display = 'none';
+                                }
                             } else {
-                                a.style.display = 'none';
-                            }
-                        } else {
-                            // Admin: keep link visible with a small indicator badge so admin can navigate & edit!
-                            if (!a.dataset.adminPageBadge) {
-                                a.dataset.adminPageBadge = 'true';
-                                a.title = 'Trang này đang TẠM ẨN (chỉ Quản trị viên nhìn thấy để chỉnh sửa)';
-                                const tag = document.createElement('span');
-                                tag.className = 'ml-1 px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-400 text-amber-950 uppercase tracking-tighter align-middle shadow-xs';
-                                tag.innerText = 'Ẩn';
-                                a.appendChild(tag);
+                                // Admin: keep link visible with a small indicator badge so admin can navigate & edit!
+                                if (!a.dataset.adminPageBadge) {
+                                    a.dataset.adminPageBadge = 'true';
+                                    a.title = 'Trang này đang TẠM ẨN (chỉ Quản trị viên nhìn thấy để chỉnh sửa)';
+                                    const tag = document.createElement('span');
+                                    tag.className = 'ml-1 px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-400 text-amber-950 uppercase tracking-tighter align-middle shadow-xs';
+                                    tag.innerText = 'Ẩn';
+                                    a.appendChild(tag);
+                                }
                             }
                         }
                     });
@@ -1561,14 +1583,22 @@ const DB = (() => {
             let activePage = pages.find(p => p.slug !== 'home' && (
                 currentPath.includes('/' + p.slug + '/') || 
                 currentPath.endsWith('/' + p.slug) || 
-                currentPath.includes('/' + p.slug + '.html')
+                currentPath.includes('/' + p.slug + '.html') ||
+                currentPath.endsWith('/' + p.slug + '.html') ||
+                (document.body && document.body.dataset && document.body.dataset.page === p.slug) ||
+                (p.slug === 'chuyen-gia' && (currentPath.includes('chuyen-gia') || (document.title && document.title.includes('Chuyên Gia')))) ||
+                (p.slug === 'dinh-duong' && (currentPath.includes('dinh-duong') || (document.title && document.title.includes('Dinh Dưỡng')))) ||
+                (p.slug === 'cong-dong' && (currentPath.includes('cong-dong') || (document.title && document.title.includes('Cộng Đồng')))) ||
+                (p.slug === 'pricing' && (currentPath.includes('pricing') || (document.title && document.title.includes('Bảng Giá')))) ||
+                (p.slug === 'dat-lich' && (currentPath.includes('dat-lich') || (document.title && document.title.includes('Đặt Lịch'))))
             ));
 
             if (!activePage) {
                 const isHome = currentPath === '/' || 
                                currentPath.endsWith('/thuhien/') || 
                                currentPath.endsWith('/thuhien/index.html') || 
-                               currentPath.endsWith('/index.html');
+                               currentPath.endsWith('/index.html') ||
+                               (document.body && document.body.dataset && document.body.dataset.page === 'home');
                 if (isHome) {
                     activePage = pages.find(p => p.slug === 'home');
                 }
@@ -1873,3 +1903,20 @@ const DB = (() => {
         }
     };
 })();
+
+// Auto-initialize page status and admin bar on load
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof DB !== 'undefined' && typeof DB.applyPageStatusControl === 'function') {
+                DB.applyPageStatusControl();
+            }
+        });
+    } else {
+        setTimeout(() => {
+            if (typeof DB !== 'undefined' && typeof DB.applyPageStatusControl === 'function') {
+                DB.applyPageStatusControl();
+            }
+        }, 0);
+    }
+}
