@@ -15,6 +15,16 @@ const DB = (() => {
     const STORAGE_KEY_ADMIN_CRED = 'thuhien_admin_cred_v1';
     const STORAGE_KEY_LOGIN_ATTEMPTS = 'thuhien_login_attempts_v1';
 
+    const FIREBASE_CONFIG = {
+        apiKey: "AIzaSyDdt8u-SD8fvqtW4j9e5FBxPQT0_RXIKhQ",
+        authDomain: "thuhien-cungmehieucon.firebaseapp.com",
+        projectId: "thuhien-cungmehieucon",
+        storageBucket: "thuhien-cungmehieucon.firebasestorage.app",
+        messagingSenderId: "285736864114",
+        appId: "1:285736864114:web:89832aa6b485590fdd35eb",
+        measurementId: "G-WB4K2SC14M"
+    };
+
     // Synchronous standard SHA-256 algorithm (zero-dependency, browser & node compatible)
     function sha256(ascii) {
         function rightRotate(value, amount) {
@@ -1143,6 +1153,9 @@ const DB = (() => {
             this.saveSettings(settings);
             this.logSecurityEvent('PAGE_STATUS_CHANGED', 'SUCCESS', `Trang "${target.title}" đã chuyển sang trạng thái: ${target.enabled ? 'CÔNG KHAI (Publics)' : 'TẠM ẨN (Chưa Publics)'}`);
             this.broadcastChange('page_status', { id, enabled: target.enabled, page: target, pages: list });
+            if (typeof this.pushFirebasePages === 'function') {
+                this.pushFirebasePages(list);
+            }
             if (typeof this.pushGlobalConfig === 'function') {
                 this.pushGlobalConfig(list);
             }
@@ -1158,10 +1171,110 @@ const DB = (() => {
             settings.pages = list;
             this.saveSettings(settings);
             this.logSecurityEvent('PAGE_UPDATED', 'SUCCESS', `Cập nhật thông tin trang "${list[idx].title}"`);
+            if (typeof this.pushFirebasePages === 'function') {
+                this.pushFirebasePages(list);
+            }
             if (typeof this.pushGlobalConfig === 'function') {
                 this.pushGlobalConfig(list);
             }
             return true;
+        },
+
+        // ====================================================================
+        // GOOGLE FIREBASE REALTIME FIRESTORE ENGINE
+        // ====================================================================
+        _firestoreDb: null,
+        _firebaseInitPromise: null,
+
+        async initFirebase() {
+            if (this._firebaseInitPromise) return this._firebaseInitPromise;
+            this._firebaseInitPromise = new Promise(async (resolve) => {
+                try {
+                    if (typeof window === 'undefined') return resolve(null);
+
+                    const loadScript = (src) => new Promise((res, rej) => {
+                        if (document.querySelector(`script[src="${src}"]`)) return res();
+                        const s = document.createElement('script');
+                        s.src = src;
+                        s.onload = res;
+                        s.onerror = rej;
+                        document.head.appendChild(s);
+                    });
+
+                    if (typeof firebase === 'undefined') {
+                        await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js');
+                        await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js');
+                    }
+
+                    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+                        firebase.initializeApp(FIREBASE_CONFIG);
+                    }
+
+                    if (typeof firebase !== 'undefined' && firebase.firestore) {
+                        this._firestoreDb = firebase.firestore();
+                        console.log('🔥 Firebase Cloud Firestore connected!');
+
+                        // Realtime live listener for pages status
+                        this._firestoreDb.collection('site_config').doc('pages').onSnapshot((doc) => {
+                            if (doc && doc.exists) {
+                                const data = doc.data();
+                                if (data && Array.isArray(data.items)) {
+                                    console.log('🔥 Firebase Realtime Page Sync received:', data.items);
+                                    this.syncRemotePages(data.items);
+                                }
+                            }
+                        }, (err) => {
+                            console.warn('🔥 Firestore snapshot notice (rules may require allow read/write):', err.message);
+                        });
+                    }
+                    resolve(this._firestoreDb);
+                } catch (e) {
+                    console.warn('🔥 Firebase init failed/offline:', e);
+                    resolve(null);
+                }
+            });
+            return this._firebaseInitPromise;
+        },
+
+        async pushFirebasePages(pagesList) {
+            try {
+                const db = await this.initFirebase();
+                if (db && typeof firebase !== 'undefined') {
+                    await db.collection('site_config').doc('pages').set({
+                        items: pagesList,
+                        updated_at: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                    console.log('🔥 Pushed pages to Firebase Firestore successfully!');
+                    this.showToast('Đã đồng bộ lên Firebase Realtime toàn cầu!', 'success');
+                }
+            } catch (e) {
+                console.warn('🔥 Error pushing to Firebase:', e);
+            }
+        },
+
+        syncRemotePages(remotePages) {
+            if (!Array.isArray(remotePages) || !remotePages.length) return;
+            const current = this.getSettings();
+            const pageMap = {};
+            remotePages.forEach(p => { pageMap[p.id] = p.enabled; });
+
+            let hasChange = false;
+            const updated = (current.pages || DEFAULT_SETTINGS.pages).map(p => {
+                if (pageMap[p.id] !== undefined && p.enabled !== pageMap[p.id]) {
+                    hasChange = true;
+                    return { ...p, enabled: pageMap[p.id] };
+                }
+                return p;
+            });
+
+            if (hasChange) {
+                current.pages = updated;
+                current.pages_schema_v = 2;
+                this.saveSettings(current);
+                if (typeof this.applyPageStatusControl === 'function') {
+                    this.applyPageStatusControl();
+                }
+            }
         },
 
         async syncRemoteGlobalConfig() {
@@ -1170,26 +1283,7 @@ const DB = (() => {
                 if (!res.ok) return null;
                 const data = await res.json();
                 if (data && data.success && Array.isArray(data.pages)) {
-                    const current = this.getSettings();
-                    const pageMap = {};
-                    data.pages.forEach(p => { pageMap[p.id] = p.enabled; });
-
-                    let hasChange = false;
-                    const updated = (current.pages || DEFAULT_SETTINGS.pages).map(p => {
-                        if (pageMap[p.id] !== undefined && p.enabled !== pageMap[p.id]) {
-                            hasChange = true;
-                            return { ...p, enabled: pageMap[p.id] };
-                        }
-                        return p;
-                    });
-
-                    if (hasChange) {
-                        current.pages = updated;
-                        this.saveSettings(current);
-                        if (typeof this.applyPageStatusControl === 'function') {
-                            this.applyPageStatusControl();
-                        }
-                    }
+                    this.syncRemotePages(data.pages);
                     return data;
                 }
             } catch (e) {
@@ -1213,12 +1307,9 @@ const DB = (() => {
                 const data = await res.json();
                 if (data && data.success) {
                     this.showToast('Đã đồng bộ lên Vercel Global Config toàn cầu!', 'success');
-                } else if (data && data.needs_token) {
-                    console.info('Vercel Global Config: Cần cấu hình VERCEL_API_TOKEN để ghi trực tiếp từ browser.');
                 }
                 return data;
             } catch (e) {
-                console.warn('Vercel Global Config push failed:', e);
                 return null;
             }
         },
@@ -2159,12 +2250,15 @@ const DB = (() => {
     };
 })();
 
-// Auto-initialize page status and admin bar on load, plus sync remote Vercel Global Config
+// Auto-initialize page status and admin bar on load, plus sync remote Firebase & Vercel
 if (typeof document !== 'undefined') {
     const runInitSync = () => {
         if (typeof DB !== 'undefined') {
             if (typeof DB.applyPageStatusControl === 'function') {
                 DB.applyPageStatusControl();
+            }
+            if (typeof DB.initFirebase === 'function') {
+                DB.initFirebase();
             }
             if (typeof DB.syncRemoteGlobalConfig === 'function') {
                 DB.syncRemoteGlobalConfig();
