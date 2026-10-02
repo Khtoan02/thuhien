@@ -455,13 +455,15 @@ const DB = (() => {
                     s.pages_schema_v = 2;
                     changed = true;
                 } else {
-                    if (!s.pages_schema_v || s.pages_schema_v < 2) {
-                        s.pages_schema_v = 2;
-                        DEFAULT_SETTINGS.pages.forEach(defP => {
-                            if (!s.pages.some(p => p.id === defP.id || p.slug === defP.slug)) {
-                                s.pages.push(defP);
-                            }
-                        });
+                    // Always ensure all default pages (e.g. danh-gia) exist in s.pages
+                    DEFAULT_SETTINGS.pages.forEach(defP => {
+                        if (!s.pages.some(p => p.id === defP.id || p.slug === defP.slug)) {
+                            s.pages.push(defP);
+                            changed = true;
+                        }
+                    });
+                    if (!s.pages_schema_v || s.pages_schema_v < 3) {
+                        s.pages_schema_v = 3;
                         changed = true;
                     }
                 }
@@ -1841,6 +1843,14 @@ const DB = (() => {
                 }
             } catch (e) {}
 
+            // Automatically render unified global layout (Header, Mobile Drawer & Footer)
+            if (typeof LayoutEngine !== 'undefined') {
+                try {
+                    LayoutEngine.renderGlobalHeader();
+                    LayoutEngine.renderGlobalFooter();
+                } catch (e) {}
+            }
+
             const settings = this.getSettings();
             const pages = settings.pages || DEFAULT_SETTINGS.pages;
             const behavior = settings.pages_behavior || 'maintenance_screen';
@@ -2272,6 +2282,21 @@ if (typeof document !== 'undefined') {
             }
             if (typeof DB.syncRemoteGlobalConfig === 'function') {
                 DB.syncRemoteGlobalConfig();
+            }
+            // Ensure LayoutEngine is hydrated
+            if (typeof LayoutEngine !== 'undefined') {
+                LayoutEngine.init();
+            } else {
+                const isSub = window.location.pathname !== '/' && !window.location.pathname.endsWith('/index.html') && !window.location.pathname.endsWith('/thuhien/');
+                const prefix = isSub ? '../' : './';
+                const s = document.createElement('script');
+                s.src = `${prefix}assets/js/layout.js?v=1.0`;
+                s.onload = () => {
+                    if (typeof LayoutEngine !== 'undefined') {
+                        LayoutEngine.init();
+                    }
+                };
+                document.head.appendChild(s);
             }
         }
     };
