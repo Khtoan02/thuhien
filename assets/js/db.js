@@ -14,6 +14,7 @@ const DB = (() => {
     const STORAGE_KEY_SECURITY_LOGS = 'thuhien_security_logs_v1';
     const STORAGE_KEY_ADMIN_CRED = 'thuhien_admin_cred_v1';
     const STORAGE_KEY_LOGIN_ATTEMPTS = 'thuhien_login_attempts_v1';
+    const STORAGE_KEY_EVALUATIONS = 'thuhien_evaluations_v1';
 
     const FIREBASE_CONFIG = {
         apiKey: "AIzaSyDdt8u-SD8fvqtW4j9e5FBxPQT0_RXIKhQ",
@@ -229,6 +230,16 @@ const DB = (() => {
                 description: 'Checklist sàng lọc thói quen ăn uống, nhai nuốt và nguy cơ thiếu hụt vi chất cho trẻ'
             },
             {
+                id: 'tra-cuu',
+                title: 'Tra Cứu Kết Quả Đánh Giá',
+                path: '/tra-cuu/',
+                slug: 'tra-cuu',
+                enabled: true,
+                can_disable: true,
+                category: 'Đánh Giá & Khảo Sát',
+                description: 'Trang tra cứu lịch sử đánh giá dinh dưỡng của bé theo số điện thoại của phụ huynh'
+            },
+            {
                 id: 'dat-lich',
                 title: 'Đặt Lịch Tư Vấn 1:1',
                 path: '/dat-lich/',
@@ -239,7 +250,7 @@ const DB = (() => {
                 description: 'Form khảo sát tình trạng bé và đăng ký giờ hẹn trao đổi riêng'
             }
         ],
-        pages_schema_v: 2,
+        pages_schema_v: 4,
         pages_behavior: 'maintenance_screen', // 'maintenance_screen' | 'redirect_home'
         pages_maintenance_message: 'Trang này hiện đang được Chuyên gia Bùi Thu Hiền và đội ngũ hoàn thiện nội dung để mang đến trải nghiệm chuẩn mực nhất cho phụ huynh. Ba mẹ vui lòng quay lại sau nhé!'
     };
@@ -497,6 +508,10 @@ const DB = (() => {
         if (!localStorage.getItem(STORAGE_KEY_SECURITY_LOGS)) {
             localStorage.setItem(STORAGE_KEY_SECURITY_LOGS, JSON.stringify([]));
         }
+        if (!localStorage.getItem(STORAGE_KEY_EVALUATIONS)) {
+            const legacy = localStorage.getItem('thuhien_evaluations');
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, legacy || JSON.stringify([]));
+        }
     }
 
     init();
@@ -635,6 +650,125 @@ const DB = (() => {
             leads = leads.filter(l => l.id != id);
             localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify(leads));
             return true;
+        },
+
+        // ====================================================================
+        // NUTRITION EVALUATIONS (CHECKLIST SÀNG LỌC DINH DƯỠNG)
+        // ====================================================================
+        getEvaluations() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY_EVALUATIONS)) || [];
+            } catch (e) {
+                return [];
+            }
+        },
+
+        addEvaluation(data) {
+            let list = this.getEvaluations();
+            const now = new Date();
+            const cleanPhone = (data.phone || '').toString().replace(/\D/g, '');
+            const id = data.id || ('eval_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6));
+
+            const newRecord = {
+                id: id,
+                child_name: data.child_name || '',
+                child_age: data.child_age || '',
+                gender: data.gender || 'Nam',
+                parent_name: data.parent_name || '',
+                phone: data.phone || '',
+                phone_normalized: cleanPhone,
+                weight: data.weight || '',
+                height: data.height || '',
+                risk_level: data.risk_level || 'low', // 'low' | 'medium' | 'high'
+                risk_title: data.risk_title || 'Nguy cơ dinh dưỡng thấp',
+                score: Number(data.score || 0),
+                answers: data.answers || {},
+                water: data.water || '',
+                allergies: data.allergies || [],
+                daily_diet: data.daily_diet || '',
+                other_difficulties: data.other_difficulties || '',
+                advice_summary: data.advice_summary || '',
+                created_at: data.created_at || now.toLocaleString('vi-VN'),
+                created_at_iso: data.created_at_iso || now.toISOString()
+            };
+
+            // Remove duplicate if same ID
+            list = list.filter(item => item.id !== newRecord.id);
+            list.unshift(newRecord);
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(list));
+
+            // Sync to Firebase Cloud Firestore
+            if (this._firestoreDb) {
+                this._firestoreDb.collection('evaluations').doc(newRecord.id).set(newRecord, { merge: true }).catch(err => {
+                    console.warn('🔥 Firestore evaluation save failed:', err);
+                });
+            } else if (typeof this.initFirebase === 'function') {
+                this.initFirebase().then(db => {
+                    if (db) {
+                        db.collection('evaluations').doc(newRecord.id).set(newRecord, { merge: true }).catch(() => {});
+                    }
+                });
+            }
+
+            return newRecord;
+        },
+
+        deleteEvaluation(id) {
+            let list = this.getEvaluations();
+            list = list.filter(e => e.id !== id);
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(list));
+            if (this._firestoreDb) {
+                this._firestoreDb.collection('evaluations').doc(id).delete().catch(() => {});
+            }
+            return true;
+        },
+
+        getEvaluationsByPhone(phone) {
+            if (!phone) return [];
+            const clean = phone.toString().replace(/\D/g, '');
+            if (!clean) return [];
+            const list = this.getEvaluations();
+            return list.filter(item => {
+                const itemClean = (item.phone_normalized || item.phone || '').replace(/\D/g, '');
+                return itemClean.includes(clean) || clean.includes(itemClean);
+            });
+        },
+
+        async fetchEvaluationsByPhoneRemote(phone) {
+            const clean = (phone || '').toString().replace(/\D/g, '');
+            if (!clean) return [];
+            try {
+                const db = await this.initFirebase();
+                if (db) {
+                    const snap = await db.collection('evaluations').where('phone_normalized', '==', clean).get();
+                    if (!snap.empty) {
+                        const remoteResults = [];
+                        snap.forEach(doc => {
+                            remoteResults.push({ id: doc.id, ...doc.data() });
+                        });
+                        this.mergeRemoteEvaluations(remoteResults);
+                    }
+                }
+            } catch (e) {
+                console.warn('Remote phone lookup notice:', e);
+            }
+            return this.getEvaluationsByPhone(phone);
+        },
+
+        mergeRemoteEvaluations(remoteList) {
+            if (!Array.isArray(remoteList) || !remoteList.length) return;
+            let localList = this.getEvaluations();
+            const map = new Map();
+            localList.forEach(item => map.set(item.id, item));
+            remoteList.forEach(item => {
+                map.set(item.id, { ...(map.get(item.id) || {}), ...item });
+            });
+            const merged = Array.from(map.values()).sort((a, b) => {
+                const tA = new Date(a.created_at_iso || 0).getTime();
+                const tB = new Date(b.created_at_iso || 0).getTime();
+                return tB - tA;
+            });
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(merged));
         },
 
         // Realtime Live Heartbeat Tracking
@@ -841,6 +975,12 @@ const DB = (() => {
                 leads.forEach(l => {
                     csvContent += `"${l.id}","${l.parent_name}","${l.phone}","${l.email}","${l.baby_age}","${l.resource_name}","${l.care_status || 'new'}","${(l.notes || '').replace(/"/g, '""')}","${l.created_at}"\n`;
                 });
+            } else if (type === 'evaluations') {
+                const evals = this.getEvaluations();
+                csvContent += '"ID","Thời gian","Tên bé","Tuổi","Giới tính","Cân nặng (kg)","Chiều cao (cm)","Phụ huynh","Số điện thoại","Mức độ","Điểm nguy cơ","Nước (ml)","Chế độ ăn 1 ngày","Khó khăn khác"\n';
+                evals.forEach(e => {
+                    csvContent += `"${e.id}","${e.created_at}","${(e.child_name || '').replace(/"/g, '""')}","${e.child_age || ''}","${e.gender || ''}","${e.weight || ''}","${e.height || ''}","${(e.parent_name || '').replace(/"/g, '""')}","${e.phone || ''}","${e.risk_title || ''}","${e.score || 0}","${e.water || ''}","${(e.daily_diet || '').replace(/"/g, '""')}","${(e.other_difficulties || '').replace(/"/g, '""')}"\n`;
+                });
             } else {
                 const bookings = this.getBookings();
                 csvContent += '"ID","Họ tên Mẹ","Số điện thoại","Email","Tên bé","Tháng tuổi","Giới tính","Chiều cao","Biểu hiện","Gói đồng hành","Khung giờ","Nguồn","Trạng thái","Ghi chú","Thời gian"\n';
@@ -863,6 +1003,7 @@ const DB = (() => {
         clearAllData() {
             localStorage.setItem(STORAGE_KEY_BOOKINGS, JSON.stringify([]));
             localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify([]));
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify([]));
             localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify({
                 totalVisitors: 0,
                 pageViews: 0,
@@ -1238,6 +1379,24 @@ const DB = (() => {
                         }, (err) => {
                             console.warn('🔥 Firestore snapshot notice (rules may require allow read/write):', err.message);
                         });
+
+                        // Realtime live listener for evaluations
+                        try {
+                            this._firestoreDb.collection('evaluations').limit(200).onSnapshot((snapshot) => {
+                                if (snapshot && !snapshot.empty) {
+                                    const remoteList = [];
+                                    snapshot.forEach(doc => {
+                                        remoteList.push({ id: doc.id, ...doc.data() });
+                                    });
+                                    this.mergeRemoteEvaluations(remoteList);
+                                    if (typeof window !== 'undefined' && typeof window.renderEvaluations === 'function') {
+                                        window.renderEvaluations();
+                                    }
+                                }
+                            }, (err) => {
+                                console.warn('🔥 Firestore evaluations listener notice:', err.message);
+                            });
+                        } catch (e) {}
                     }
                     resolve(this._firestoreDb);
                 } catch (e) {

@@ -263,6 +263,14 @@
                             </div>
                             <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-zinc-100 text-zinc-700 font-bold" id="badgeNavLeads">0</span>
                         </button>
+
+                        <button onclick="switchView('evaluations')" id="nav-evaluations" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-colors text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900">
+                            <div class="flex items-center gap-2.5">
+                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                                <span>Đánh Giá Dinh Dưỡng</span>
+                            </div>
+                            <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200" id="badgeNavEvaluations">0</span>
+                        </button>
                     </nav>
                 </div>
 
@@ -680,6 +688,90 @@
             </div>
 
             <!-- ==========================================================
+                 VIEW 4: PHIẾU ĐÁNH GIÁ DINH DƯỠNG (Checklist Submissions)
+                 ========================================================== -->
+            <div id="view-evaluations" class="hidden space-y-4">
+                
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Phiếu Đánh Giá Dinh Dưỡng Phụ Huynh</h2>
+                        <p class="text-xs text-zinc-500">Dữ liệu đánh giá dinh dưỡng gửi về từ website, phân nhóm nguy cơ và tra cứu theo số điện thoại</p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <a href="../danh-gia-dinh-duong/" target="_blank" class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-800 shadow-xs hover:bg-zinc-50 transition-colors gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            <span>Mở Trang Đánh Giá</span>
+                        </a>
+                        <a href="../tra-cuu/" target="_blank" class="inline-flex h-8 items-center justify-center rounded-md border border-emerald-200 bg-emerald-50 px-3 text-xs font-semibold text-emerald-800 shadow-xs hover:bg-emerald-100 transition-colors gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            <span>Trang Tra Cứu SĐT</span>
+                        </a>
+                        <button onclick="DB.exportCSV('evaluations')" class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-800 shadow-xs hover:bg-zinc-50 transition-colors gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            <span>Xuất Excel CSV</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Metric Summary -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                    <div class="p-3.5 rounded-xl border border-zinc-200 bg-white shadow-xs">
+                        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Tổng Phiếu Đánh Giá</span>
+                        <span class="text-xl font-bold text-zinc-900 mt-1 block" id="evalTotalCount">0</span>
+                    </div>
+                    <div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/60 shadow-xs">
+                        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Nguy Cơ Thấp (1-5đ)</span>
+                        <span class="text-xl font-bold text-emerald-800 mt-1 block" id="evalLowCount">0</span>
+                    </div>
+                    <div class="p-3.5 rounded-xl border border-amber-200 bg-amber-50/60 shadow-xs">
+                        <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Nguy Cơ TB (5-10đ)</span>
+                        <span class="text-xl font-bold text-amber-800 mt-1 block" id="evalMediumCount">0</span>
+                    </div>
+                    <div class="p-3.5 rounded-xl border border-rose-200 bg-rose-50/60 shadow-xs">
+                        <span class="text-[10px] font-bold text-rose-700 uppercase tracking-wider block">Nguy Cơ Cao (>10đ)</span>
+                        <span class="text-xl font-bold text-rose-800 mt-1 block" id="evalHighCount">0</span>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <input type="text" id="evalSearchInput" placeholder="Tìm theo số điện thoại, tên mẹ, tên bé..." class="h-8 w-72 rounded-md border border-zinc-200 bg-white px-3 text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                    
+                    <select id="evalRiskFilter" class="h-8 rounded-md border border-zinc-200 bg-white px-2.5 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                        <option value="all">Tất cả mức độ nguy cơ</option>
+                        <option value="low">Nguy cơ dinh dưỡng thấp (1-5)</option>
+                        <option value="medium">Nguy cơ dinh dưỡng TB (5-10)</option>
+                        <option value="high">Nguy cơ dinh dưỡng cao (>10)</option>
+                    </select>
+                </div>
+
+                <!-- Table -->
+                <div class="rounded-xl border border-zinc-200 bg-white shadow-xs overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs" id="evaluationsTable">
+                            <thead class="bg-zinc-50 text-zinc-500 uppercase font-semibold tracking-wider border-b border-zinc-200">
+                                <tr>
+                                    <th class="p-3.5 pl-4">Thời Gian</th>
+                                    <th class="p-3.5">Phụ Huynh</th>
+                                    <th class="p-3.5">Số Điện Thoại</th>
+                                    <th class="p-3.5">Thông Tin Bé</th>
+                                    <th class="p-3.5">Mức Độ Nguy Cơ</th>
+                                    <th class="p-3.5">Dị Ứng / Chế Độ Ăn</th>
+                                    <th class="p-3.5 text-center">Xem Chi Tiết</th>
+                                    <th class="p-3.5 pr-4 text-center">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-zinc-100 text-zinc-800" id="evaluationsTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ==========================================================
                  VIEW 5: HỆ THỐNG & XUẤT DỮ LIỆU
                  ========================================================== -->
             <div id="view-data" class="hidden space-y-6">
@@ -707,6 +799,16 @@
                         </div>
                         <button onclick="DB.exportCSV('leads')" class="mt-4 inline-flex h-9 items-center justify-center rounded-md bg-zinc-900 px-4 text-xs font-medium text-white hover:bg-zinc-800 transition-colors">
                             Tải File Leads (.csv)
+                        </button>
+                    </div>
+
+                    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs flex flex-col justify-between">
+                        <div class="space-y-1">
+                            <h3 class="text-sm font-semibold text-zinc-900">Xuất Phiếu Đánh Giá Dinh Dưỡng</h3>
+                            <p class="text-xs text-zinc-500">Tải file CSV toàn bộ kết quả trắc nghiệm dinh dưỡng của phụ huynh, phân loại nguy cơ và chi tiết câu trả lời.</p>
+                        </div>
+                        <button onclick="DB.exportCSV('evaluations')" class="mt-4 inline-flex h-9 items-center justify-center rounded-md bg-zinc-900 px-4 text-xs font-medium text-white hover:bg-zinc-800 transition-colors">
+                            Tải File Đánh Giá (.csv)
                         </button>
                     </div>
 
@@ -1464,6 +1566,20 @@
     </div>
 </div>
 
+<!-- Evaluation Detail Modal -->
+<div id="evalDetailModal" class="modal-overlay">
+    <div class="modal-content max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100 mb-4">
+            <div>
+                <h3 class="text-base font-bold text-zinc-900" id="evalModalTitle">Chi Tiết Phiếu Đánh Giá Dinh Dưỡng</h3>
+                <p class="text-xs text-zinc-500" id="evalModalSubtitle">Thông tin câu trả lời và phân loại nguy cơ</p>
+            </div>
+            <button onclick="closeEvalDetailModal()" class="text-zinc-400 hover:text-zinc-600 text-sm p-1">✕</button>
+        </div>
+        <div id="evalDetailModalContent"></div>
+    </div>
+</div>
+
 <!-- Manual Booking Modal -->
 <div id="manualBookingModal" class="modal-overlay">
     <div class="modal-content max-w-lg p-6">
@@ -1780,7 +1896,7 @@
 
     // 2. View Switcher (Sidebar navigation)
     const views = [
-        'overview', 'marketing', 'bookings', 'leads', 'data',
+        'overview', 'marketing', 'bookings', 'leads', 'evaluations', 'data',
         'settings-pages', 'settings-email', 'settings-resources', 'settings-social', 'settings-integrations', 'settings-security'
     ];
     const breadcrumbLabels = {
@@ -1788,6 +1904,7 @@
         'marketing': 'Phân Tích Marketing & Phễu Chuyển Đổi',
         'bookings': 'Quản Lý Lịch Hẹn Tư Vấn 1-1',
         'leads': 'Khách Hàng Tải Cẩm Nang Ebook',
+        'evaluations': 'Quản Lý Phiếu Đánh Giá Dinh Dưỡng',
         'data': 'Quản Trị Dữ Liệu & Xuất Báo Cáo',
         'settings-pages': 'Quản Lý Các Trang & Trạng Thái Publics',
         'settings-email': 'Hệ Thống Email & Thông Báo',
@@ -1820,6 +1937,8 @@
         
         if (viewName === 'overview') {
             initOverviewCharts();
+        } else if (viewName === 'evaluations') {
+            renderEvaluations();
         } else if (viewName === 'settings-pages') {
             renderSettingsPages();
         } else if (viewName === 'settings-email') {
@@ -1842,6 +1961,7 @@
         const leads = DB.getLeads();
         const analytics = DB.getAnalytics();
         const pages = DB.getPages();
+        const evals = (typeof DB.getEvaluations === 'function') ? DB.getEvaluations() : [];
 
         // 3.0 Current Period Badge
         renderPeriodBadge();
@@ -1851,6 +1971,9 @@
         document.getElementById('badgeNavLeads').innerText = leads.length;
         if (document.getElementById('badgeNavPages')) {
             document.getElementById('badgeNavPages').innerText = pages.length;
+        }
+        if (document.getElementById('badgeNavEvaluations')) {
+            document.getElementById('badgeNavEvaluations').innerText = evals.length;
         }
 
         // 3.2 Overview 5 KPI Cards (shadcn Style + Live Online)
@@ -1961,6 +2084,7 @@
         // 3.7 Render Tables
         renderBookingsTable(bookings);
         renderLeadsTable(leads);
+        renderEvaluations();
 
         // 3.8 Charts
         initOverviewCharts();
@@ -2511,6 +2635,229 @@
         }
     };
 
+    // 7.1 Evaluations Management
+    function renderEvaluations() {
+        const list = (typeof DB.getEvaluations === 'function') ? DB.getEvaluations() : [];
+        
+        // Summary KPIs
+        const total = list.length;
+        const low = list.filter(e => e.risk_level === 'low').length;
+        const med = list.filter(e => e.risk_level === 'medium').length;
+        const high = list.filter(e => e.risk_level === 'high').length;
+
+        if (document.getElementById('evalTotalCount')) document.getElementById('evalTotalCount').innerText = total;
+        if (document.getElementById('evalLowCount')) document.getElementById('evalLowCount').innerText = low;
+        if (document.getElementById('evalMediumCount')) document.getElementById('evalMediumCount').innerText = med;
+        if (document.getElementById('evalHighCount')) document.getElementById('evalHighCount').innerText = high;
+        if (document.getElementById('badgeNavEvaluations')) document.getElementById('badgeNavEvaluations').innerText = total;
+
+        const tbody = document.getElementById('evaluationsTableBody');
+        if (!tbody) return;
+
+        if (list.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" class="p-8 text-center text-zinc-400">Chưa có phiếu đánh giá nào được gửi. Khi phụ huynh hoàn thành trắc nghiệm tại trang Đánh Giá, kết quả sẽ hiển thị ngay tại đây.</td></tr>';
+            return;
+        }
+
+        const riskBadge = (level) => {
+            if (level === 'high') {
+                return '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 border border-rose-200">Nguy cơ cao (&gt;10đ)</span>';
+            }
+            if (level === 'medium') {
+                return '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200">Nguy cơ TB (5-10đ)</span>';
+            }
+            return '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">Nguy cơ thấp (1-5đ)</span>';
+        };
+
+        tbody.innerHTML = list.map(e => {
+            const dateStr = e.created_at ? new Date(e.created_at).toLocaleDateString('vi-VN', {
+                day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            }) : '-';
+            const cleanPhone = (e.phone || '').replace(/[^0-9]/g, '');
+            const childInfo = `${e.child_name || 'Bé'} ${e.child_age ? `(${e.child_age})` : ''} ${e.child_gender ? `• ${e.child_gender}` : ''}`;
+            const dietAllergy = [
+                e.allergies ? `Dị ứng: ${e.allergies}` : '',
+                e.water_intake ? `Nước: ${e.water_intake}` : '',
+                e.diet_description ? `Ăn: ${e.diet_description}` : ''
+            ].filter(Boolean).join(' • ') || '-';
+
+            return `
+                <tr class="hover:bg-zinc-50/80 transition-colors eval-row" data-risk="${e.risk_level || 'low'}" data-search="${((e.parent_name || '') + ' ' + (e.phone || '') + ' ' + (e.child_name || '')).toLowerCase()}">
+                    <td class="p-3.5 pl-4 text-zinc-500 font-mono text-[11px]">${dateStr}</td>
+                    <td class="p-3.5 font-semibold text-zinc-900">${e.parent_name || 'Phụ huynh'}</td>
+                    <td class="p-3.5">
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-mono text-zinc-800">${e.phone || '-'}</span>
+                            ${cleanPhone ? `
+                                <a href="https://zalo.me/${cleanPhone}" target="_blank" class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] font-bold hover:bg-blue-100" title="Nhắn Zalo">
+                                    Zalo
+                                </a>
+                            ` : ''}
+                        </div>
+                    </td>
+                    <td class="p-3.5 text-zinc-700">${childInfo}</td>
+                    <td class="p-3.5">${riskBadge(e.risk_level)}</td>
+                    <td class="p-3.5 max-w-xs text-zinc-500 truncate" title="${dietAllergy}">${dietAllergy}</td>
+                    <td class="p-3.5 text-center">
+                        <button onclick="openEvalDetail(${e.id})" class="h-7 px-2.5 rounded border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 font-medium text-xs">
+                            Xem
+                        </button>
+                    </td>
+                    <td class="p-3.5 pr-4 text-center">
+                        <button onclick="deleteEvaluationRow(${e.id})" class="text-zinc-400 hover:text-red-600 p-1" title="Xóa">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    window.openEvalDetail = function(id) {
+        const item = (typeof DB.getEvaluations === 'function') ? DB.getEvaluations().find(e => e.id == id) : null;
+        if (!item) return;
+
+        const modal = document.getElementById('evalDetailModal');
+        const content = document.getElementById('evalDetailModalContent');
+        if (!modal || !content) return;
+
+        const cleanPhone = (item.phone || '').replace(/[^0-9]/g, '');
+        const dateStr = item.created_at ? new Date(item.created_at).toLocaleString('vi-VN') : '-';
+
+        let riskBadge = '';
+        if (item.risk_level === 'high') {
+            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200">Nguy Cơ Dinh Dưỡng Cao (>10 Điểm)</span>';
+        } else if (item.risk_level === 'medium') {
+            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Nguy Cơ Dinh Dưỡng Trung Bình (5-10 Điểm)</span>';
+        } else {
+            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Nguy Cơ Dinh Dưỡng Thấp (1-5 Điểm)</span>';
+        }
+
+        let answersHtml = '<div class="space-y-1.5">';
+        if (item.answers && typeof item.answers === 'object') {
+            const keys = Object.keys(item.answers);
+            if (keys.length === 0) {
+                answersHtml += '<p class="text-zinc-400 italic">Không có chi tiết câu trả lời.</p>';
+            } else {
+                keys.forEach(k => {
+                    const ans = item.answers[k];
+                    let text = typeof ans === 'object' ? (ans.text || JSON.stringify(ans)) : String(ans);
+                    answersHtml += `
+                        <div class="flex items-start justify-between py-1 border-b border-zinc-100 text-[11px]">
+                            <span class="font-medium text-zinc-600">${k}:</span>
+                            <span class="text-zinc-900 font-semibold text-right max-w-xs">${text}</span>
+                        </div>
+                    `;
+                });
+            }
+        }
+        answersHtml += '</div>';
+
+        content.innerHTML = `
+            <div class="space-y-4 text-xs">
+                <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200/80 space-y-3">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <span class="text-[10px] text-zinc-400 font-semibold uppercase block">Thời gian nộp</span>
+                            <span class="font-mono text-zinc-700">${dateStr}</span>
+                        </div>
+                        <div>${riskBadge}</div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-zinc-200/60">
+                        <div>
+                            <span class="text-zinc-400 text-[11px] block">Phụ Huynh</span>
+                            <span class="font-bold text-zinc-900 text-sm">${item.parent_name || 'Phụ huynh'}</span>
+                        </div>
+                        <div>
+                            <span class="text-zinc-400 text-[11px] block">Số Điện Thoại / Zalo</span>
+                            <div class="flex items-center gap-1.5 mt-0.5">
+                                <span class="font-mono font-bold text-zinc-900">${item.phone || '-'}</span>
+                                ${cleanPhone ? `
+                                    <a href="https://zalo.me/${cleanPhone}" target="_blank" class="px-2 py-0.5 rounded bg-blue-600 text-white text-[10px] font-bold hover:bg-blue-700">
+                                        Mở Zalo
+                                    </a>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-zinc-400 text-[11px] block">Thông Tin Bé</span>
+                            <span class="font-bold text-zinc-900">${item.child_name || 'Bé'} (${item.child_age || '-'}, ${item.child_gender || '-'})</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-zinc-900 mb-1.5 flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Nhận Xét & Đánh Giá Tình Trạng</span>
+                    </h4>
+                    <div class="p-3 rounded-lg bg-emerald-50/50 border border-emerald-200/70 text-emerald-950 leading-relaxed">
+                        ${item.feedback || item.risk_title || 'Chưa có nhận xét'}
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-3">
+                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
+                        <span class="font-bold text-zinc-800 block mb-1">Dị Ứng / Không Dung Nạp:</span>
+                        <p class="text-zinc-600">${item.allergies || 'Không có ghi nhận dị ứng'}</p>
+                    </div>
+                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
+                        <span class="font-bold text-zinc-800 block mb-1">Lượng Nước Uống Mỗi Ngày:</span>
+                        <p class="text-zinc-600">${item.water_intake || 'Chưa ghi chú'}</p>
+                    </div>
+                </div>
+
+                ${item.diet_description ? `
+                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
+                        <span class="font-bold text-zinc-800 block mb-1">Mô Tả Chế Độ Ăn Trong Ngày Của Con:</span>
+                        <p class="text-zinc-600 whitespace-pre-line leading-relaxed">${item.diet_description}</p>
+                    </div>
+                ` : ''}
+
+                ${item.notes ? `
+                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
+                        <span class="font-bold text-zinc-800 block mb-1">Ghi Chú Khác Của Mẹ:</span>
+                        <p class="text-zinc-600 whitespace-pre-line leading-relaxed">${item.notes}</p>
+                    </div>
+                ` : ''}
+
+                <div>
+                    <h4 class="font-bold text-zinc-900 mb-2">Chi Tiết Các Lựa Chọn Trả Lời:</h4>
+                    <div class="max-h-60 overflow-y-auto p-3 rounded-lg border border-zinc-200 bg-white">
+                        ${answersHtml}
+                    </div>
+                </div>
+
+                <div class="pt-2 flex items-center justify-between border-t border-zinc-100">
+                    <a href="../tra-cuu/?phone=${encodeURIComponent(item.phone || '')}" target="_blank" class="text-xs text-brand-600 font-semibold hover:underline">
+                        Mở liên kết tra cứu của phụ huynh →
+                    </a>
+                    <button type="button" onclick="closeEvalDetailModal()" class="px-4 py-1.5 rounded-md bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-semibold">
+                        Đóng
+                    </button>
+                </div>
+            </div>
+        `;
+
+        modal.classList.add('active');
+    };
+
+    window.closeEvalDetailModal = function() {
+        const modal = document.getElementById('evalDetailModal');
+        if (modal) modal.classList.remove('active');
+    };
+
+    window.deleteEvaluationRow = function(id) {
+        if (confirm('Xóa phiếu đánh giá dinh dưỡng này khỏi hệ thống? Thao tác này không thể hoàn tác.')) {
+            if (typeof DB.deleteEvaluation === 'function') {
+                DB.deleteEvaluation(id);
+            }
+            renderEvaluations();
+            renderAll();
+        }
+    };
+
     // 8. Detail Modal
     window.openDetail = function(id) {
         const b = DB.getBookings().find(item => item.id == id);
@@ -2633,6 +2980,22 @@
             const matchQ = !q || (row.dataset.search || '').includes(q);
             const matchCare = care === 'all' || row.dataset.care === care;
             row.style.display = (matchQ && matchCare) ? '' : 'none';
+        });
+    }
+
+    const evalSearch = document.getElementById('evalSearchInput');
+    const evalRisk = document.getElementById('evalRiskFilter');
+    if (evalSearch) evalSearch.addEventListener('input', filterEvaluations);
+    if (evalRisk) evalRisk.addEventListener('change', filterEvaluations);
+
+    function filterEvaluations() {
+        const q = (document.getElementById('evalSearchInput')?.value || '').toLowerCase().trim();
+        const r = document.getElementById('evalRiskFilter')?.value || 'all';
+
+        document.querySelectorAll('.eval-row').forEach(row => {
+            const matchQ = !q || (row.dataset.search || '').includes(q);
+            const matchR = r === 'all' || row.dataset.risk === r;
+            row.style.display = (matchQ && matchR) ? '' : 'none';
         });
     }
 
@@ -3295,10 +3658,12 @@
                     renderSettingsPages();
                 }
             }
-            if (event.type === 'bookings_changed' || event.type === 'leads_changed') {
+            if (event.type === 'bookings_changed' || event.type === 'leads_changed' || event.type === 'evaluations_changed') {
                 if (typeof renderOverview === 'function') renderOverview();
                 if (typeof renderBookings === 'function') renderBookings();
                 if (typeof renderLeads === 'function') renderLeads();
+                if (typeof renderEvaluations === 'function') renderEvaluations();
+                if (typeof renderAll === 'function') renderAll();
             }
         });
         if (typeof DB.initRealtimeListener === 'function') {

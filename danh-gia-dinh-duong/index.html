@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phiếu Đánh Giá & Tư Vấn Dinh Dưỡng Cho Trẻ | Thu Hiền</title>
-    <meta name="description" content="Bảng sàng lọc chuyên môn từ Chuyên gia Bùi Thu Hiền giúp cha mẹ nhận diện sớm rào cản ăn uống, nguy cơ thiếu hụt vi chất và tình trạng tiêu hóa ở trẻ.">
+    <title>Phiếu Đánh Giá & Nhận Tư Vấn Dinh Dưỡng Cho Trẻ | Thu Hiền</title>
+    <meta name="description" content="Bảng sàng lọc dinh dưỡng giúp cha mẹ nhận diện sớm rào cản ăn uống, nguy cơ thiếu hụt vi chất và tình trạng tiêu hóa ở trẻ.">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 
     <!-- OpenGraph & Meta -->
-    <meta property="og:title" content="Phiếu Đánh Giá & Tư Vấn Dinh Dưỡng Cho Trẻ | Thu Hiền">
+    <meta property="og:title" content="Phiếu Đánh Giá & Nhận Tư Vấn Dinh Dưỡng Cho Trẻ | Thu Hiền">
     <meta property="og:description" content="Checklist sàng lọc thói quen ăn uống, nhai nuốt và nguy cơ thiếu hụt vi chất cho trẻ.">
     <meta property="og:image" content="../assets/images/thu-hien-hero-banner.png">
     <meta property="og:type" content="article">
@@ -92,21 +92,6 @@
             border-radius: 9999px;
             background-color: #ffffff;
         }
-        
-        /* Print styles for export */
-        @media print {
-            .nav-island, #thuhien-admin-bar, #floatingScoreBar, .no-print {
-                display: none !important;
-            }
-            body {
-                background: #ffffff !important;
-                color: #000000 !important;
-                padding: 0 !important;
-            }
-            .print-page {
-                page-break-inside: avoid;
-            }
-        }
     </style>
 </head>
 <body data-page="assessment" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-24 md:pb-28">
@@ -139,7 +124,10 @@
             <a href="./" class="px-3 sm:px-4 py-2 rounded-full bg-white text-[#174C3B] text-xs sm:text-sm font-bold shadow-2xs">
                 Đánh Giá
             </a>
-            <a href="../cong-dong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden lg:inline-flex">
+            <a href="../tra-cuu/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden lg:inline-flex">
+                Tra Cứu
+            </a>
+            <a href="../cong-dong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden xl:inline-flex">
                 Cộng Đồng
             </a>
             <a href="../pricing/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden xl:inline-flex">
@@ -169,12 +157,21 @@
     </div>
     
     <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-[#174C3B] uppercase tracking-tight leading-tight mb-4">
-        Phiếu Đánh Giá & Tư Vấn Dinh Dưỡng
+        Phiếu Đánh Giá & Nhận Tư Vấn Dinh Dưỡng
     </h1>
     
     <p class="text-sm sm:text-base md:text-lg text-[#5F6E66] max-w-2xl mx-auto leading-relaxed">
         Dành 5 phút hoàn thành phiếu đánh giá dưới đây giúp ba mẹ nhận diện rõ rào cản ăn uống, nguy cơ thiếu hụt vi chất và tình trạng tiêu hóa của con.
     </p>
+
+    <!-- Tra cứu link banner -->
+    <div class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-[#8FAF91]/30 text-xs font-bold text-[#174C3B] shadow-2xs hover:border-[#174C3B] transition-all">
+        <svg class="w-4 h-4 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <span>Ba mẹ đã từng thực hiện đánh giá?</span>
+        <a href="../tra-cuu/" class="text-[#F08A4B] hover:underline flex items-center gap-1">Tra cứu kết quả qua SĐT tại đây →</a>
+    </div>
 
     <!-- Progress Indicator Bar -->
     <div class="mt-8 max-w-xl mx-auto bg-white/80 p-3 sm:p-4 rounded-2xl border border-[#8FAF91]/30 shadow-xs">
@@ -206,7 +203,7 @@
                 <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">1</span>
                 <div>
                     <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Thông Tin Trẻ & Phụ Huynh</h2>
-                    <p class="text-xs sm:text-sm text-[#5F6E66]">Giúp Chuyên gia Thu Hiền lưu hồ sơ và tư vấn chính xác theo độ tuổi của bé</p>
+                    <p class="text-xs sm:text-sm text-[#5F6E66]">Giúp lưu thông tin và đưa ra định hướng chuẩn xác theo độ tuổi của bé</p>
                 </div>
             </div>
 
@@ -285,21 +282,21 @@
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Ăn đa dạng thực phẩm</span>
-                                <span class="text-[11px] text-[#5F6E66]">Chấp nhận nhiều nhóm thức ăn (0đ)</span>
+                                <span class="text-[11px] text-[#5F6E66]">Chấp nhận nhiều nhóm thức ăn</span>
                             </div>
                         </div>
                         <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q1', 1)">
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Kén chọn đồ ăn</span>
-                                <span class="text-[11px] text-[#F08A4B] font-bold">Ăn chọn lọc, khó thử món mới (+1đ)</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Ăn chọn lọc, khó thử món mới</span>
                             </div>
                         </div>
                         <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q1', 0)">
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Nếp ăn rất tốt</span>
-                                <span class="text-[11px] text-[#5F6E66]">Hào hứng với bữa ăn (0đ)</span>
+                                <span class="text-[11px] text-[#5F6E66]">Hào hứng với bữa ăn</span>
                             </div>
                         </div>
                     </div>
@@ -313,21 +310,21 @@
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Nhai nuốt bình thường</span>
-                                <span class="text-[11px] text-[#5F6E66]">Nhai kỹ, nuốt gọn (0đ)</span>
+                                <span class="text-[11px] text-[#5F6E66]">Nhai kỹ, nuốt gọn</span>
                             </div>
                         </div>
                         <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q2', 1)">
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Ngậm đồ ăn trong miệng</span>
-                                <span class="text-[11px] text-[#F08A4B] font-bold">Ngậm lâu, lười nhai, dễ ọe (+1đ)</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Ngậm lâu, lười nhai, dễ ọe</span>
                             </div>
                         </div>
                         <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q2', 0)">
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Nhai nuốt rất tốt</span>
-                                <span class="text-[11px] text-[#5F6E66]">Xử lý thức ăn thô tốt (0đ)</span>
+                                <span class="text-[11px] text-[#5F6E66]">Xử lý thức ăn thô tốt</span>
                             </div>
                         </div>
                     </div>
@@ -341,28 +338,28 @@
                             <input type="checkbox" name="digest_issues" value="taobon" onchange="updateMultiChoiceScore()" class="w-4 h-4 text-[#174C3B] rounded focus:ring-[#174C3B]">
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Táo bón</span>
-                                <span class="text-[11px] text-[#F08A4B] font-bold">Phân cứng/khô (+1đ)</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Phân cứng, khó đi</span>
                             </div>
                         </label>
                         <label class="p-3.5 rounded-2xl border border-zinc-200 bg-[#FAF7F0]/40 flex items-center gap-3 cursor-pointer hover:border-[#8FAF91] has-[:checked]:bg-[#EEF5EA] has-[:checked]:border-[#174C3B] transition-all">
                             <input type="checkbox" name="digest_issues" value="tieuchay" onchange="updateMultiChoiceScore()" class="w-4 h-4 text-[#174C3B] rounded focus:ring-[#174C3B]">
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Tiêu chảy</span>
-                                <span class="text-[11px] text-[#F08A4B] font-bold">Phân lỏng, sống (+1đ)</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Phân lỏng, phân sống</span>
                             </div>
                         </label>
                         <label class="p-3.5 rounded-2xl border border-zinc-200 bg-[#FAF7F0]/40 flex items-center gap-3 cursor-pointer hover:border-[#8FAF91] has-[:checked]:bg-[#EEF5EA] has-[:checked]:border-[#174C3B] transition-all">
                             <input type="checkbox" name="digest_issues" value="nontro" onchange="updateMultiChoiceScore()" class="w-4 h-4 text-[#174C3B] rounded focus:ring-[#174C3B]">
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Nôn trớ, trào ngược</span>
-                                <span class="text-[11px] text-[#F08A4B] font-bold">Ợ chua, hay nôn (+1đ)</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Ợ chua, hay nôn</span>
                             </div>
                         </label>
                         <label class="p-3.5 rounded-2xl border border-zinc-200 bg-[#FAF7F0]/40 flex items-center gap-3 cursor-pointer hover:border-[#8FAF91] has-[:checked]:bg-[#EEF5EA] has-[:checked]:border-[#174C3B] transition-all">
                             <input type="checkbox" name="digest_issues" value="none" onchange="handleNoDigestIssue(this)" class="w-4 h-4 text-[#174C3B] rounded focus:ring-[#174C3B]">
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Bình thường</span>
-                                <span class="text-[11px] text-[#5F6E66]">Không có vấn đề (0đ)</span>
+                                <span class="text-[11px] text-[#5F6E66]">Không có vấn đề</span>
                             </div>
                         </label>
                     </div>
@@ -376,21 +373,21 @@
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Trẻ ngủ ngon, sâu giấc</span>
-                                <span class="text-[11px] text-[#5F6E66]">Ít giật mình (0đ)</span>
+                                <span class="text-[11px] text-[#5F6E66]">Ít giật mình, tỉnh táo</span>
                             </div>
                         </div>
                         <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q4', 1)">
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Khó ngủ, thức giấc nửa đêm</span>
-                                <span class="text-[11px] text-[#F08A4B] font-bold">Trằn trọc, ngủ không sâu (+1đ)</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Trằn trọc, ngủ không sâu</span>
                             </div>
                         </div>
                         <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q4', 0)">
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Khác / Bình thường</span>
-                                <span class="text-[11px] text-[#5F6E66]">Giấc ngủ chấp nhận được (0đ)</span>
+                                <span class="text-[11px] text-[#5F6E66]">Giấc ngủ chấp nhận được</span>
                             </div>
                         </div>
                     </div>
@@ -438,21 +435,21 @@
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Không dùng</span>
-                                <span class="text-[11px] text-[#5F6E66]">Tập trung vào bàn ăn (0đ)</span>
+                                <span class="text-[11px] text-[#5F6E66]">Tập trung vào bàn ăn</span>
                             </div>
                         </div>
                         <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q6', 0)">
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Ít dùng / Thỉnh thoảng</span>
-                                <span class="text-[11px] text-[#5F6E66]">Chỉ xem lúc mệt mỏi (0đ)</span>
+                                <span class="text-[11px] text-[#5F6E66]">Chỉ xem lúc mệt mỏi</span>
                             </div>
                         </div>
                         <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q6', 1)">
                             <span class="radio-indicator"></span>
                             <div>
                                 <span class="text-sm font-bold text-[#174C3B] block">Dùng thường xuyên</span>
-                                <span class="text-[11px] text-[#F08A4B] font-bold">Phải có màn hình mới chịu ăn (+1đ)</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Phải có màn hình mới chịu ăn</span>
                             </div>
                         </div>
                     </div>
@@ -482,9 +479,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Nếu con phản ứng khó chịu, sợ chạm thức ăn thô ráp = nguy cơ kén cảm giác</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_1', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_1', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_1', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_1', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_1', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_1', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -495,9 +492,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Nguy cơ thiếu hụt chất xơ, vitamin C, folate và các chất chống oxy hóa</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_2', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_2', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_2', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_2', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_2', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_2', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -508,9 +505,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Chỉ nhìn hoặc ngửi thấy đã buồn nôn, bùng nổ meltdown hoặc từ chối ăn</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_3', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_3', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_3', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_3', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_3', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_3', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -521,9 +518,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Rau củ trái mùa thường có dư lượng bảo quản hoặc phân bón cao hơn</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_4', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_4', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_4', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_4', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_4', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_4', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -534,9 +531,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Đường tinh luyện làm tăng hưng phấn, ảnh hưởng hệ vi sinh đường ruột</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_5', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_5', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_5', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_5', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_5', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_5', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -547,9 +544,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Làm tăng nguy cơ đầy hơi, mất cân bằng axit dạ dày và cản trở hấp thu canxi</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_6', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_6', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_6', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_6', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_6', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_6', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -560,9 +557,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Caffein và theobromine có thể kích thích thần kinh, làm trầm trọng khó ngủ</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_7', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_7', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_7', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_7', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_7', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_7', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -573,9 +570,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Chứa nhiều phụ gia, chất bảo quản và muối natri cao</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_8', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_8', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_8', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_8', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_8', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_8', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -586,9 +583,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Yếu tố môi trường ảnh hưởng đến tải lượng kim loại nặng và stress oxy hóa</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_9', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_9', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_9', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_9', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_9', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_9', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -599,9 +596,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Nếu KHÔNG sử dụng nguồn nước đảm bảo = nguy cơ nhiễm khuẩn đường ruột</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_10', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_10', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_10', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_10', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_10', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_10', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -612,9 +609,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Dấu hiệu lên men bất thường và loạn khuẩn đường ruột (dysbiosis)</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_11', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_11', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_11', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_11', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_11', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_11', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -625,9 +622,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Biểu hiện của nứt kẽ hậu môn, co thắt trực tràng hoặc táo bón mãn tính</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_12', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_12', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_12', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_12', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_12', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_12', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -638,9 +635,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Nếu KHÔNG vận động = giảm nhu động ruột, giảm thèm ăn tự nhiên</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_13', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_13', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_13', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_13', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_13', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_13', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -651,9 +648,9 @@
                         <span class="text-[11px] text-[#5F6E66]">Liên quan đến vận động tinh và tính tự lập trong bữa ăn của con</span>
                     </div>
                     <div class="flex items-center gap-2 shrink-0">
-                        <button type="button" onclick="selectRowChoice(this, 'q7_14', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_14', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
-                        <button type="button" onclick="selectRowChoice(this, 'q7_14', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_14', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_14', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_14', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không</button>
                     </div>
                 </div>
 
@@ -666,14 +663,14 @@
         </div>
 
         <!-- ======================================================================
-             SECTION 4: ĐÁNH GIÁ CHUYÊN SÂU & THỰC PHẨM BỔ SUNG (GHI NHẬN THÔNG TIN - 0 ĐIỂM)
+             SECTION 4: KHAI THÁC BỔ SUNG & TIỀN SỬ DÙNG VI CHẤT
              ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
                 <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">4</span>
                 <div>
                     <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Khai Thác Bổ Sung & Tiền Sử Dùng Vi Chất</h2>
-                    <p class="text-xs sm:text-sm text-[#5F6E66]">Chỉ ghi nhận thông tin hỗ trợ chuyên gia đánh giá bệnh sử (Không tính điểm nguy cơ)</p>
+                    <p class="text-xs sm:text-sm text-[#5F6E66]">Ghi nhận thêm thông tin để tư vấn chuẩn xác hơn theo thể trạng của bé</p>
                 </div>
             </div>
 
@@ -782,77 +779,65 @@
     <!-- ==========================================================================
          SECTION 5: LIVE RESULT CARD (Rendered after calculation)
          ========================================================================== -->
-    <div id="resultCard" class="hidden bg-white rounded-3xl p-6 sm:p-10 border-2 shadow-xl print-page transition-all duration-500">
+    <div id="resultCard" class="hidden bg-white rounded-3xl p-6 sm:p-10 border-2 shadow-xl transition-all duration-500">
         <!-- Result Header -->
         <div class="text-center pb-6 border-b border-zinc-100">
-            <div id="resultBadge" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-                <!-- Injected via JS -->
-            </div>
             <h2 class="text-2xl sm:text-3xl font-black text-[#174C3B] mb-2">
                 Kết Quả Đánh Giá Tình Trạng Dinh Dưỡng
             </h2>
             <p class="text-sm text-[#5F6E66]">
-                Dành cho bé: <strong id="resChildName" class="text-[#174C3B]">-</strong> (<span id="resChildAge">-</span>)
+                Dành cho bé: <strong id="resChildName" class="text-[#174C3B]">-</strong> (<span id="resChildAge">-</span>) • Phụ huynh: <strong id="resParentName" class="text-[#174C3B]">-</strong>
             </p>
-        </div>
 
-        <!-- Score Meter -->
-        <div class="py-8 text-center max-w-xl mx-auto">
-            <div class="inline-flex items-baseline gap-2 mb-3">
-                <span class="text-5xl sm:text-6xl font-black text-[#174C3B]" id="displayScore">0</span>
-                <span class="text-lg text-[#5F6E66] font-bold">/ 20+ điểm nguy cơ</span>
-            </div>
-
-            <!-- Score Level Bar Indicator -->
-            <div class="w-full bg-zinc-100 h-3 rounded-full overflow-hidden flex mb-2 border border-zinc-200">
-                <div class="w-1/3 bg-emerald-500/70 border-r border-white"></div>
-                <div class="w-1/3 bg-amber-500/80 border-r border-white"></div>
-                <div class="w-1/3 bg-rose-500/80"></div>
-            </div>
-            <div class="flex justify-between text-[11px] font-bold text-[#5F6E66]">
-                <span>0-5đ: Cần lưu ý</span>
-                <span>6-10đ: Nguy cơ trung bình</span>
-                <span>>10đ: Nguy cơ cao</span>
+            <!-- Prominent Evaluation Status Pill -->
+            <div class="mt-5">
+                <div id="resultBadge" class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-sm sm:text-base font-bold shadow-2xs">
+                    <!-- Injected via JS -->
+                </div>
             </div>
         </div>
 
         <!-- Diagnostic Feedback Details -->
-        <div id="resultFeedbackBox" class="p-5 sm:p-6 rounded-2xl mb-6 leading-relaxed text-sm sm:text-base">
+        <div id="resultFeedbackBox" class="mt-6 p-5 sm:p-6 rounded-2xl leading-relaxed text-sm sm:text-base">
             <!-- Dynamic advice injected by JS -->
         </div>
 
         <!-- Medical Disclaimer Note (As instructed by User) -->
-        <div class="p-4 rounded-xl bg-amber-50/80 border border-amber-200/80 text-xs text-amber-900 leading-relaxed mb-8 flex items-start gap-2.5">
+        <div class="p-4 rounded-xl bg-amber-50/80 border border-amber-200/80 text-xs text-amber-900 leading-relaxed my-6 flex items-start gap-2.5">
             <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
             </svg>
             <div>
-                <strong>Lưu ý quan trọng:</strong> Điểm số được tính theo quy ước sàng lọc của bảng hỏi, mang tính chất định hướng và <em>không xác định trẻ thiếu vi chất</em> hay thay thế cho chẩn đoán y khoa chuyên sâu.
+                <strong>Lưu ý quan trọng:</strong> Kết quả được tổng hợp theo các dấu hiệu sàng lọc của bảng hỏi, mang tính chất định hướng hỗ trợ phụ huynh và <em>không xác định trẻ thiếu vi chất</em> hay thay thế cho chẩn đoán y khoa chuyên sâu.
             </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Auto-saved notice & Lookup link -->
+        <div class="p-4 sm:p-5 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/40 text-xs sm:text-sm text-[#174C3B] flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-[#174C3B] text-white flex items-center justify-center shrink-0 font-bold">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <div>
+                    <span class="font-bold block text-sm">Kết quả đánh giá đã được lưu vào hệ thống!</span>
+                    <span class="text-xs text-[#5F6E66]">Ba mẹ có thể dùng số điện thoại <strong id="resSavedPhone" class="text-[#174C3B]"></strong> để tra cứu lại lịch sử bất cứ lúc nào.</span>
+                </div>
+            </div>
+            <a href="../tra-cuu/" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white border border-[#8FAF91]/50 text-xs font-bold text-[#174C3B] hover:bg-[#174C3B] hover:text-white transition-all shadow-2xs shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <span>Trang Tra Cứu</span>
+            </a>
+        </div>
+
+        <!-- Single Primary Action Button: Nhận tư vấn qua Zalo -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 no-print">
-            <!-- Send to Zalo -->
-            <button type="button" onclick="sendResultToZalo()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#0068FF] hover:bg-[#0052cc] text-white text-sm font-bold shadow-md hover:shadow-lg transition-all">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <button type="button" onclick="sendResultToZalo()" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-[#0068FF] hover:bg-[#0052cc] text-white text-base font-bold shadow-lg shadow-[#0068FF]/20 hover:scale-[1.01] active:scale-[0.99] transition-all">
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12c0 2.17.7 4.19 1.9 5.86L2.6 21.4c-.2.6.35 1.15.95.95l3.54-1.3C8.81 21.68 10.37 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.42 0-2.77-.32-3.98-.89l-.29-.14-2.3.84.84-2.3-.14-.29C5.56 16.01 5.24 14.66 5.24 13.24c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/>
                 </svg>
-                <span>Gửi Kết Quả Cho Bác Sĩ Thu Hiền Qua Zalo</span>
-            </button>
-
-            <!-- Book 1:1 consultation -->
-            <a href="../dat-lich/" id="btnBookFromAssessment" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#174C3B] hover:bg-[#133F31] text-white text-sm font-bold shadow-md transition-all">
-                <span>Đặt Lịch Tư Vấn 1:1 Chi Tiết</span>
-                <span class="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center">→</span>
-            </a>
-
-            <!-- Print / Export PDF -->
-            <button type="button" onclick="window.print()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-zinc-300 hover:bg-zinc-50 text-zinc-700 text-sm font-bold transition-all">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
-                </svg>
-                <span>In Phiếu A4</span>
+                <span>Nhận Tư Vấn Chi Tiết Qua Zalo</span>
             </button>
         </div>
     </div>
@@ -870,8 +855,8 @@
 </footer>
 
 <!-- Database and Core Scripts -->
-<script src="../assets/js/db.js?v=2.3"></script>
-<script src="../assets/js/layout.js?v=1.0"></script>
+<script src="../assets/js/db.js?v=2.4"></script>
+<script src="../assets/js/layout.js?v=1.1"></script>
 
 <script>
     // State of assessment answers
@@ -941,6 +926,9 @@
         if (text) text.innerText = `${answeredCount} / ${TOTAL_QUESTIONS} câu hỏi (${percent}%)`;
     }
 
+    // Current evaluated payload cache
+    let currentEvaluationPayload = null;
+
     // Calculate total score and present diagnostic result
     function calculateAndShowResults() {
         const childName = document.getElementById('childName').value.trim();
@@ -954,7 +942,7 @@
             return;
         }
 
-        // Sum scores
+        // Sum scores behind the scenes
         let totalScore = 0;
         Object.values(assessmentState.scores).forEach(s => totalScore += Number(s || 0));
         totalScore += Number(assessmentState.multiScores.digest || 0);
@@ -962,78 +950,104 @@
         // Populate display elements
         document.getElementById('resChildName').innerText = childName;
         document.getElementById('resChildAge').innerText = childAge;
-        document.getElementById('displayScore').innerText = totalScore;
+        document.getElementById('resParentName').innerText = parentName;
+        document.getElementById('resSavedPhone').innerText = parentPhone;
 
         const badgeEl = document.getElementById('resultBadge');
         const boxEl = document.getElementById('resultFeedbackBox');
         const cardEl = document.getElementById('resultCard');
 
+        let riskLevel = 'low';
+        let riskTitle = 'Nguy cơ dinh dưỡng thấp / Cần điều chỉnh nhẹ';
+        let feedbackHtml = '';
+
         if (totalScore <= 5) {
-            // Level 1: 0 - 5 điểm
+            // Level 1: Thấp / Nhẹ
+            riskLevel = 'low';
+            riskTitle = 'Nguy cơ dinh dưỡng thấp / Cần điều chỉnh nhẹ';
             cardEl.style.borderColor = '#10B981';
-            badgeEl.className = 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 bg-emerald-50 text-emerald-800 border border-emerald-300';
-            badgeEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Mức Độ: Nguy Cơ Dinh Dưỡng Thấp / Cần Điều Chỉnh Nhẹ`;
+            badgeEl.className = 'inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-sm sm:text-base font-bold bg-emerald-50 text-emerald-800 border border-emerald-300';
+            badgeEl.innerHTML = `<span class="w-3 h-3 rounded-full bg-emerald-500"></span> Mức Độ: Nguy Cơ Dinh Dưỡng Thấp / Cần Điều Chỉnh Nhẹ`;
             
-            boxEl.className = 'p-5 sm:p-6 rounded-2xl mb-6 bg-emerald-50/70 border border-emerald-200 text-emerald-950';
-            boxEl.innerHTML = `
-                <h3 class="font-bold text-base sm:text-lg mb-2 text-emerald-900">Đánh Giá Từ Chuyên Gia Bùi Thu Hiền:</h3>
+            boxEl.className = 'mt-6 p-5 sm:p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-emerald-950';
+            feedbackHtml = `
+                <h3 class="font-bold text-base sm:text-lg mb-2 text-emerald-900">Nhận Xét & Đánh Giá Tình Trạng:</h3>
                 <p class="mb-3">Bé hiện có một số rào cản nhẹ trong nếp ăn uống hoặc sở thích vị giác. Tình trạng đường ruột và chuyển hóa của con nhìn chung vẫn trong ngưỡng kiểm soát được.</p>
                 <p class="font-bold mb-1">Định hướng cho ba mẹ:</p>
-                <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
+                <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm">
                     <li>Điều chỉnh khẩu phần ăn gia đình theo hướng tăng dần các nhóm màu sắc và đa dạng rau củ.</li>
                     <li>Giảm thiểu tối đa việc cho bé ăn quà vặt, bánh kẹo ngọt và hạn chế triệt để thiết bị điện tử khi ngồi vào bàn ăn.</li>
                     <li>Khuyến khích con tham gia vận động thể lực ngoài trời để tăng trao đổi chất và kích thích cảm giác thèm ăn tự nhiên.</li>
                 </ul>
             `;
         } else if (totalScore <= 10) {
-            // Level 2: 6 - 10 điểm
+            // Level 2: Trung bình
+            riskLevel = 'medium';
+            riskTitle = 'Nguy cơ dinh dưỡng trung bình';
             cardEl.style.borderColor = '#F59E0B';
-            badgeEl.className = 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 bg-amber-50 text-amber-800 border border-amber-300';
-            badgeEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500"></span> Mức Độ: Nguy Cơ Dinh Dưỡng Trung Bình`;
+            badgeEl.className = 'inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-sm sm:text-base font-bold bg-amber-50 text-amber-800 border border-amber-300';
+            badgeEl.innerHTML = `<span class="w-3 h-3 rounded-full bg-amber-500"></span> Mức Độ: Nguy Cơ Dinh Dưỡng Trung Bình`;
             
-            boxEl.className = 'p-5 sm:p-6 rounded-2xl mb-6 bg-amber-50/70 border border-amber-200 text-amber-950';
-            boxEl.innerHTML = `
-                <h3 class="font-bold text-base sm:text-lg mb-2 text-amber-900">Đánh Giá Từ Chuyên Gia Bùi Thu Hiền:</h3>
-                <p class="mb-3">Bé đang gặp phải những rào cản rõ rệt về cảm giác thức ăn hoặc đường tiêu hóa (như ngậm thức ăn, táo bón/nôn trớ, nhạy cảm mùi vị hoặc lười ăn rau quả kéo dài). Đây là dấu hiệu thường gặp dẫn tới <strong>thiếu hụt vi chất tích lũy</strong> (sắt, kẽm, canxi, vitamin nhóm B).</p>
+            boxEl.className = 'mt-6 p-5 sm:p-6 rounded-2xl bg-amber-50/70 border border-amber-200 text-amber-950';
+            feedbackHtml = `
+                <h3 class="font-bold text-base sm:text-lg mb-2 text-amber-900">Nhận Xét & Đánh Giá Tình Trạng:</h3>
+                <p class="mb-3">Bé đang gặp phải những rào cản rõ rệt về cảm giác thức ăn hoặc đường tiêu hóa (như ngậm thức ăn, táo bón/nôn trớ, nhạy cảm mùi vị hoặc lười ăn rau quả kéo dài). Đây là dấu hiệu thường gặp cảnh báo nguy cơ mất cân bằng dinh dưỡng tích lũy.</p>
                 <p class="font-bold mb-1">Định hướng cho ba mẹ:</p>
-                <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
-                    <li>Cần có kế hoạch can thiệp dinh dưỡng sớm để giải phóng áp lực bàn ăn cho cả mẹ và con.</li>
-                    <li>Kiểm tra phân tích vi chất và hỗ trợ phục hồi hệ vi sinh đường ruột để tăng hấp thu dinh dưỡng.</li>
-                    <li>Nên trao đổi riêng 1:1 cùng chuyên gia để thiết kế thực đơn phân cấp màu sắc/kết cấu phù hợp với mức nhạy cảm của con.</li>
+                <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm">
+                    <li>Cần có kế hoạch điều chỉnh chế độ ăn sớm để giải phóng áp lực bàn ăn cho cả mẹ và con.</li>
+                    <li>Ưu tiên phục hồi hệ vi sinh đường ruột và tối ưu hóa việc hấp thu vi chất thiết yếu.</li>
+                    <li>Nên nhận tư vấn để thiết kế thực đơn phân cấp màu sắc/kết cấu phù hợp với mức nhạy cảm của con.</li>
                 </ul>
             `;
         } else {
-            // Level 3: > 10 điểm
+            // Level 3: Cao
+            riskLevel = 'high';
+            riskTitle = 'Nguy cơ dinh dưỡng cao - Cần can thiệp sớm';
             cardEl.style.borderColor = '#EF4444';
-            badgeEl.className = 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 bg-rose-50 text-rose-800 border border-rose-300';
-            badgeEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Mức Độ: Nguy Cơ Dinh Dưỡng Cao - Cần Can Thiệp Chuyên Sâu`;
+            badgeEl.className = 'inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-sm sm:text-base font-bold bg-rose-50 text-rose-800 border border-rose-300';
+            badgeEl.innerHTML = `<span class="w-3 h-3 rounded-full bg-rose-500 animate-pulse"></span> Mức Độ: Nguy Cơ Dinh Dưỡng Cao - Cần Can Thiệp Sớm`;
             
-            boxEl.className = 'p-5 sm:p-6 rounded-2xl mb-6 bg-rose-50/70 border border-rose-200 text-rose-950';
-            boxEl.innerHTML = `
-                <h3 class="font-bold text-base sm:text-lg mb-2 text-rose-900">Đánh Giá Từ Chuyên Gia Bùi Thu Hiền:</h3>
-                <p class="mb-3">Bé có nhiều biểu hiện báo động về rối loạn cảm giác ăn uống, rối loạn tiêu hóa và thói quen sinh hoạt. Tình trạng ăn chọn lọc quá mức kết hợp với hệ tiêu hóa nhạy cảm kéo dài sẽ ảnh hưởng trực tiếp đến phát triển não bộ, giấc ngủ và hành vi của con.</p>
-                <p class="font-bold mb-1">Định hướng khẩn cấp:</p>
-                <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
-                    <li>Cần can thiệp dinh dưỡng chuyên sâu 1:1 ngay để phục hồi niêm mạc ruột và bù đắp vi chất thiếu hụt.</li>
-                    <li>Không nên tiếp tục ép ăn bằng bạo lực hay dùng điện thoại dỗ dành vì sẽ khiến con sợ ăn và bùng nổ meltdown nặng hơn.</li>
-                    <li>Ba mẹ hãy gửi ngay kết quả này qua Zalo để Bác sĩ Thu Hiền xem xét chi tiết từng câu trả lời và có phác đồ can thiệp phù hợp nhất.</li>
+            boxEl.className = 'mt-6 p-5 sm:p-6 rounded-2xl bg-rose-50/70 border border-rose-200 text-rose-950';
+            feedbackHtml = `
+                <h3 class="font-bold text-base sm:text-lg mb-2 text-rose-900">Nhận Xét & Đánh Giá Tình Trạng:</h3>
+                <p class="mb-3">Bé có nhiều biểu hiện rõ nét về rối loạn cảm giác ăn uống, rối loạn tiêu hóa và thói quen sinh hoạt. Tình trạng ăn chọn lọc quá mức kết hợp với hệ tiêu hóa nhạy cảm kéo dài cần có sự đồng hành và can thiệp kịp thời.</p>
+                <p class="font-bold mb-1">Định hướng hỗ trợ:</p>
+                <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm">
+                    <li>Cần can thiệp chế độ dinh dưỡng cá nhân hóa sớm để bảo vệ niêm mạc ruột và hỗ trợ sức khỏe toàn diện của con.</li>
+                    <li>Tránh tiếp tục ép ăn căng thẳng hay phụ thuộc vào màn hình điện tử vì dễ khiến con sợ ăn và bùng nổ tâm lý.</li>
+                    <li>Ba mẹ hãy gửi kết quả này qua Zalo để nhận tư vấn chi tiết từng câu trả lời và định hướng phác đồ phù hợp nhất.</li>
                 </ul>
             `;
         }
+
+        boxEl.innerHTML = feedbackHtml;
 
         // Show result card and scroll smoothly
         cardEl.classList.remove('hidden');
         cardEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         // Save to Database / LocalStorage / Firebase
-        saveAssessmentToSystem(totalScore, childName, childAge, parentName, parentPhone);
+        currentEvaluationPayload = saveAssessmentToSystem(riskLevel, riskTitle, totalScore, childName, childAge, parentName, parentPhone);
     }
 
     // Save evaluation record to DB & Firebase
-    function saveAssessmentToSystem(score, childName, childAge, parentName, parentPhone) {
+    function saveAssessmentToSystem(riskLevel, riskTitle, score, childName, childAge, parentName, parentPhone) {
+        // Collect clinical supplement answers
+        const suppAnswers = {
+            supp_vitamin: document.querySelector('select[name="supp_vitamin"]')?.value || 'khong',
+            supp_special: document.querySelector('select[name="supp_special"]')?.value || 'khong',
+            supp_gfcf: document.querySelector('select[name="supp_gfcf"]')?.value || 'chua',
+            supp_vitd_test: document.querySelector('select[name="supp_vitd_test"]')?.value || 'chua',
+            supp_vitd_use: document.querySelector('select[name="supp_vitd_use"]')?.value || 'khong',
+            supp_enzyme: document.querySelector('select[name="supp_enzyme"]')?.value || 'khong',
+            supp_omega: document.querySelector('select[name="supp_omega"]')?.value || 'khong',
+            supp_probiotic: document.querySelector('select[name="supp_probiotic"]')?.value || 'khong'
+        };
+
+        const allergies = Array.from(document.querySelectorAll('input[name="allergy"]:checked')).map(i => i.parentElement.innerText.trim());
+
         const payload = {
             id: 'eval_' + Date.now(),
-            score: score,
             child_name: childName,
             child_age: childAge,
             parent_name: parentName,
@@ -1041,49 +1055,50 @@
             gender: document.querySelector('input[name="childGender"]:checked')?.value || 'Nam',
             weight: document.getElementById('childWeight').value,
             height: document.getElementById('childHeight').value,
+            risk_level: riskLevel,
+            risk_title: riskTitle,
+            score: score,
             water: document.getElementById('waterAmount').value,
+            allergies: allergies,
             other_difficulties: document.getElementById('otherFeedingDifficulties').value,
             daily_diet: document.getElementById('dailyDietDesc').value,
-            created_at: new Date().toLocaleString('vi-VN')
+            answers: { ...assessmentState.answers, ...suppAnswers },
+            created_at: new Date().toLocaleString('vi-VN'),
+            created_at_iso: new Date().toISOString()
         };
 
         try {
-            // Save to localStorage
-            const list = JSON.parse(localStorage.getItem('thuhien_evaluations') || '[]');
-            list.unshift(payload);
-            localStorage.setItem('thuhien_evaluations', JSON.stringify(list));
-
-            // Also push to Firebase Firestore if connected
-            if (typeof DB !== 'undefined' && typeof DB.initFirebase === 'function') {
-                DB.initFirebase().then(db => {
-                    if (db) {
-                        db.collection('evaluations').add(payload).then(() => {
-                            console.log('🔥 Evaluation saved to Firebase Firestore');
-                        }).catch(e => console.warn('Firebase eval save error:', e));
-                    }
-                });
+            if (typeof DB !== 'undefined' && typeof DB.addEvaluation === 'function') {
+                DB.addEvaluation(payload);
+            } else {
+                const list = JSON.parse(localStorage.getItem('thuhien_evaluations_v1') || '[]');
+                list.unshift(payload);
+                localStorage.setItem('thuhien_evaluations_v1', JSON.stringify(list));
             }
-        } catch (e) {}
+        } catch (e) {
+            console.warn('Evaluation save error:', e);
+        }
+
+        return payload;
     }
 
     // Open Zalo with prefilled summary
     function sendResultToZalo() {
         const childName = document.getElementById('childName').value.trim() || 'bé';
         const childAge = document.getElementById('childAge').value.trim() || '';
-        const parentName = document.getElementById('parentName').value.trim() || 'Mẹ';
-        const score = document.getElementById('displayScore').innerText || '0';
-        
-        let levelText = 'Nguy cơ dinh dưỡng thấp';
-        if (Number(score) > 10) levelText = 'Nguy cơ dinh dưỡng cao';
-        else if (Number(score) > 5) levelText = 'Nguy cơ dinh dưỡng trung bình';
+        const parentName = document.getElementById('parentName').value.trim() || 'Phụ huynh';
+        const badgeEl = document.getElementById('resultBadge');
+        const levelText = badgeEl ? badgeEl.innerText.replace('Mức Độ:', '').trim() : 'Đã hoàn thành đánh giá';
 
         const text = encodeURIComponent(
-            `Chào Chuyên gia Thu Hiền, em là ${parentName}, vừa làm Phiếu Đánh Giá Dinh Dưỡng cho con (${childName}, ${childAge}).\n` +
-            `Điểm đánh giá của con: ${score} điểm (${levelText}).\n` +
-            `Em muốn nhờ Chuyên gia xem qua kết quả và tư vấn hướng can thiệp giúp gia đình em ạ.`
+            `Chào bạn, em là ${parentName}, vừa làm Phiếu Đánh Giá Dinh Dưỡng cho con (${childName}, ${childAge}).\n` +
+            `Kết quả đánh giá: ${levelText}.\n` +
+            `Em gửi kết quả để nhận tư vấn và định hướng hỗ trợ thêm cho bé ạ.`
         );
 
-        window.open(`https://zalo.me/0988776655?text=${text}`, '_blank');
+        const settings = typeof DB !== 'undefined' ? DB.getSettings() : {};
+        const zaloNumber = settings?.social?.zalo_number || '0988776655';
+        window.open(`https://zalo.me/${zaloNumber.replace(/\D/g, '')}?text=${text}`, '_blank');
     }
 </script>
 

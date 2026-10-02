@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Kết Quả Đánh Giá Dinh Dưỡng | Thu Hiền</title>
+    <meta name="description" content="Tra cứu lịch sử và kết quả phiếu đánh giá tình trạng dinh dưỡng của bé theo số điện thoại phụ huynh.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+
+    <!-- OpenGraph & Meta -->
+    <meta property="og:title" content="Tra Cứu Kết Quả Đánh Giá Dinh Dưỡng | Thu Hiền">
+    <meta property="og:description" content="Tra cứu lịch sử và kết quả phiếu đánh giá tình trạng dinh dưỡng của bé theo số điện thoại.">
+    <meta property="og:image" content="../assets/images/thu-hien-hero-banner.png">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#174C3B">
+
+    <!-- Google Fonts Preconnect & Direct Stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#174C3B',
+                            primaryLight: '#1F5A45',
+                            sage: '#8FAF91',
+                            sageLight: '#A9C2A4',
+                            mintSub: '#EEF5EA',
+                            creamBg: '#FAF7F0',
+                            peach: '#F08A4B',
+                            peachHover: '#E07837',
+                            textMuted: '#5F6E66'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Alata"', 'system-ui', 'sans-serif'],
+                        serif: ['"Alata"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-page="tra-cuu" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-24 md:pb-28 min-h-screen flex flex-col justify-between">
+
+<!-- ==========================================================================
+     FLOATING NAVIGATION ISLAND (Hydrated by LayoutEngine)
+     ========================================================================== -->
+<header class="nav-island">
+    <nav class="nav-island-inner justify-between">
+        <!-- Logo -->
+        <a href="../" class="flex items-center gap-3 group text-decoration-none">
+            <img src="../favicon.png" alt="Thu Hiền Logo" class="w-10 h-10 rounded-full object-cover shadow-sm ring-2 ring-white/80 group-hover:scale-105 transition-transform duration-300">
+            <div class="flex flex-col">
+                <span class="font-bold text-lg md:text-xl text-white leading-none tracking-tight">Thu Hiền</span>
+                <span class="text-[11px] font-medium text-white/90 tracking-wide mt-1 uppercase">Cùng Mẹ Hiểu Con</span>
+            </div>
+        </a>
+
+        <!-- Header Actions -->
+        <div class="flex items-center gap-1 sm:gap-2">
+            <a href="../" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden md:inline-flex">
+                Trang Chủ
+            </a>
+            <a href="../chuyen-gia/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors">
+                Chuyên Gia
+            </a>
+            <a href="../dinh-duong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden sm:inline-flex">
+                Dinh Dưỡng
+            </a>
+            <a href="../danh-gia-dinh-duong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors">
+                Đánh Giá
+            </a>
+            <a href="./" class="px-3 sm:px-4 py-2 rounded-full bg-white text-[#174C3B] text-xs sm:text-sm font-bold shadow-2xs">
+                Tra Cứu
+            </a>
+            <a href="../cong-dong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden xl:inline-flex">
+                Cộng Đồng
+            </a>
+            <a href="../pricing/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden xl:inline-flex">
+                Bảng Giá
+            </a>
+            <a href="../dat-lich/" class="bg-[#174C3B] hover:bg-[#133F31] text-white py-2 px-3 sm:px-4 rounded-full text-xs sm:text-sm font-bold shadow-2xs flex items-center gap-1.5 group transition-all">
+                <span class="text-xs sm:text-sm font-bold">Đặt Lịch 1:1</span>
+                <span class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                    </svg>
+                </span>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<!-- ==========================================================================
+     MAIN SEARCH HERO & LOOKUP CONTENT
+     ========================================================================== -->
+<main class="flex-grow pt-24 sm:pt-32 md:pt-36 pb-12 px-4 sm:px-6">
+    <div class="max-w-3xl mx-auto space-y-8">
+        
+        <!-- Header text -->
+        <div class="text-center space-y-3">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#174C3B]/10 text-[#174C3B] text-xs font-bold uppercase tracking-wider">
+                <svg class="w-3.5 h-3.5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <span>Cổng Tra Cứu Trực Tuyến</span>
+            </div>
+            
+            <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-[#174C3B] uppercase tracking-tight leading-tight">
+                Tra Cứu Kết Quả Đánh Giá
+            </h1>
+            
+            <p class="text-sm sm:text-base text-[#5F6E66] max-w-xl mx-auto leading-relaxed">
+                Nhập số điện thoại mà ba mẹ đã dùng khi thực hiện phiếu đánh giá để xem lại mức độ nguy cơ, nhận xét và định hướng chăm sóc dinh dưỡng cho con.
+            </p>
+        </div>
+
+        <!-- Search Input Card -->
+        <div class="bg-white rounded-3xl p-5 sm:p-7 border border-[#8FAF91]/30 shadow-md">
+            <form id="lookupForm" onsubmit="event.preventDefault(); executeLookup();" class="space-y-4">
+                <label for="searchPhoneInput" class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider">
+                    Số điện thoại phụ huynh
+                </label>
+                
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-grow">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                        </div>
+                        <input 
+                            type="tel" 
+                            id="searchPhoneInput" 
+                            required 
+                            placeholder="Nhập số điện thoại (ví dụ: 0988 776 655)" 
+                            class="w-full pl-11 pr-4 py-3 rounded-2xl border border-zinc-200 bg-[#FAF7F0]/40 text-sm sm:text-base font-medium focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all"
+                        >
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        id="btnSearchLookup" 
+                        class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl bg-[#174C3B] hover:bg-[#133F31] text-white text-sm sm:text-base font-bold shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all shrink-0"
+                    >
+                        <svg class="w-4 h-4 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <span>Tra Cứu</span>
+                    </button>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-[#5F6E66] pt-1">
+                    <span>Hệ thống bảo mật dữ liệu an toàn.</span>
+                    <a href="../danh-gia-dinh-duong/" class="text-[#174C3B] font-bold hover:text-[#F08A4B] transition-colors">
+                        Chưa làm phiếu? Đánh giá ngay →
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results Area -->
+        <div id="resultsContainer" class="space-y-6">
+            <!-- Dynamic search results rendered here -->
+        </div>
+
+    </div>
+</main>
+
+<!-- ==========================================================================
+     FOOTER (Hydrated by LayoutEngine)
+     ========================================================================== -->
+<footer class="border-t border-[#8FAF91]/20 bg-[#FAF7F0] pt-12 pb-16 text-center text-xs text-[#5F6E66]">
+    <div class="max-w-4xl mx-auto px-4 space-y-3">
+        <p class="font-bold text-[#174C3B]">Thu Hiền - Cùng Mẹ Hiểu Con © 2026</p>
+        <p>Đồng hành cùng cha mẹ xây dựng thói quen ăn uống khoa học cho trẻ kén ăn & trẻ rối loạn phát triển.</p>
+        <p class="text-[11px] text-zinc-400">Hotline / Zalo: 0988 776 655 • Email: thuhien.cungmehieucon@gmail.com</p>
+    </div>
+</footer>
+
+<!-- Database and Core Scripts -->
+<script src="../assets/js/db.js?v=2.4"></script>
+<script src="../assets/js/layout.js?v=1.1"></script>
+
+<script>
+    // Execute phone search
+    async function executeLookup(targetPhone = null) {
+        const input = document.getElementById('searchPhoneInput');
+        const phone = targetPhone || (input ? input.value.trim() : '');
+        const container = document.getElementById('resultsContainer');
+        const btn = document.getElementById('btnSearchLookup');
+
+        if (!phone) {
+            alert('Ba mẹ vui lòng nhập số điện thoại để tra cứu nhé!');
+            if (input) input.focus();
+            return;
+        }
+
+        if (input) input.value = phone;
+
+        // Loading state
+        if (btn) btn.disabled = true;
+        container.innerHTML = `
+            <div class="bg-white rounded-3xl p-8 border border-zinc-200 text-center space-y-3">
+                <div class="w-8 h-8 border-3 border-[#174C3B] border-t-transparent rounded-full animate-spin mx-auto"></div>
+                <p class="text-sm font-bold text-[#174C3B]">Đang tìm kiếm hồ sơ đánh giá của bé...</p>
+            </div>
+        `;
+
+        try {
+            let results = [];
+            if (typeof DB !== 'undefined' && typeof DB.fetchEvaluationsByPhoneRemote === 'function') {
+                results = await DB.fetchEvaluationsByPhoneRemote(phone);
+            } else if (typeof DB !== 'undefined' && typeof DB.getEvaluationsByPhone === 'function') {
+                results = DB.getEvaluationsByPhone(phone);
+            } else {
+                const list = JSON.parse(localStorage.getItem('thuhien_evaluations_v1') || '[]');
+                const clean = phone.replace(/\D/g, '');
+                results = list.filter(item => (item.phone_normalized || item.phone || '').replace(/\D/g, '').includes(clean));
+            }
+
+            renderLookupResults(results, phone);
+        } catch (e) {
+            console.error('Lookup error:', e);
+            container.innerHTML = `
+                <div class="bg-rose-50 rounded-3xl p-6 border border-rose-200 text-center space-y-2">
+                    <p class="text-sm font-bold text-rose-800">Có lỗi khi kết nối dữ liệu. Ba mẹ vui lòng thử lại sau nhé!</p>
+                </div>
+            `;
+        } finally {
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    // Render results view
+    function renderLookupResults(list, searchedPhone) {
+        const container = document.getElementById('resultsContainer');
+
+        if (!list || list.length === 0) {
+            container.innerHTML = `
+                <div class="bg-white rounded-3xl p-8 sm:p-10 border border-zinc-200 text-center space-y-4 shadow-sm">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-[#174C3B]">Chưa Tìm Thấy Kết Quả</h3>
+                        <p class="text-xs sm:text-sm text-[#5F6E66] max-w-md mx-auto mt-1">
+                            Hệ thống chưa ghi nhận phiếu đánh giá nào gắn với số điện thoại <strong>${searchedPhone}</strong>.
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <a href="../danh-gia-dinh-duong/" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#174C3B] hover:bg-[#133F31] text-white text-xs sm:text-sm font-bold shadow-md transition-all">
+                            <span>Thực Hiện Bài Đánh Giá Mới (5 Phút)</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        const countText = list.length === 1 ? '1 kết quả' : `${list.length} kết quả`;
+
+        const cardsHtml = list.map((item, index) => {
+            const riskLevel = item.risk_level || 'low';
+            let badgeClass = 'bg-emerald-50 text-emerald-800 border-emerald-300';
+            let dotColor = 'bg-emerald-500';
+            let borderCard = 'border-emerald-200';
+            let feedbackBg = 'bg-emerald-50/60 border-emerald-200 text-emerald-950';
+
+            if (riskLevel === 'medium') {
+                badgeClass = 'bg-amber-50 text-amber-800 border-amber-300';
+                dotColor = 'bg-amber-500';
+                borderCard = 'border-amber-200';
+                feedbackBg = 'bg-amber-50/60 border-amber-200 text-amber-950';
+            } else if (riskLevel === 'high') {
+                badgeClass = 'bg-rose-50 text-rose-800 border-rose-300';
+                dotColor = 'bg-rose-500';
+                borderCard = 'border-rose-200';
+                feedbackBg = 'bg-rose-50/60 border-rose-200 text-rose-950';
+            }
+
+            // Answers details list
+            const answers = item.answers || {};
+            const answersListHtml = Object.keys(answers).length > 0
+                ? Object.entries(answers).map(([key, val]) => `
+                    <div class="flex items-start justify-between py-1.5 border-b border-zinc-100 text-xs">
+                        <span class="text-[#5F6E66]">${formatQuestionKey(key)}:</span>
+                        <strong class="text-[#174C3B] text-right ml-2">${val}</strong>
+                    </div>
+                `).join('')
+                : '<p class="text-xs text-zinc-400 italic">Không có chi tiết câu trả lời bổ sung.</p>';
+
+            const encodedZaloText = encodeURIComponent(
+                `Chào bạn, em vừa tra cứu lại Phiếu Đánh Giá Dinh Dưỡng cho bé ${item.child_name || 'bé'} (${item.child_age || ''}).\n` +
+                `Mức độ đánh giá: ${item.risk_title || ''}.\n` +
+                `Em muốn gửi lại kết quả để nhận tư vấn và hướng dẫn thêm cho bé ạ.`
+            );
+
+            return `
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 ${borderCard} shadow-sm space-y-5">
+                    
+                    <!-- Card Header -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-100">
+                        <div>
+                            <span class="text-[11px] font-bold text-[#8FAF91] uppercase tracking-wider block">
+                                📅 Ngày đánh giá: ${item.created_at || 'Mới đây'}
+                            </span>
+                            <h3 class="text-xl sm:text-2xl font-black text-[#174C3B]">
+                                Bé: ${item.child_name || 'Bé'}
+                            </h3>
+                            <p class="text-xs text-[#5F6E66] mt-0.5">
+                                Độ tuổi: <strong>${item.child_age || '-'}</strong> • Giới tính: <strong>${item.gender || 'Nam'}</strong>
+                                ${item.weight ? ` • Cân nặng: <strong>${item.weight} kg</strong>` : ''}
+                                ${item.height ? ` • Chiều cao: <strong>${item.height} cm</strong>` : ''}
+                            </p>
+                            <p class="text-xs text-[#5F6E66]">
+                                Phụ huynh: <strong>${item.parent_name || 'Ba mẹ'}</strong> (${item.phone || searchedPhone})
+                            </p>
+                        </div>
+
+                        <!-- Status badge -->
+                        <div class="shrink-0">
+                            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border ${badgeClass}">
+                                <span class="w-2.5 h-2.5 rounded-full ${dotColor}"></span>
+                                <span>${item.risk_title || 'Đã đánh giá'}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Clinical Feedback Box -->
+                    <div class="p-4 sm:p-5 rounded-2xl border ${feedbackBg} leading-relaxed text-xs sm:text-sm space-y-2">
+                        <strong class="block text-sm">Nhận Xét & Đánh Giá Tình Trạng:</strong>
+                        ${getFeedbackContentByLevel(riskLevel)}
+                    </div>
+
+                    <!-- Diet and special difficulties -->
+                    ${item.daily_diet ? `
+                        <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/70 text-xs">
+                            <span class="font-bold text-[#174C3B] block mb-1">Mô tả chế độ ăn 1 ngày của con:</span>
+                            <p class="text-[#5F6E66] whitespace-pre-line">${item.daily_diet}</p>
+                        </div>
+                    ` : ''}
+
+                    ${item.other_difficulties ? `
+                        <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/70 text-xs">
+                            <span class="font-bold text-[#174C3B] block mb-1">Khó khăn ăn uống đặc thù khác:</span>
+                            <p class="text-[#5F6E66]">${item.other_difficulties}</p>
+                        </div>
+                    ` : ''}
+
+                    <!-- Expandable Full Answers -->
+                    <details class="group border border-zinc-200 rounded-2xl p-3.5 bg-[#FAF7F0]/30 transition-all">
+                        <summary class="text-xs font-bold text-[#174C3B] cursor-pointer flex items-center justify-between select-none">
+                            <span>Xem chi tiết các câu trả lời trong phiếu (${Object.keys(answers).length} mục)</span>
+                            <span class="text-xs text-[#8FAF91] group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <div class="mt-3 pt-3 border-t border-zinc-200/60 space-y-1">
+                            ${answersListHtml}
+                        </div>
+                    </details>
+
+                    <!-- Card Actions -->
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <a href="https://zalo.me/0988776655?text=${encodedZaloText}" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0068FF] hover:bg-[#0052cc] text-white text-xs sm:text-sm font-bold shadow-sm transition-all">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.17.7 4.19 1.9 5.86L2.6 21.4c-.2.6.35 1.15.95.95l3.54-1.3C8.81 21.68 10.37 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.42 0-2.77-.32-3.98-.89l-.29-.14-2.3.84.84-2.3-.14-.29C5.56 16.01 5.24 14.66 5.24 13.24c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/></svg>
+                            <span>Nhận Tư Vấn Thêm Qua Zalo</span>
+                        </a>
+
+                        <a href="../danh-gia-dinh-duong/" class="text-xs text-[#174C3B] font-bold hover:underline">
+                            Làm bài đánh giá mới →
+                        </a>
+                    </div>
+
+                </div>
+            `;
+        }).join('');
+
+        container.innerHTML = `
+            <div class="space-y-4">
+                <div class="flex items-center justify-between px-2 text-xs text-[#5F6E66]">
+                    <span>Tìm thấy <strong>${countText}</strong> cho số <strong>${searchedPhone}</strong></span>
+                    <button onclick="document.getElementById('searchPhoneInput').select()" class="text-[#174C3B] font-bold hover:underline">Đổi số khác</button>
+                </div>
+                ${cardsHtml}
+            </div>
+        `;
+    }
+
+    // Helper: readable question titles
+    function formatQuestionKey(key) {
+        const map = {
+            q1: 'Thói quen ăn hàng ngày',
+            q2: 'Khả năng nhai nuốt',
+            q3_digest: 'Triệu chứng tiêu hóa',
+            q4: 'Chất lượng giấc ngủ',
+            q6: 'Thiết bị điện tử khi ăn',
+            q7_1: 'Thích đồ dùng / thức ăn thô ráp',
+            q7_2: 'Lười ăn rau quả',
+            q7_3: 'Quá nhạy cảm thực phẩm',
+            q7_4: 'Ăn thực phẩm trái mùa',
+            q7_5: 'Ăn bánh kẹo ngọt',
+            q7_6: 'Uống nước có gas',
+            q7_7: 'Dùng socola / caffein',
+            q7_8: 'Ăn đồ chế biến sẵn',
+            q7_9: 'Khu vực ô nhiễm',
+            q7_10: 'Nguồn nước tinh khiết',
+            q7_11: 'Xì hơi mùi khó chịu',
+            q7_12: 'Khó khăn khi đại tiện',
+            q7_13: 'Vận động thể lực',
+            q7_14: 'Tự xúc cơm ăn',
+            supp_vitamin: 'Bổ sung vitamin hàng ngày',
+            supp_special: 'Sản phẩm dành riêng cho ASD',
+            supp_gfcf: 'Ăn kiêng GFCF',
+            supp_vitd_test: 'Xét nghiệm Vitamin D',
+            supp_vitd_use: 'Uống Vitamin D',
+            supp_enzyme: 'Dùng Enzyme tiêu hóa',
+            supp_omega: 'Dùng Omega-3/Kẽm/Bổ não',
+            supp_probiotic: 'Dùng Probiotic/Men vi sinh'
+        };
+        return map[key] || key;
+    }
+
+    // Helper: feedback text by level
+    function getFeedbackContentByLevel(level) {
+        if (level === 'low') {
+            return `
+                <p>Bé hiện có một số rào cản nhẹ trong nếp ăn uống hoặc sở thích vị giác. Tình trạng đường ruột và chuyển hóa của con nhìn chung vẫn trong ngưỡng kiểm soát được.</p>
+                <p class="font-bold pt-1">Định hướng cho ba mẹ:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Điều chỉnh khẩu phần ăn gia đình theo hướng tăng dần các nhóm màu sắc và đa dạng rau củ.</li>
+                    <li>Giảm thiểu tối đa việc cho bé ăn quà vặt, bánh kẹo ngọt và hạn chế triệt để thiết bị điện tử khi ngồi vào bàn ăn.</li>
+                    <li>Khuyến khích con tham gia vận động thể lực ngoài trời để tăng trao đổi chất và kích thích cảm giác thèm ăn tự nhiên.</li>
+                </ul>
+            `;
+        } else if (level === 'medium') {
+            return `
+                <p>Bé đang gặp phải những rào cản rõ rệt về cảm giác thức ăn hoặc đường tiêu hóa (như ngậm thức ăn, táo bón/nôn trớ, nhạy cảm mùi vị hoặc lười ăn rau quả kéo dài). Đây là dấu hiệu cảnh báo nguy cơ mất cân bằng dinh dưỡng tích lũy.</p>
+                <p class="font-bold pt-1">Định hướng cho ba mẹ:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Cần có kế hoạch điều chỉnh chế độ ăn sớm để giải phóng áp lực bàn ăn cho cả mẹ và con.</li>
+                    <li>Ưu tiên phục hồi hệ vi sinh đường ruột và tối ưu hóa việc hấp thu vi chất thiết yếu.</li>
+                    <li>Nên nhận tư vấn để thiết kế thực đơn phân cấp màu sắc/kết cấu phù hợp với mức nhạy cảm của con.</li>
+                </ul>
+            `;
+        } else {
+            return `
+                <p>Bé có nhiều biểu hiện rõ nét về rối loạn cảm giác ăn uống, rối loạn tiêu hóa và thói quen sinh hoạt. Tình trạng ăn chọn lọc quá mức kết hợp với hệ tiêu hóa nhạy cảm kéo dài cần có sự đồng hành và can thiệp kịp thời.</p>
+                <p class="font-bold pt-1">Định hướng hỗ trợ:</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Cần can thiệp chế độ dinh dưỡng cá nhân hóa sớm để bảo vệ niêm mạc ruột và hỗ trợ sức khỏe toàn diện của con.</li>
+                    <li>Tránh tiếp tục ép ăn căng thẳng hay phụ thuộc vào màn hình điện tử vì dễ khiến con sợ ăn và bùng nổ tâm lý.</li>
+                    <li>Ba mẹ hãy gửi kết quả này qua Zalo để nhận tư vấn chi tiết từng câu trả lời và định hướng phác đồ phù hợp nhất.</li>
+                </ul>
+            `;
+        }
+    }
+
+    // Auto-search if ?phone= query parameter is present in URL
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryPhone = urlParams.get('phone');
+        if (queryPhone) {
+            executeLookup(queryPhone);
+        }
+    });
+</script>
+
+</body>
+</html>

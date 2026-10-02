@@ -23,6 +23,14 @@
     {
       "source": "/checklist",
       "destination": "/danh-gia-dinh-duong"
+    },
+    {
+      "source": "/tra-cuu",
+      "destination": "/tra-cuu"
+    },
+    {
+      "source": "/tra-cuu-danh-gia",
+      "destination": "/tra-cuu"
     }
   ]
 }

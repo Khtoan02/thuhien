@@ -153,6 +153,7 @@ const LayoutEngine = (() => {
             else if (p.id === 'chuyen-gia') displayTitle = 'Chuyên Gia';
             else if (p.id === 'dinh-duong') displayTitle = 'Dinh Dưỡng';
             else if (p.id === 'danh-gia') displayTitle = 'Đánh Giá';
+            else if (p.id === 'tra-cuu') displayTitle = 'Tra Cứu';
             else if (p.id === 'cong-dong') displayTitle = 'Cộng Đồng';
             else if (p.id === 'pricing') displayTitle = 'Bảng Giá';
 
@@ -161,6 +162,7 @@ const LayoutEngine = (() => {
             if (p.id === 'cong-dong') responsiveClass = 'hidden sm:inline-flex';
             if (p.id === 'pricing') responsiveClass = 'hidden md:inline-flex';
             if (p.id === 'danh-gia') responsiveClass = 'hidden lg:inline-flex';
+            if (p.id === 'tra-cuu') responsiveClass = 'hidden xl:inline-flex';
 
             return `
                 <a href="${href}" class="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm ${activeClass} transition-all items-center ${responsiveClass}">
