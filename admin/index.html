@@ -2664,14 +2664,15 @@
         'q7_12': '7.12. Rối loạn nhai nuốt, ngậm hoặc nôn trớ',
         'q7_13': '7.13. Thường xuyên ợ hơi, trào ngược',
         'q7_14': '7.14. Đi phân sống, táo bón, tiêu chảy',
-        'supp_vitamin': 'Bổ sung: Uống vitamin tổng hợp',
-        'supp_special': 'Bổ sung: Chế độ ăn kiêng đặc biệt',
-        'supp_gfcf': 'Bổ sung: Kiêng Gluten / Casein (GFCF)',
+        'supp_vitamin': 'Bổ sung: Uống vitamin tổng hợp hàng ngày',
+        'supp_special': 'Bổ sung: Dùng sản phẩm dành riêng cho trẻ tự kỷ',
+        'supp_gfcf': 'Bổ sung: Chế độ ăn kiêng Gluten/Casein (GFCF)',
+        'supp_iron': 'Bổ sung: Dấu hiệu thiếu máu / thiếu sắt',
         'supp_vitd_test': 'Bổ sung: Đã xét nghiệm Vitamin D',
-        'supp_vitd_use': 'Bổ sung: Đang dùng Vitamin D',
+        'supp_vitd_use': 'Bổ sung: Bổ sung Vitamin D hàng ngày/liều cao',
         'supp_enzyme': 'Bổ sung: Dùng men tiêu hóa Enzyme',
-        'supp_omega': 'Bổ sung: Dùng Omega-3, Kẽm, Magie...',
-        'supp_probiotic': 'Bổ sung: Dùng men vi sinh (Probiotics)'
+        'supp_omega': 'Bổ sung: Dùng Omega-3, Kẽm, Magie, Acid folic...',
+        'supp_probiotic': 'Bổ sung: Dùng men vi sinh Probiotic / Lên men'
     };
 
     function formatEvalAnswerValue(val) {
@@ -2681,12 +2682,14 @@
         if (val === 0 || val === '0' || val === false) {
             return '<span class="text-zinc-500 font-medium">Không / Bình thường</span>';
         }
-        if (val === 'chua') return '<span class="text-zinc-600">Chưa</span>';
-        if (val === 'khong') return '<span class="text-zinc-500">Không dùng</span>';
-        if (val === 'co') return '<span class="text-emerald-700 font-bold">Có sử dụng</span>';
-        if (val === 'da_test') return '<span class="text-emerald-700 font-bold">Đã xét nghiệm</span>';
-        if (val === 'hang_ngay') return '<span class="text-emerald-700 font-bold">Uống liều hàng ngày</span>';
-        if (val === 'lieu_cao') return '<span class="text-amber-700 font-bold">Uống liều cao</span>';
+        if (val === 'chua') return '<span class="text-zinc-600">Chưa từng thử / Chưa xét nghiệm</span>';
+        if (val === 'khong') return '<span class="text-zinc-500">Không dùng / Không có</span>';
+        if (val === 'co') return '<span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Có sử dụng / Có biểu hiện</span>';
+        if (val === 'dang_an') return '<span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Đang ăn kiêng GFCF</span>';
+        if (val === 'da_tung') return '<span class="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Đã từng nhưng đã dừng</span>';
+        if (val === 'da_test') return '<span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Đã xét nghiệm</span>';
+        if (val === 'hang_ngay') return '<span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Uống liều hàng ngày</span>';
+        if (val === 'lieu_cao') return '<span class="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Uống liều cao</span>';
         if (typeof val === 'object') return JSON.stringify(val);
         return String(val);
     }

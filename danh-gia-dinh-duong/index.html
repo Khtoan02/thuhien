@@ -173,14 +173,14 @@
         <a href="../tra-cuu/" class="text-[#F08A4B] hover:underline flex items-center gap-1">Tra cứu kết quả qua SĐT tại đây →</a>
     </div>
 
-    <!-- Progress Indicator Bar -->
-    <div class="mt-8 max-w-xl mx-auto bg-white/80 p-3 sm:p-4 rounded-2xl border border-[#8FAF91]/30 shadow-xs">
+    <!-- Progress Indicator Bar (Sticky for comfortable user feedback) -->
+    <div class="mt-8 max-w-xl mx-auto bg-white/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-[#8FAF91]/30 shadow-sm sticky top-20 z-20 transition-all">
         <div class="flex items-center justify-between text-xs font-bold text-[#174C3B] mb-2">
             <span class="flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-[#F08A4B] animate-pulse"></span>
                 <span>Tiến trình hoàn thành phiếu:</span>
             </span>
-            <span id="progressText">0 / 22 câu hỏi (0%)</span>
+            <span id="progressText">0 / 28 câu hỏi (0%)</span>
         </div>
         <div class="w-full bg-[#FAF7F0] h-2.5 rounded-full overflow-hidden border border-[#8FAF91]/20">
             <div id="progressBar" class="bg-gradient-to-r from-[#174C3B] via-[#8FAF91] to-[#F08A4B] h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
@@ -667,97 +667,235 @@
              ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
-                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">4</span>
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">4</span>
                 <div>
                     <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Khai Thác Bổ Sung & Tiền Sử Dùng Vi Chất</h2>
-                    <p class="text-xs sm:text-sm text-[#5F6E66]">Ghi nhận thêm thông tin để tư vấn chuẩn xác hơn theo thể trạng của bé</p>
+                    <p class="text-xs sm:text-sm text-[#5F6E66]">Ghi nhận thêm thông tin để định hướng tư vấn chuẩn xác theo thể trạng của bé</p>
                 </div>
             </div>
 
             <!-- Chế độ dinh dưỡng 1 ngày -->
             <div>
                 <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Mô tả chế độ ăn hiện tại điển hình trong 1 ngày của con:</label>
-                <textarea id="dailyDietDesc" rows="3" placeholder="Sáng: ... &#10;Trưa: ... &#10;Tối: ... &#10;Các bữa phụ (sữa/bánh): ..." class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B]"></textarea>
+                <textarea id="dailyDietDesc" rows="3" placeholder="Sáng: ... &#10;Trưa: ... &#10;Tối: ... &#10;Các bữa phụ (sữa/bánh): ..." class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all"></textarea>
             </div>
 
-            <!-- Câu hỏi Có / Không lâm sàng -->
+            <!-- 9 Câu hỏi Tiền sử bổ sung thực phẩm & can thiệp chế độ ăn -->
             <div class="space-y-3 pt-2">
-                <h3 class="text-xs font-bold text-[#174C3B] uppercase tracking-wider">Tiền sử bổ sung thực phẩm & can thiệp chế độ ăn:</h3>
+                <div class="flex items-center justify-between flex-wrap gap-2 mb-1">
+                    <h3 class="text-xs font-bold text-[#174C3B] uppercase tracking-wider">Tiền sử bổ sung thực phẩm & can thiệp chế độ ăn <span class="text-red-500">*</span>:</h3>
+                    <span class="text-[11px] text-[#F08A4B] font-semibold bg-[#F08A4B]/10 px-2.5 py-0.5 rounded-full">Bắt buộc chọn cả 9 câu</span>
+                </div>
 
-                <div class="grid grid-cols-1 gap-2.5">
-                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
-                        <span>1. Trẻ có uống bổ sung vitamin/khoáng chất hàng ngày không?</span>
-                        <select name="supp_vitamin" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
-                            <option value="khong">Không</option>
-                            <option value="co">Có</option>
-                        </select>
-                    </label>
+                <div class="grid grid-cols-1 gap-3" id="suppQuestionsContainer">
+                    <!-- Q1: supp_vitamin -->
+                    <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_vitamin">
+                        <div class="flex items-start gap-3 sm:pr-4">
+                            <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">1</span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">1. Trẻ có uống bổ sung vitamin/khoáng chất hàng ngày không? <span class="text-red-500">*</span></span>
+                                <span class="text-[11px] text-[#5F6E66] block mt-0.5">Ví dụ: Vitamin tổng hợp, canxi, sắt, kẽm... theo ngày</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-full sm:w-64">
+                            <div class="relative">
+                                <select name="supp_vitamin" id="supp_vitamin" class="supp-select w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl border border-zinc-200 bg-[#FAF7F0]/60 text-xs sm:text-sm font-medium text-[#174C3B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all cursor-pointer" required onchange="handleSuppChange(this)">
+                                    <option value="" disabled selected hidden>-- Vui lòng chọn --</option>
+                                    <option value="co">Có (Đang uống hàng ngày)</option>
+                                    <option value="khong">Không uống</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#5F6E66]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
-                        <span>2. Trẻ có dùng sản phẩm dinh dưỡng dành riêng cho trẻ phổ tự kỷ không?</span>
-                        <select name="supp_special" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
-                            <option value="khong">Không</option>
-                            <option value="co">Có</option>
-                        </select>
-                    </label>
+                    <!-- Q2: supp_special -->
+                    <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_special">
+                        <div class="flex items-start gap-3 sm:pr-4">
+                            <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">2</span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">2. Trẻ có dùng sản phẩm dinh dưỡng dành riêng cho trẻ phổ tự kỷ không? <span class="text-red-500">*</span></span>
+                                <span class="text-[11px] text-[#5F6E66] block mt-0.5">Sữa công thức chuyên biệt, dinh dưỡng y học hoặc thực phẩm chức năng bổ trợ</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-full sm:w-64">
+                            <div class="relative">
+                                <select name="supp_special" id="supp_special" class="supp-select w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl border border-zinc-200 bg-[#FAF7F0]/60 text-xs sm:text-sm font-medium text-[#174C3B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all cursor-pointer" required onchange="handleSuppChange(this)">
+                                    <option value="" disabled selected hidden>-- Vui lòng chọn --</option>
+                                    <option value="co">Có dùng</option>
+                                    <option value="khong">Không dùng</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#5F6E66]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
-                        <span>3. Trẻ đã thử chế độ ăn kiêng không gluten, không casein (GFCF) chưa?</span>
-                        <select name="supp_gfcf" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
-                            <option value="chua">Chưa từng thử</option>
-                            <option value="dang_an">Đang ăn kiêng</option>
-                            <option value="da_tung">Đã từng nhưng bỏ</option>
-                        </select>
-                    </label>
+                    <!-- Q3: supp_gfcf -->
+                    <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_gfcf">
+                        <div class="flex items-start gap-3 sm:pr-4">
+                            <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">3</span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">3. Trẻ đã thử chế độ ăn kiêng không gluten, không casein (GFCF) chưa? <span class="text-red-500">*</span></span>
+                                <span class="text-[11px] text-[#5F6E66] block mt-0.5">Loại bỏ hoàn toàn đạm sữa bò (casein) và bột mì/ngũ cốc chứa gluten</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-full sm:w-64">
+                            <div class="relative">
+                                <select name="supp_gfcf" id="supp_gfcf" class="supp-select w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl border border-zinc-200 bg-[#FAF7F0]/60 text-xs sm:text-sm font-medium text-[#174C3B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all cursor-pointer" required onchange="handleSuppChange(this)">
+                                    <option value="" disabled selected hidden>-- Vui lòng chọn --</option>
+                                    <option value="dang_an">Đang áp dụng chế độ GFCF</option>
+                                    <option value="da_tung">Đã từng nhưng đã dừng</option>
+                                    <option value="chua">Chưa từng thử qua</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#5F6E66]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
-                        <span>4. Trẻ có dấu hiệu thiếu máu hoặc từng được chẩn đoán thiếu máu thiếu sắt?</span>
-                        <select name="supp_iron" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
-                            <option value="khong">Không</option>
-                            <option value="co">Có / Từng chẩn đoán</option>
-                        </select>
-                    </label>
+                    <!-- Q4: supp_iron -->
+                    <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_iron">
+                        <div class="flex items-start gap-3 sm:pr-4">
+                            <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">4</span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">4. Trẻ có dấu hiệu thiếu máu hoặc từng được chẩn đoán thiếu máu thiếu sắt? <span class="text-red-500">*</span></span>
+                                <span class="text-[11px] text-[#5F6E66] block mt-0.5">Biểu hiện da xanh xao, niêm mạc nhợt nhạt hoặc có xét nghiệm huyết học xác nhận</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-full sm:w-64">
+                            <div class="relative">
+                                <select name="supp_iron" id="supp_iron" class="supp-select w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl border border-zinc-200 bg-[#FAF7F0]/60 text-xs sm:text-sm font-medium text-[#174C3B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all cursor-pointer" required onchange="handleSuppChange(this)">
+                                    <option value="" disabled selected hidden>-- Vui lòng chọn --</option>
+                                    <option value="co">Có / Đã từng được chẩn đoán</option>
+                                    <option value="khong">Không có biểu hiện</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#5F6E66]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
-                        <span>5. Trẻ đã từng được xét nghiệm kiểm tra mức Vitamin D trong máu chưa?</span>
-                        <select name="supp_vitd_test" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
-                            <option value="chua">Chưa từng xét nghiệm</option>
-                            <option value="da_test">Đã xét nghiệm</option>
-                        </select>
-                    </label>
+                    <!-- Q5: supp_vitd_test -->
+                    <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_vitd_test">
+                        <div class="flex items-start gap-3 sm:pr-4">
+                            <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">5</span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">5. Trẻ đã từng được xét nghiệm kiểm tra mức Vitamin D trong máu chưa? <span class="text-red-500">*</span></span>
+                                <span class="text-[11px] text-[#5F6E66] block mt-0.5">Định lượng nồng độ 25(OH)D trong huyết thanh tại cơ sở y tế</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-full sm:w-64">
+                            <div class="relative">
+                                <select name="supp_vitd_test" id="supp_vitd_test" class="supp-select w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl border border-zinc-200 bg-[#FAF7F0]/60 text-xs sm:text-sm font-medium text-[#174C3B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all cursor-pointer" required onchange="handleSuppChange(this)">
+                                    <option value="" disabled selected hidden>-- Vui lòng chọn --</option>
+                                    <option value="da_test">Đã từng xét nghiệm</option>
+                                    <option value="chua">Chưa từng xét nghiệm</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#5F6E66]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
-                        <span>6. Trẻ có đang bổ sung Vitamin D hàng ngày hoặc liều cao không?</span>
-                        <select name="supp_vitd_use" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
-                            <option value="khong">Không bổ sung</option>
-                            <option value="hang_ngay">Có, liều hàng ngày</option>
-                            <option value="lieu_cao">Có, uống liều cao</option>
-                        </select>
-                    </label>
+                    <!-- Q6: supp_vitd_use -->
+                    <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_vitd_use">
+                        <div class="flex items-start gap-3 sm:pr-4">
+                            <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">6</span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">6. Trẻ có đang bổ sung Vitamin D hàng ngày hoặc liều cao không? <span class="text-red-500">*</span></span>
+                                <span class="text-[11px] text-[#5F6E66] block mt-0.5">Dạng giọt/xịt hàng ngày (D3, D3K2) hoặc uống liều cao định kỳ theo chỉ định</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-full sm:w-64">
+                            <div class="relative">
+                                <select name="supp_vitd_use" id="supp_vitd_use" class="supp-select w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl border border-zinc-200 bg-[#FAF7F0]/60 text-xs sm:text-sm font-medium text-[#174C3B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all cursor-pointer" required onchange="handleSuppChange(this)">
+                                    <option value="" disabled selected hidden>-- Vui lòng chọn --</option>
+                                    <option value="hang_ngay">Có, bổ sung liều hàng ngày</option>
+                                    <option value="lieu_cao">Có, uống liều cao định kỳ</option>
+                                    <option value="khong">Không bổ sung</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#5F6E66]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
-                        <span>7. Trẻ có đang dùng men tiêu hóa (Enzyme) hỗ trợ không?</span>
-                        <select name="supp_enzyme" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
-                            <option value="khong">Không</option>
-                            <option value="co">Có dùng</option>
-                        </select>
-                    </label>
+                    <!-- Q7: supp_enzyme -->
+                    <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_enzyme">
+                        <div class="flex items-start gap-3 sm:pr-4">
+                            <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">7</span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">7. Trẻ có đang dùng men tiêu hóa (Enzyme) hỗ trợ không? <span class="text-red-500">*</span></span>
+                                <span class="text-[11px] text-[#5F6E66] block mt-0.5">Men hỗ trợ phân giải đạm, tinh bột, chất béo hoặc giảm chứng đầy bụng khó tiêu</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-full sm:w-64">
+                            <div class="relative">
+                                <select name="supp_enzyme" id="supp_enzyme" class="supp-select w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl border border-zinc-200 bg-[#FAF7F0]/60 text-xs sm:text-sm font-medium text-[#174C3B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all cursor-pointer" required onchange="handleSuppChange(this)">
+                                    <option value="" disabled selected hidden>-- Vui lòng chọn --</option>
+                                    <option value="co">Có đang dùng men tiêu hóa</option>
+                                    <option value="khong">Không dùng</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#5F6E66]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
-                        <span>8. Trẻ có uống Omega-3, Kẽm, Magie, Acid folic, Bổ não, B6... không?</span>
-                        <select name="supp_omega" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
-                            <option value="khong">Không dùng</option>
-                            <option value="co">Có đang dùng</option>
-                        </select>
-                    </label>
+                    <!-- Q8: supp_omega -->
+                    <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_omega">
+                        <div class="flex items-start gap-3 sm:pr-4">
+                            <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">8</span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">8. Trẻ có uống Omega-3, Kẽm, Magie, Acid folic, Bổ não, B6... không? <span class="text-red-500">*</span></span>
+                                <span class="text-[11px] text-[#5F6E66] block mt-0.5">Các vi chất hỗ trợ tế bào thần kinh, giảm stress oxy hóa và nâng cao độ tập trung</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-full sm:w-64">
+                            <div class="relative">
+                                <select name="supp_omega" id="supp_omega" class="supp-select w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl border border-zinc-200 bg-[#FAF7F0]/60 text-xs sm:text-sm font-medium text-[#174C3B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all cursor-pointer" required onchange="handleSuppChange(this)">
+                                    <option value="" disabled selected hidden>-- Vui lòng chọn --</option>
+                                    <option value="co">Có đang dùng</option>
+                                    <option value="khong">Không dùng</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#5F6E66]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
-                        <span>9. Trẻ có dùng men vi sinh (probiotic) hoặc ăn thực phẩm lên men (≥2 lần/tuần)?</span>
-                        <select name="supp_probiotic" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
-                            <option value="khong">Không</option>
-                            <option value="co">Có dùng đều</option>
-                        </select>
-                    </label>
+                    <!-- Q9: supp_probiotic -->
+                    <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_probiotic">
+                        <div class="flex items-start gap-3 sm:pr-4">
+                            <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">9</span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">9. Trẻ có dùng men vi sinh (probiotic) hoặc ăn thực phẩm lên men (≥2 lần/tuần)? <span class="text-red-500">*</span></span>
+                                <span class="text-[11px] text-[#5F6E66] block mt-0.5">Sữa chua men sống, kefir, men vi sinh dạng bột hoặc nhỏ giọt bổ sung lợi khuẩn</span>
+                            </div>
+                        </div>
+                        <div class="shrink-0 w-full sm:w-64">
+                            <div class="relative">
+                                <select name="supp_probiotic" id="supp_probiotic" class="supp-select w-full appearance-none px-3.5 py-2.5 pr-9 rounded-xl border border-zinc-200 bg-[#FAF7F0]/60 text-xs sm:text-sm font-medium text-[#174C3B] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all cursor-pointer" required onchange="handleSuppChange(this)">
+                                    <option value="" disabled selected hidden>-- Vui lòng chọn --</option>
+                                    <option value="co">Có dùng đều đặn (≥2 lần/tuần)</option>
+                                    <option value="khong">Không dùng</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[#5F6E66]">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -866,8 +1004,29 @@
         answers: {}
     };
 
-    // Total interactive questions count for progress bar
-    const TOTAL_QUESTIONS = 18;
+    // Total interactive questions count for progress bar (4 single choice + 1 digest + 14 detailed + 9 supplement = 28)
+    const TOTAL_QUESTIONS = 28;
+
+    // Toast notification helper for gentle parent guidance
+    function showAssessmentToast(msg, isError = true) {
+        let toast = document.getElementById('assessmentToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'assessmentToast';
+            toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-md w-[92%] px-5 py-3.5 rounded-2xl shadow-2xl text-center text-xs sm:text-sm font-bold transition-all duration-300 pointer-events-none opacity-0 translate-y-4';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        if (isError) {
+            toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-md w-[92%] px-5 py-3.5 rounded-2xl shadow-2xl text-center text-xs sm:text-sm font-bold transition-all duration-300 pointer-events-auto opacity-100 translate-y-0 bg-[#174C3B] text-white border-2 border-[#F08A4B]';
+        } else {
+            toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-md w-[92%] px-5 py-3.5 rounded-2xl shadow-2xl text-center text-xs sm:text-sm font-bold transition-all duration-300 pointer-events-auto opacity-100 translate-y-0 bg-[#174C3B] text-white border-2 border-[#8FAF91]';
+        }
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => {
+            toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 max-w-md w-[92%] px-5 py-3.5 rounded-2xl shadow-2xl text-center text-xs sm:text-sm font-bold transition-all duration-300 pointer-events-none opacity-0 translate-y-4';
+        }, 4000);
+    }
 
     // Single choice selector (Questions 1, 2, 4, 6)
     function selectSingleChoice(el, qid, score) {
@@ -915,9 +1074,35 @@
         updateProgress();
     }
 
-    // Progress bar calculator
+    // Required Supplement Select Change Handler
+    function handleSuppChange(selectEl) {
+        const card = selectEl.closest('.supp-card');
+        const val = selectEl.value;
+        if (val) {
+            if (card) {
+                card.classList.remove('border-rose-400', 'bg-rose-50/50', 'ring-2', 'ring-rose-200');
+                card.classList.add('border-[#8FAF91]', 'bg-emerald-50/20');
+            }
+            selectEl.classList.remove('border-rose-400');
+            selectEl.classList.add('border-[#8FAF91]', 'bg-white', 'text-[#174C3B]', 'font-semibold');
+            assessmentState.answers[selectEl.name] = selectEl.options[selectEl.selectedIndex].text;
+        } else {
+            if (card) {
+                card.classList.remove('border-[#8FAF91]', 'bg-emerald-50/20');
+            }
+            selectEl.classList.remove('border-[#8FAF91]', 'bg-white', 'font-semibold');
+            delete assessmentState.answers[selectEl.name];
+        }
+        updateProgress();
+    }
+
+    // Progress bar calculator across all 28 interactive questions
     function updateProgress() {
-        const answeredCount = Object.keys(assessmentState.scores).length + (assessmentState.answers['q3_digest'] ? 1 : 0);
+        const choiceCount = Object.keys(assessmentState.scores).length; // covers q1, q2, q4, q6 and q7_1 .. q7_14
+        const digestCount = assessmentState.answers['q3_digest'] ? 1 : 0;
+        const suppCount = Array.from(document.querySelectorAll('.supp-select')).filter(s => s.value && s.value.trim() !== '').length;
+        
+        const answeredCount = choiceCount + digestCount + suppCount;
         const percent = Math.min(100, Math.round((answeredCount / TOTAL_QUESTIONS) * 100));
         
         const bar = document.getElementById('progressBar');
@@ -936,9 +1121,49 @@
         const parentName = document.getElementById('parentName').value.trim();
         const parentPhone = document.getElementById('parentPhone').value.trim();
 
+        // 1. Validate Basic Child & Parent Information
         if (!childName || !childAge || !parentName || !parentPhone) {
-            alert('Ba mẹ vui lòng điền đầy đủ thông tin của bé và số điện thoại liên hệ nhé!');
-            window.scrollTo({ top: 300, behavior: 'smooth' });
+            showAssessmentToast('Ba mẹ vui lòng điền đầy đủ thông tin của con và số điện thoại liên hệ nhé!');
+            document.getElementById('childName')?.focus();
+            window.scrollTo({ top: 320, behavior: 'smooth' });
+            return;
+        }
+
+        // 2. Strictly Validate All 9 Supplement History Questions in Section 4
+        const suppSelects = Array.from(document.querySelectorAll('.supp-select'));
+        let firstUnansweredSupp = null;
+        let missingSuppCount = 0;
+
+        suppSelects.forEach(sel => {
+            const card = sel.closest('.supp-card');
+            if (!sel.value || sel.value.trim() === '') {
+                missingSuppCount++;
+                if (!firstUnansweredSupp) firstUnansweredSupp = sel;
+                if (card) {
+                    card.classList.add('border-rose-400', 'bg-rose-50/50', 'ring-2', 'ring-rose-200');
+                    card.classList.remove('border-[#8FAF91]', 'bg-emerald-50/20');
+                }
+                sel.classList.add('border-rose-400');
+            } else {
+                if (card) {
+                    card.classList.remove('border-rose-400', 'bg-rose-50/50', 'ring-2', 'ring-rose-200');
+                }
+                sel.classList.remove('border-rose-400');
+            }
+        });
+
+        if (firstUnansweredSupp) {
+            firstUnansweredSupp.closest('.supp-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstUnansweredSupp.focus();
+            showAssessmentToast(`Mục Tiền sử bổ sung vi chất còn ${missingSuppCount} câu chưa chọn. Ba mẹ vui lòng chọn đầy đủ nhé!`);
+            return;
+        }
+
+        // 3. Check that the parent has completed at least some core questions in Section 2 & 3
+        const answeredScoresCount = Object.keys(assessmentState.scores).length;
+        if (answeredScoresCount < 5) {
+            showAssessmentToast('Ba mẹ vui lòng trả lời các câu hỏi trong phiếu để có kết quả đánh giá sát thực tế nhất nhé!');
+            document.getElementById('detailedQuestionsContainer')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             return;
         }
 
@@ -1032,16 +1257,17 @@
 
     // Save evaluation record to DB & Firebase
     function saveAssessmentToSystem(riskLevel, riskTitle, score, childName, childAge, parentName, parentPhone) {
-        // Collect clinical supplement answers
+        // Collect clinical supplement answers strictly from form
         const suppAnswers = {
-            supp_vitamin: document.querySelector('select[name="supp_vitamin"]')?.value || 'khong',
-            supp_special: document.querySelector('select[name="supp_special"]')?.value || 'khong',
-            supp_gfcf: document.querySelector('select[name="supp_gfcf"]')?.value || 'chua',
-            supp_vitd_test: document.querySelector('select[name="supp_vitd_test"]')?.value || 'chua',
-            supp_vitd_use: document.querySelector('select[name="supp_vitd_use"]')?.value || 'khong',
-            supp_enzyme: document.querySelector('select[name="supp_enzyme"]')?.value || 'khong',
-            supp_omega: document.querySelector('select[name="supp_omega"]')?.value || 'khong',
-            supp_probiotic: document.querySelector('select[name="supp_probiotic"]')?.value || 'khong'
+            supp_vitamin: document.getElementById('supp_vitamin')?.value || '',
+            supp_special: document.getElementById('supp_special')?.value || '',
+            supp_gfcf: document.getElementById('supp_gfcf')?.value || '',
+            supp_iron: document.getElementById('supp_iron')?.value || '',
+            supp_vitd_test: document.getElementById('supp_vitd_test')?.value || '',
+            supp_vitd_use: document.getElementById('supp_vitd_use')?.value || '',
+            supp_enzyme: document.getElementById('supp_enzyme')?.value || '',
+            supp_omega: document.getElementById('supp_omega')?.value || '',
+            supp_probiotic: document.getElementById('supp_probiotic')?.value || ''
         };
 
         const allergies = Array.from(document.querySelectorAll('input[name="allergy"]:checked')).map(i => i.parentElement.innerText.trim());
