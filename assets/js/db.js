@@ -173,7 +173,7 @@ const DB = (() => {
                 title: 'Chuyên Gia Bùi Thu Hiền',
                 path: '/chuyen-gia/',
                 slug: 'chuyen-gia',
-                enabled: false,
+                enabled: true,
                 can_disable: true,
                 category: 'Hồ Sơ Chuyên Môn',
                 description: 'Hồ sơ năng lực, 4 điểm tựa kinh nghiệm và phong cách làm việc'
@@ -203,7 +203,7 @@ const DB = (() => {
                 title: 'Bảng Giá & Gói Dịch Vụ',
                 path: '/pricing/',
                 slug: 'pricing',
-                enabled: false,
+                enabled: true,
                 can_disable: true,
                 category: 'Dịch Vụ & Chi Phí',
                 description: 'Bảng giá các gói đồng hành 3 ngày, 1 tháng và cam kết hoàn tiền 100%'
