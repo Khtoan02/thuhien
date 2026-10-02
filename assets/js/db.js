@@ -1505,7 +1505,7 @@ const DB = (() => {
             if (typeof document === 'undefined' || typeof window === 'undefined') return;
 
             const currentPath = window.location.pathname;
-            // Never restrict or intercept the admin panel
+            // Never restrict or insert bar inside the admin panel
             if (currentPath.includes('/admin')) return;
 
             const settings = this.getSettings();
@@ -1514,23 +1514,50 @@ const DB = (() => {
             const maintenanceMsg = settings.pages_maintenance_message || DEFAULT_SETTINGS.pages_maintenance_message;
             const isAdmin = this.isAdminAuthenticated();
 
-            // 1. Hide navigation links for disabled pages across the site
+            // Helper to get relative URL from current location
+            const getRelUrl = (targetPath) => {
+                const isSubdir = currentPath.includes('/chuyen-gia') || 
+                                 currentPath.includes('/dinh-duong') || 
+                                 currentPath.includes('/cong-dong') || 
+                                 currentPath.includes('/pricing') || 
+                                 currentPath.includes('/dat-lich') ||
+                                 (currentPath.replace(/^\/|\/$/g, '').split('/').length > 1);
+
+                if (targetPath === '/') return isSubdir ? '../' : './';
+                const clean = targetPath.replace(/^\//, '');
+                return isSubdir ? '../' + clean : './' + clean;
+            };
+
+            // 1. Navigation links control for disabled pages
             pages.forEach(p => {
                 if (p.enabled === false) {
                     const selector = `a[href*="/${p.slug}"], a[href*="./${p.slug}"], a[href*="../${p.slug}"], a[href="${p.path}"], a[href="./${p.path.replace(/^\//, '')}"]`;
                     document.querySelectorAll(selector).forEach(a => {
                         if (p.slug === 'home') return;
-                        const parentLi = a.closest('li');
-                        if (parentLi) {
-                            parentLi.style.display = 'none';
+                        if (!isAdmin) {
+                            // Regular public visitor: completely hide the link
+                            const parentLi = a.closest('li');
+                            if (parentLi) {
+                                parentLi.style.display = 'none';
+                            } else {
+                                a.style.display = 'none';
+                            }
                         } else {
-                            a.style.display = 'none';
+                            // Admin: keep link visible with a small indicator badge so admin can navigate & edit!
+                            if (!a.dataset.adminPageBadge) {
+                                a.dataset.adminPageBadge = 'true';
+                                a.title = 'Trang này đang TẠM ẨN (chỉ Quản trị viên nhìn thấy để chỉnh sửa)';
+                                const tag = document.createElement('span');
+                                tag.className = 'ml-1 px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-400 text-amber-950 uppercase tracking-tighter align-middle shadow-xs';
+                                tag.innerText = 'Ẩn';
+                                a.appendChild(tag);
+                            }
                         }
                     });
                 }
             });
 
-            // 2. Identify if the current page itself is disabled
+            // 2. Identify the active page
             let activePage = pages.find(p => p.slug !== 'home' && (
                 currentPath.includes('/' + p.slug + '/') || 
                 currentPath.endsWith('/' + p.slug) || 
@@ -1547,76 +1574,300 @@ const DB = (() => {
                 }
             }
 
-            if (activePage && activePage.enabled === false) {
-                if (isAdmin) {
-                    // Admin Preview Mode banner
-                    if (!document.getElementById('admin-preview-bar')) {
-                        const bar = document.createElement('div');
-                        bar.id = 'admin-preview-bar';
-                        bar.className = 'fixed top-0 left-0 right-0 z-[999999] bg-amber-500 text-zinc-950 px-4 py-2.5 text-xs font-semibold flex flex-wrap items-center justify-between gap-2 shadow-lg border-b border-amber-600/40';
-                        bar.innerHTML = `
-                            <div class="flex items-center gap-2">
-                                <span class="w-5 h-5 rounded-full bg-amber-950 text-amber-200 flex items-center justify-center text-[10px] font-bold shrink-0">!</span>
-                                <span><strong>CHẾ ĐỘ XEM TRƯỚC (ADMIN PREVIEW):</strong> Trang này đang ở trạng thái <strong>TẠM ẨN (Chưa Publics)</strong> với khách truy cập thông thường.</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button id="adminPreviewPublishBtn" class="px-3 py-1 rounded bg-zinc-900 text-white hover:bg-zinc-800 text-xs font-bold transition-colors shadow-xs">Bật Công Khai</button>
-                                <a href="../admin/" class="px-3 py-1 rounded bg-amber-600 text-white hover:bg-amber-700 text-xs font-bold transition-colors">Về Trang Quản Trị ↗</a>
-                            </div>
-                        `;
-                        document.body.prepend(bar);
-                        document.body.style.paddingTop = '42px';
+            if (!activePage) {
+                activePage = {
+                    id: 'page_current',
+                    title: document.title.split('|')[0].trim() || 'Trang Hiện Tại',
+                    path: currentPath,
+                    slug: '',
+                    enabled: true,
+                    can_disable: false
+                };
+            }
 
-                        const pubBtn = document.getElementById('adminPreviewPublishBtn');
-                        if (pubBtn) {
-                            pubBtn.addEventListener('click', () => {
-                                DB.togglePage(activePage.id, true);
-                                window.location.reload();
-                            });
-                        }
-                    }
+            // 3. If page is disabled and user is NOT admin -> block and show maintenance/redirect
+            if (activePage && activePage.enabled === false && !isAdmin) {
+                if (behavior === 'redirect_home') {
+                    window.location.replace(getRelUrl('/'));
+                    return;
                 } else {
-                    // Public user accessing un-published / hidden page
-                    if (behavior === 'redirect_home') {
-                        window.location.replace('../');
-                    } else {
-                        // Render clean Coming Soon / Maintenance view
-                        document.title = 'Trang Đang Được Hoàn Thiện | Thu Hiền';
-                        document.body.innerHTML = `
-                            <div class="min-h-screen bg-[#FAF7F0] flex flex-col justify-between text-[#174C3B] selection:bg-[#F08A4B]/20 font-sans p-6 sm:p-12 relative overflow-hidden">
-                                <div class="w-full max-w-2xl mx-auto my-auto py-12 text-center">
-                                    <div class="w-16 h-16 rounded-2xl bg-[#E7F0EB] text-[#174C3B] flex items-center justify-center mx-auto mb-6 shadow-xs border border-[#C5DCCF]/50">
-                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                                        </svg>
-                                    </div>
-                                    <span class="inline-block px-3 py-1 rounded-full bg-[#E7F0EB] text-[#174C3B] text-xs font-bold uppercase tracking-wider mb-4">
-                                        Nội Dung Đang Hoàn Thiện
-                                    </span>
-                                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#174C3B] mb-4">
-                                        ${activePage.title}
-                                    </h1>
-                                    <p class="text-sm sm:text-base text-[#5F6E66] max-w-lg mx-auto leading-relaxed mb-8">
-                                        ${maintenanceMsg}
-                                    </p>
-                                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-                                        <a href="../" class="w-full sm:w-auto px-6 py-3 rounded-full bg-[#174C3B] text-white text-xs sm:text-sm font-bold shadow-md hover:bg-[#133F31] transition-all flex items-center justify-center gap-2">
-                                            <span>Quay Về Trang Chủ</span>
-                                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
-                                            </svg>
-                                        </a>
-                                        <a href="https://zalo.me/0987654321" target="_blank" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white text-[#174C3B] border border-[#C5DCCF] text-xs sm:text-sm font-bold hover:bg-[#F4F8F5] transition-all">
-                                            Liên Hệ Với Thu Hiền
-                                        </a>
-                                    </div>
+                    document.title = 'Trang Đang Được Hoàn Thiện | Thu Hiền';
+                    document.body.innerHTML = `
+                        <div class="min-h-screen bg-[#FAF7F0] flex flex-col justify-between text-[#174C3B] selection:bg-[#F08A4B]/20 font-sans p-6 sm:p-12 relative overflow-hidden">
+                            <div class="w-full max-w-2xl mx-auto my-auto py-12 text-center">
+                                <div class="w-16 h-16 rounded-2xl bg-[#E7F0EB] text-[#174C3B] flex items-center justify-center mx-auto mb-6 shadow-xs border border-[#C5DCCF]/50">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                    </svg>
                                 </div>
-                                <div class="text-center text-xs text-[#8B9992] pt-6 border-t border-[#E7F0EB]">
-                                    © 2026 Thu Hiền – Cùng Mẹ Hiểu Con. Đồng hành cùng cha mẹ có con tự kỷ.
+                                <span class="inline-block px-3 py-1 rounded-full bg-[#E7F0EB] text-[#174C3B] text-xs font-bold uppercase tracking-wider mb-4">
+                                    Nội Dung Đang Hoàn Thiện
+                                </span>
+                                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#174C3B] mb-4">
+                                    ${activePage.title}
+                                </h1>
+                                <p class="text-sm sm:text-base text-[#5F6E66] max-w-lg mx-auto leading-relaxed mb-8">
+                                    ${maintenanceMsg}
+                                </p>
+                                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                                    <a href="${getRelUrl('/')}" class="w-full sm:w-auto px-6 py-3 rounded-full bg-[#174C3B] text-white text-xs sm:text-sm font-bold shadow-md hover:bg-[#133F31] transition-all flex items-center justify-center gap-2">
+                                        <span>Quay Về Trang Chủ</span>
+                                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                                        </svg>
+                                    </a>
+                                    <a href="https://zalo.me/0987654321" target="_blank" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white text-[#174C3B] border border-[#C5DCCF] text-xs sm:text-sm font-bold hover:bg-[#F4F8F5] transition-all">
+                                        Liên Hệ Với Thu Hiền
+                                    </a>
                                 </div>
                             </div>
-                        `;
-                    }
+                            <div class="text-center text-xs text-[#8B9992] pt-6 border-t border-[#E7F0EB]">
+                                © 2026 Thu Hiền – Cùng Mẹ Hiểu Con. Đồng hành cùng cha mẹ có con tự kỷ.
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+            }
+
+            // 4. If user is Admin -> Render the interactive Admin Top Bar on public pages
+            if (isAdmin && !document.getElementById('thuhien-admin-bar')) {
+                const adminUrl = getRelUrl('/admin/');
+                const isCurrentDisabled = activePage.enabled === false;
+                const isCorePage = activePage.can_disable === false;
+
+                // Adjust body & floating nav island position
+                document.body.style.paddingTop = '42px';
+                document.querySelectorAll('.nav-island').forEach(el => {
+                    el.style.top = '3.75rem';
+                });
+
+                const adminBar = document.createElement('div');
+                adminBar.id = 'thuhien-admin-bar';
+                adminBar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:999999;height:42px;background:#18181b;color:#fafafa;font-family:Alata,system-ui,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+                adminBar.className = isCurrentDisabled ? 'border-b-2 border-b-amber-500' : 'border-b border-zinc-800';
+
+                adminBar.innerHTML = `
+                    <div style="max-width:1200px;margin:0 auto;height:100%;padding:0 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;">
+                        
+                        <!-- Left Group: Admin Logo + Current Page + Live Status + Toggle Button -->
+                        <div style="display:flex;align-items:center;gap:10px;min-width:0;overflow:hidden;">
+                            <a href="${adminUrl}?tab=settings-pages" title="Mở trang Quản trị" style="display:inline-flex;align-items:center;gap:6px;background:#27272a;color:#ffffff;padding:4px 8px;border-radius:6px;font-weight:700;text-decoration:none;flex-shrink:0;">
+                                <svg style="width:14px;height:14px;color:#34d399;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                <span>Quản Trị</span>
+                            </a>
+
+                            <div style="height:14px;width:1px;background:#3f3f46;" class="hidden sm:block"></div>
+
+                            <!-- Current Page & Status -->
+                            <div style="display:flex;align-items:center;gap:6px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                <span style="color:#a1a1aa;font-size:11px;" class="hidden md:inline">Trang:</span>
+                                <span style="font-weight:700;color:#ffffff;max-width:140px;overflow:hidden;text-overflow:ellipsis;" class="sm:max-w-none">${activePage.title}</span>
+                                ${!isCurrentDisabled
+                                    ? `<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:9999px;font-size:10px;font-weight:700;background:#064e3b;color:#6ee7b7;border:1px solid #047857;flex-shrink:0;">
+                                         <span style="width:6px;height:6px;border-radius:50%;background:#34d399;"></span>
+                                         <span>Công Khai</span>
+                                       </span>`
+                                    : `<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:9999px;font-size:10px;font-weight:700;background:#78350f;color:#fcd34d;border:1px solid #b45309;flex-shrink:0;">
+                                         <span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;"></span>
+                                         <span>Tạm Ẩn (Khách không thấy)</span>
+                                       </span>`
+                                }
+                            </div>
+
+                            <!-- Direct Toggle Button for Current Page -->
+                            ${isCorePage 
+                                ? `<span style="font-size:10px;color:#71717a;background:#27272a;padding:2px 6px;border-radius:4px;" class="hidden lg:inline">Cố định</span>`
+                                : (!isCurrentDisabled
+                                    ? `<button id="adminBarBtnToggleCur" style="display:inline-flex;align-items:center;gap:4px;background:#27272a;color:#fcd34d;border:1px solid #52525b;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0;" title="Chuyển trang này sang chế độ Tạm Ẩn">
+                                         <svg style="width:13px;height:13px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"/></svg>
+                                         <span class="hidden sm:inline">Tạm Ẩn Trang</span>
+                                         <span class="sm:hidden">Ẩn</span>
+                                       </button>`
+                                    : `<button id="adminBarBtnToggleCur" style="display:inline-flex;align-items:center;gap:4px;background:#059669;color:#ffffff;border:none;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,0.2);" title="Bật công khai trang này ngay cho khách xem">
+                                         <svg style="width:13px;height:13px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                         <span>Công Khai Ngay</span>
+                                       </button>`
+                                  )
+                            }
+                        </div>
+
+                        <!-- Right Group: Pages Quick Dropdown + Edit in Admin + Logout -->
+                        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+                            
+                            <!-- Pages Quick Dropdown Menu -->
+                            <div style="position:relative;" id="adminBarDropdownWrapper">
+                                <button id="adminBarBtnPagesDropdown" style="display:inline-flex;align-items:center;gap:6px;background:#27272a;color:#e4e4e7;border:1px solid #3f3f46;padding:4px 9px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;">
+                                    <svg style="width:13px;height:13px;color:#a1a1aa;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
+                                    <span class="hidden sm:inline">Các Trang (${pages.length})</span>
+                                    <span class="sm:hidden">Trang</span>
+                                    <svg id="adminBarDropdownArrow" style="width:11px;height:11px;color:#a1a1aa;transition:transform 0.15s ease;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+
+                                <!-- Dropdown Popover -->
+                                <div id="adminBarDropdownMenu" class="hidden" style="position:absolute;right:0;top:100%;margin-top:6px;width:340px;background:#18181b;border:1px solid #3f3f46;border-radius:10px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.5);padding:10px;z-index:9999999;font-size:12px;color:#e4e4e7;">
+                                    <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;margin-bottom:6px;border-bottom:1px solid #27272a;font-size:11px;">
+                                        <span style="font-weight:700;color:#ffffff;">Trạng Thái Các Trang</span>
+                                        <span style="color:#a1a1aa;font-family:monospace;">${pages.filter(p => p.enabled !== false).length}/${pages.length} công khai</span>
+                                    </div>
+
+                                    <div style="max-height:260px;overflow-y:auto;padding-right:2px;" class="space-y-1">
+                                        ${pages.map(p => {
+                                            const isCurr = p.id === activePage.id;
+                                            const isPub = p.enabled !== false;
+                                            return `
+                                                <div style="padding:6px 8px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:${isCurr ? '#27272a' : 'transparent'};">
+                                                    <div style="min-width:0;flex:1;">
+                                                        <div style="display:flex;align-items:center;gap:4px;">
+                                                            <a href="${getRelUrl(p.path)}" style="font-weight:600;color:${isCurr ? '#34d399' : '#ffffff'};text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;" title="Xem trang ${p.title}">
+                                                                ${p.title}
+                                                            </a>
+                                                            ${isCurr ? '<span style="font-size:9px;background:#064e3b;color:#6ee7b7;padding:1px 4px;border-radius:4px;font-weight:700;flex-shrink:0;">Hiện tại</span>' : ''}
+                                                        </div>
+                                                        <div style="font-size:10px;color:#71717a;font-family:monospace;">${p.path}</div>
+                                                    </div>
+                                                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                                                        ${isPub 
+                                                            ? '<span style="font-size:10px;font-weight:700;color:#34d399;background:#064e3b;border:1px solid #047857;padding:1px 6px;border-radius:4px;">Bật</span>'
+                                                            : '<span style="font-size:10px;font-weight:700;color:#fbbf24;background:#78350f;border:1px solid #b45309;padding:1px 6px;border-radius:4px;">Ẩn</span>'
+                                                        }
+                                                        ${p.can_disable === false
+                                                            ? '<span style="font-size:10px;color:#71717a;width:38px;text-align:center;">Khóa</span>'
+                                                            : `<button onclick="DB.togglePage('${p.id}', ${!isPub}); window.location.reload();" style="padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;cursor:pointer;border:none;background:${isPub ? '#3f3f46' : '#059669'};color:${isPub ? '#e4e4e7' : '#ffffff'};">
+                                                                ${isPub ? 'Tắt' : 'Bật'}
+                                                               </button>`
+                                                        }
+                                                    </div>
+                                                </div>
+                                            `;
+                                        }).join('')}
+                                    </div>
+
+                                    <div style="padding-top:8px;margin-top:6px;border-top:1px solid #27272a;display:flex;align-items:center;justify-content:space-between;font-size:11px;">
+                                        <span style="color:#71717a;font-size:10px;">Bấm Bật/Tắt để lưu ngay</span>
+                                        <a href="${adminUrl}?tab=settings-pages" style="color:#f08a4b;text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:3px;">
+                                            <span>Quản lý trong Admin</span>
+                                            <span>↗</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Edit in Admin Page Settings Button -->
+                            <a href="${adminUrl}?tab=settings-pages" style="display:inline-flex;align-items:center;gap:4px;background:#174c3b;color:#ffffff;text-decoration:none;padding:4px 9px;border-radius:6px;font-size:11px;font-weight:700;flex-shrink:0;" title="Chỉnh sửa nội dung và bật tắt trang trong Quản Trị">
+                                <svg style="width:13px;height:13px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                <span>Chỉnh Sửa</span>
+                            </a>
+
+                            <!-- Logout Admin Button (Preview as public user) -->
+                            <button id="adminBarBtnLogout" style="display:inline-flex;align-items:center;gap:4px;background:transparent;color:#a1a1aa;border:none;padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;flex-shrink:0;" title="Đăng xuất để xem website như khách vãng lai bình thường">
+                                <svg style="width:13px;height:13px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                                <span class="hidden md:inline">Thoát Admin</span>
+                            </button>
+
+                            <!-- Collapse Button -->
+                            <button id="adminBarBtnCollapse" style="background:transparent;color:#71717a;border:none;padding:3px;cursor:pointer;" title="Thu nhỏ thanh bar">
+                                <svg style="width:13px;height:13px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.prepend(adminBar);
+
+                // If currently viewing a disabled page, also inject a friendly non-blocking notice for the admin
+                if (isCurrentDisabled && !document.getElementById('admin-hidden-page-toast')) {
+                    const toast = document.createElement('div');
+                    toast.id = 'admin-hidden-page-toast';
+                    toast.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:999998;background:#78350f;color:#fef3c7;border:1px solid #b45309;padding:10px 14px;border-radius:10px;font-size:12px;box-shadow:0 10px 20px rgba(0,0,0,0.25);max-width:360px;line-height:1.4;display:flex;align-items:start;gap:8px;';
+                    toast.innerHTML = `
+                        <span style="font-weight:700;color:#f59e0b;font-size:14px;line-height:1;">!</span>
+                        <div style="flex:1;">
+                            <strong style="color:#ffffff;display:block;">Trang Đang Tạm Ẩn</strong>
+                            <span>Khách truy cập sẽ thấy thông báo bảo trì. Chỉ Quản trị viên mới thấy được toàn bộ trang này để tiếp tục chỉnh sửa.</span>
+                        </div>
+                        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#fde68a;cursor:pointer;font-size:13px;padding:0 2px;">✕</button>
+                    `;
+                    document.body.appendChild(toast);
+                }
+
+                // Event listener: Toggle current page
+                const btnToggleCur = document.getElementById('adminBarBtnToggleCur');
+                if (btnToggleCur) {
+                    btnToggleCur.addEventListener('click', () => {
+                        const nextState = isCurrentDisabled;
+                        DB.togglePage(activePage.id, nextState);
+                        window.location.reload();
+                    });
+                }
+
+                // Event listener: Dropdown menu toggle
+                const btnDd = document.getElementById('adminBarBtnPagesDropdown');
+                const menuDd = document.getElementById('adminBarDropdownMenu');
+                const arrowDd = document.getElementById('adminBarDropdownArrow');
+                if (btnDd && menuDd) {
+                    btnDd.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const isHidden = menuDd.classList.contains('hidden');
+                        if (isHidden) {
+                            menuDd.classList.remove('hidden');
+                            if (arrowDd) arrowDd.style.transform = 'rotate(180deg)';
+                        } else {
+                            menuDd.classList.add('hidden');
+                            if (arrowDd) arrowDd.style.transform = 'rotate(0deg)';
+                        }
+                    });
+
+                    document.addEventListener('click', (e) => {
+                        if (!menuDd.contains(e.target) && e.target !== btnDd) {
+                            menuDd.classList.add('hidden');
+                            if (arrowDd) arrowDd.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                }
+
+                // Event listener: Logout admin
+                const btnLogout = document.getElementById('adminBarBtnLogout');
+                if (btnLogout) {
+                    btnLogout.addEventListener('click', () => {
+                        if (confirm('Đăng xuất phiên Admin để kiểm tra giao diện dưới góc nhìn của khách vãng lai?')) {
+                            sessionStorage.removeItem('thuhien_admin_auth');
+                            localStorage.removeItem('thuhien_admin_auth');
+                            window.location.reload();
+                        }
+                    });
+                }
+
+                // Event listener: Collapse & Expand Admin Bar
+                const btnCollapse = document.getElementById('adminBarBtnCollapse');
+                if (btnCollapse) {
+                    btnCollapse.addEventListener('click', () => {
+                        adminBar.style.display = 'none';
+                        document.body.style.paddingTop = '0px';
+                        document.querySelectorAll('.nav-island').forEach(el => {
+                            el.style.top = '1.25rem';
+                        });
+
+                        // Create small floating expand button
+                        if (!document.getElementById('adminBarFloatingExpand')) {
+                            const expandBtn = document.createElement('button');
+                            expandBtn.id = 'adminBarFloatingExpand';
+                            expandBtn.style.cssText = 'position:fixed;top:10px;right:10px;z-index:999999;background:#18181b;color:#34d399;border:1px solid #3f3f46;padding:6px 12px;border-radius:9999px;font-size:11px;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,0.3);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:Alata,sans-serif;';
+                            expandBtn.innerHTML = `
+                                <svg style="width:13px;height:13px;" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                                <span>Mở Admin Bar</span>
+                            `;
+                            expandBtn.addEventListener('click', () => {
+                                expandBtn.remove();
+                                adminBar.style.display = 'block';
+                                document.body.style.paddingTop = '42px';
+                                document.querySelectorAll('.nav-island').forEach(el => {
+                                    el.style.top = '3.75rem';
+                                });
+                            });
+                            document.body.appendChild(expandBtn);
+                        }
+                    });
                 }
             }
         }

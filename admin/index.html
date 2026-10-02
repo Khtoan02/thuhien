@@ -3261,6 +3261,15 @@
     // Initialize
     checkAuth();
 
+    // Check URL parameters for direct tab navigation (e.g. ?tab=settings-pages)
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab') || window.location.hash.replace('#', '');
+        if (tabParam && views.includes(tabParam)) {
+            switchView(tabParam);
+        }
+    } catch (e) {}
+
     // Realtime interval for Live Online Heartbeat (updates every 4 seconds)
     setInterval(() => {
         if (sessionStorage.getItem(AUTH_KEY) === 'true') {
