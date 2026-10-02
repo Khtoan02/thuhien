@@ -86,17 +86,29 @@ module.exports = async function handler(req, res) {
     if (req.method === 'GET') {
         try {
             let pages = null;
+            let updatedAt = 0;
             const connStr = process.env.GLOBAL_CONFIG || process.env.EDGE_CONFIG || 'https://global-config.vercel.com/ecfg_ulbt6vypngndqhq63ysoj9a8hrlj?token=b14d8d5f-7708-4a77-8b64-b219550d8e4c';
             try {
                 const { createClient } = require('@vercel/global-config');
                 const client = createClient(connStr);
-                pages = await client.get('pages_config');
+                const raw = await client.get('pages_config');
+                if (raw && Array.isArray(raw)) {
+                    pages = raw;
+                } else if (raw && Array.isArray(raw.pages)) {
+                    pages = raw.pages;
+                    updatedAt = raw.updated_at || 0;
+                }
             } catch (gcErr) {
                 console.warn('Global config read error:', gcErr.message);
             }
 
             if (!pages || !Array.isArray(pages)) {
-                pages = DEFAULT_PAGES;
+                return res.status(200).json({
+                    success: true,
+                    source: 'default',
+                    is_default: true,
+                    pages: DEFAULT_PAGES
+                });
             }
 
             // Fresh cache at edge for real-time responsiveness
@@ -104,13 +116,16 @@ module.exports = async function handler(req, res) {
             return res.status(200).json({
                 success: true,
                 source: (process.env.GLOBAL_CONFIG || process.env.EDGE_CONFIG) ? 'global-config' : 'default',
-                pages: pages
+                is_default: false,
+                pages: pages,
+                updated_at: updatedAt
             });
         } catch (error) {
             console.error('Error fetching global config:', error);
             return res.status(200).json({
                 success: true,
                 source: 'fallback',
+                is_default: true,
                 pages: DEFAULT_PAGES,
                 error: error.message
             });
@@ -125,7 +140,7 @@ module.exports = async function handler(req, res) {
                     body = JSON.parse(body);
                 } catch (e) {}
             }
-            const { pages } = body || {};
+            const { pages, updated_at } = body || {};
             if (!pages || !Array.isArray(pages)) {
                 return res.status(400).json({ success: false, message: 'Dữ liệu danh sách pages không hợp lệ' });
             }
@@ -161,7 +176,10 @@ module.exports = async function handler(req, res) {
                         {
                             operation: 'upsert',
                             key: 'pages_config',
-                            value: pages
+                            value: {
+                                pages: pages,
+                                updated_at: updated_at || Date.now()
+                            }
                         }
                     ]
                 })

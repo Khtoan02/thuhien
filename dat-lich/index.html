@@ -53,45 +53,9 @@
     <!-- Custom Design System Stylesheet -->
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body data-page="booking" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B]">
+<body data-page="dat-lich" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B]">
 
-<!-- Floating Navigation Island -->
-<header class="nav-island">
-    <nav class="nav-island-inner justify-between">
-        <!-- Logo: Favicon as Logo -->
-        <a href="../" class="flex items-center gap-3 group text-decoration-none">
-            <img src="../favicon.png" alt="Thu Hiền Logo" class="w-10 h-10 rounded-full object-cover shadow-sm ring-2 ring-white/80 group-hover:scale-105 transition-transform duration-300">
-            <div class="flex flex-col">
-                <span class="font-bold text-lg md:text-xl text-white leading-none tracking-tight">Thu Hiền</span>
-                <span class="text-[11px] font-medium text-white/90 tracking-wide mt-1 uppercase">Cùng Mẹ Hiểu Con</span>
-            </div>
-        </a>
-
-        <!-- Header Actions: Trang Chủ, Chuyên Gia, Dinh Dưỡng, Kênh & Cộng Đồng và Bảng Giá -->
-        <div class="flex items-center gap-1 sm:gap-2">
-            <a href="../" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden md:inline-flex">
-                Trang Chủ
-            </a>
-            <a href="../chuyen-gia/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors">
-                Chuyên Gia
-            </a>
-            <a href="../dinh-duong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden sm:inline-flex">
-                Dinh Dưỡng
-            </a>
-            <a href="../cong-dong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden sm:inline-flex">
-                Kênh & Cộng Đồng
-            </a>
-            <a href="../pricing/" class="bg-[#174C3B] hover:bg-[#133F31] text-white py-2 px-3 sm:px-4 rounded-full text-xs sm:text-sm font-bold shadow-2xs flex items-center gap-1.5 group transition-all">
-                <span class="text-xs sm:text-sm font-bold">Bảng Giá / Gói</span>
-                <span class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
-                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
-                    </svg>
-                </span>
-            </a>
-        </div>
-    </nav>
-</header>
+<header class="nav-island" id="globalNavIsland"></header>
 
 <!-- ==========================================================================
      BOOKING HERO SECTION
@@ -361,59 +325,7 @@
     </div>
 </section>
 
-<!-- Footer Section -->
-<footer class="mt-28 border-t border-[#8FAF91]/30 bg-[#FAF7F0] pt-16 pb-12 relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-12 pb-16 border-b border-[#8FAF91]/20">
-            <div class="md:col-span-5 space-y-4">
-                <div class="flex items-center gap-3">
-                    <img src="../favicon.png" alt="Thu Hiền" class="w-10 h-10 rounded-full object-cover shadow-sm ring-1 ring-[#8FAF91]/40">
-                    <div>
-                        <span class="font-serif font-bold text-xl text-[#174C3B] block">Thu Hiền</span>
-                        <span class="text-xs font-semibold text-[#F08A4B] tracking-wider uppercase">Cùng Mẹ Hiểu Con</span>
-                    </div>
-                </div>
-                <p class="text-[#5F6E66] text-sm leading-relaxed max-w-sm pt-2">
-                    Đồng hành cùng cha mẹ xây dựng thói quen ăn uống phù hợp hơn cho trẻ, bằng những bước nhỏ, cá nhân hóa và có thể duy trì trong đời sống thật.
-                </p>
-            </div>
-
-            <div class="md:col-span-3 space-y-3">
-                <h4 class="font-serif font-bold text-[#174C3B] text-base mb-4">Nội Dung Chính</h4>
-                <ul class="space-y-2.5 text-sm text-[#5F6E66]">
-                    <li><a href="../" class="hover:text-[#174C3B] transition-colors">Trang Chủ</a></li>
-                    <li><a href="../#dong-cam" class="hover:text-[#174C3B] transition-colors">Khối Đồng Cảm</a></li>
-                    <li><a href="../#goc-nhin" class="hover:text-[#174C3B] transition-colors">Thay Đổi Cách Nhìn</a></li>
-                    <li><a href="../#cach-lam-viec" class="hover:text-[#174C3B] transition-colors">Phương Pháp Tiếp Cận</a></li>
-                    <li><a href="../#quy-trinh" class="hover:text-[#174C3B] transition-colors">Quy Trình Đồng Hành</a></li>
-                    <li><a href="../chuyen-gia/" class="hover:text-[#174C3B] transition-colors font-medium">Chuyên Gia Bùi Thu Hiền</a></li>
-                    <li><a href="../dinh-duong/" class="hover:text-[#174C3B] transition-colors font-medium">Lời Khuyên Dinh Dưỡng GFCF+SF</a></li>
-                    <li><a href="../cong-dong/" class="hover:text-[#174C3B] transition-colors font-medium">Kênh & Cộng Đồng Hiểu Con Từ Gốc</a></li>
-                    <li><a href="../pricing/" class="hover:text-[#174C3B] transition-colors font-medium">Bảng Giá / Gói Dịch Vụ</a></li>
-                    <li><a href="./" class="hover:text-[#F08A4B] font-semibold transition-colors">Đặt Lịch 1:1</a></li>
-                </ul>
-            </div>
-
-            <div class="md:col-span-4 space-y-3">
-                <h4 class="font-serif font-bold text-[#174C3B] text-base mb-4">Kết Nối Trực Tiếp</h4>
-                <div class="space-y-3 text-sm text-[#5F6E66]">
-                    <div class="font-semibold text-[#174C3B]">Ưu tiên nhắn tin qua Zalo riêng</div>
-                    <div class="text-xs text-[#8FAF91]">thuhien.cungmehieucon@gmail.com</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#5F6E66]">
-            <p>
-                © 2026 Thu Hiền – Cùng Mẹ Hiểu Con. Mọi quyền được bảo lưu.
-                <span class="block sm:inline sm:ml-2 text-[#8B9992]">*Lưu ý: Thu Hiền hỗ trợ tư vấn dinh dưỡng và xây dựng thói quen ăn uống tại nhà, không đưa ra chẩn đoán y khoa và không thay thế phác đồ điều trị của các cơ sở y tế.*</span>
-            </p>
-            <div class="flex items-center gap-4 text-xs">
-                <a href="../admin/" class="hover:text-[#174C3B] opacity-70 hover:opacity-100 transition-opacity">Quản Trị Báo Cáo</a>
-            </div>
-        </div>
-    </div>
-</footer>
+<footer id="globalFooter"></footer>
 
 <!-- Scripts -->
 <script src="../assets/js/db.js?v=2.3"></script>

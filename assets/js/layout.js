@@ -6,11 +6,16 @@
 const LayoutEngine = (() => {
     function getRootPrefix() {
         if (typeof window === 'undefined') return './';
-        const path = window.location.pathname.replace(/\/index\.html$/, '/');
-        if (path === '/' || path === '' || path === '/index.html') {
-            return './';
-        }
-        return '../';
+        const path = window.location.pathname.toLowerCase();
+        const isSubdir = path.includes('/chuyen-gia') || 
+                         path.includes('/dinh-duong') || 
+                         path.includes('/cong-dong') || 
+                         path.includes('/pricing') || 
+                         path.includes('/danh-gia-dinh-duong') || 
+                         path.includes('/tra-cuu') || 
+                         path.includes('/dat-lich') ||
+                         path.includes('/admin');
+        return isSubdir ? '../' : './';
     }
 
     function renderGlobalMobileDrawer(prefix, pages, isAdmin, currentPath, datLichHref) {
@@ -27,9 +32,12 @@ const LayoutEngine = (() => {
             const isEnabled = p.enabled !== false;
             if (!isEnabled && !isAdmin) return '';
 
-            let href = p.path === '/' ? prefix : `${prefix}${p.path.replace(/^\//, '')}`;
-            const pPathClean = p.path.replace(/\/+$/, '') || '/';
-            const isActive = currentPath === pPathClean || (p.path === '/' && (currentPath === '/' || currentPath === ''));
+            const bodyPage = document.body ? (document.body.getAttribute('data-page') || '') : '';
+            const isHome = (p.path === '/' || p.slug === 'home' || p.id === 'home') && 
+                           (bodyPage === 'home' || currentPath === '/' || currentPath === '' || currentPath.endsWith('/thuhien') || currentPath.endsWith('/thuhien/'));
+            const isActive = isHome || 
+                             (bodyPage && (bodyPage === p.slug || bodyPage === p.id || (p.slug && bodyPage.includes(p.slug)))) || 
+                             (p.slug && p.slug !== 'home' && currentPath.includes('/' + p.slug));
 
             let activeClass = isActive 
                 ? 'bg-[#EEF5EA] text-[#174C3B] font-bold border-l-4 border-[#174C3B]' 
@@ -118,8 +126,25 @@ const LayoutEngine = (() => {
 
         const prefix = getRootPrefix();
         const currentPath = window.location.pathname.replace(/\/index\.html$/, '/').replace(/\/+$/, '') || '/';
-        const pages = typeof DB !== 'undefined' ? DB.getPages() : [];
-        const isAdmin = typeof DB !== 'undefined' && DB.isAdminAuthenticated();
+        let pages = [];
+        if (typeof DB !== 'undefined' && typeof DB.getPages === 'function') {
+            pages = DB.getPages();
+        } else {
+            try {
+                const s = JSON.parse(localStorage.getItem('thuhien_site_settings'));
+                if (s && Array.isArray(s.pages)) pages = s.pages;
+            } catch (e) {}
+        }
+
+        let isAdmin = false;
+        if (typeof DB !== 'undefined' && typeof DB.isAdminAuthenticated === 'function') {
+            isAdmin = DB.isAdminAuthenticated();
+        } else {
+            try {
+                isAdmin = (sessionStorage.getItem('thuhien_admin_auth') === 'true') ||
+                          (localStorage.getItem('thuhien_admin_auth') === 'true');
+            } catch (e) {}
+        }
 
         let headerEl = document.querySelector('header.nav-island');
         if (!headerEl) {
@@ -136,8 +161,12 @@ const LayoutEngine = (() => {
             if (!isEnabled && !isAdmin) return '';
 
             let href = p.path === '/' ? prefix : `${prefix}${p.path.replace(/^\//, '')}`;
-            const pPathClean = p.path.replace(/\/+$/, '') || '/';
-            const isActive = currentPath === pPathClean || (p.path === '/' && (currentPath === '/' || currentPath === ''));
+            const bodyPage = document.body ? (document.body.getAttribute('data-page') || '') : '';
+            const isHome = (p.path === '/' || p.slug === 'home' || p.id === 'home') && 
+                           (bodyPage === 'home' || currentPath === '/' || currentPath === '' || currentPath.endsWith('/thuhien') || currentPath.endsWith('/thuhien/'));
+            const isActive = isHome || 
+                             (bodyPage && (bodyPage === p.slug || bodyPage === p.id || (p.slug && bodyPage.includes(p.slug)))) || 
+                             (p.slug && p.slug !== 'home' && currentPath.includes('/' + p.slug));
 
             let activeClass = isActive 
                 ? 'bg-white text-[#174C3B] font-bold shadow-2xs' 
@@ -157,15 +186,17 @@ const LayoutEngine = (() => {
             else if (p.id === 'cong-dong') displayTitle = 'Cộng Đồng';
             else if (p.id === 'pricing') displayTitle = 'Bảng Giá';
 
-            // Responsive visibility
+            // Responsive visibility: On desktop (lg: >=1024px), all enabled pages show.
+            // On mobile/tablet (<lg), secondary items collapse into Mobile Drawer.
             let responsiveClass = 'inline-flex';
-            if (p.id === 'cong-dong') responsiveClass = 'hidden sm:inline-flex';
-            if (p.id === 'pricing') responsiveClass = 'hidden md:inline-flex';
-            if (p.id === 'danh-gia') responsiveClass = 'hidden lg:inline-flex';
-            if (p.id === 'tra-cuu') responsiveClass = 'hidden xl:inline-flex';
+            if (p.id === 'cong-dong' || p.id === 'pricing' || p.id === 'danh-gia' || p.id === 'tra-cuu') {
+                responsiveClass = 'hidden lg:inline-flex';
+            } else if (p.id === 'dinh-duong') {
+                responsiveClass = 'hidden sm:inline-flex';
+            }
 
             return `
-                <a href="${href}" class="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm ${activeClass} transition-all items-center ${responsiveClass}">
+                <a href="${href}" class="px-2 lg:px-3 py-1.5 sm:py-2 rounded-full text-xs sm:text-[13px] ${activeClass} transition-all items-center ${responsiveClass}">
                     <span>${displayTitle}</span>
                     ${hiddenBadge}
                 </a>
@@ -190,7 +221,7 @@ const LayoutEngine = (() => {
                     ${navItemsHtml}
 
                     <!-- Mobile Menu Button -->
-                    <button id="globalMobileMenuBtn" aria-label="Mở Menu" class="xl:hidden p-2 rounded-full text-white hover:bg-white/10 transition-colors flex items-center justify-center">
+                    <button id="globalMobileMenuBtn" aria-label="Mở Menu" class="lg:hidden p-2 rounded-full text-white hover:bg-white/10 transition-colors flex items-center justify-center">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"/>
                         </svg>
@@ -217,9 +248,21 @@ const LayoutEngine = (() => {
         if (window.location.pathname.includes('/admin')) return;
 
         const prefix = getRootPrefix();
-        const settings = typeof DB !== 'undefined' ? DB.getSettings() : {};
+        let settings = {};
+        if (typeof DB !== 'undefined' && typeof DB.getSettings === 'function') {
+            settings = DB.getSettings();
+        } else {
+            try {
+                settings = JSON.parse(localStorage.getItem('thuhien_site_settings')) || {};
+            } catch (e) {}
+        }
         const soc = settings.social || {};
-        const pages = typeof DB !== 'undefined' ? DB.getPages() : [];
+        let pages = [];
+        if (typeof DB !== 'undefined' && typeof DB.getPages === 'function') {
+            pages = DB.getPages();
+        } else if (Array.isArray(settings.pages)) {
+            pages = settings.pages;
+        }
 
         let footerEl = document.querySelector('footer');
         if (!footerEl) {

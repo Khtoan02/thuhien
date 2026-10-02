@@ -56,54 +56,7 @@
 </head>
 <body data-page="tra-cuu" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-24 md:pb-28 min-h-screen flex flex-col justify-between">
 
-<!-- ==========================================================================
-     FLOATING NAVIGATION ISLAND (Hydrated by LayoutEngine)
-     ========================================================================== -->
-<header class="nav-island">
-    <nav class="nav-island-inner justify-between">
-        <!-- Logo -->
-        <a href="../" class="flex items-center gap-3 group text-decoration-none">
-            <img src="../favicon.png" alt="Thu Hiền Logo" class="w-10 h-10 rounded-full object-cover shadow-sm ring-2 ring-white/80 group-hover:scale-105 transition-transform duration-300">
-            <div class="flex flex-col">
-                <span class="font-bold text-lg md:text-xl text-white leading-none tracking-tight">Thu Hiền</span>
-                <span class="text-[11px] font-medium text-white/90 tracking-wide mt-1 uppercase">Cùng Mẹ Hiểu Con</span>
-            </div>
-        </a>
-
-        <!-- Header Actions -->
-        <div class="flex items-center gap-1 sm:gap-2">
-            <a href="../" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden md:inline-flex">
-                Trang Chủ
-            </a>
-            <a href="../chuyen-gia/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors">
-                Chuyên Gia
-            </a>
-            <a href="../dinh-duong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden sm:inline-flex">
-                Dinh Dưỡng
-            </a>
-            <a href="../danh-gia-dinh-duong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors">
-                Đánh Giá
-            </a>
-            <a href="./" class="px-3 sm:px-4 py-2 rounded-full bg-white text-[#174C3B] text-xs sm:text-sm font-bold shadow-2xs">
-                Tra Cứu
-            </a>
-            <a href="../cong-dong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden xl:inline-flex">
-                Cộng Đồng
-            </a>
-            <a href="../pricing/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden xl:inline-flex">
-                Bảng Giá
-            </a>
-            <a href="../dat-lich/" class="bg-[#174C3B] hover:bg-[#133F31] text-white py-2 px-3 sm:px-4 rounded-full text-xs sm:text-sm font-bold shadow-2xs flex items-center gap-1.5 group transition-all">
-                <span class="text-xs sm:text-sm font-bold">Đặt Lịch 1:1</span>
-                <span class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
-                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
-                    </svg>
-                </span>
-            </a>
-        </div>
-    </nav>
-</header>
+<header class="nav-island" id="globalNavIsland"></header>
 
 <!-- ==========================================================================
      MAIN SEARCH HERO & LOOKUP CONTENT
@@ -181,16 +134,7 @@
     </div>
 </main>
 
-<!-- ==========================================================================
-     FOOTER (Hydrated by LayoutEngine)
-     ========================================================================== -->
-<footer class="border-t border-[#8FAF91]/20 bg-[#FAF7F0] pt-12 pb-16 text-center text-xs text-[#5F6E66]">
-    <div class="max-w-4xl mx-auto px-4 space-y-3">
-        <p class="font-bold text-[#174C3B]">Thu Hiền - Cùng Mẹ Hiểu Con © 2026</p>
-        <p>Đồng hành cùng cha mẹ xây dựng thói quen ăn uống khoa học cho trẻ kén ăn & trẻ rối loạn phát triển.</p>
-        <p class="text-[11px] text-zinc-400">Hotline / Zalo: 0988 776 655 • Email: thuhien.cungmehieucon@gmail.com</p>
-    </div>
-</footer>
+<footer id="globalFooter"></footer>
 
 <!-- Database and Core Scripts -->
 <script src="../assets/js/db.js?v=2.4"></script>

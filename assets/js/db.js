@@ -543,7 +543,8 @@ const DB = (() => {
                 let changed = false;
                 if (!s.pages || !Array.isArray(s.pages) || s.pages.length === 0) {
                     s.pages = DEFAULT_SETTINGS.pages;
-                    s.pages_schema_v = 2;
+                    s.pages_schema_v = 4;
+                    s.pages_updated_at = Date.now();
                     changed = true;
                 } else {
                     // Always ensure all default pages (e.g. danh-gia) exist in s.pages
@@ -553,8 +554,8 @@ const DB = (() => {
                             changed = true;
                         }
                     });
-                    if (!s.pages_schema_v || s.pages_schema_v < 3) {
-                        s.pages_schema_v = 3;
+                    if (!s.pages_schema_v || s.pages_schema_v < 4) {
+                        s.pages_schema_v = 4;
                         changed = true;
                     }
                 }
@@ -1155,6 +1156,8 @@ const DB = (() => {
                     integrations: { ...DEFAULT_SETTINGS.integrations, ...(s?.integrations || {}) },
                     security: { ...DEFAULT_SETTINGS.security, ...(s?.security || {}) },
                     pages: s?.pages || DEFAULT_SETTINGS.pages,
+                    pages_schema_v: s?.pages_schema_v || 4,
+                    pages_updated_at: s?.pages_updated_at || 0,
                     pages_behavior: s?.pages_behavior || DEFAULT_SETTINGS.pages_behavior,
                     pages_maintenance_message: s?.pages_maintenance_message !== undefined ? s.pages_maintenance_message : DEFAULT_SETTINGS.pages_maintenance_message
                 };
@@ -1311,7 +1314,8 @@ const DB = (() => {
                     integrations: { ...current.integrations, ...(newSettings.integrations || {}) },
                     security: { ...current.security, ...(newSettings.security || {}) },
                     pages: newSettings.pages || current.pages,
-                    pages_schema_v: 2,
+                    pages_schema_v: 4,
+                    pages_updated_at: newSettings.pages_updated_at || current.pages_updated_at || Date.now(),
                     pages_behavior: newSettings.pages_behavior || current.pages_behavior,
                     pages_maintenance_message: newSettings.pages_maintenance_message !== undefined ? newSettings.pages_maintenance_message : current.pages_maintenance_message
                 };
@@ -1411,7 +1415,8 @@ const DB = (() => {
             }
             target.enabled = Boolean(enabled);
             settings.pages = list;
-            settings.pages_schema_v = 2;
+            settings.pages_schema_v = 4;
+            settings.pages_updated_at = Date.now();
             this.saveSettings(settings);
             this.logSecurityEvent('PAGE_STATUS_CHANGED', 'SUCCESS', `Trang "${target.title}" đã chuyển sang trạng thái: ${target.enabled ? 'CÔNG KHAI (Publics)' : 'TẠM ẨN (Chưa Publics)'}`);
             this.broadcastChange('page_status', { id, enabled: target.enabled, page: target, pages: list });
@@ -1481,8 +1486,13 @@ const DB = (() => {
                             if (doc && doc.exists) {
                                 const data = doc.data();
                                 if (data && Array.isArray(data.items)) {
-                                    console.log('🔥 Firebase Realtime Page Sync received:', data.items);
-                                    this.syncRemotePages(data.items);
+                                    let remoteTs = 0;
+                                    if (data.updated_at && typeof data.updated_at.toMillis === 'function') {
+                                        remoteTs = data.updated_at.toMillis();
+                                    } else if (data.client_timestamp) {
+                                        remoteTs = data.client_timestamp;
+                                    }
+                                    this.syncRemotePages(data.items, remoteTs);
                                 }
                             }
                         }, (err) => {
@@ -1527,7 +1537,8 @@ const DB = (() => {
                 if (db && typeof firebase !== 'undefined') {
                     await db.collection('site_config').doc('pages').set({
                         items: pagesList,
-                        updated_at: firebase.firestore.FieldValue.serverTimestamp()
+                        updated_at: firebase.firestore.FieldValue.serverTimestamp(),
+                        client_timestamp: Date.now()
                     }, { merge: true });
                     console.log('🔥 Pushed pages to Firebase Firestore successfully!');
                     this.showToast('Đã đồng bộ lên Firebase Realtime toàn cầu!', 'success');
@@ -1537,9 +1548,16 @@ const DB = (() => {
             }
         },
 
-        syncRemotePages(remotePages) {
+        syncRemotePages(remotePages, remoteTimestamp = 0) {
             if (!Array.isArray(remotePages) || !remotePages.length) return;
             const current = this.getSettings();
+
+            // Safety guard: Never overwrite local settings if remote timestamp is older or equal
+            const localTs = current.pages_updated_at || 0;
+            if (remoteTimestamp && remoteTimestamp <= localTs) {
+                return;
+            }
+
             const pageMap = {};
             remotePages.forEach(p => { pageMap[p.id] = p.enabled; });
 
@@ -1554,10 +1572,17 @@ const DB = (() => {
 
             if (hasChange) {
                 current.pages = updated;
-                current.pages_schema_v = 2;
+                current.pages_schema_v = 4;
+                current.pages_updated_at = remoteTimestamp || Date.now();
                 this.saveSettings(current);
                 if (typeof this.applyPageStatusControl === 'function') {
                     this.applyPageStatusControl();
+                }
+                if (typeof LayoutEngine !== 'undefined') {
+                    try {
+                        LayoutEngine.renderGlobalHeader();
+                        LayoutEngine.renderGlobalFooter();
+                    } catch (e) {}
                 }
             }
         },
@@ -1568,7 +1593,11 @@ const DB = (() => {
                 if (!res.ok) return null;
                 const data = await res.json();
                 if (data && data.success && Array.isArray(data.pages)) {
-                    this.syncRemotePages(data.pages);
+                    // CRITICAL: NEVER overwrite local settings if remote response is just fallback or default unconfigured state
+                    if (data.source === 'default' || data.source === 'fallback' || data.is_default) {
+                        return data;
+                    }
+                    this.syncRemotePages(data.pages, data.updated_at || 0);
                     return data;
                 }
             } catch (e) {
@@ -1587,7 +1616,10 @@ const DB = (() => {
                         'Content-Type': 'application/json',
                         'x-vercel-token': vercelToken
                     },
-                    body: JSON.stringify({ pages })
+                    body: JSON.stringify({ 
+                        pages,
+                        updated_at: Date.now()
+                    })
                 });
                 const data = await res.json();
                 if (data && data.success) {
@@ -2144,22 +2176,17 @@ const DB = (() => {
                 return isSubdir ? '../' + clean : './' + clean;
             };
 
-            // 1. Navigation links control for all pages (show/hide dynamically)
+            // 1. Navigation links control for body links (outside unified header/drawer/footer)
             pages.forEach(p => {
                 const isPageDisabled = (p.enabled === false && p.slug !== 'home');
                 document.querySelectorAll('a').forEach(a => {
+                    // Skip unified header, drawer and footer since LayoutEngine renders them directly
+                    if (a.closest('.nav-island') || a.closest('footer') || a.closest('#globalMobileDrawer')) {
+                        return;
+                    }
                     const h = a.getAttribute('href') || '';
-                    const t = (a.innerText || '').trim();
-                    const matchesHref = h.includes('/' + p.slug) || h.includes(p.path) || (h.includes(p.slug));
-                    const matchesText = (p.slug === 'chuyen-gia' && (t === 'Chuyên Gia' || t.startsWith('Chuyên Gia'))) ||
-                                        (p.slug === 'pricing' && (t === 'Bảng Giá' || t.startsWith('Bảng Giá'))) ||
-                                        (p.slug === 'dinh-duong' && (t === 'Dinh Dưỡng' || t.startsWith('Dinh Dưỡng'))) ||
-                                        (p.slug === 'cong-dong' && (t === 'Kênh & Cộng Đồng' || t.startsWith('Kênh & Cộng Đồng'))) ||
-                                        (p.slug === 'dat-lich' && (t === 'Đặt Lịch 1:1' || t.startsWith('Đặt Lịch')));
-
-                    const isNavLink = matchesHref || (matchesText && (a.closest('.nav-island') || a.closest('header') || a.closest('footer') || a.closest('nav')));
-
-                    if (isNavLink) {
+                    const matchesHref = p.slug && (h.includes('/' + p.slug) || h.includes(p.path));
+                    if (matchesHref) {
                         const parentLi = a.closest('li');
                         const targetEl = parentLi || a;
                         if (!isAdmin) {
@@ -2170,43 +2197,24 @@ const DB = (() => {
                             }
                         } else {
                             targetEl.style.display = '';
-                            let badge = a.querySelector('.thuhien-admin-badge');
-                            if (isPageDisabled) {
-                                if (!badge) {
-                                    badge = document.createElement('span');
-                                    badge.className = 'thuhien-admin-badge ml-1 px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-400 text-amber-950 uppercase tracking-tighter align-middle shadow-xs';
-                                    badge.innerText = 'Ẩn';
-                                    a.appendChild(badge);
-                                }
-                                a.title = 'Trang này đang TẠM ẨN (chỉ Quản trị viên nhìn thấy để chỉnh sửa)';
-                            } else {
-                                if (badge) badge.remove();
-                                a.title = '';
-                            }
                         }
                     }
                 });
             });
 
-            // 2. Identify the active page
-            let activePage = pages.find(p => p.slug !== 'home' && (
-                currentPath.includes('/' + p.slug + '/') || 
-                currentPath.endsWith('/' + p.slug) || 
-                currentPath.includes('/' + p.slug + '.html') ||
-                currentPath.endsWith('/' + p.slug + '.html') ||
-                (document.body && document.body.dataset && document.body.dataset.page === p.slug) ||
-                (p.slug === 'chuyen-gia' && (currentPath.includes('chuyen-gia') || (document.title && document.title.includes('Chuyên Gia')))) ||
-                (p.slug === 'dinh-duong' && (currentPath.includes('dinh-duong') || (document.title && document.title.includes('Dinh Dưỡng')))) ||
-                (p.slug === 'cong-dong' && (currentPath.includes('cong-dong') || (document.title && document.title.includes('Cộng Đồng')))) ||
-                (p.slug === 'pricing' && (currentPath.includes('pricing') || (document.title && document.title.includes('Bảng Giá')))) ||
-                (p.slug === 'dat-lich' && (currentPath.includes('dat-lich') || (document.title && document.title.includes('Đặt Lịch'))))
-            ));
+            // 2. Robustly identify the active page
+            const cleanPath = (currentPath || window.location.pathname).toLowerCase().replace(/index\.html$/, '').replace(/\/+$/, '') || '/';
+            let activePage = pages.find(p => {
+                if (p.slug === 'home' || !p.slug) return false;
+                const s = p.slug.toLowerCase();
+                return cleanPath.includes('/' + s) || 
+                       cleanPath.endsWith(s) || 
+                       (document.body && document.body.dataset && document.body.dataset.page === s);
+            });
 
             if (!activePage) {
-                const isHome = currentPath === '/' || 
-                               currentPath.endsWith('/thuhien/') || 
-                               currentPath.endsWith('/thuhien/index.html') || 
-                               currentPath.endsWith('/index.html') ||
+                const isHome = cleanPath === '/' || 
+                               cleanPath.endsWith('/thuhien') || 
                                (document.body && document.body.dataset && document.body.dataset.page === 'home');
                 if (isHome) {
                     activePage = pages.find(p => p.slug === 'home');
@@ -2216,7 +2224,7 @@ const DB = (() => {
             if (!activePage) {
                 activePage = {
                     id: 'page_current',
-                    title: document.title.split('|')[0].trim() || 'Trang Hiện Tại',
+                    title: 'Trang Hiện Tại',
                     path: currentPath,
                     slug: '',
                     enabled: true,
@@ -2265,12 +2273,6 @@ const DB = (() => {
                             </div>
                         </div>
                     `;
-                    return;
-                }
-            } else if (activePage && activePage.enabled !== false && !isAdmin) {
-                // If maintenance screen was showing and page became public -> reload to restore real content!
-                if (document.getElementById('thuhien-maintenance-screen')) {
-                    window.location.reload();
                     return;
                 }
             }
