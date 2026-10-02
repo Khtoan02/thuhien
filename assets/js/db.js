@@ -15,6 +15,7 @@ const DB = (() => {
     const STORAGE_KEY_ADMIN_CRED = 'thuhien_admin_cred_v1';
     const STORAGE_KEY_LOGIN_ATTEMPTS = 'thuhien_login_attempts_v1';
     const STORAGE_KEY_EVALUATIONS = 'thuhien_evaluations_v1';
+    const STORAGE_KEY_DELETED_EVALUATIONS = 'thuhien_deleted_evaluations_v1';
 
     const FIREBASE_CONFIG = {
         apiKey: "AIzaSyDdt8u-SD8fvqtW4j9e5FBxPQT0_RXIKhQ",
@@ -590,9 +591,14 @@ const DB = (() => {
             localStorage.setItem(STORAGE_KEY_SECURITY_LOGS, JSON.stringify([]));
         }
         if (!localStorage.getItem(STORAGE_KEY_EVALUATIONS)) {
-            const legacy = localStorage.getItem('thuhien_evaluations');
-            localStorage.setItem(STORAGE_KEY_EVALUATIONS, legacy || JSON.stringify([]));
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify([]));
         }
+        if (!localStorage.getItem(STORAGE_KEY_DELETED_EVALUATIONS)) {
+            localStorage.setItem(STORAGE_KEY_DELETED_EVALUATIONS, JSON.stringify([]));
+        }
+        try {
+            localStorage.removeItem('thuhien_evaluations'); // Clean obsolete legacy key
+        } catch (e) {}
     }
 
     init();
@@ -736,9 +742,29 @@ const DB = (() => {
         // ====================================================================
         // NUTRITION EVALUATIONS (CHECKLIST SÀNG LỌC DINH DƯỠNG)
         // ====================================================================
+        getDeletedEvaluationIds() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY_DELETED_EVALUATIONS)) || [];
+            } catch (e) {
+                return [];
+            }
+        },
+
+        addDeletedEvaluationId(id) {
+            if (!id) return;
+            const sId = String(id);
+            const deleted = this.getDeletedEvaluationIds();
+            if (!deleted.includes(sId)) {
+                deleted.push(sId);
+                localStorage.setItem(STORAGE_KEY_DELETED_EVALUATIONS, JSON.stringify(deleted));
+            }
+        },
+
         getEvaluations() {
             try {
-                return JSON.parse(localStorage.getItem(STORAGE_KEY_EVALUATIONS)) || [];
+                const deletedSet = new Set(this.getDeletedEvaluationIds().map(String));
+                const list = JSON.parse(localStorage.getItem(STORAGE_KEY_EVALUATIONS)) || [];
+                return list.filter(item => !item.is_deleted && !deletedSet.has(String(item.id)));
             } catch (e) {
                 return [];
             }
@@ -749,9 +775,17 @@ const DB = (() => {
             const now = new Date();
             const cleanPhone = (data.phone || '').toString().replace(/\D/g, '');
             const id = data.id || ('eval_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6));
+            const sId = String(id);
+
+            // If previously marked deleted, unmark
+            let deleted = this.getDeletedEvaluationIds();
+            if (deleted.includes(sId)) {
+                deleted = deleted.filter(d => d !== sId);
+                localStorage.setItem(STORAGE_KEY_DELETED_EVALUATIONS, JSON.stringify(deleted));
+            }
 
             const newRecord = {
-                id: String(id),
+                id: sId,
                 child_name: data.child_name || '',
                 child_age: data.child_age || '',
                 gender: data.gender || data.child_gender || 'Bé',
@@ -774,19 +808,19 @@ const DB = (() => {
             };
 
             // Remove duplicate if same ID
-            list = list.filter(item => String(item.id) !== String(newRecord.id));
+            list = list.filter(item => String(item.id) !== sId);
             list.unshift(newRecord);
             localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(list));
 
             // Sync to Firebase Cloud Firestore
             if (this._firestoreDb) {
-                this._firestoreDb.collection('evaluations').doc(String(newRecord.id)).set(newRecord, { merge: true }).catch(err => {
+                this._firestoreDb.collection('evaluations').doc(sId).set(newRecord, { merge: true }).catch(err => {
                     console.warn('🔥 Firestore evaluation save failed:', err);
                 });
             } else if (typeof this.initFirebase === 'function') {
                 this.initFirebase().then(db => {
                     if (db) {
-                        db.collection('evaluations').doc(String(newRecord.id)).set(newRecord, { merge: true }).catch(() => {});
+                        db.collection('evaluations').doc(sId).set(newRecord, { merge: true }).catch(() => {});
                     }
                 });
             }
@@ -798,13 +832,57 @@ const DB = (() => {
         },
 
         deleteEvaluation(id) {
+            const sId = String(id);
+            this.addDeletedEvaluationId(sId);
             let list = this.getEvaluations();
-            list = list.filter(e => String(e.id) !== String(id));
+            list = list.filter(e => String(e.id) !== sId);
             localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(list));
-            if (this._firestoreDb) {
-                this._firestoreDb.collection('evaluations').doc(String(id)).delete().catch(() => {});
-            }
-            this.broadcastChange('evaluations_changed', { id });
+
+            // Firestore sync: soft-delete AND hard-delete
+            const syncDeleteToCloud = async () => {
+                try {
+                    const db = this._firestoreDb || (await this.initFirebase());
+                    if (db) {
+                        const docRef = db.collection('evaluations').doc(sId);
+                        await docRef.set({ is_deleted: true, deleted_at: new Date().toISOString() }, { merge: true }).catch(() => {});
+                        await docRef.delete().catch(() => {});
+                    }
+                } catch (err) {
+                    console.warn('🔥 Firestore evaluation delete notice:', err);
+                }
+            };
+            syncDeleteToCloud();
+
+            this.broadcastChange('evaluations_changed', { id: sId });
+            return true;
+        },
+
+        clearAllEvaluations() {
+            let list = this.getEvaluations();
+            list.forEach(item => {
+                this.addDeletedEvaluationId(item.id);
+            });
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify([]));
+
+            const syncClearAllToCloud = async () => {
+                try {
+                    const db = this._firestoreDb || (await this.initFirebase());
+                    if (db && list.length) {
+                        const batch = db.batch();
+                        list.forEach(item => {
+                            const ref = db.collection('evaluations').doc(String(item.id));
+                            batch.set(ref, { is_deleted: true, deleted_at: new Date().toISOString() }, { merge: true });
+                            batch.delete(ref);
+                        });
+                        await batch.commit().catch(() => {});
+                    }
+                } catch (err) {
+                    console.warn('🔥 Firestore clear all evaluations notice:', err);
+                }
+            };
+            syncClearAllToCloud();
+
+            this.broadcastChange('evaluations_changed', { clear_all: true });
             return true;
         },
 
@@ -828,8 +906,14 @@ const DB = (() => {
                     const snap = await db.collection('evaluations').where('phone_normalized', '==', clean).get();
                     if (!snap.empty) {
                         const remoteResults = [];
+                        const deletedSet = new Set(this.getDeletedEvaluationIds().map(String));
                         snap.forEach(doc => {
-                            remoteResults.push({ id: doc.id, ...doc.data() });
+                            const data = doc.data() || {};
+                            if (data.is_deleted) {
+                                this.addDeletedEvaluationId(doc.id);
+                            } else if (!deletedSet.has(String(doc.id))) {
+                                remoteResults.push({ id: doc.id, ...data });
+                            }
                         });
                         this.mergeRemoteEvaluations(remoteResults);
                     }
@@ -847,8 +931,14 @@ const DB = (() => {
                     const snap = await db.collection('evaluations').get();
                     if (!snap.empty) {
                         const remoteResults = [];
+                        const deletedSet = new Set(this.getDeletedEvaluationIds().map(String));
                         snap.forEach(doc => {
-                            remoteResults.push({ id: doc.id, ...doc.data() });
+                            const data = doc.data() || {};
+                            if (data.is_deleted) {
+                                this.addDeletedEvaluationId(doc.id);
+                            } else if (!deletedSet.has(String(doc.id))) {
+                                remoteResults.push({ id: doc.id, ...data });
+                            }
                         });
                         this.mergeRemoteEvaluations(remoteResults);
                         if (typeof window !== 'undefined') {
@@ -866,11 +956,24 @@ const DB = (() => {
 
         mergeRemoteEvaluations(remoteList) {
             if (!Array.isArray(remoteList) || !remoteList.length) return;
+            const deletedSet = new Set(this.getDeletedEvaluationIds().map(String));
             let localList = this.getEvaluations();
             const map = new Map();
-            localList.forEach(item => map.set(String(item.id), item));
+            localList.forEach(item => {
+                const sId = String(item.id);
+                if (!deletedSet.has(sId) && !item.is_deleted) {
+                    map.set(sId, item);
+                }
+            });
             remoteList.forEach(item => {
-                map.set(String(item.id), { ...(map.get(String(item.id)) || {}), ...item });
+                const sId = String(item.id);
+                if (item.is_deleted) {
+                    this.addDeletedEvaluationId(sId);
+                    return;
+                }
+                if (!deletedSet.has(sId)) {
+                    map.set(sId, { ...(map.get(sId) || {}), ...item });
+                }
             });
             const merged = Array.from(map.values()).sort((a, b) => {
                 const tA = new Date(a.created_at_iso || a.created_at || 0).getTime() || 0;
@@ -1504,8 +1607,14 @@ const DB = (() => {
                             this._firestoreDb.collection('evaluations').limit(200).onSnapshot((snapshot) => {
                                 if (snapshot && !snapshot.empty) {
                                     const remoteList = [];
+                                    const deletedSet = new Set(this.getDeletedEvaluationIds().map(String));
                                     snapshot.forEach(doc => {
-                                        remoteList.push({ id: doc.id, ...doc.data() });
+                                        const data = doc.data() || {};
+                                        if (data.is_deleted) {
+                                            this.addDeletedEvaluationId(doc.id);
+                                        } else if (!deletedSet.has(String(doc.id))) {
+                                            remoteList.push({ id: doc.id, ...data });
+                                        }
                                     });
                                     this.mergeRemoteEvaluations(remoteList);
                                     if (typeof window !== 'undefined') {
