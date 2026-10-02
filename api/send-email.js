@@ -107,25 +107,31 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ success: false, error: 'Cổng (Port) không hợp lệ.' });
         }
 
-        const secure = smtp.secure !== undefined ? Boolean(smtp.secure) : (port === 465);
+        let secure = smtp.secure !== undefined ? Boolean(smtp.secure) : (port === 465);
+        if (port === 465) {
+            secure = true;
+        } else if (port === 587 || port === 25) {
+            secure = false;
+        }
+
         const cleanUser = String(smtp.user || '').trim();
         const cleanPass = String(smtp.pass || '').replace(/\s+/g, '');
 
-        if (!isValidEmail(cleanUser)) {
+        if (cleanHost.toLowerCase().includes('gmail') && !isValidEmail(cleanUser)) {
             return res.status(400).json({
                 success: false,
-                error: 'Tài khoản SMTP username phải là một địa chỉ email hợp lệ.'
+                error: 'Tài khoản Gmail SMTP phải là một địa chỉ email hợp lệ (ví dụ: yourname@gmail.com).'
             });
         }
 
         const senderName = sanitizeHeader(from_name || smtp.from_name || smtp.fromName || 'Thu Hiền - Cùng Mẹ Hiểu Con');
-        const rawSenderEmail = from_email || smtp.from_email || smtp.fromEmail || cleanUser;
+        const rawSenderEmail = from_email || smtp.from_email || smtp.fromEmail || (isValidEmail(cleanUser) ? cleanUser : '');
         const senderEmail = sanitizeHeader(rawSenderEmail);
 
         if (!isValidEmail(senderEmail)) {
             return res.status(400).json({
                 success: false,
-                error: 'Email người gửi (fromEmail) không đúng định dạng.'
+                error: 'Email người gửi (fromEmail) không đúng định dạng email hợp lệ.'
             });
         }
 
@@ -211,10 +217,10 @@ module.exports = async function handler(req, res) {
         console.error('SMTP Mailer Error:', err);
         let errorMsg = err.message || 'Lỗi không xác định khi kết nối SMTP';
 
-        if (err.code === 'EAUTH') {
-            errorMsg = 'Sai thông tin đăng nhập SMTP (Username hoặc Mật khẩu ứng dụng không đúng). Nếu dùng Gmail, vui lòng dùng Mật khẩu ứng dụng (App Password) 16 ký tự, không dùng mật khẩu Gmail thông thường.';
-        } else if (err.code === 'ESOCKET' || err.code === 'ETIMEDOUT') {
-            errorMsg = `Không thể kết nối đến máy chủ SMTP (${err.code}). Vui lòng kiểm tra lại Host và Cổng (Port 465 SSL hoặc 587 TLS).`;
+        if (err.code === 'EAUTH' || err.responseCode === 535 || (err.message && err.message.includes('535'))) {
+            errorMsg = 'Sai thông tin đăng nhập SMTP (Username hoặc Mật khẩu ứng dụng không đúng). Nếu dùng Gmail, bạn BẮT BUỘC phải dùng "Mật khẩu ứng dụng" (App Password) 16 ký tự tạo tại myaccount.google.com/apppasswords (yêu cầu bật Xác minh 2 bước), KHÔNG được dùng mật khẩu Gmail thông thường!';
+        } else if (err.code === 'ESOCKET' || err.code === 'ETIMEDOUT' || err.code === 'ECONNECTION' || (err.message && (err.message.includes('timeout') || err.message.includes('ETIMEDOUT')))) {
+            errorMsg = `Không thể kết nối đến máy chủ SMTP (${err.code || 'Timeout'}). Vui lòng kiểm tra lại Host và Cổng (Gmail: smtp.gmail.com, Cổng 465 với SSL, hoặc 587 với TLS).`;
         }
 
         return res.status(500).json({

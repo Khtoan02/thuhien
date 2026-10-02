@@ -3472,6 +3472,25 @@
             return;
         }
 
+        // Lấy thông tin cấu hình đang điền trực tiếp trên màn hình
+        const provider = document.getElementById('emailProviderSelect') ? document.getElementById('emailProviderSelect').value : 'smtp';
+        const liveConfig = {
+            provider: provider,
+            smtp_host: document.getElementById('smtpHost') ? document.getElementById('smtpHost').value.trim() : 'smtp.gmail.com',
+            smtp_port: document.getElementById('smtpPort') ? Number(document.getElementById('smtpPort').value) || 465 : 465,
+            smtp_secure: document.getElementById('smtpSecure') ? document.getElementById('smtpSecure').checked : true,
+            smtp_user: document.getElementById('smtpUser') ? document.getElementById('smtpUser').value.trim() : '',
+            smtp_pass: document.getElementById('smtpPass') ? document.getElementById('smtpPass').value.trim() : '',
+            smtp_from_name: document.getElementById('smtpFromName') ? document.getElementById('smtpFromName').value.trim() : 'Thu Hiền - Cùng Mẹ Hiểu Con',
+            smtp_from_email: document.getElementById('smtpFromEmail') ? document.getElementById('smtpFromEmail').value.trim() : '',
+            admin_notify_email: document.getElementById('adminNotifyEmail') ? document.getElementById('adminNotifyEmail').value.trim() : ''
+        };
+
+        if (provider === 'smtp' && (!liveConfig.smtp_user || !liveConfig.smtp_pass)) {
+            alert('Vui lòng nhập đầy đủ Tài Khoản / Email Gửi và Mật Khẩu Ứng Dụng SMTP trong ô cấu hình bên trái trước khi gửi thử nghiệm!');
+            return;
+        }
+
         if (btn) {
             btn.disabled = true;
             btn.innerText = 'Đang gửi email thử nghiệm...';
@@ -3480,16 +3499,16 @@
         if (resultBox) {
             resultBox.classList.remove('hidden');
             resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200';
-            resultBox.innerText = 'Đang gửi email thử nghiệm tới ' + targetEmail + '...';
+            resultBox.innerText = 'Đang kết nối SMTP và gửi email thử nghiệm tới ' + targetEmail + '...';
         }
 
         try {
-            const res = await DB.testEmail(targetEmail);
+            const res = await DB.testEmail(targetEmail, liveConfig);
             if (resultBox) {
                 resultBox.classList.remove('hidden');
                 if (res.success) {
-                    resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
-                    resultBox.innerText = `✓ ${res.message}`;
+                    resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-900 border border-emerald-300 leading-relaxed';
+                    resultBox.innerHTML = `<strong>✓ GỬI THÀNH CÔNG!</strong> ${res.message}<br><span class="mt-1 block text-emerald-800 font-normal">📬 <strong>Mẹo kiểm tra hộp thư:</strong> Hãy kiểm tra cả hộp thư <strong>Spam (Thư rác)</strong>, <strong>Quảng cáo (Promotions)</strong> hoặc <strong>Cập nhật (Updates)</strong>. Nếu gửi từ chính tài khoản Gmail người nhận, Gmail có thể lưu vào mục <em>"Thư đã gửi" (Sent)</em> thay vì thông báo thư mới.</span>`;
                 } else {
                     resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200 leading-relaxed';
                     resultBox.innerHTML = `✕ <strong>Lỗi:</strong> ${res.message}${res.hint ? `<br>💡 <em>Gợi ý:</em> ${res.hint}` : ''}`;

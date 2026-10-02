@@ -1838,6 +1838,16 @@ const DB = (() => {
             }
         },
 
+        getSendEmailApiUrl() {
+            if (typeof window !== 'undefined') {
+                const host = window.location.hostname;
+                if (host === 'localhost' || host === '127.0.0.1' || host.includes('.local') || host.includes('servbay')) {
+                    return 'https://www.thuhien.online/api/send-email';
+                }
+            }
+            return '/api/send-email';
+        },
+
         clearEmailLogs() {
             localStorage.setItem(STORAGE_KEY_EMAIL_LOGS, JSON.stringify([]));
             return true;
@@ -2009,7 +2019,8 @@ const DB = (() => {
             // Attempt delivery via SMTP
             if (emailCfg.provider === 'smtp') {
                 try {
-                    const res = await fetch('/api/send-email', {
+                    const apiUrl = this.getSendEmailApiUrl();
+                    const res = await fetch(apiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -2029,7 +2040,7 @@ const DB = (() => {
                             html: htmlBody
                         })
                     });
-                    const json = await res.json();
+                    const json = await res.json().catch(() => ({}));
                     if (res.ok && json.success) {
                         logEntry.status = 'Delivered (SMTP gửi thành công)';
                     } else {
@@ -2092,7 +2103,8 @@ const DB = (() => {
 
             if (emailCfg.provider === 'smtp') {
                 try {
-                    const res = await fetch('/api/send-email', {
+                    const apiUrl = this.getSendEmailApiUrl();
+                    const res = await fetch(apiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -2127,11 +2139,11 @@ const DB = (() => {
                             </div>`
                         })
                     });
-                    const json = await res.json();
+                    const json = await res.json().catch(() => ({}));
                     if (res.ok && json.success) {
                         return { success: true, message: `Gửi email thử nghiệm thành công đến ${target}! (MessageID: ${json.messageId || 'OK'})` };
                     } else {
-                        return { success: false, message: json.error || 'Không gửi được email', hint: json.hint };
+                        return { success: false, message: json.error || `Lỗi máy chủ HTTP ${res.status}`, hint: json.hint };
                     }
                 } catch (err) {
                     return { success: false, message: 'Lỗi kết nối tới API: ' + err.message, hint: 'Kiểm tra xem backend server /api/send-email có đang chạy không.' };
@@ -2151,7 +2163,8 @@ const DB = (() => {
             const settings = this.getSettings();
             const emailCfg = customConfig || settings.email || {};
             try {
-                const res = await fetch('/api/send-email', {
+                const apiUrl = this.getSendEmailApiUrl();
+                const res = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -2165,7 +2178,7 @@ const DB = (() => {
                         }
                     })
                 });
-                const json = await res.json();
+                const json = await res.json().catch(() => ({}));
                 return json;
             } catch (err) {
                 return { success: false, error: err.message, hint: 'Không kết nối được API /api/send-email. Hãy kiểm tra server backend.' };
