@@ -240,13 +240,24 @@
                 feedbackBg = 'bg-rose-50/60 border-rose-200 text-rose-950';
             }
 
-            // Answers details list
+    // Security & XSS Sanitization Utility
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // Answers details list
             const answers = item.answers || {};
             const answersListHtml = Object.keys(answers).length > 0
                 ? Object.entries(answers).map(([key, val]) => `
                     <div class="flex items-start justify-between py-1.5 border-b border-zinc-100 text-xs">
-                        <span class="text-[#5F6E66]">${formatQuestionKey(key)}:</span>
-                        <strong class="text-[#174C3B] text-right ml-2">${val}</strong>
+                        <span class="text-[#5F6E66]">${escapeHtml(formatQuestionKey(key))}:</span>
+                        <strong class="text-[#174C3B] text-right ml-2">${escapeHtml(val)}</strong>
                     </div>
                 `).join('')
                 : '<p class="text-xs text-zinc-400 italic">Không có chi tiết câu trả lời bổ sung.</p>';
@@ -264,18 +275,18 @@
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-100">
                         <div>
                             <span class="text-[11px] font-bold text-[#8FAF91] uppercase tracking-wider block">
-                                📅 Ngày đánh giá: ${item.created_at || 'Mới đây'}
+                                📅 Ngày đánh giá: ${escapeHtml(item.created_at || 'Mới đây')}
                             </span>
                             <h3 class="text-xl sm:text-2xl font-black text-[#174C3B]">
-                                Bé: ${item.child_name || 'Bé'}
+                                Bé: ${escapeHtml(item.child_name || 'Bé')}
                             </h3>
                             <p class="text-xs text-[#5F6E66] mt-0.5">
-                                Độ tuổi: <strong>${item.child_age || '-'}</strong> • Giới tính: <strong>${item.gender || 'Nam'}</strong>
-                                ${item.weight ? ` • Cân nặng: <strong>${item.weight} kg</strong>` : ''}
-                                ${item.height ? ` • Chiều cao: <strong>${item.height} cm</strong>` : ''}
+                                Độ tuổi: <strong>${escapeHtml(item.child_age || '-')}</strong> • Giới tính: <strong>${escapeHtml(item.gender || 'Nam')}</strong>
+                                ${item.weight ? ` • Cân nặng: <strong>${escapeHtml(item.weight)} kg</strong>` : ''}
+                                ${item.height ? ` • Chiều cao: <strong>${escapeHtml(item.height)} cm</strong>` : ''}
                             </p>
                             <p class="text-xs text-[#5F6E66]">
-                                Phụ huynh: <strong>${item.parent_name || 'Ba mẹ'}</strong> (${item.phone || searchedPhone})
+                                Phụ huynh: <strong>${escapeHtml(item.parent_name || 'Ba mẹ')}</strong> (${escapeHtml(item.phone || searchedPhone)})
                             </p>
                         </div>
 
@@ -283,7 +294,7 @@
                         <div class="shrink-0">
                             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border ${badgeClass}">
                                 <span class="w-2.5 h-2.5 rounded-full ${dotColor}"></span>
-                                <span>${item.risk_title || 'Đã đánh giá'}</span>
+                                <span>${escapeHtml(item.risk_title || 'Đã đánh giá')}</span>
                             </span>
                         </div>
                     </div>
@@ -298,14 +309,14 @@
                     ${item.daily_diet ? `
                         <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/70 text-xs">
                             <span class="font-bold text-[#174C3B] block mb-1">Mô tả chế độ ăn 1 ngày của con:</span>
-                            <p class="text-[#5F6E66] whitespace-pre-line">${item.daily_diet}</p>
+                            <p class="text-[#5F6E66] whitespace-pre-line">${escapeHtml(item.daily_diet)}</p>
                         </div>
                     ` : ''}
 
                     ${item.other_difficulties ? `
                         <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/70 text-xs">
                             <span class="font-bold text-[#174C3B] block mb-1">Khó khăn ăn uống đặc thù khác:</span>
-                            <p class="text-[#5F6E66]">${item.other_difficulties}</p>
+                            <p class="text-[#5F6E66]">${escapeHtml(item.other_difficulties)}</p>
                         </div>
                     ` : ''}
 
@@ -339,7 +350,7 @@
         container.innerHTML = `
             <div class="space-y-4">
                 <div class="flex items-center justify-between px-2 text-xs text-[#5F6E66]">
-                    <span>Tìm thấy <strong>${countText}</strong> cho số <strong>${searchedPhone}</strong></span>
+                    <span>Tìm thấy <strong>${escapeHtml(countText)}</strong> cho số <strong>${escapeHtml(searchedPhone)}</strong></span>
                     <button onclick="document.getElementById('searchPhoneInput').select()" class="text-[#174C3B] font-bold hover:underline">Đổi số khác</button>
                 </div>
                 ${cardsHtml}

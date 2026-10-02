@@ -2270,8 +2270,22 @@ const DB = (() => {
                 localStorage.removeItem(STORAGE_KEY_LOGIN_ATTEMPTS);
                 this.logSecurityEvent('LOGIN_SUCCESS', 'SUCCESS', `Đăng nhập thành công với user "${username}"`);
                 try {
+                    const loginTime = Date.now();
+                    const expiresAt = loginTime + (12 * 60 * 60 * 1000); // 12 hours absolute maximum
+                    const signature = sha256(`THUHIEN_SESSION_${username.trim()}_${creds.hash}_${loginTime}_${creds.salt}`);
+                    const sessionData = {
+                        username: username.trim(),
+                        loginTime: loginTime,
+                        lastActive: loginTime,
+                        expiresAt: expiresAt,
+                        signature: signature
+                    };
+                    const sessionStr = JSON.stringify(sessionData);
+                    sessionStorage.setItem('thuhien_admin_session', sessionStr);
                     sessionStorage.setItem('thuhien_admin_auth', 'true');
-                    sessionStorage.setItem('thuhien_admin_auth_time', String(Date.now()));
+                    sessionStorage.setItem('thuhien_admin_auth_time', String(loginTime));
+                    localStorage.setItem('thuhien_admin_session', sessionStr);
+                    localStorage.setItem('thuhien_admin_auth', 'true');
                 } catch (e) {}
                 return { success: true };
             } else {
@@ -2506,11 +2520,88 @@ const DB = (() => {
         // ====================================================================
         // ADMIN AUTHENTICATION CHECK & PAGE STATUS ROUTER
         // ====================================================================
+        escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        },
+
+        clearAdminSession() {
+            try {
+                if (typeof sessionStorage !== 'undefined') {
+                    sessionStorage.removeItem('thuhien_admin_session');
+                    sessionStorage.removeItem('thuhien_admin_auth');
+                    sessionStorage.removeItem('thuhien_admin_auth_time');
+                }
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.removeItem('thuhien_admin_session');
+                    localStorage.removeItem('thuhien_admin_auth');
+                    localStorage.removeItem('thuhien_admin_auth_time');
+                }
+            } catch (e) {}
+        },
+
         isAdminAuthenticated() {
             try {
-                return (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('thuhien_admin_auth') === 'true') ||
-                       (typeof localStorage !== 'undefined' && localStorage.getItem('thuhien_admin_auth') === 'true');
+                let sessionRaw = null;
+                if (typeof sessionStorage !== 'undefined') {
+                    sessionRaw = sessionStorage.getItem('thuhien_admin_session');
+                }
+                if (!sessionRaw && typeof localStorage !== 'undefined') {
+                    sessionRaw = localStorage.getItem('thuhien_admin_session');
+                }
+                if (!sessionRaw) {
+                    // Check if someone tried to manually fake thuhien_admin_auth without a signed session
+                    if ((typeof sessionStorage !== 'undefined' && sessionStorage.getItem('thuhien_admin_auth')) ||
+                        (typeof localStorage !== 'undefined' && localStorage.getItem('thuhien_admin_auth'))) {
+                        this.clearAdminSession();
+                    }
+                    return false;
+                }
+
+                const session = JSON.parse(sessionRaw);
+                if (!session || !session.username || !session.signature || !session.loginTime || !session.expiresAt) {
+                    this.clearAdminSession();
+                    return false;
+                }
+
+                const now = Date.now();
+                // 1. Check absolute session expiration (12 hours)
+                if (now > session.expiresAt) {
+                    this.clearAdminSession();
+                    return false;
+                }
+
+                // 2. Check inactivity timeout (30 minutes of idle)
+                const lastActive = session.lastActive || session.loginTime;
+                if (now - lastActive > 30 * 60 * 1000) {
+                    this.clearAdminSession();
+                    return false;
+                }
+
+                // 3. Cryptographically verify signature against salted admin credentials
+                const creds = JSON.parse(localStorage.getItem(STORAGE_KEY_ADMIN_CRED) || JSON.stringify(DEFAULT_ADMIN_CRED));
+                const expectedSig = sha256(`THUHIEN_SESSION_${session.username}_${creds.hash}_${session.loginTime}_${creds.salt}`);
+
+                if (session.signature !== expectedSig || session.username !== creds.username) {
+                    this.clearAdminSession();
+                    this.logSecurityEvent('SESSION_TAMPERING_DETECTED', 'BLOCKED', 'Phát hiện chữ ký phiên không hợp lệ');
+                    return false;
+                }
+
+                // 4. Slide inactivity window forward
+                session.lastActive = now;
+                const updatedStr = JSON.stringify(session);
+                if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('thuhien_admin_session', updatedStr);
+                if (typeof localStorage !== 'undefined') localStorage.setItem('thuhien_admin_session', updatedStr);
+
+                return true;
             } catch (e) {
+                this.clearAdminSession();
                 return false;
             }
         },
@@ -2959,3 +3050,11 @@ if (typeof document !== 'undefined') {
         setTimeout(runInitSync, 0);
     }
 }
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = DB;
+}
+if (typeof window !== 'undefined') {
+    window.DB = DB;
+}
+
