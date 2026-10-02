@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Đánh Giá & Tư Vấn Dinh Dưỡng Cho Trẻ | Thu Hiền</title>
+    <meta name="description" content="Bảng sàng lọc chuyên môn từ Chuyên gia Bùi Thu Hiền giúp cha mẹ nhận diện sớm rào cản ăn uống, nguy cơ thiếu hụt vi chất và tình trạng tiêu hóa ở trẻ.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+
+    <!-- OpenGraph & Meta -->
+    <meta property="og:title" content="Phiếu Đánh Giá & Tư Vấn Dinh Dưỡng Cho Trẻ | Thu Hiền">
+    <meta property="og:description" content="Checklist sàng lọc thói quen ăn uống, nhai nuốt và nguy cơ thiếu hụt vi chất cho trẻ.">
+    <meta property="og:image" content="../assets/images/thu-hien-hero-banner.png">
+    <meta property="og:type" content="article">
+    <meta name="theme-color" content="#174C3B">
+
+    <!-- Google Fonts Preconnect & Direct Stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#174C3B',
+                            primaryLight: '#1F5A45',
+                            sage: '#8FAF91',
+                            sageLight: '#A9C2A4',
+                            mintSub: '#EEF5EA',
+                            creamBg: '#FAF7F0',
+                            peach: '#F08A4B',
+                            peachHover: '#E07837',
+                            textMuted: '#5F6E66'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Alata"', 'system-ui', 'sans-serif'],
+                        serif: ['"Alata"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <style>
+        /* Specific enhancements for assessment form */
+        .choice-card {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            user-select: none;
+        }
+        .choice-card:hover {
+            border-color: #8FAF91;
+            background-color: #F6FAF4;
+        }
+        .choice-card.selected {
+            border-color: #174C3B;
+            background-color: #EEF5EA;
+            box-shadow: 0 4px 14px rgba(23, 76, 59, 0.08);
+        }
+        .radio-indicator {
+            width: 18px;
+            height: 18px;
+            border-radius: 9999px;
+            border: 2px solid #CBD5E1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .choice-card.selected .radio-indicator {
+            border-color: #174C3B;
+            background-color: #174C3B;
+        }
+        .choice-card.selected .radio-indicator::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 9999px;
+            background-color: #ffffff;
+        }
+        
+        /* Print styles for export */
+        @media print {
+            .nav-island, #thuhien-admin-bar, #floatingScoreBar, .no-print {
+                display: none !important;
+            }
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+            }
+            .print-page {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body data-page="assessment" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-24 md:pb-28">
+
+<!-- ==========================================================================
+     FLOATING NAVIGATION ISLAND
+     ========================================================================== -->
+<header class="nav-island">
+    <nav class="nav-island-inner justify-between">
+        <!-- Logo -->
+        <a href="../" class="flex items-center gap-3 group text-decoration-none">
+            <img src="../favicon.png" alt="Thu Hiền Logo" class="w-10 h-10 rounded-full object-cover shadow-sm ring-2 ring-white/80 group-hover:scale-105 transition-transform duration-300">
+            <div class="flex flex-col">
+                <span class="font-bold text-lg md:text-xl text-white leading-none tracking-tight">Thu Hiền</span>
+                <span class="text-[11px] font-medium text-white/90 tracking-wide mt-1 uppercase">Cùng Mẹ Hiểu Con</span>
+            </div>
+        </a>
+
+        <!-- Header Actions -->
+        <div class="flex items-center gap-1 sm:gap-2">
+            <a href="../" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden md:inline-flex">
+                Trang Chủ
+            </a>
+            <a href="../chuyen-gia/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors">
+                Chuyên Gia
+            </a>
+            <a href="../dinh-duong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden sm:inline-flex">
+                Dinh Dưỡng
+            </a>
+            <a href="./" class="px-3 sm:px-4 py-2 rounded-full bg-white text-[#174C3B] text-xs sm:text-sm font-bold shadow-2xs">
+                Đánh Giá
+            </a>
+            <a href="../cong-dong/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden lg:inline-flex">
+                Cộng Đồng
+            </a>
+            <a href="../pricing/" class="px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-bold text-white hover:bg-white/10 transition-colors hidden xl:inline-flex">
+                Bảng Giá
+            </a>
+            <a href="../dat-lich/" class="bg-[#174C3B] hover:bg-[#133F31] text-white py-2 px-3 sm:px-4 rounded-full text-xs sm:text-sm font-bold shadow-2xs flex items-center gap-1.5 group transition-all">
+                <span class="text-xs sm:text-sm font-bold">Đặt Lịch 1:1</span>
+                <span class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
+                    </svg>
+                </span>
+            </a>
+        </div>
+    </nav>
+</header>
+
+<!-- ==========================================================================
+     HERO SECTION: INTRODUCE ASSESSMENT FORM
+     ========================================================================== -->
+<section class="pt-24 sm:pt-32 md:pt-36 pb-8 md:pb-12 text-center max-w-4xl mx-auto px-4 sm:px-6">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#174C3B]/10 text-[#174C3B] text-xs font-bold uppercase tracking-wider mb-4">
+        <svg class="w-3.5 h-3.5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+        </svg>
+        <span>Công Cụ Khảo Sát Sàng Lọc Sớm</span>
+    </div>
+    
+    <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-[#174C3B] uppercase tracking-tight leading-tight mb-4">
+        Phiếu Đánh Giá & Tư Vấn Dinh Dưỡng
+    </h1>
+    
+    <p class="text-sm sm:text-base md:text-lg text-[#5F6E66] max-w-2xl mx-auto leading-relaxed">
+        Dành 5 phút hoàn thành phiếu đánh giá dưới đây giúp ba mẹ nhận diện rõ rào cản ăn uống, nguy cơ thiếu hụt vi chất và tình trạng tiêu hóa của con.
+    </p>
+
+    <!-- Progress Indicator Bar -->
+    <div class="mt-8 max-w-xl mx-auto bg-white/80 p-3 sm:p-4 rounded-2xl border border-[#8FAF91]/30 shadow-xs">
+        <div class="flex items-center justify-between text-xs font-bold text-[#174C3B] mb-2">
+            <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-[#F08A4B] animate-pulse"></span>
+                <span>Tiến trình hoàn thành phiếu:</span>
+            </span>
+            <span id="progressText">0 / 22 câu hỏi (0%)</span>
+        </div>
+        <div class="w-full bg-[#FAF7F0] h-2.5 rounded-full overflow-hidden border border-[#8FAF91]/20">
+            <div id="progressBar" class="bg-gradient-to-r from-[#174C3B] via-[#8FAF91] to-[#F08A4B] h-full rounded-full transition-all duration-300" style="width: 0%;"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     MAIN FORM CONTENT
+     ========================================================================== -->
+<main class="max-w-4xl mx-auto px-4 sm:px-6 space-y-8 sm:space-y-10">
+
+    <form id="assessmentForm" onsubmit="event.preventDefault(); calculateAndShowResults();">
+
+        <!-- ======================================================================
+             SECTION 1: THÔNG TIN CƠ BẢN CỦA TRẺ & CHA MẸ
+             ====================================================================== -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
+            <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">1</span>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Thông Tin Trẻ & Phụ Huynh</h2>
+                    <p class="text-xs sm:text-sm text-[#5F6E66]">Giúp Chuyên gia Thu Hiền lưu hồ sơ và tư vấn chính xác theo độ tuổi của bé</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                <!-- Họ và tên trẻ -->
+                <div>
+                    <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Họ và tên trẻ <span class="text-red-500">*</span></label>
+                    <input type="text" id="childName" required placeholder="Ví dụ: Bé Gia Bảo (Ken)" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
+                </div>
+
+                <!-- Giới tính -->
+                <div>
+                    <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Giới tính</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center justify-center gap-2 p-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm font-bold cursor-pointer hover:border-[#8FAF91] has-[:checked]:bg-[#EEF5EA] has-[:checked]:border-[#174C3B] transition-all">
+                            <input type="radio" name="childGender" value="Nam" checked class="w-4 h-4 text-[#174C3B] focus:ring-[#174C3B]">
+                            <span>Bé Trai</span>
+                        </label>
+                        <label class="flex items-center justify-center gap-2 p-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm font-bold cursor-pointer hover:border-[#8FAF91] has-[:checked]:bg-[#EEF5EA] has-[:checked]:border-[#174C3B] transition-all">
+                            <input type="radio" name="childGender" value="Nữ" class="w-4 h-4 text-[#174C3B] focus:ring-[#174C3B]">
+                            <span>Bé Gái</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Ngày sinh / Tuổi -->
+                <div>
+                    <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Tuổi / Tháng tuổi của bé <span class="text-red-500">*</span></label>
+                    <input type="text" id="childAge" required placeholder="Ví dụ: 28 tháng tuổi (sinh 2023)" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
+                </div>
+
+                <!-- Cân nặng & Chiều cao -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Cân nặng (kg)</label>
+                        <input type="number" step="0.1" id="childWeight" placeholder="Ví dụ: 12.5" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Chiều cao (cm)</label>
+                        <input type="number" step="0.5" id="childHeight" placeholder="Ví dụ: 90" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
+                    </div>
+                </div>
+
+                <!-- Họ tên Cha/Mẹ -->
+                <div>
+                    <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Họ và tên Cha/Mẹ <span class="text-red-500">*</span></label>
+                    <input type="text" id="parentName" required placeholder="Ví dụ: Mẹ Mai Lan" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
+                </div>
+
+                <!-- Số điện thoại / Zalo -->
+                <div>
+                    <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Số điện thoại (kết nối Zalo) <span class="text-red-500">*</span></label>
+                    <input type="tel" id="parentPhone" required placeholder="09xx xxx xxx" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             SECTION 2: ĐÁNH GIÁ TÌNH TRẠNG DINH DƯỠNG TỔNG QUÁT (Mục 1 đến 6)
+             ====================================================================== -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
+            <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">2</span>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Tình Trạng Ăn Uống & Tiêu Hóa Tổng Quát</h2>
+                    <p class="text-xs sm:text-sm text-[#5F6E66]">Khai thác nếp ăn hàng ngày, khả năng nhai nuốt và đường ruột của con</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <!-- 1. Thói quen ăn hàng ngày -->
+                <div class="question-block" data-qid="q1">
+                    <label class="block text-sm font-bold text-[#174C3B] mb-2">1. Thói quen ăn uống hàng ngày của bé:</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q1', 0)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Ăn đa dạng thực phẩm</span>
+                                <span class="text-[11px] text-[#5F6E66]">Chấp nhận nhiều nhóm thức ăn (0đ)</span>
+                            </div>
+                        </div>
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q1', 1)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Kén chọn đồ ăn</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Ăn chọn lọc, khó thử món mới (+1đ)</span>
+                            </div>
+                        </div>
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q1', 0)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Nếp ăn rất tốt</span>
+                                <span class="text-[11px] text-[#5F6E66]">Hào hứng với bữa ăn (0đ)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Khả năng nhai nuốt -->
+                <div class="question-block" data-qid="q2">
+                    <label class="block text-sm font-bold text-[#174C3B] mb-2">2. Khả năng nhai nuốt và xử lý thức ăn:</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q2', 0)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Nhai nuốt bình thường</span>
+                                <span class="text-[11px] text-[#5F6E66]">Nhai kỹ, nuốt gọn (0đ)</span>
+                            </div>
+                        </div>
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q2', 1)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Ngậm đồ ăn trong miệng</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Ngậm lâu, lười nhai, dễ ọe (+1đ)</span>
+                            </div>
+                        </div>
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q2', 0)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Nhai nuốt rất tốt</span>
+                                <span class="text-[11px] text-[#5F6E66]">Xử lý thức ăn thô tốt (0đ)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Tình trạng tiêu hóa (Chọn nhiều đáp án) -->
+                <div class="question-block" data-qid="q3">
+                    <label class="block text-sm font-bold text-[#174C3B] mb-2">3. Tình trạng tiêu hóa và bài tiết của trẻ (Chọn các tình trạng bé đang gặp):</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                        <label class="p-3.5 rounded-2xl border border-zinc-200 bg-[#FAF7F0]/40 flex items-center gap-3 cursor-pointer hover:border-[#8FAF91] has-[:checked]:bg-[#EEF5EA] has-[:checked]:border-[#174C3B] transition-all">
+                            <input type="checkbox" name="digest_issues" value="taobon" onchange="updateMultiChoiceScore()" class="w-4 h-4 text-[#174C3B] rounded focus:ring-[#174C3B]">
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Táo bón</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Phân cứng/khô (+1đ)</span>
+                            </div>
+                        </label>
+                        <label class="p-3.5 rounded-2xl border border-zinc-200 bg-[#FAF7F0]/40 flex items-center gap-3 cursor-pointer hover:border-[#8FAF91] has-[:checked]:bg-[#EEF5EA] has-[:checked]:border-[#174C3B] transition-all">
+                            <input type="checkbox" name="digest_issues" value="tieuchay" onchange="updateMultiChoiceScore()" class="w-4 h-4 text-[#174C3B] rounded focus:ring-[#174C3B]">
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Tiêu chảy</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Phân lỏng, sống (+1đ)</span>
+                            </div>
+                        </label>
+                        <label class="p-3.5 rounded-2xl border border-zinc-200 bg-[#FAF7F0]/40 flex items-center gap-3 cursor-pointer hover:border-[#8FAF91] has-[:checked]:bg-[#EEF5EA] has-[:checked]:border-[#174C3B] transition-all">
+                            <input type="checkbox" name="digest_issues" value="nontro" onchange="updateMultiChoiceScore()" class="w-4 h-4 text-[#174C3B] rounded focus:ring-[#174C3B]">
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Nôn trớ, trào ngược</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Ợ chua, hay nôn (+1đ)</span>
+                            </div>
+                        </label>
+                        <label class="p-3.5 rounded-2xl border border-zinc-200 bg-[#FAF7F0]/40 flex items-center gap-3 cursor-pointer hover:border-[#8FAF91] has-[:checked]:bg-[#EEF5EA] has-[:checked]:border-[#174C3B] transition-all">
+                            <input type="checkbox" name="digest_issues" value="none" onchange="handleNoDigestIssue(this)" class="w-4 h-4 text-[#174C3B] rounded focus:ring-[#174C3B]">
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Bình thường</span>
+                                <span class="text-[11px] text-[#5F6E66]">Không có vấn đề (0đ)</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 4. Giấc ngủ -->
+                <div class="question-block" data-qid="q4">
+                    <label class="block text-sm font-bold text-[#174C3B] mb-2">4. Chất lượng giấc ngủ ban đêm:</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q4', 0)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Trẻ ngủ ngon, sâu giấc</span>
+                                <span class="text-[11px] text-[#5F6E66]">Ít giật mình (0đ)</span>
+                            </div>
+                        </div>
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q4', 1)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Khó ngủ, thức giấc nửa đêm</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Trằn trọc, ngủ không sâu (+1đ)</span>
+                            </div>
+                        </div>
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q4', 0)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Khác / Bình thường</span>
+                                <span class="text-[11px] text-[#5F6E66]">Giấc ngủ chấp nhận được (0đ)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Dị ứng & Lượng nước uống -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-[#174C3B] mb-2">5. Tiền sử dị ứng đã biết:</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 text-xs font-bold text-[#174C3B] cursor-pointer">
+                                <input type="checkbox" name="allergy" value="med" class="w-4 h-4 rounded text-[#174C3B]">
+                                <span>Dị ứng thuốc</span>
+                            </label>
+                            <label class="flex items-center gap-2 text-xs font-bold text-[#174C3B] cursor-pointer">
+                                <input type="checkbox" name="allergy" value="food" class="w-4 h-4 rounded text-[#174C3B]">
+                                <span>Dị ứng thực phẩm (tôm, cua, trứng, đậu phộng...)</span>
+                            </label>
+                            <label class="flex items-center gap-2 text-xs font-bold text-[#174C3B] cursor-pointer">
+                                <input type="checkbox" name="allergy" value="milk" class="w-4 h-4 rounded text-[#174C3B]">
+                                <span>Dị ứng sữa bò & các chế phẩm từ sữa</span>
+                            </label>
+                            <label class="flex items-center gap-2 text-xs font-bold text-[#174C3B] cursor-pointer">
+                                <input type="checkbox" name="allergy" value="none" checked class="w-4 h-4 rounded text-[#174C3B]">
+                                <span>Chưa phát hiện dị ứng nào</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-[#174C3B] mb-2">Lượng nước trẻ uống mỗi ngày (khoảng):</label>
+                        <p class="text-[11px] text-[#5F6E66] mb-2">Bao gồm cả sữa, nước lọc, nước hoa quả, nước canh...</p>
+                        <div class="relative">
+                            <input type="number" id="waterAmount" placeholder="Ví dụ: 800" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] pr-12">
+                            <span class="absolute right-4 top-2.5 text-xs text-[#5F6E66] font-bold">ml/ngày</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Sử dụng thiết bị điện tử khi ăn -->
+                <div class="question-block" data-qid="q6">
+                    <label class="block text-sm font-bold text-[#174C3B] mb-2">6. Sử dụng thiết bị điện tử (điện thoại, TV, Ipad) trong khi ăn:</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q6', 0)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Không dùng</span>
+                                <span class="text-[11px] text-[#5F6E66]">Tập trung vào bàn ăn (0đ)</span>
+                            </div>
+                        </div>
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q6', 0)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Ít dùng / Thỉnh thoảng</span>
+                                <span class="text-[11px] text-[#5F6E66]">Chỉ xem lúc mệt mỏi (0đ)</span>
+                            </div>
+                        </div>
+                        <div class="choice-card p-3.5 rounded-2xl border border-zinc-200 flex items-center gap-3" onclick="selectSingleChoice(this, 'q6', 1)">
+                            <span class="radio-indicator"></span>
+                            <div>
+                                <span class="text-sm font-bold text-[#174C3B] block">Dùng thường xuyên</span>
+                                <span class="text-[11px] text-[#F08A4B] font-bold">Phải có màn hình mới chịu ăn (+1đ)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             SECTION 3: CÁC VẤN ĐỀ DINH DƯỠNG & CẢM GIÁC THƯỜNG GẶP (Mục 7)
+             ====================================================================== -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
+            <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">3</span>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Vấn Đề Dinh Dưỡng, Cảm Giác & Vận Động</h2>
+                    <p class="text-xs sm:text-sm text-[#5F6E66]">Ba mẹ vui lòng chọn phương án phản ánh đúng nhất tình trạng của bé gần đây</p>
+                </div>
+            </div>
+
+            <!-- Table-like responsive question list -->
+            <div class="divide-y divide-zinc-100" id="detailedQuestionsContainer">
+
+                <!-- Q7.1: Thức ăn thô ráp -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_1">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">1. Trẻ có thích những đồ dùng và thức ăn thô ráp không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Nếu con phản ứng khó chịu, sợ chạm thức ăn thô ráp = nguy cơ kén cảm giác</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_1', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_1', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_1', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (+1đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.2: Lười ăn rau, quả -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_2">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">2. Trẻ có tình trạng lười ăn rau, lười ăn hoa quả không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Nguy cơ thiếu hụt chất xơ, vitamin C, folate và các chất chống oxy hóa</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_2', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_2', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_2', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.3: Quá nhạy cảm thực phẩm -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_3">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">3. Trẻ có quá nhạy cảm với mùi, màu sắc hoặc kết cấu thực phẩm nào không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Chỉ nhìn hoặc ngửi thấy đã buồn nôn, bùng nổ meltdown hoặc từ chối ăn</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_3', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_3', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_3', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.4: Thực phẩm trái mùa -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_4">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">4. Trẻ có thường xuyên sử dụng thực phẩm trái mùa không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Rau củ trái mùa thường có dư lượng bảo quản hoặc phân bón cao hơn</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_4', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_4', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_4', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.5: Bánh kẹo ngọt -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_5">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">5. Trẻ có thường xuyên ăn bánh kẹo ngọt, đồ ngọt không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Đường tinh luyện làm tăng hưng phấn, ảnh hưởng hệ vi sinh đường ruột</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_5', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_5', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_5', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.6: Nước ngọt có gas -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_6">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">6. Trẻ có thường xuyên uống nước ngọt, nước có gas không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Làm tăng nguy cơ đầy hơi, mất cân bằng axit dạ dày và cản trở hấp thu canxi</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_6', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_6', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_6', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.7: Socola, caffein -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_7">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">7. Trẻ có thường xuyên sử dụng socola, thực phẩm chứa caffein không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Caffein và theobromine có thể kích thích thần kinh, làm trầm trọng khó ngủ</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_7', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_7', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_7', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.8: Đồ chế biến sẵn, đóng hộp -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_8">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">8. Trẻ có ăn các thực phẩm chế biến sẵn, đóng hộp (xúc xích, mì gói, snack...)?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Chứa nhiều phụ gia, chất bảo quản và muối natri cao</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_8', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_8', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_8', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.9: Sống gần khu ô nhiễm -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_9">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">9. Trẻ có sống gần nhà máy, xí nghiệp, khói bụi hoặc nguồn ô nhiễm không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Yếu tố môi trường ảnh hưởng đến tải lượng kim loại nặng và stress oxy hóa</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_9', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_9', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_9', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.10: Nguồn nước tinh khiết (Thói quen tốt) -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_10">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">10. Trẻ có được sử dụng nguồn nước tinh khiết, lọc RO/Nano đạt chuẩn không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Nếu KHÔNG sử dụng nguồn nước đảm bảo = nguy cơ nhiễm khuẩn đường ruột</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_10', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_10', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_10', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (+1đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.11: Xì hơi có mùi khó chịu -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_11">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">11. Trẻ thường xuyên xì hơi hoặc đi phân có mùi khó chịu/chua nồng không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Dấu hiệu lên men bất thường và loạn khuẩn đường ruột (dysbiosis)</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_11', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_11', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_11', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.12: Khó khăn đi đại tiện -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_12">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">12. Trẻ có khó khăn, sợ sệt hoặc gồng mình khi đi đại tiện không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Biểu hiện của nứt kẽ hậu môn, co thắt trực tràng hoặc táo bón mãn tính</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_12', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_12', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_12', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.13: Vận động thể lực (Thói quen tốt) -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_13">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">13. Trẻ có thường xuyên hoạt động thể lực (đi bộ, bơi, chạy nhảy, đạp xe...)?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Nếu KHÔNG vận động = giảm nhu động ruột, giảm thèm ăn tự nhiên</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_13', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_13', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_13', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (+1đ)</button>
+                    </div>
+                </div>
+
+                <!-- Q7.14: Cầm thìa tự xúc -->
+                <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_14">
+                    <div class="sm:pr-4">
+                        <span class="text-sm font-bold text-[#174C3B] block">14. Trẻ có gặp khó khăn khi cầm thìa, tự xúc cơm ăn không?</span>
+                        <span class="text-[11px] text-[#5F6E66]">Liên quan đến vận động tinh và tính tự lập trong bữa ăn của con</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="selectRowChoice(this, 'q7_14', 1)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Có (+1đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_14', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không rõ (0đ)</button>
+                        <button type="button" onclick="selectRowChoice(this, 'q7_14', 0)" class="row-btn px-3 py-1.5 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:border-[#174C3B]">Không (0đ)</button>
+                    </div>
+                </div>
+
+                <!-- Ghi chú khó khăn khác -->
+                <div class="pt-4">
+                    <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-2">Trẻ có gặp các khó khăn ăn uống đặc thù nào khác không? (Nếu có):</label>
+                    <textarea id="otherFeedingDifficulties" rows="2" placeholder="Ví dụ: Bé chỉ ăn cơm với nước tương, hễ có màu xanh là nhè ra; hoặc bé rất sợ tiếng máy xay sinh tố..." class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B]"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             SECTION 4: ĐÁNH GIÁ CHUYÊN SÂU & THỰC PHẨM BỔ SUNG (GHI NHẬN THÔNG TIN - 0 ĐIỂM)
+             ====================================================================== -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
+            <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm">4</span>
+                <div>
+                    <h2 class="text-lg sm:text-xl font-bold text-[#174C3B]">Khai Thác Bổ Sung & Tiền Sử Dùng Vi Chất</h2>
+                    <p class="text-xs sm:text-sm text-[#5F6E66]">Chỉ ghi nhận thông tin hỗ trợ chuyên gia đánh giá bệnh sử (Không tính điểm nguy cơ)</p>
+                </div>
+            </div>
+
+            <!-- Chế độ dinh dưỡng 1 ngày -->
+            <div>
+                <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Mô tả chế độ ăn hiện tại điển hình trong 1 ngày của con:</label>
+                <textarea id="dailyDietDesc" rows="3" placeholder="Sáng: ... &#10;Trưa: ... &#10;Tối: ... &#10;Các bữa phụ (sữa/bánh): ..." class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B]"></textarea>
+            </div>
+
+            <!-- Câu hỏi Có / Không lâm sàng -->
+            <div class="space-y-3 pt-2">
+                <h3 class="text-xs font-bold text-[#174C3B] uppercase tracking-wider">Tiền sử bổ sung thực phẩm & can thiệp chế độ ăn:</h3>
+
+                <div class="grid grid-cols-1 gap-2.5">
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
+                        <span>1. Trẻ có uống bổ sung vitamin/khoáng chất hàng ngày không?</span>
+                        <select name="supp_vitamin" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
+                            <option value="khong">Không</option>
+                            <option value="co">Có</option>
+                        </select>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
+                        <span>2. Trẻ có dùng sản phẩm dinh dưỡng dành riêng cho trẻ phổ tự kỷ không?</span>
+                        <select name="supp_special" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
+                            <option value="khong">Không</option>
+                            <option value="co">Có</option>
+                        </select>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
+                        <span>3. Trẻ đã thử chế độ ăn kiêng không gluten, không casein (GFCF) chưa?</span>
+                        <select name="supp_gfcf" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
+                            <option value="chua">Chưa từng thử</option>
+                            <option value="dang_an">Đang ăn kiêng</option>
+                            <option value="da_tung">Đã từng nhưng bỏ</option>
+                        </select>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
+                        <span>4. Trẻ có dấu hiệu thiếu máu hoặc từng được chẩn đoán thiếu máu thiếu sắt?</span>
+                        <select name="supp_iron" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
+                            <option value="khong">Không</option>
+                            <option value="co">Có / Từng chẩn đoán</option>
+                        </select>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
+                        <span>5. Trẻ đã từng được xét nghiệm kiểm tra mức Vitamin D trong máu chưa?</span>
+                        <select name="supp_vitd_test" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
+                            <option value="chua">Chưa từng xét nghiệm</option>
+                            <option value="da_test">Đã xét nghiệm</option>
+                        </select>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
+                        <span>6. Trẻ có đang bổ sung Vitamin D hàng ngày hoặc liều cao không?</span>
+                        <select name="supp_vitd_use" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
+                            <option value="khong">Không bổ sung</option>
+                            <option value="hang_ngay">Có, liều hàng ngày</option>
+                            <option value="lieu_cao">Có, uống liều cao</option>
+                        </select>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
+                        <span>7. Trẻ có đang dùng men tiêu hóa (Enzyme) hỗ trợ không?</span>
+                        <select name="supp_enzyme" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
+                            <option value="khong">Không</option>
+                            <option value="co">Có dùng</option>
+                        </select>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
+                        <span>8. Trẻ có uống Omega-3, Kẽm, Magie, Acid folic, Bổ não, B6... không?</span>
+                        <select name="supp_omega" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
+                            <option value="khong">Không dùng</option>
+                            <option value="co">Có đang dùng</option>
+                        </select>
+                    </label>
+
+                    <label class="flex items-center justify-between p-3 rounded-xl border border-zinc-100 bg-[#FAF7F0]/40 text-xs font-bold text-[#174C3B]">
+                        <span>9. Trẻ có dùng men vi sinh (probiotic) hoặc ăn thực phẩm lên men (≥2 lần/tuần)?</span>
+                        <select name="supp_probiotic" class="ml-2 text-xs border border-zinc-200 rounded-lg px-2.5 py-1 bg-white focus:outline-none">
+                            <option value="khong">Không</option>
+                            <option value="co">Có dùng đều</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             SUBMIT & RESULT TRIGGER BUTTON
+             ====================================================================== -->
+        <div class="text-center pt-4 no-print">
+            <button type="submit" id="btnSubmitAssessment" class="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#174C3B] hover:bg-[#133F31] text-white text-base sm:text-lg font-bold shadow-lg shadow-[#174C3B]/20 hover:scale-[1.01] active:scale-[0.99] transition-all">
+                <svg class="w-5 h-5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Xem Kết Quả Đánh Giá & Nhận Tư Vấn</span>
+            </button>
+            <p class="text-xs text-[#5F6E66] mt-3">Hệ thống bảo mật 100% thông tin cá nhân của gia đình theo chuẩn y khoa.</p>
+        </div>
+    </form>
+
+    <!-- ==========================================================================
+         SECTION 5: LIVE RESULT CARD (Rendered after calculation)
+         ========================================================================== -->
+    <div id="resultCard" class="hidden bg-white rounded-3xl p-6 sm:p-10 border-2 shadow-xl print-page transition-all duration-500">
+        <!-- Result Header -->
+        <div class="text-center pb-6 border-b border-zinc-100">
+            <div id="resultBadge" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
+                <!-- Injected via JS -->
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-[#174C3B] mb-2">
+                Kết Quả Đánh Giá Tình Trạng Dinh Dưỡng
+            </h2>
+            <p class="text-sm text-[#5F6E66]">
+                Dành cho bé: <strong id="resChildName" class="text-[#174C3B]">-</strong> (<span id="resChildAge">-</span>)
+            </p>
+        </div>
+
+        <!-- Score Meter -->
+        <div class="py-8 text-center max-w-xl mx-auto">
+            <div class="inline-flex items-baseline gap-2 mb-3">
+                <span class="text-5xl sm:text-6xl font-black text-[#174C3B]" id="displayScore">0</span>
+                <span class="text-lg text-[#5F6E66] font-bold">/ 20+ điểm nguy cơ</span>
+            </div>
+
+            <!-- Score Level Bar Indicator -->
+            <div class="w-full bg-zinc-100 h-3 rounded-full overflow-hidden flex mb-2 border border-zinc-200">
+                <div class="w-1/3 bg-emerald-500/70 border-r border-white"></div>
+                <div class="w-1/3 bg-amber-500/80 border-r border-white"></div>
+                <div class="w-1/3 bg-rose-500/80"></div>
+            </div>
+            <div class="flex justify-between text-[11px] font-bold text-[#5F6E66]">
+                <span>0-5đ: Cần lưu ý</span>
+                <span>6-10đ: Nguy cơ trung bình</span>
+                <span>>10đ: Nguy cơ cao</span>
+            </div>
+        </div>
+
+        <!-- Diagnostic Feedback Details -->
+        <div id="resultFeedbackBox" class="p-5 sm:p-6 rounded-2xl mb-6 leading-relaxed text-sm sm:text-base">
+            <!-- Dynamic advice injected by JS -->
+        </div>
+
+        <!-- Medical Disclaimer Note (As instructed by User) -->
+        <div class="p-4 rounded-xl bg-amber-50/80 border border-amber-200/80 text-xs text-amber-900 leading-relaxed mb-8 flex items-start gap-2.5">
+            <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <div>
+                <strong>Lưu ý quan trọng:</strong> Điểm số được tính theo quy ước sàng lọc của bảng hỏi, mang tính chất định hướng và <em>không xác định trẻ thiếu vi chất</em> hay thay thế cho chẩn đoán y khoa chuyên sâu.
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 no-print">
+            <!-- Send to Zalo -->
+            <button type="button" onclick="sendResultToZalo()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#0068FF] hover:bg-[#0052cc] text-white text-sm font-bold shadow-md hover:shadow-lg transition-all">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12c0 2.17.7 4.19 1.9 5.86L2.6 21.4c-.2.6.35 1.15.95.95l3.54-1.3C8.81 21.68 10.37 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.42 0-2.77-.32-3.98-.89l-.29-.14-2.3.84.84-2.3-.14-.29C5.56 16.01 5.24 14.66 5.24 13.24c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/>
+                </svg>
+                <span>Gửi Kết Quả Cho Bác Sĩ Thu Hiền Qua Zalo</span>
+            </button>
+
+            <!-- Book 1:1 consultation -->
+            <a href="../dat-lich/" id="btnBookFromAssessment" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#174C3B] hover:bg-[#133F31] text-white text-sm font-bold shadow-md transition-all">
+                <span>Đặt Lịch Tư Vấn 1:1 Chi Tiết</span>
+                <span class="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center">→</span>
+            </a>
+
+            <!-- Print / Export PDF -->
+            <button type="button" onclick="window.print()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl border border-zinc-300 hover:bg-zinc-50 text-zinc-700 text-sm font-bold transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                </svg>
+                <span>In Phiếu A4</span>
+            </button>
+        </div>
+    </div>
+</main>
+
+<!-- ==========================================================================
+     FOOTER
+     ========================================================================== -->
+<footer class="mt-20 border-t border-[#8FAF91]/20 bg-[#FAF7F0] pt-12 pb-16 text-center text-xs text-[#5F6E66]">
+    <div class="max-w-4xl mx-auto px-4 space-y-3">
+        <p class="font-bold text-[#174C3B]">Thu Hiền - Cùng Mẹ Hiểu Con © 2026</p>
+        <p>Đồng hành cùng cha mẹ xây dựng thói quen ăn uống khoa học cho trẻ kén ăn & trẻ rối loạn phát triển.</p>
+        <p class="text-[11px] text-zinc-400">Hotline / Zalo: 0988 776 655 • Email: thuhien.cungmehieucon@gmail.com</p>
+    </div>
+</footer>
+
+<!-- Database and Core Scripts -->
+<script src="../assets/js/db.js?v=2.3"></script>
+
+<script>
+    // State of assessment answers
+    const assessmentState = {
+        scores: {},
+        multiScores: { digest: 0 },
+        answers: {}
+    };
+
+    // Total interactive questions count for progress bar
+    const TOTAL_QUESTIONS = 18;
+
+    // Single choice selector (Questions 1, 2, 4, 6)
+    function selectSingleChoice(el, qid, score) {
+        const parent = el.closest('.question-block');
+        parent.querySelectorAll('.choice-card').forEach(card => card.classList.remove('selected'));
+        el.classList.add('selected');
+        assessmentState.scores[qid] = score;
+        assessmentState.answers[qid] = el.querySelector('.block').innerText.trim();
+        updateProgress();
+    }
+
+    // Row-based button selector (Questions 7.1 to 7.14)
+    function selectRowChoice(btn, qid, score) {
+        const parent = btn.closest('.question-row');
+        parent.querySelectorAll('.row-btn').forEach(b => {
+            b.classList.remove('bg-[#174C3B]', 'text-white', 'border-[#174C3B]');
+            b.classList.add('text-zinc-600', 'border-zinc-200');
+        });
+        btn.classList.remove('text-zinc-600', 'border-zinc-200');
+        btn.classList.add('bg-[#174C3B]', 'text-white', 'border-[#174C3B]');
+        assessmentState.scores[qid] = score;
+        assessmentState.answers[qid] = btn.innerText.trim();
+        updateProgress();
+    }
+
+    // Multi-choice digest issue handler
+    function handleNoDigestIssue(cb) {
+        if (cb.checked) {
+            document.querySelectorAll('input[name="digest_issues"]').forEach(input => {
+                if (input !== cb) input.checked = false;
+            });
+        }
+        updateMultiChoiceScore();
+    }
+
+    function updateMultiChoiceScore() {
+        const issues = Array.from(document.querySelectorAll('input[name="digest_issues"]:checked')).map(i => i.value);
+        let score = 0;
+        if (issues.includes('taobon')) score += 1;
+        if (issues.includes('tieuchay')) score += 1;
+        if (issues.includes('nontro')) score += 1;
+        
+        assessmentState.multiScores.digest = score;
+        assessmentState.answers['q3_digest'] = issues.join(', ');
+        updateProgress();
+    }
+
+    // Progress bar calculator
+    function updateProgress() {
+        const answeredCount = Object.keys(assessmentState.scores).length + (assessmentState.answers['q3_digest'] ? 1 : 0);
+        const percent = Math.min(100, Math.round((answeredCount / TOTAL_QUESTIONS) * 100));
+        
+        const bar = document.getElementById('progressBar');
+        const text = document.getElementById('progressText');
+        if (bar) bar.style.width = percent + '%';
+        if (text) text.innerText = `${answeredCount} / ${TOTAL_QUESTIONS} câu hỏi (${percent}%)`;
+    }
+
+    // Calculate total score and present diagnostic result
+    function calculateAndShowResults() {
+        const childName = document.getElementById('childName').value.trim();
+        const childAge = document.getElementById('childAge').value.trim();
+        const parentName = document.getElementById('parentName').value.trim();
+        const parentPhone = document.getElementById('parentPhone').value.trim();
+
+        if (!childName || !childAge || !parentName || !parentPhone) {
+            alert('Ba mẹ vui lòng điền đầy đủ thông tin của bé và số điện thoại liên hệ nhé!');
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+            return;
+        }
+
+        // Sum scores
+        let totalScore = 0;
+        Object.values(assessmentState.scores).forEach(s => totalScore += Number(s || 0));
+        totalScore += Number(assessmentState.multiScores.digest || 0);
+
+        // Populate display elements
+        document.getElementById('resChildName').innerText = childName;
+        document.getElementById('resChildAge').innerText = childAge;
+        document.getElementById('displayScore').innerText = totalScore;
+
+        const badgeEl = document.getElementById('resultBadge');
+        const boxEl = document.getElementById('resultFeedbackBox');
+        const cardEl = document.getElementById('resultCard');
+
+        if (totalScore <= 5) {
+            // Level 1: 0 - 5 điểm
+            cardEl.style.borderColor = '#10B981';
+            badgeEl.className = 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 bg-emerald-50 text-emerald-800 border border-emerald-300';
+            badgeEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Mức Độ: Nguy Cơ Dinh Dưỡng Thấp / Cần Điều Chỉnh Nhẹ`;
+            
+            boxEl.className = 'p-5 sm:p-6 rounded-2xl mb-6 bg-emerald-50/70 border border-emerald-200 text-emerald-950';
+            boxEl.innerHTML = `
+                <h3 class="font-bold text-base sm:text-lg mb-2 text-emerald-900">Đánh Giá Từ Chuyên Gia Bùi Thu Hiền:</h3>
+                <p class="mb-3">Bé hiện có một số rào cản nhẹ trong nếp ăn uống hoặc sở thích vị giác. Tình trạng đường ruột và chuyển hóa của con nhìn chung vẫn trong ngưỡng kiểm soát được.</p>
+                <p class="font-bold mb-1">Định hướng cho ba mẹ:</p>
+                <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
+                    <li>Điều chỉnh khẩu phần ăn gia đình theo hướng tăng dần các nhóm màu sắc và đa dạng rau củ.</li>
+                    <li>Giảm thiểu tối đa việc cho bé ăn quà vặt, bánh kẹo ngọt và hạn chế triệt để thiết bị điện tử khi ngồi vào bàn ăn.</li>
+                    <li>Khuyến khích con tham gia vận động thể lực ngoài trời để tăng trao đổi chất và kích thích cảm giác thèm ăn tự nhiên.</li>
+                </ul>
+            `;
+        } else if (totalScore <= 10) {
+            // Level 2: 6 - 10 điểm
+            cardEl.style.borderColor = '#F59E0B';
+            badgeEl.className = 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 bg-amber-50 text-amber-800 border border-amber-300';
+            badgeEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500"></span> Mức Độ: Nguy Cơ Dinh Dưỡng Trung Bình`;
+            
+            boxEl.className = 'p-5 sm:p-6 rounded-2xl mb-6 bg-amber-50/70 border border-amber-200 text-amber-950';
+            boxEl.innerHTML = `
+                <h3 class="font-bold text-base sm:text-lg mb-2 text-amber-900">Đánh Giá Từ Chuyên Gia Bùi Thu Hiền:</h3>
+                <p class="mb-3">Bé đang gặp phải những rào cản rõ rệt về cảm giác thức ăn hoặc đường tiêu hóa (như ngậm thức ăn, táo bón/nôn trớ, nhạy cảm mùi vị hoặc lười ăn rau quả kéo dài). Đây là dấu hiệu thường gặp dẫn tới <strong>thiếu hụt vi chất tích lũy</strong> (sắt, kẽm, canxi, vitamin nhóm B).</p>
+                <p class="font-bold mb-1">Định hướng cho ba mẹ:</p>
+                <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
+                    <li>Cần có kế hoạch can thiệp dinh dưỡng sớm để giải phóng áp lực bàn ăn cho cả mẹ và con.</li>
+                    <li>Kiểm tra phân tích vi chất và hỗ trợ phục hồi hệ vi sinh đường ruột để tăng hấp thu dinh dưỡng.</li>
+                    <li>Nên trao đổi riêng 1:1 cùng chuyên gia để thiết kế thực đơn phân cấp màu sắc/kết cấu phù hợp với mức nhạy cảm của con.</li>
+                </ul>
+            `;
+        } else {
+            // Level 3: > 10 điểm
+            cardEl.style.borderColor = '#EF4444';
+            badgeEl.className = 'inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-3 bg-rose-50 text-rose-800 border border-rose-300';
+            badgeEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Mức Độ: Nguy Cơ Dinh Dưỡng Cao - Cần Can Thiệp Chuyên Sâu`;
+            
+            boxEl.className = 'p-5 sm:p-6 rounded-2xl mb-6 bg-rose-50/70 border border-rose-200 text-rose-950';
+            boxEl.innerHTML = `
+                <h3 class="font-bold text-base sm:text-lg mb-2 text-rose-900">Đánh Giá Từ Chuyên Gia Bùi Thu Hiền:</h3>
+                <p class="mb-3">Bé có nhiều biểu hiện báo động về rối loạn cảm giác ăn uống, rối loạn tiêu hóa và thói quen sinh hoạt. Tình trạng ăn chọn lọc quá mức kết hợp với hệ tiêu hóa nhạy cảm kéo dài sẽ ảnh hưởng trực tiếp đến phát triển não bộ, giấc ngủ và hành vi của con.</p>
+                <p class="font-bold mb-1">Định hướng khẩn cấp:</p>
+                <ul class="list-disc pl-5 space-y-1 text-xs sm:text-sm">
+                    <li>Cần can thiệp dinh dưỡng chuyên sâu 1:1 ngay để phục hồi niêm mạc ruột và bù đắp vi chất thiếu hụt.</li>
+                    <li>Không nên tiếp tục ép ăn bằng bạo lực hay dùng điện thoại dỗ dành vì sẽ khiến con sợ ăn và bùng nổ meltdown nặng hơn.</li>
+                    <li>Ba mẹ hãy gửi ngay kết quả này qua Zalo để Bác sĩ Thu Hiền xem xét chi tiết từng câu trả lời và có phác đồ can thiệp phù hợp nhất.</li>
+                </ul>
+            `;
+        }
+
+        // Show result card and scroll smoothly
+        cardEl.classList.remove('hidden');
+        cardEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Save to Database / LocalStorage / Firebase
+        saveAssessmentToSystem(totalScore, childName, childAge, parentName, parentPhone);
+    }
+
+    // Save evaluation record to DB & Firebase
+    function saveAssessmentToSystem(score, childName, childAge, parentName, parentPhone) {
+        const payload = {
+            id: 'eval_' + Date.now(),
+            score: score,
+            child_name: childName,
+            child_age: childAge,
+            parent_name: parentName,
+            phone: parentPhone,
+            gender: document.querySelector('input[name="childGender"]:checked')?.value || 'Nam',
+            weight: document.getElementById('childWeight').value,
+            height: document.getElementById('childHeight').value,
+            water: document.getElementById('waterAmount').value,
+            other_difficulties: document.getElementById('otherFeedingDifficulties').value,
+            daily_diet: document.getElementById('dailyDietDesc').value,
+            created_at: new Date().toLocaleString('vi-VN')
+        };
+
+        try {
+            // Save to localStorage
+            const list = JSON.parse(localStorage.getItem('thuhien_evaluations') || '[]');
+            list.unshift(payload);
+            localStorage.setItem('thuhien_evaluations', JSON.stringify(list));
+
+            // Also push to Firebase Firestore if connected
+            if (typeof DB !== 'undefined' && typeof DB.initFirebase === 'function') {
+                DB.initFirebase().then(db => {
+                    if (db) {
+                        db.collection('evaluations').add(payload).then(() => {
+                            console.log('🔥 Evaluation saved to Firebase Firestore');
+                        }).catch(e => console.warn('Firebase eval save error:', e));
+                    }
+                });
+            }
+        } catch (e) {}
+    }
+
+    // Open Zalo with prefilled summary
+    function sendResultToZalo() {
+        const childName = document.getElementById('childName').value.trim() || 'bé';
+        const childAge = document.getElementById('childAge').value.trim() || '';
+        const parentName = document.getElementById('parentName').value.trim() || 'Mẹ';
+        const score = document.getElementById('displayScore').innerText || '0';
+        
+        let levelText = 'Nguy cơ dinh dưỡng thấp';
+        if (Number(score) > 10) levelText = 'Nguy cơ dinh dưỡng cao';
+        else if (Number(score) > 5) levelText = 'Nguy cơ dinh dưỡng trung bình';
+
+        const text = encodeURIComponent(
+            `Chào Chuyên gia Thu Hiền, em là ${parentName}, vừa làm Phiếu Đánh Giá Dinh Dưỡng cho con (${childName}, ${childAge}).\n` +
+            `Điểm đánh giá của con: ${score} điểm (${levelText}).\n` +
+            `Em muốn nhờ Chuyên gia xem qua kết quả và tư vấn hướng can thiệp giúp gia đình em ạ.`
+        );
+
+        window.open(`https://zalo.me/0988776655?text=${text}`, '_blank');
+    }
+</script>
+
+</body>
+</html>

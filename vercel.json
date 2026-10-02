@@ -14,5 +14,15 @@
       "destination": "https://www.thuhien.online/$1",
       "permanent": false
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/danh-gia",
+      "destination": "/danh-gia-dinh-duong"
+    },
+    {
+      "source": "/checklist",
+      "destination": "/danh-gia-dinh-duong"
+    }
   ]
 }

@@ -219,6 +219,16 @@ const DB = (() => {
                 description: 'Bảng giá các gói đồng hành 3 ngày, 1 tháng và cam kết hoàn tiền 100%'
             },
             {
+                id: 'danh-gia',
+                title: 'Phiếu Đánh Giá Dinh Dưỡng',
+                path: '/danh-gia-dinh-duong/',
+                slug: 'danh-gia-dinh-duong',
+                enabled: true,
+                can_disable: true,
+                category: 'Đánh Giá & Khảo Sát',
+                description: 'Checklist sàng lọc thói quen ăn uống, nhai nuốt và nguy cơ thiếu hụt vi chất cho trẻ'
+            },
+            {
                 id: 'dat-lich',
                 title: 'Đặt Lịch Tư Vấn 1:1',
                 path: '/dat-lich/',
