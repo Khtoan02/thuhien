@@ -97,20 +97,20 @@
 
         <!-- Quick Jump Links -->
         <div class="flex flex-wrap items-center justify-center gap-3 text-xs sm:text-sm font-bold">
+            <a href="#section-uu-tien" class="px-4 py-2.5 rounded-full bg-white text-emerald-800 border border-emerald-200 hover:border-emerald-400 transition-all shadow-xs inline-flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Thực Phẩm Nên Ưu Tiên</span>
+            </a>
             <a href="#section-han-che" class="px-4 py-2.5 rounded-full bg-white text-rose-800 border border-rose-200 hover:border-rose-400 transition-all shadow-xs inline-flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                <span>Thực Phẩm Hạn Chế</span>
-            </a>
-            <a href="#section-khuyen-dung" class="px-4 py-2.5 rounded-full bg-white text-emerald-800 border border-emerald-200 hover:border-emerald-400 transition-all shadow-xs inline-flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span>Thực Phẩm Khuyên Dùng</span>
+                <span>Thực Phẩm Cần Hạn Chế</span>
             </a>
             <a href="#section-bua-an" class="px-4 py-2.5 rounded-full bg-white text-[#174C3B] border border-[#8FAF91]/40 hover:border-[#174C3B] transition-all shadow-xs inline-flex items-center gap-2">
                 <svg class="w-4 h-4 text-[#174C3B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="9"/>
                     <path d="M12 3v18"/>
                 </svg>
-                <span>Gợi Ý Bữa Ăn Cân Bằng</span>
+                <span>Gợi Ý Bữa Ăn & Thực Đơn</span>
             </a>
             <a href="#section-nguyen-tac" class="px-4 py-2.5 rounded-full bg-white text-[#5F6E66] border border-zinc-200 hover:border-zinc-400 transition-all shadow-xs inline-flex items-center gap-2">
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -124,589 +124,651 @@
 </section>
 
 <!-- ==========================================================================
-     2. LỜI KHUYÊN DINH DƯỠNG CHO TRẺ TỰ KỶ & BỮA ĂN CÂN BẰNG (65% / 35%)
+     2. SECTION: THỰC PHẨM NÊN ƯU TIÊN BỔ SUNG
      ========================================================================== -->
-<section id="section-dinh-duong" class="py-14 sm:py-20 md:py-24 bg-white border-y border-[#8FAF91]/20">
+<section id="section-uu-tien" class="py-16 md:py-24 bg-white border-y border-[#8FAF91]/20" data-carousel="prioritized">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <!-- Tiêu đề chung phía trên hai vùng -->
-        <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF5EA] border border-[#8FAF91]/40 text-[#174C3B] text-xs font-bold shadow-2xs mb-4">
+        <!-- Header Section Ưu Tiên -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF5EA] border border-[#8FAF91]/40 text-[#174C3B] text-xs font-bold shadow-2xs mb-3">
+                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                    <span class="tracking-wide uppercase">NUÔI DƯỠNG NÃO BỘ & TIÊU HÓA</span>
+                </div>
+                <h2 class="text-2xl sm:text-4xl md:text-5xl font-black uppercase text-[#174C3B] tracking-tight leading-tight">
+                    THỰC PHẨM NÊN ƯU TIÊN
+                </h2>
+                <p class="mt-3 text-xs sm:text-base text-[#5F6E66] leading-relaxed">
+                    10 nhóm vi chất và thực phẩm tự nhiên giúp ổn định dẫn truyền thần kinh, nâng cao sự tập trung và cải thiện giấc ngủ cho trẻ.
+                </p>
+            </div>
+
+            <!-- Điều khiển Slider: Counter + Nút điều hướng -->
+            <div class="flex items-center gap-3 shrink-0">
+                <span class="carousel-counter text-xs sm:text-sm font-mono font-bold text-[#174C3B] px-3.5 py-1.5 rounded-full bg-[#EEF5EA] border border-emerald-200 shadow-2xs">01 / 10</span>
+                <div class="flex items-center gap-2">
+                    <button type="button" class="btn-prev w-10 h-10 rounded-full border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-800 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-2xs" aria-label="Xem lời khuyên trước">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button type="button" class="btn-next w-10 h-10 rounded-full border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-800 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-2xs" aria-label="Xem lời khuyên kế tiếp">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Track cuộn ngang 10 thẻ ưu tiên -->
+        <div class="carousel-track overflow-x-auto no-scrollbar flex gap-5 pb-4 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+            
+            <!-- 01 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">01</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Thực phẩm giàu Omega-3</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Cá hồi, cá thu nhỏ an toàn, hạt chia, quả óc chó.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Cung cấp các axit béo thiết yếu (EPA và DHA) giúp nâng cao chức năng và cải thiện cấu trúc tế bào thần kinh, tăng khả năng tập trung cho trẻ.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 02 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">02</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Thực phẩm giàu Vitamin D</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Lòng đỏ trứng gà, nấm sạch, tôm tươi, gan sạch.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Vitamin D bảo vệ DNA khỏi tổn thương, giảm stress oxy hóa và giảm các cytokine viêm trong não bộ của trẻ.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 03 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">03</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Rau xanh đậm giàu Magie & B6</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Bông cải xanh, rau cải bó xôi, rau ngót sạch.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Bộ đôi vi chất này giúp ổn định thần kinh, làm giảm sự bốc đồng, giảm lo âu và cải thiện đáng kể giấc ngủ cho con.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 04 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">04</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Trái cây giàu Vitamin C tự nhiên</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Cam tươi, bưởi da xanh, dâu tây, kiwi chín.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Giúp chống viêm và ảnh hưởng tích cực đến phản ứng của não với dopamine, hỗ trợ giảm bớt các hành vi rập khuôn, lặp đi lặp lại.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 05 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">05</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Thực phẩm dồi dào lợi khuẩn</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Sữa chua không đường, sữa chua hạt lên men lành mạnh.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Giúp cân bằng hệ vi sinh đường ruột, hạn chế các chứng táo bón, tiêu chảy vốn rất phổ biến ở trẻ tự kỷ.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 06 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">06</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Thực phẩm giàu Sắt hữu cơ</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Thịt bò nạc, củ cải đỏ, táo sạch, nước lựu.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Sắt đóng vai trò quan trọng trong việc vận chuyển oxy nuôi dưỡng não bộ và tổng hợp các chất dẫn truyền thần kinh.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 07 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">07</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Thực phẩm giàu Axit Amin</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Thịt gia cầm nạc (gà, vịt), các loại đậu hạt an toàn.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Cung cấp các protein cấu thành nên chất dẫn truyền thần kinh, giúp trẻ giữ bình tĩnh và cải thiện khả năng tương tác xã hội.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 08 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">08</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Ngũ cốc nguyên hạt giải phóng chậm</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Yến mạch không gluten, gạo lứt, diêm mạch (quinoa).
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Cung cấp năng lượng giải phóng chậm, giữ mức đường huyết ổn định, giúp điều hòa tâm trạng của trẻ suốt cả ngày.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 09 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">09</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Các loại hạt dinh dưỡng</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Hạt lanh xay nhuyễn, hạt hướng dương, hạt bí.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Nguồn bổ sung Kẽm và Vitamin E tuyệt vời, giúp giảm tình trạng phản kháng khi trẻ tiếp xúc với các món ăn mới.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 10 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-[#FAF7F0] border border-emerald-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-emerald-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">10</span>
+                        <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-200">Nên Bổ Sung</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Trái cây tươi giàu nước & xơ</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-white border border-emerald-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-emerald-800">Ví dụ: </span>Dưa hấu, dưa chuột sạch, quả lê tươi.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-emerald-200/60">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Cung cấp nước tự nhiên và chất xơ, hỗ trợ hệ tiêu hóa của trẻ hoạt động trơn tru hơn.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Dots indicator -->
+        <div class="carousel-dots flex items-center justify-center gap-1.5 pt-4"></div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     3. SECTION: THỰC PHẨM CẦN HẠN CHẾ / CÂN NHẮC
+     ========================================================================== -->
+<section id="section-han-che" class="py-16 md:py-24 bg-[#FAF7F0] border-b border-[#8FAF91]/20" data-carousel="restricted">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header Section Hạn Chế -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-rose-100 text-rose-800 text-xs font-bold shadow-2xs mb-3 border border-rose-200">
+                    <span class="w-2 h-2 rounded-full bg-rose-600"></span>
+                    <span class="tracking-wide uppercase">GIẢM TẢI KÍCH THÍCH & DỊ ỨNG</span>
+                </div>
+                <h2 class="text-2xl sm:text-4xl md:text-5xl font-black uppercase text-[#174C3B] tracking-tight leading-tight">
+                    THỰC PHẨM CẦN HẠN CHẾ / CÂN NHẮC
+                </h2>
+                <p class="mt-3 text-xs sm:text-base text-[#5F6E66] leading-relaxed">
+                    10 nhóm thực phẩm có thể kích thích hệ thần kinh nhạy cảm hoặc gây quá tải cho hệ tiêu hóa của trẻ mà ba mẹ cần hạn chế tối đa.
+                </p>
+            </div>
+
+            <!-- Điều khiển Slider: Counter + Nút điều hướng -->
+            <div class="flex items-center gap-3 shrink-0">
+                <span class="carousel-counter text-xs sm:text-sm font-mono font-bold text-rose-800 px-3.5 py-1.5 rounded-full bg-white border border-rose-200 shadow-2xs">01 / 10</span>
+                <div class="flex items-center gap-2">
+                    <button type="button" class="btn-prev w-10 h-10 rounded-full border border-rose-200 bg-white hover:bg-rose-50 text-rose-700 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-2xs" aria-label="Xem lời khuyên trước">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <button type="button" class="btn-next w-10 h-10 rounded-full border border-rose-200 bg-white hover:bg-rose-50 text-rose-700 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-2xs" aria-label="Xem lời khuyên kế tiếp">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Track cuộn ngang 10 thẻ hạn chế -->
+        <div class="carousel-track overflow-x-auto no-scrollbar flex gap-5 pb-4 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+            
+            <!-- 01 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">01</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Đường tinh luyện</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Bánh kẹo ngọt, nước ngọt có ga, siro ngọt.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Đường làm tăng biến động năng lượng đột ngột, dễ khiến trẻ bị tăng động, bốc đồng và giảm khả năng tập trung.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 02 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">02</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Thực phẩm chứa Gluten</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Lúa mì, lúa mạch, bánh mì thông thường.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Nhiều trẻ tự kỷ không dung nạp được gluten, gây viêm ruột và ảnh hưởng tiêu cực đến hành vi.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 03 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">03</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Thực phẩm chứa Casein</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Sữa bò và các sản phẩm từ sữa thông thường.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Casein trong sữa bò có thể gây viêm dạ dày hoặc kích thích phản ứng thần kinh bất lợi ở một số trẻ nhạy cảm.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 04 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">04</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Mì chính / Bột ngọt (MSG)</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Gia vị bột ngọt, hạt nêm công nghiệp.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Chất điều vị này hoạt động như một chất kích thích dẫn truyền thần kinh mạnh, có thể làm trầm trọng hơn tình trạng nhạy cảm quá mức ở não bộ của trẻ.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 05 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">05</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Đồ ăn chế biến sẵn</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Xúc xích, thịt nguội, đồ hộp.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Chứa nhiều chất bảo quản có hại cho hệ vi sinh đường ruột và làm suy giảm khả năng hấp thu dinh dưỡng.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 06 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">06</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Phẩm màu & hương liệu nhân tạo</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Kẹo màu sắc sặc sỡ, nước giải khát có màu.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Các hóa chất nhân tạo trong thực phẩm có khả năng kích ứng hệ thần kinh, làm gia tăng các hành vi mất kiểm soát.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 07 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">07</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Hàm lượng Omega-6 quá cao</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Dầu ngô, bắp ngô, dầu đậu nành tinh luyện.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Tỷ lệ Omega-6 quá lớn so với Omega-3 có thể thúc đẩy các phản ứng viêm bên trong cơ thể trẻ.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 08 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">08</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Cá chứa thủy ngân cao</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Cá ngừ đại dương lớn, cá thu lớn, cá kiếm.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Thủy ngân là kim loại nặng có độc tính cao đối với hệ thần kinh đang phát triển của trẻ nhỏ.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 09 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">09</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Đồ chiên rán nhiều chất béo xấu</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Khoai tây chiên, gà rán dầu mỡ tái chế.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Gây đầy bụng, khó tiêu và làm suy giảm chức năng nhận thức nếu sử dụng thường xuyên.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 10 -->
+            <div class="carousel-card flex-none w-[84vw] sm:w-[54vw] md:w-[45%] lg:w-[calc(31.5%-10px)] snap-start rounded-3xl bg-white border border-rose-200/90 p-5 sm:p-6 flex flex-col justify-between hover:border-rose-400 hover:shadow-sm transition-all">
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="w-8 h-8 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">10</span>
+                        <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-200">Cần Hạn Chế</span>
+                    </div>
+                    <h3 class="font-bold text-[#174C3B] text-base sm:text-lg leading-snug">Lạm dụng TPCN hoặc sữa thay thế</h3>
+                    <div class="px-3.5 py-2 rounded-2xl bg-[#FAF7F0] border border-rose-100 text-xs text-[#5F6E66]">
+                        <span class="font-bold text-rose-700">Ví dụ: </span>Uống vitamin liều cao, thay hoàn toàn bằng sữa hạt.
+                    </div>
+                </div>
+                <div class="pt-3.5 mt-4 border-t border-rose-100">
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed">
+                        Không tự ý cho trẻ uống vitamin liều cao (như vitamin A, D) không theo chỉ định vì dễ gây ngộ độc; đồng thời không dùng sữa hạt thay thế hoàn toàn sữa thông thường vì có thể dẫn đến thiếu hụt đạm và canxi.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Dots indicator -->
+        <div class="carousel-dots flex items-center justify-center gap-1.5 pt-4"></div>
+
+    </div>
+</section>
+
+<!-- ==========================================================================
+     4. SECTION: GỢI Ý BỮA ĂN CÂN BẰNG & MẪU THỰC ĐƠN THAM KHẢO
+     ========================================================================== -->
+<section id="section-bua-an" class="py-16 md:py-24 bg-white border-b border-[#8FAF91]/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header Section -->
+        <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF5EA] border border-[#8FAF91]/40 text-[#174C3B] text-xs font-bold shadow-2xs mb-3">
                 <span class="w-2 h-2 rounded-full bg-[#F08A4B]"></span>
-                <span class="tracking-wide uppercase">CẨM NANG THỰC HÀNH MỖI NGÀY</span>
+                <span class="tracking-wide uppercase">MÔ HÌNH CHUẨN GFCF+SF</span>
             </div>
             <h2 class="text-2xl sm:text-4xl md:text-5xl font-black uppercase text-[#174C3B] tracking-tight leading-tight">
-                LỜI KHUYÊN DINH DƯỠNG CHO TRẺ TỰ KỶ
+                GỢI Ý BỮA ĂN CÂN BẰNG & MẪU THỰC ĐƠN
             </h2>
-            <p class="mt-3 sm:mt-4 text-xs sm:text-base text-[#5F6E66] leading-relaxed max-w-2xl mx-auto">
-                Định hướng dinh dưỡng hỗ trợ làm dịu tiêu hóa, nâng cao thể trạng và hỗ trợ hành vi cho trẻ bằng phương pháp khoa học, phù hợp với gia đình.
+            <p class="mt-3 text-xs sm:text-base text-[#5F6E66] leading-relaxed max-w-2xl mx-auto">
+                Cân đối 4 nhóm chất thiết yếu theo chế độ GFCF+SF (Không Gluten - Không Casein - Không Đậu Nành) và mẫu thực đơn 1 ngày dễ nấu tại nhà.
             </p>
         </div>
 
-        <!-- Bố cục 2 vùng nằm cạnh nhau: Trái ~65%, Phải ~35% (trên mobile xếp trên-dưới) -->
-        <div class="flex flex-col lg:flex-row items-start gap-8 xl:gap-10">
+        <!-- PHẦN 1: MÔ HÌNH ĐĨA ĂN GFCF+SF -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center mb-16 pb-14 border-b border-[#8FAF91]/20">
             
-            <!-- ==============================================================
-                 VÙNG BÊN TRÁI (~65%): LỜI KHUYÊN CUỘN NGANG (2 DẢI ĐỘC LẬP)
-                 ============================================================== -->
-            <div class="w-full lg:w-[65%] min-w-0 space-y-10 sm:space-y-12">
+            <!-- Cột trái: Ảnh đĩa ăn minh họa -->
+            <div class="lg:col-span-6 flex justify-center">
+                <div class="p-4 sm:p-6 bg-[#FAF7F0] rounded-3xl border border-[#8FAF91]/30 shadow-xs max-w-md w-full">
+                    <img src="../assets/images/loi-khuyen-dinh-duong-gfcf.png" alt="Mô hình đĩa ăn dinh dưỡng cân bằng GFCF+SF" class="rounded-2xl w-full object-contain">
+                    <div class="mt-4 pt-3 border-t border-[#8FAF91]/20 flex items-center justify-between text-xs text-[#5F6E66]">
+                        <span>Mô hình chuẩn khoa học GFCF+SF</span>
+                        <a href="../assets/images/loi-khuyen-dinh-duong-gfcf.png" target="_blank" class="text-[#174C3B] font-bold hover:underline inline-flex items-center gap-1">
+                            <span>Phóng to ảnh</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cột phải: 4 nhóm chất cấu thành đĩa ăn -->
+            <div class="lg:col-span-6 space-y-4">
                 
-                <!-- DẢI 1: THỰC PHẨM CẦN HẠN CHẾ / CÂN NHẮC -->
-                <div id="section-han-che" class="carousel-block rounded-3xl border border-rose-200 bg-[#FAF7F0] p-5 sm:p-7 shadow-xs space-y-5" data-carousel="restricted">
-                    
-                    <!-- Header Dải 1: Tiêu đề + Điều hướng -->
-                    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-rose-200/70">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm shrink-0 shadow-2xs">
-                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <span class="text-[11px] font-bold text-rose-600 uppercase tracking-wider block">CẦN LƯU Ý HOẶC CẮT GIẢM</span>
-                                <h3 class="text-base sm:text-xl font-black uppercase text-[#174C3B] tracking-tight">THỰC PHẨM CẦN HẠN CHẾ / CÂN NHẮC</h3>
-                            </div>
-                        </div>
-
-                        <!-- Bộ điều khiển: Counter + Nút mũi tên -->
-                        <div class="flex items-center gap-2.5 ml-auto">
-                            <span class="carousel-counter text-xs font-mono font-bold text-[#5F6E66] px-2.5 py-1 rounded-full bg-white border border-rose-200 shadow-2xs">01 / 10</span>
-                            <div class="flex items-center gap-1.5">
-                                <button type="button" class="btn-prev w-8 h-8 rounded-full border border-rose-200 bg-white hover:bg-rose-50 text-rose-700 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-2xs" aria-label="Xem lời khuyên trước">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-                                </button>
-                                <button type="button" class="btn-next w-8 h-8 rounded-full border border-rose-200 bg-white hover:bg-rose-50 text-rose-700 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-2xs" aria-label="Xem lời khuyên kế tiếp">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                                </button>
-                            </div>
-                        </div>
+                <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F0] border border-emerald-100 shadow-2xs space-y-1">
+                    <div class="flex items-center justify-between font-bold text-emerald-800">
+                        <span class="uppercase tracking-wide text-xs sm:text-sm">1/2 Đĩa: Rau Củ Quả</span>
+                        <span class="text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Chất xơ & Vi chất</span>
                     </div>
-
-                    <!-- Track cuộn ngang dải 1 (10 lời khuyên) -->
-                    <div class="carousel-track overflow-x-auto no-scrollbar flex gap-4 pb-2 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
-                        
-                        <!-- 01 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">01</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Đường tinh luyện</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Bánh kẹo ngọt, nước có ga, siro ngọt.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Đường làm tăng biến động năng lượng đột ngột, dễ khiến trẻ bị tăng động, bốc đồng và giảm khả năng tập trung.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 02 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">02</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Thực phẩm chứa Gluten</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Lúa mì, lúa mạch, bánh mì thông thường.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Nhiều trẻ tự kỷ không dung nạp được gluten, gây viêm ruột và ảnh hưởng tiêu cực đến hành vi.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 03 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">03</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Thực phẩm chứa Casein</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Sữa bò và các sản phẩm từ sữa thông thường.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Casein trong sữa bò có thể gây viêm dạ dày hoặc kích thích phản ứng thần kinh bất lợi ở một số trẻ nhạy cảm.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 04 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">04</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Mì chính / Bột ngọt (MSG)</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Gia vị bột ngọt, hạt nêm công nghiệp.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Chất điều vị này hoạt động như một chất kích thích dẫn truyền thần kinh mạnh, có thể làm trầm trọng hơn tình trạng nhạy cảm quá mức ở não bộ của trẻ.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 05 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">05</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Đồ ăn chế biến sẵn</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Xúc xích, thịt nguội, đồ hộp.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Chứa nhiều chất bảo quản có hại cho hệ vi sinh đường ruột và làm suy giảm khả năng hấp thu dinh dưỡng.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 06 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">06</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Phẩm màu & hương liệu nhân tạo</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Kẹo màu sắc sặc sỡ, nước giải khát có màu.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Các hóa chất nhân tạo trong thực phẩm có khả năng kích ứng hệ thần kinh, làm gia tăng các hành vi mất kiểm soát.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 07 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">07</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Thực phẩm có hàm lượng Omega-6 quá cao</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Dầu ngô, bắp ngô, dầu đậu nành công nghiệp.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Tỷ lệ Omega-6 quá lớn so với Omega-3 có thể thúc đẩy các phản ứng viêm bên trong cơ thể trẻ.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 08 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">08</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Cá chứa hàm lượng thủy ngân cao</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Cá ngừ đại dương lớn, cá thu lớn, cá kiếm.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Thủy ngân là kim loại nặng có độc tính cao đối với hệ thần kinh đang phát triển của trẻ nhỏ.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 09 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">09</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Đồ chiên rán nhiều chất béo xấu</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Khoai tây chiên, gà rán dầu mỡ tái chế.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Gây đầy bụng, khó tiêu và làm suy giảm chức năng nhận thức nếu sử dụng thường xuyên.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 10 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-rose-100 p-4 sm:p-5 flex flex-col justify-between hover:border-rose-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-rose-600 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">10</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-rose-50 text-rose-700 text-[10px] font-bold uppercase tracking-wider border border-rose-100">Hạn Chế</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Lạm dụng TPCN hoặc sữa thay thế</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-rose-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-rose-700">Ví dụ: </span>Uống vitamin liều cao, thay hoàn toàn bằng sữa hạt.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Không tự ý cho trẻ uống vitamin liều cao (như vitamin A, D) không theo chỉ định vì dễ gây ngộ độc; đồng thời không dùng sữa hạt thay thế hoàn toàn sữa thông thường vì có thể dẫn đến thiếu hụt đạm và canxi.
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- Chỉ báo vị trí (Dots) Dải 1 -->
-                    <div class="carousel-dots flex items-center justify-center gap-1.5 pt-2"></div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed pt-1">
+                        Rau ngót, cải bó xôi, bông cải xanh, bí đỏ, cà rốt, củ dền, chuối tiêu, táo, quả mọng ít ngọt.
+                    </p>
                 </div>
 
-                <!-- DẢI 2: THỰC PHẨM NÊN ƯU TIÊN -->
-                <div id="section-khuyen-dung" class="carousel-block rounded-3xl border border-emerald-200 bg-[#FAF7F0] p-5 sm:p-7 shadow-xs space-y-5" data-carousel="prioritized">
-                    
-                    <!-- Header Dải 2: Tiêu đề + Điều hướng -->
-                    <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-emerald-200/70">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm shrink-0 shadow-2xs">
-                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 12l2.5 2.5L16 9"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <span class="text-[11px] font-bold text-emerald-700 uppercase tracking-wider block">ƯU TIÊN BỔ SUNG</span>
-                                <h3 class="text-base sm:text-xl font-black uppercase text-[#174C3B] tracking-tight">THỰC PHẨM NÊN ƯU TIÊN</h3>
-                            </div>
-                        </div>
-
-                        <!-- Bộ điều khiển: Counter + Nút mũi tên -->
-                        <div class="flex items-center gap-2.5 ml-auto">
-                            <span class="carousel-counter text-xs font-mono font-bold text-[#5F6E66] px-2.5 py-1 rounded-full bg-white border border-emerald-200 shadow-2xs">01 / 10</span>
-                            <div class="flex items-center gap-1.5">
-                                <button type="button" class="btn-prev w-8 h-8 rounded-full border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-800 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-2xs" aria-label="Xem lời khuyên trước">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-                                </button>
-                                <button type="button" class="btn-next w-8 h-8 rounded-full border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-800 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-2xs" aria-label="Xem lời khuyên kế tiếp">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                                </button>
-                            </div>
-                        </div>
+                <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F0] border border-amber-100 shadow-2xs space-y-1">
+                    <div class="flex items-center justify-between font-bold text-[#F08A4B]">
+                        <span class="uppercase tracking-wide text-xs sm:text-sm">1/4 Đĩa: Chất Đạm (Protein)</span>
+                        <span class="text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full bg-amber-50 text-[#F08A4B] border border-amber-200">Tái tạo tế bào</span>
                     </div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed pt-1">
+                        Thịt gà sạch, thịt lợn nạc, cá đồng, cá hồi, tôm tươi, các loại đậu hạt an toàn (đậu xanh, đậu đen).
+                    </p>
+                </div>
 
-                    <!-- Track cuộn ngang dải 2 (10 lời khuyên) -->
-                    <div class="carousel-track overflow-x-auto no-scrollbar flex gap-4 pb-2 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
-                        
-                        <!-- 01 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">01</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Thực phẩm giàu Omega-3</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Cá hồi, cá thu, hạt chia, quả óc chó.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Cung cấp các axit béo thiết yếu (EPA và DHA) giúp nâng cao chức năng và cải thiện cấu trúc tế bào thần kinh, tăng khả năng tập trung cho trẻ.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 02 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">02</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Thực phẩm giàu Vitamin D</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Trứng, nấm, tôm, gan sạch.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Vitamin D bảo vệ DNA khỏi tổn thương, giảm stress oxy hóa và giảm các cytokine viêm trong não bộ của trẻ.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 03 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">03</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Rau xanh đậm giàu Magie & Vitamin B6</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Bông cải xanh, rau cải bó xôi, rau ngót.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Bộ đôi vi chất này giúp ổn định thần kinh, làm giảm sự bốc đồng, giảm lo âu và cải thiện đáng kể giấc ngủ.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 04 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">04</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Trái cây giàu Vitamin C tự nhiên</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Cam, bưởi, dâu tây, kiwi.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Giúp chống viêm và ảnh hưởng tích cực đến phản ứng của não với dopamine, hỗ trợ giảm bớt các hành vi rập khuôn, lặp đi lặp lại.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 05 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">05</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Thực phẩm chứa nhiều lợi khuẩn</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Sữa chua không đường, thực phẩm lên men lành mạnh.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Giúp cân bằng hệ vi sinh đường ruột, hạn chế các chứng táo bón, tiêu chảy vốn rất phổ biến ở trẻ tự kỷ.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 06 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">06</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Thực phẩm dồi dào chất Sắt hữu cơ</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Thịt bò nạc, củ cải đỏ, táo, lựu.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Sắt đóng vai trò quan trọng trong việc vận chuyển oxy nuôi dưỡng não bộ và tổng hợp các chất dẫn truyền thần kinh.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 07 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">07</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Thực phẩm dồi dào Axit Amin</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Thịt gia cầm nạc, các loại đậu hạt an toàn.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Cung cấp các protein cấu thành nên chất dẫn truyền thần kinh, giúp trẻ giữ bình tĩnh và cải thiện khả năng tương tác xã hội.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 08 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">08</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Các loại ngũ cốc nguyên hạt</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Yến mạch không gluten, gạo lứt, diêm mạch.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Cung cấp năng lượng giải phóng chậm, giữ mức đường huyết ổn định, giúp điều hòa tâm trạng của trẻ suốt cả ngày.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 09 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">09</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Các loại hạt dinh dưỡng</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Hạt lanh xay nhuyễn, hạt hướng dương, hạt bí.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Nguồn bổ sung Kẽm và Vitamin E tuyệt vời, giúp giảm tình trạng phản kháng khi trẻ tiếp xúc với các món ăn mới.
-                                </p>
-                            </div>
-                        </div>
-
-                        <!-- 10 -->
-                        <div class="carousel-card flex-none w-[82vw] sm:w-[58vw] md:w-[48%] lg:w-[calc(45%-8px)] snap-start rounded-2xl bg-white border border-emerald-100 p-4 sm:p-5 flex flex-col justify-between hover:border-emerald-300 hover:shadow-xs transition-all">
-                            <div class="space-y-2.5">
-                                <div class="flex items-center justify-between">
-                                    <span class="w-7 h-7 rounded-xl bg-emerald-700 text-white font-mono font-bold text-xs flex items-center justify-center shadow-2xs">10</span>
-                                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">Nên Dùng</span>
-                                </div>
-                                <h4 class="font-bold text-[#174C3B] text-sm sm:text-base leading-snug">Trái cây tươi giàu nước</h4>
-                                <div class="px-3 py-1.5 rounded-xl bg-[#FAF7F0] border border-emerald-100/70 text-[11px] sm:text-xs text-[#5F6E66]">
-                                    <span class="font-bold text-emerald-800">Ví dụ: </span>Dưa hấu, dưa chuột sạch, lê tươi.
-                                </div>
-                            </div>
-                            <div class="pt-3 mt-3 border-t border-zinc-100">
-                                <p class="text-xs text-[#5F6E66] leading-relaxed">
-                                    Cung cấp nước tự nhiên và chất xơ, hỗ trợ hệ tiêu hóa của trẻ hoạt động trơn tru hơn.
-                                </p>
-                            </div>
-                        </div>
-
+                <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/30 shadow-2xs space-y-1">
+                    <div class="flex items-center justify-between font-bold text-[#174C3B]">
+                        <span class="uppercase tracking-wide text-xs sm:text-sm">1/4 Đĩa: Tinh Bột Phức</span>
+                        <span class="text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full bg-[#EEF5EA] text-[#174C3B] border border-[#8FAF91]/30">Năng lượng chậm</span>
                     </div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed pt-1">
+                        Gạo lứt, diêm mạch (quinoa), hạt kê, khoai lang, khoai sọ, yến mạch không gluten.
+                    </p>
+                </div>
 
-                    <!-- Chỉ báo vị trí (Dots) Dải 2 -->
-                    <div class="carousel-dots flex items-center justify-center gap-1.5 pt-2"></div>
+                <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F0] border border-orange-100 shadow-2xs space-y-1">
+                    <div class="flex items-center justify-between font-bold text-amber-700">
+                        <span class="uppercase tracking-wide text-xs sm:text-sm">Bổ Trợ: Chất Béo Tốt (Lipid)</span>
+                        <span class="text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full bg-orange-50 text-amber-700 border border-orange-200">Nuôi dưỡng não</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#5F6E66] leading-relaxed pt-1">
+                        Dầu hạt ép lạnh (dầu mè, hạt chia, dầu hạt lanh), dầu ô liu nguyên chất, quả bơ chín.
+                    </p>
                 </div>
 
             </div>
 
-            <!-- ==============================================================
-                 VÙNG BÊN PHẢI (~35%): GỢI Ý BỮA ĂN CÂN BẰNG (STICKY TRÊN DESKTOP)
-                 ============================================================== -->
-            <div class="w-full lg:w-[35%] min-w-0 lg:sticky lg:top-24 self-start">
-                <div id="section-bua-an" class="rounded-3xl border border-[#8FAF91]/35 bg-[#FAF7F0] p-5 sm:p-6 shadow-xs space-y-5">
-                    
-                    <!-- Tiêu đề & mô tả ngắn -->
-                    <div>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF5EA] text-[#174C3B] text-[11px] font-bold uppercase tracking-wider mb-2 border border-[#8FAF91]/30">
-                            <span class="w-1.5 h-1.5 rounded-full bg-[#174C3B]"></span>
-                            MÔ HÌNH THAM KHẢO
-                        </span>
-                        <h3 class="text-xl sm:text-2xl font-black uppercase text-[#174C3B] tracking-tight">
-                            GỢI Ý BỮA ĂN CÂN BẰNG
-                        </h3>
-                        <p class="text-xs text-[#5F6E66] mt-1 leading-relaxed">
-                            Điều chỉnh khẩu phần theo tuổi và nhu cầu
-                        </p>
+        </div>
+
+        <!-- PHẦN 2: GỢI Ý THỰC ĐƠN MẪU 1 NGÀY THỰC TẾ CHO BÉ -->
+        <div class="rounded-3xl bg-[#FAF7F0] border border-[#8FAF91]/30 p-6 sm:p-8 lg:p-10 space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#8FAF91]/25">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-[#F08A4B] block mb-1">Áp Dụng Thực Tế</span>
+                    <h3 class="text-xl sm:text-2xl md:text-3xl font-black uppercase text-[#174C3B]">Gợi Ý Thực Đơn Mẫu 1 Ngày Cho Con</h3>
+                </div>
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-[#8FAF91]/40 text-xs font-bold text-[#174C3B] self-start sm:self-auto">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>100% Không Gluten - Không Casein</span>
+                </div>
+            </div>
+
+            <!-- 4 Bữa ăn trong ngày -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                
+                <!-- Bữa sáng -->
+                <div class="rounded-2xl bg-white border border-[#8FAF91]/25 p-5 shadow-2xs space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-zinc-100">
+                        <span class="font-bold text-sm text-[#174C3B] uppercase">Bữa Sáng</span>
+                        <span class="text-[11px] font-mono font-bold text-[#F08A4B] px-2 py-0.5 rounded bg-orange-50">07:00 - 07:30</span>
                     </div>
-
-                    <!-- Ảnh đĩa ăn minh họa -->
-                    <div class="relative rounded-2xl overflow-hidden border border-[#8FAF91]/25 bg-white p-3 text-center shadow-2xs">
-                        <img src="../assets/images/loi-khuyen-dinh-duong-gfcf.png" alt="Mô hình đĩa ăn cân bằng GFCF+SF cho trẻ đặc biệt" class="w-full h-auto max-h-[230px] object-contain mx-auto rounded-xl">
-                        <div class="mt-2.5 pt-2 border-t border-zinc-100 flex items-center justify-between text-[11px] text-[#5F6E66]">
-                            <span>Đĩa ăn GFCF+SF</span>
-                            <a href="../assets/images/loi-khuyen-dinh-duong-gfcf.png" target="_blank" class="text-[#174C3B] font-bold hover:underline inline-flex items-center gap-1">
-                                <span>Phóng to ảnh</span>
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                            </a>
-                        </div>
+                    <h4 class="font-bold text-xs sm:text-sm text-[#174C3B]">Cháo thịt gà hạt sen & bí đỏ</h4>
+                    <p class="text-xs text-[#5F6E66] leading-relaxed">
+                        Nấu gạo tẻ mềm cùng thịt gà nạc, bí đỏ nghiền và hạt sen bở thơm lừng.
+                    </p>
+                    <div class="pt-2 text-[11px] text-[#174C3B] font-medium border-t border-zinc-100">
+                        <span class="text-[#F08A4B] font-bold">Tráng miệng: </span>1/2 quả chuối tiêu chín.
                     </div>
+                </div>
 
-                    <!-- Bốn nhóm chất chính -->
-                    <div class="space-y-2.5 text-xs">
-                        <!-- 1. Rau củ quả -->
-                        <div class="p-3 rounded-xl bg-white border border-emerald-100 shadow-2xs space-y-1">
-                            <div class="flex items-center justify-between font-bold text-emerald-800">
-                                <span class="uppercase tracking-wide text-[11px]">1/2 Đĩa: Rau Củ Quả</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-100">Chất xơ & Vi chất</span>
-                            </div>
-                            <p class="text-[#5F6E66] leading-relaxed text-[11px]">
-                                Rau ngót, cải bó xôi, bông cải xanh, bí đỏ, cà rốt, củ dền, chuối tiêu, táo, quả mọng ít ngọt.
-                            </p>
-                        </div>
-
-                        <!-- 2. Chất đạm -->
-                        <div class="p-3 rounded-xl bg-white border border-amber-100 shadow-2xs space-y-1">
-                            <div class="flex items-center justify-between font-bold text-[#F08A4B]">
-                                <span class="uppercase tracking-wide text-[11px]">1/4 Đĩa: Chất Đạm (Protein)</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded bg-amber-50 text-[#F08A4B] border border-amber-100">Tái tạo tế bào</span>
-                            </div>
-                            <p class="text-[#5F6E66] leading-relaxed text-[11px]">
-                                Thịt gà sạch, thịt lợn nạc, cá đồng, cá hồi, tôm tươi, các loại đậu hạt an toàn (đậu xanh, đậu đen).
-                            </p>
-                        </div>
-
-                        <!-- 3. Tinh bột -->
-                        <div class="p-3 rounded-xl bg-white border border-[#8FAF91]/30 shadow-2xs space-y-1">
-                            <div class="flex items-center justify-between font-bold text-[#174C3B]">
-                                <span class="uppercase tracking-wide text-[11px]">1/4 Đĩa: Tinh Bột Phức</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded bg-[#EEF5EA] text-[#174C3B] border border-[#8FAF91]/30">Năng lượng chậm</span>
-                            </div>
-                            <p class="text-[#5F6E66] leading-relaxed text-[11px]">
-                                Gạo lứt, diêm mạch (quinoa), hạt kê, khoai lang, khoai sọ, yến mạch không gluten.
-                            </p>
-                        </div>
-
-                        <!-- 4. Chất béo -->
-                        <div class="p-3 rounded-xl bg-white border border-orange-100 shadow-2xs space-y-1">
-                            <div class="flex items-center justify-between font-bold text-amber-700">
-                                <span class="uppercase tracking-wide text-[11px]">Bổ Trợ: Chất Béo Tốt (Lipid)</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded bg-orange-50 text-amber-700 border border-orange-100">Nuôi dưỡng não</span>
-                            </div>
-                            <p class="text-[#5F6E66] leading-relaxed text-[11px]">
-                                Dầu hạt ép lạnh (dầu mè, hạt chia, dầu hạt lanh), dầu ô liu nguyên chất, quả bơ chín.
-                            </p>
-                        </div>
+                <!-- Bữa trưa -->
+                <div class="rounded-2xl bg-white border border-[#8FAF91]/25 p-5 shadow-2xs space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-zinc-100">
+                        <span class="font-bold text-sm text-[#174C3B] uppercase">Bữa Trưa</span>
+                        <span class="text-[11px] font-mono font-bold text-[#F08A4B] px-2 py-0.5 rounded bg-orange-50">11:30 - 12:15</span>
                     </div>
-
-                    <!-- Lưu ý ngắn về việc điều chỉnh theo khả năng ăn của trẻ -->
-                    <div class="p-3.5 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/30 text-xs text-[#174C3B] space-y-1">
-                        <div class="flex items-center gap-1.5 font-bold text-xs">
-                            <svg class="w-4 h-4 text-[#F08A4B] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <span>Lưu ý theo thể trạng trẻ</span>
-                        </div>
-                        <p class="text-[11px] text-[#5F6E66] leading-relaxed">
-                            Khẩu phần và dạng chế biến (nấu mềm, xay nhuyễn, thái hạt lựu) cần điều chỉnh linh hoạt theo độ tuổi, khả năng nhai nuốt và phản ứng cảm giác của từng bé.
-                        </p>
+                    <h4 class="font-bold text-xs sm:text-sm text-[#174C3B]">Cơm mềm, cá hồi & canh rau ngót</h4>
+                    <p class="text-xs text-[#5F6E66] leading-relaxed">
+                        Cá hồi áp chảo dầu ô liu, canh rau ngót nấu tôm tươi băm, ăn kèm cơm tẻ dẻo mềm hoặc cơm gạo lứt.
+                    </p>
+                    <div class="pt-2 text-[11px] text-[#174C3B] font-medium border-t border-zinc-100">
+                        <span class="text-[#F08A4B] font-bold">Bổ sung: </span>Vài lát bơ sáp chín bùi.
                     </div>
+                </div>
 
+                <!-- Bữa phụ chiều -->
+                <div class="rounded-2xl bg-white border border-[#8FAF91]/25 p-5 shadow-2xs space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-zinc-100">
+                        <span class="font-bold text-sm text-[#174C3B] uppercase">Bữa Phụ Chiều</span>
+                        <span class="text-[11px] font-mono font-bold text-[#F08A4B] px-2 py-0.5 rounded bg-orange-50">14:30 - 15:00</span>
+                    </div>
+                    <h4 class="font-bold text-xs sm:text-sm text-[#174C3B]">Sữa chua hạt & quả mọng</h4>
+                    <p class="text-xs text-[#5F6E66] leading-relaxed">
+                        Sữa chua lên men từ sữa dừa hoặc sữa hạnh nhân tự nấu, trộn cùng một ít việt quất hoặc táo hấp mềm.
+                    </p>
+                    <div class="pt-2 text-[11px] text-[#174C3B] font-medium border-t border-zinc-100">
+                        <span class="text-[#F08A4B] font-bold">Lợi ích: </span>Êm dịu tiêu hóa và đường ruột.
+                    </div>
+                </div>
+
+                <!-- Bữa tối -->
+                <div class="rounded-2xl bg-white border border-[#8FAF91]/25 p-5 shadow-2xs space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-zinc-100">
+                        <span class="font-bold text-sm text-[#174C3B] uppercase">Bữa Tối</span>
+                        <span class="text-[11px] font-mono font-bold text-[#F08A4B] px-2 py-0.5 rounded bg-orange-50">18:00 - 18:45</span>
+                    </div>
+                    <h4 class="font-bold text-xs sm:text-sm text-[#174C3B]">Thịt lợn nạc xào súp lơ & canh củ dền</h4>
+                    <p class="text-xs text-[#5F6E66] leading-relaxed">
+                        Thịt lợn nạc thái nhỏ xào bông cải xanh và cà rốt, canh củ dền hầm sườn nạc, ăn kèm khoai lang hoặc cơm mềm.
+                    </p>
+                    <div class="pt-2 text-[11px] text-[#174C3B] font-medium border-t border-zinc-100">
+                        <span class="text-[#F08A4B] font-bold">Đặc điểm: </span>Dễ ngủ, không gây ậm ạch bụng.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Lưu ý điều chỉnh theo thể trạng của trẻ -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#8FAF91]/30 flex flex-col sm:flex-row sm:items-center gap-3.5 text-xs text-[#5F6E66]">
+                <div class="w-9 h-9 rounded-xl bg-[#EEF5EA] text-[#174C3B] flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="space-y-0.5">
+                    <span class="font-bold text-[#174C3B] text-xs sm:text-sm block">Lưu ý quan trọng theo thể trạng của con:</span>
+                    <p class="leading-relaxed">
+                        Khẩu phần và cách chế biến (xay nhuyễn, thái hạt lựu nhỏ, hầm mềm) cần linh hoạt theo độ tuổi, khả năng nhai nuốt và phản ứng cảm giác của từng trẻ. Mẹ không ép con ăn lượng quá lớn ngay từ đầu mà tăng dần theo nhu cầu tự nhiên của bé.
+                    </p>
                 </div>
             </div>
 
