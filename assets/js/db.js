@@ -1586,7 +1586,9 @@ const DB = (() => {
 
                         // Realtime live listener for pages status
                         this._firestoreDb.collection('site_config').doc('pages').onSnapshot((doc) => {
+                            if (typeof window !== 'undefined' && window.location.pathname.includes('/admin')) return;
                             if (doc && doc.exists) {
+                                if (doc.metadata && doc.metadata.hasPendingWrites) return;
                                 const data = doc.data();
                                 if (data && Array.isArray(data.items)) {
                                     let remoteTs = 0;
@@ -1595,7 +1597,9 @@ const DB = (() => {
                                     } else if (data.client_timestamp) {
                                         remoteTs = data.client_timestamp;
                                     }
-                                    this.syncRemotePages(data.items, remoteTs);
+                                    if (remoteTs > 0) {
+                                        this.syncRemotePages(data.items, remoteTs);
+                                    }
                                 }
                             }
                         }, (err) => {
@@ -1659,11 +1663,17 @@ const DB = (() => {
 
         syncRemotePages(remotePages, remoteTimestamp = 0) {
             if (!Array.isArray(remotePages) || !remotePages.length) return;
-            const current = this.getSettings();
 
-            // Safety guard: Never overwrite local settings if remote timestamp is older or equal
+            // Never overwrite local settings when inside Admin panel
+            if (typeof window !== 'undefined' && window.location.pathname.includes('/admin')) {
+                return;
+            }
+
+            const current = this.getSettings();
             const localTs = current.pages_updated_at || 0;
-            if (remoteTimestamp && remoteTimestamp <= localTs) {
+
+            // Strict safety guard: ONLY accept remote pages if remoteTimestamp is valid positive number and strictly newer than localTs
+            if (!remoteTimestamp || remoteTimestamp <= localTs) {
                 return;
             }
 
@@ -1682,7 +1692,7 @@ const DB = (() => {
             if (hasChange) {
                 current.pages = updated;
                 current.pages_schema_v = 4;
-                current.pages_updated_at = remoteTimestamp || Date.now();
+                current.pages_updated_at = remoteTimestamp;
                 this.saveSettings(current);
                 if (typeof this.applyPageStatusControl === 'function') {
                     this.applyPageStatusControl();
@@ -1697,16 +1707,22 @@ const DB = (() => {
         },
 
         async syncRemoteGlobalConfig() {
+            // Never sync remote global config inside Admin panel
+            if (typeof window !== 'undefined' && window.location.pathname.includes('/admin')) {
+                return null;
+            }
             try {
                 const res = await fetch('/api/config');
                 if (!res.ok) return null;
                 const data = await res.json();
                 if (data && data.success && Array.isArray(data.pages)) {
-                    // CRITICAL: NEVER overwrite local settings if remote response is just fallback or default unconfigured state
+                    // CRITICAL: NEVER overwrite local settings if remote response is fallback or default state
                     if (data.source === 'default' || data.source === 'fallback' || data.is_default) {
                         return data;
                     }
-                    this.syncRemotePages(data.pages, data.updated_at || 0);
+                    if (data.updated_at) {
+                        this.syncRemotePages(data.pages, data.updated_at);
+                    }
                     return data;
                 }
             } catch (e) {

@@ -62,6 +62,16 @@ const DEFAULT_PAGES = [
         description: 'Checklist sàng lọc thói quen ăn uống, nhai nuốt và nguy cơ thiếu hụt vi chất cho trẻ'
     },
     {
+        id: 'tra-cuu',
+        title: 'Tra Cứu Kết Quả Đánh Giá',
+        path: '/tra-cuu/',
+        slug: 'tra-cuu',
+        enabled: true,
+        can_disable: true,
+        category: 'Đánh Giá & Khảo Sát',
+        description: 'Trang tra cứu lịch sử đánh giá dinh dưỡng của bé theo số điện thoại của phụ huynh'
+    },
+    {
         id: 'dat-lich',
         title: 'Đặt Lịch Tư Vấn 1:1',
         path: '/dat-lich/',
