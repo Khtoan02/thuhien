@@ -417,9 +417,89 @@ const DB = (() => {
         dailyViews: {}
     };
 
+    const DEMO_EVALUATIONS = [
+        {
+            id: 'eval_demo_101',
+            child_name: 'Bé Bơ',
+            child_age: '3 tuổi',
+            gender: 'Bé Trai',
+            parent_name: 'Nguyễn Thị Phương Thảo',
+            phone: '0912345678',
+            phone_normalized: '0912345678',
+            weight: '12.5 kg',
+            height: '92 cm',
+            risk_level: 'low',
+            risk_title: 'Nguy cơ dinh dưỡng thấp / Cần điều chỉnh nhẹ',
+            score: 3,
+            water: '500ml - 1000ml',
+            allergies: ['Sữa bò thông thường'],
+            other_difficulties: 'Hay ngậm thức ăn khi ngồi ăn cùng cả nhà quá 25 phút',
+            daily_diet: 'Sáng: 1 bát cháo thịt bò băm.\nTrưa: Cơm nát, trứng hấp, canh bí đỏ.\nTối: Cơm thịt heo rang, nước cam vắt.',
+            advice_summary: 'Bé có nguy cơ dinh dưỡng thấp. Cần duy trì chế độ ăn đa dạng màu sắc, tăng cường thêm chất béo lành mạnh (dầu oliu, quả bơ) và tập phản xạ nhai thức ăn thô có cấu trúc.',
+            answers: {
+                'q1_height_weight': 0, 'q2_eating_diff': 1, 'q3_digest': 0, 'q4_exercise': 0,
+                'q5_sleep': 0, 'q6_screen': 0, 'q7_1': 1, 'q7_2': 0, 'q7_5': 1, 'supp_vitamin': 'co'
+            },
+            created_at: getRelativeDateStr(1, 10, 20),
+            created_at_iso: new Date(Date.now() - 86400000).toISOString()
+        },
+        {
+            id: 'eval_demo_102',
+            child_name: 'Bé Sóc',
+            child_age: '4 tuổi',
+            gender: 'Bé Trai',
+            parent_name: 'Hoàng Yến Nhi',
+            phone: '0938665544',
+            phone_normalized: '0938665544',
+            weight: '13.8 kg',
+            height: '98 cm',
+            risk_level: 'medium',
+            risk_title: 'Nguy cơ dinh dưỡng trung bình / Cần can thiệp',
+            score: 8,
+            water: 'Dưới 500ml',
+            allergies: ['Trứng gà', 'Hải sản'],
+            other_difficulties: 'Từ chối tuyệt đối rau xanh, chỉ ăn đồ giòn khô, sợ thức ăn ướt hoặc có sốt',
+            daily_diet: 'Sáng: Bánh mì nướng khô giòn.\nTrưa: Thịt heo chiên giòn rụm, cơm trắng khô.\nTối: Gà rán hoặc khoai tây chiên.',
+            advice_summary: 'Bé có nguy cơ dinh dưỡng trung bình do chế độ ăn quá chọn lọc, thiếu hụt chất xơ, vitamin C, kẽm và khoáng chất vi lượng. Cần kế hoạch giải mẫn cảm vị giác từng bước.',
+            answers: {
+                'q1_height_weight': 1, 'q2_eating_diff': 1, 'q3_digest': 1, 'q4_exercise': 0,
+                'q5_sleep': 1, 'q6_screen': 1, 'q7_2': 1, 'q7_3': 1, 'q7_8': 1, 'supp_omega': 'khong'
+            },
+            created_at: getRelativeDateStr(2, 14, 45),
+            created_at_iso: new Date(Date.now() - 172800000).toISOString()
+        },
+        {
+            id: 'eval_demo_103',
+            child_name: 'Bé Bon',
+            child_age: '2.5 tuổi',
+            gender: 'Bé Gái',
+            parent_name: 'Trần Quỳnh Trang',
+            phone: '0918776611',
+            phone_normalized: '0918776611',
+            weight: '10.2 kg',
+            height: '84 cm',
+            risk_level: 'high',
+            risk_title: 'Nguy cơ dinh dưỡng cao / Cần can thiệp chuyên sâu',
+            score: 13,
+            water: 'Dưới 500ml',
+            allergies: ['Gluten (Lúa mì)', 'Sữa bò', 'Đậu nành'],
+            other_difficulties: 'Táo bón kéo dài 4-5 ngày/lần, phân cứng chảy máu, hay bùng nổ ăn vạ lúc ăn, khó ngủ đêm',
+            daily_diet: 'Sáng: Uống sữa công thức.\nTrưa: Cố ép được 3 thìa cơm nhão rồi nôn trớ.\nTối: Ăn xúc xích, bim bim, nước ngọt có gas.',
+            advice_summary: 'Bé có nguy cơ dinh dưỡng cao với nhiều dấu hiệu rối loạn tiêu hóa và quá tải hệ thần kinh. Cần xây dựng phác đồ phục hồi niêm mạc ruột, kiểm tra vi chất và đồng hành chuyên sâu.',
+            answers: {
+                'q1_height_weight': 1, 'q2_eating_diff': 1, 'q3_digest': 2, 'q4_exercise': 1,
+                'q5_sleep': 1, 'q6_screen': 1, 'q7_1': 1, 'q7_2': 1, 'q7_4': 1, 'q7_5': 1,
+                'q7_6': 1, 'q7_8': 1, 'q7_14': 1
+            },
+            created_at: getRelativeDateStr(3, 19, 15),
+            created_at_iso: new Date(Date.now() - 259200000).toISOString()
+        }
+    ];
+
     // Official production defaults: All metrics start at 0
     const INITIAL_BOOKINGS = [];
     const INITIAL_LEADS = [];
+    const INITIAL_EVALUATIONS = [];
     const INITIAL_ANALYTICS = {
         totalVisitors: 0,
         pageViews: 0,
@@ -670,10 +750,10 @@ const DB = (() => {
             const id = data.id || ('eval_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6));
 
             const newRecord = {
-                id: id,
+                id: String(id),
                 child_name: data.child_name || '',
                 child_age: data.child_age || '',
-                gender: data.gender || 'Nam',
+                gender: data.gender || data.child_gender || 'Bé',
                 parent_name: data.parent_name || '',
                 phone: data.phone || '',
                 phone_normalized: cleanPhone,
@@ -683,43 +763,47 @@ const DB = (() => {
                 risk_title: data.risk_title || 'Nguy cơ dinh dưỡng thấp',
                 score: Number(data.score || 0),
                 answers: data.answers || {},
-                water: data.water || '',
+                water: data.water || data.water_intake || '',
                 allergies: data.allergies || [],
-                daily_diet: data.daily_diet || '',
+                daily_diet: data.daily_diet || data.diet_description || '',
                 other_difficulties: data.other_difficulties || '',
-                advice_summary: data.advice_summary || '',
+                advice_summary: data.advice_summary || data.feedback || '',
                 created_at: data.created_at || now.toLocaleString('vi-VN'),
                 created_at_iso: data.created_at_iso || now.toISOString()
             };
 
             // Remove duplicate if same ID
-            list = list.filter(item => item.id !== newRecord.id);
+            list = list.filter(item => String(item.id) !== String(newRecord.id));
             list.unshift(newRecord);
             localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(list));
 
             // Sync to Firebase Cloud Firestore
             if (this._firestoreDb) {
-                this._firestoreDb.collection('evaluations').doc(newRecord.id).set(newRecord, { merge: true }).catch(err => {
+                this._firestoreDb.collection('evaluations').doc(String(newRecord.id)).set(newRecord, { merge: true }).catch(err => {
                     console.warn('🔥 Firestore evaluation save failed:', err);
                 });
             } else if (typeof this.initFirebase === 'function') {
                 this.initFirebase().then(db => {
                     if (db) {
-                        db.collection('evaluations').doc(newRecord.id).set(newRecord, { merge: true }).catch(() => {});
+                        db.collection('evaluations').doc(String(newRecord.id)).set(newRecord, { merge: true }).catch(() => {});
                     }
                 });
             }
+
+            // Realtime sync broadcast
+            this.broadcastChange('evaluations_changed', newRecord);
 
             return newRecord;
         },
 
         deleteEvaluation(id) {
             let list = this.getEvaluations();
-            list = list.filter(e => e.id !== id);
+            list = list.filter(e => String(e.id) !== String(id));
             localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(list));
             if (this._firestoreDb) {
-                this._firestoreDb.collection('evaluations').doc(id).delete().catch(() => {});
+                this._firestoreDb.collection('evaluations').doc(String(id)).delete().catch(() => {});
             }
+            this.broadcastChange('evaluations_changed', { id });
             return true;
         },
 
@@ -755,17 +839,41 @@ const DB = (() => {
             return this.getEvaluationsByPhone(phone);
         },
 
+        async fetchAllEvaluationsRemote() {
+            try {
+                const db = await this.initFirebase();
+                if (db) {
+                    const snap = await db.collection('evaluations').get();
+                    if (!snap.empty) {
+                        const remoteResults = [];
+                        snap.forEach(doc => {
+                            remoteResults.push({ id: doc.id, ...doc.data() });
+                        });
+                        this.mergeRemoteEvaluations(remoteResults);
+                        if (typeof window !== 'undefined') {
+                            if (typeof window.renderEvaluations === 'function') window.renderEvaluations();
+                            if (typeof window.renderAll === 'function') window.renderAll();
+                        }
+                        return remoteResults;
+                    }
+                }
+            } catch (e) {
+                console.warn('fetchAllEvaluationsRemote notice:', e);
+            }
+            return this.getEvaluations();
+        },
+
         mergeRemoteEvaluations(remoteList) {
             if (!Array.isArray(remoteList) || !remoteList.length) return;
             let localList = this.getEvaluations();
             const map = new Map();
-            localList.forEach(item => map.set(item.id, item));
+            localList.forEach(item => map.set(String(item.id), item));
             remoteList.forEach(item => {
-                map.set(item.id, { ...(map.get(item.id) || {}), ...item });
+                map.set(String(item.id), { ...(map.get(String(item.id)) || {}), ...item });
             });
             const merged = Array.from(map.values()).sort((a, b) => {
-                const tA = new Date(a.created_at_iso || 0).getTime();
-                const tB = new Date(b.created_at_iso || 0).getTime();
+                const tA = new Date(a.created_at_iso || a.created_at || 0).getTime() || 0;
+                const tB = new Date(b.created_at_iso || b.created_at || 0).getTime() || 0;
                 return tB - tA;
             });
             localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(merged));
@@ -1023,6 +1131,7 @@ const DB = (() => {
         resetSampleData() {
             localStorage.setItem(STORAGE_KEY_BOOKINGS, JSON.stringify(DEMO_BOOKINGS));
             localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify(DEMO_LEADS));
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(DEMO_EVALUATIONS));
             localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify(DEMO_ANALYTICS));
         },
 
@@ -1389,8 +1498,13 @@ const DB = (() => {
                                         remoteList.push({ id: doc.id, ...doc.data() });
                                     });
                                     this.mergeRemoteEvaluations(remoteList);
-                                    if (typeof window !== 'undefined' && typeof window.renderEvaluations === 'function') {
-                                        window.renderEvaluations();
+                                    if (typeof window !== 'undefined') {
+                                        if (typeof window.renderEvaluations === 'function') {
+                                            window.renderEvaluations();
+                                        }
+                                        if (typeof window.renderAll === 'function') {
+                                            window.renderAll();
+                                        }
                                     }
                                 }
                             }, (err) => {
