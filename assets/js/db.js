@@ -106,10 +106,18 @@ const DB = (() => {
 
     const DEFAULT_SETTINGS = {
         email: {
-            provider: 'webhook', // 'webhook' | 'emailjs' | 'formspree' | 'resend'
+            provider: 'smtp', // 'smtp' | 'webhook' | 'emailjs' | 'formspree' | 'resend'
             admin_notify_email: 'thuhien.cungmehieucon@gmail.com',
             notify_on_booking: true,
             notify_on_lead: true,
+            notify_on_evaluation: true,
+            smtp_host: 'smtp.gmail.com',
+            smtp_port: 465,
+            smtp_secure: true,
+            smtp_user: '',
+            smtp_pass: '',
+            smtp_from_name: 'Thu Hiền - Cùng Mẹ Hiểu Con',
+            smtp_from_email: '',
             emailjs_service_id: '',
             emailjs_template_booking: '',
             emailjs_template_lead: '',
@@ -646,6 +654,15 @@ const DB = (() => {
 
             bookings.unshift(newBooking);
             localStorage.setItem(STORAGE_KEY_BOOKINGS, JSON.stringify(bookings));
+
+            // Trigger Email Notification if enabled
+            try {
+                const emailCfg = this.getSettings().email;
+                if (emailCfg && emailCfg.notify_on_booking !== false) {
+                    this.sendNotificationEmail('booking', newBooking).catch(() => {});
+                }
+            } catch (e) {}
+
             return newBooking;
         },
 
@@ -707,6 +724,15 @@ const DB = (() => {
 
             leads.unshift(newLead);
             localStorage.setItem(STORAGE_KEY_LEADS, JSON.stringify(leads));
+
+            // Trigger Email Notification if enabled
+            try {
+                const emailCfg = this.getSettings().email;
+                if (emailCfg && emailCfg.notify_on_lead !== false) {
+                    this.sendNotificationEmail('lead', newLead).catch(() => {});
+                }
+            } catch (e) {}
+
             return newLead;
         },
 
@@ -827,6 +853,14 @@ const DB = (() => {
 
             // Realtime sync broadcast
             this.broadcastChange('evaluations_changed', newRecord);
+
+            // Trigger Email Notification if enabled
+            try {
+                const emailCfg = this.getSettings().email;
+                if (emailCfg && emailCfg.notify_on_evaluation !== false) {
+                    this.sendNotificationEmail('evaluation', newRecord).catch(() => {});
+                }
+            } catch (e) {}
 
             return newRecord;
         },
@@ -1811,39 +1845,153 @@ const DB = (() => {
 
         async sendNotificationEmail(type, payload) {
             const settings = this.getSettings();
-            const emailCfg = settings.email;
+            const emailCfg = settings.email || {};
             const nowStr = new Date().toLocaleString('vi-VN');
 
             let subject = '';
             let bodyText = '';
+            let htmlBody = '';
             const logs = this.getEmailLogs();
 
             if (type === 'booking') {
-                if (!emailCfg.notify_on_booking) return null;
-                subject = `[Lịch Hẹn Mới] Phụ huynh ${payload.parent_name} - ${payload.consult_type}`;
+                if (emailCfg.notify_on_booking === false) return null;
+                subject = `[Lịch Hẹn Mới] Phụ huynh ${payload.parent_name || 'Phụ huynh'} - ${payload.consult_type || 'Tư vấn'}`;
                 bodyText = `THÔNG BÁO LỊCH HẸN TƯ VẤN 1-1 MỚI\n\n` +
-                    `- Họ tên mẹ: ${payload.parent_name}\n` +
-                    `- SĐT / Zalo: ${payload.phone}\n` +
+                    `- Họ tên mẹ: ${payload.parent_name || '-'}\n` +
+                    `- SĐT / Zalo: ${payload.phone || '-'}\n` +
                     `- Email: ${payload.email || 'Không có'}\n` +
                     `- Thông tin bé: ${payload.baby_name || 'Bé'} (${payload.baby_age || '-'})\n` +
                     `- Biểu hiện của con: ${payload.issues || '-'}\n` +
                     `- Chia sẻ của mẹ: ${payload.feeding_notes || '-'}\n` +
-                    `- Gói đồng hành: ${payload.consult_type}\n` +
-                    `- Khung giờ mong muốn: ${payload.preferred_time}\n` +
+                    `- Gói đồng hành: ${payload.consult_type || '-'}\n` +
+                    `- Khung giờ mong muốn: ${payload.preferred_time || '-'}\n` +
                     `- Thời gian gửi: ${payload.created_at || nowStr}`;
+
+                htmlBody = `
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f9fafb;padding:20px;border-radius:12px;">
+                    <div style="background:#174c3b;padding:24px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
+                        <h1 style="margin:0;font-size:20px;font-weight:700;letter-spacing:0.5px;">THU HIỀN - CÙNG MẸ HIỂU CON</h1>
+                        <p style="margin:6px 0 0;font-size:12px;opacity:0.85;">Thông Báo Lịch Hẹn Tư Vấn 1-1 Mới Từ Website</p>
+                    </div>
+                    <div style="background:#ffffff;padding:24px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
+                        <div style="display:inline-block;background:#ecfdf5;border:1px solid #10b981;color:#065f46;font-size:11px;font-weight:700;padding:4px 10px;border-radius:9999px;margin-bottom:16px;">
+                            LỊCH HẸN MỚI CHỜ XÁC NHẬN
+                        </div>
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;line-height:1.6;color:#374151;">
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;width:140px;color:#6b7280;font-weight:600;">Họ tên phụ huynh:</td><td style="padding:8px 0;font-weight:700;color:#111827;">${payload.parent_name || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">SĐT / Zalo:</td><td style="padding:8px 0;font-weight:700;color:#047857;"><a href="tel:${payload.phone}" style="color:#047857;text-decoration:none;">${payload.phone || '-'}</a></td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Email:</td><td style="padding:8px 0;">${payload.email || 'Không có'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thông tin bé:</td><td style="padding:8px 0;"><strong>${payload.baby_name || 'Bé'}</strong> (${payload.baby_age || '-'})</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Gói đăng ký:</td><td style="padding:8px 0;font-weight:600;color:#b45309;">${payload.consult_type || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Khung giờ mong muốn:</td><td style="padding:8px 0;">${payload.preferred_time || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Biểu hiện của con:</td><td style="padding:8px 0;color:#4b5563;">${payload.issues || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Chia sẻ của mẹ:</td><td style="padding:8px 0;color:#4b5563;">${payload.feeding_notes || '-'}</td></tr>
+                            <tr><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thời gian đăng ký:</td><td style="padding:8px 0;font-size:12px;color:#9ca3af;">${payload.created_at || nowStr}</td></tr>
+                        </table>
+                        <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;text-align:center;">
+                            <a href="https://zalo.me/${(payload.phone || '').replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#0284c7;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;margin-right:8px;">Nhắn Zalo Phụ Huynh</a>
+                            <a href="/admin/?tab=bookings" target="_blank" style="display:inline-block;background:#174c3b;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;">Mở Trang Quản Trị</a>
+                        </div>
+                    </div>
+                </div>`;
             } else if (type === 'lead') {
-                if (!emailCfg.notify_on_lead) return null;
-                subject = `[Tải Cẩm Nang Mới] Phụ huynh ${payload.parent_name} - ${payload.phone}`;
+                if (emailCfg.notify_on_lead === false) return null;
+                subject = `[Tải Cẩm Nang Mới] Phụ huynh ${payload.parent_name || 'Phụ huynh'} - ${payload.phone || ''}`;
                 bodyText = `THÔNG BÁO TẢI CẨM NANG / TÀI LIỆU MỚI\n\n` +
-                    `- Họ tên mẹ: ${payload.parent_name}\n` +
-                    `- Số Zalo: ${payload.phone}\n` +
+                    `- Họ tên mẹ: ${payload.parent_name || '-'}\n` +
+                    `- Số Zalo: ${payload.phone || '-'}\n` +
                     `- Email: ${payload.email || 'Không có'}\n` +
                     `- Độ tuổi bé: ${payload.baby_age || '-'}\n` +
-                    `- Tài liệu nhận: ${payload.resource_name}\n` +
+                    `- Tài liệu nhận: ${payload.resource_name || '-'}\n` +
                     `- Thời gian gửi: ${payload.created_at || nowStr}`;
+
+                htmlBody = `
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f9fafb;padding:20px;border-radius:12px;">
+                    <div style="background:#174c3b;padding:24px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
+                        <h1 style="margin:0;font-size:20px;font-weight:700;letter-spacing:0.5px;">THU HIỀN - CÙNG MẸ HIỂU CON</h1>
+                        <p style="margin:6px 0 0;font-size:12px;opacity:0.85;">Khách Hàng Tiềm Năng Mới Nhận Tài Liệu</p>
+                    </div>
+                    <div style="background:#ffffff;padding:24px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
+                        <div style="display:inline-block;background:#fef3c7;border:1px solid #f59e0b;color:#92400e;font-size:11px;font-weight:700;padding:4px 10px;border-radius:9999px;margin-bottom:16px;">
+                            ĐĂNG KÝ TẢI TÀI LIỆU MỚI
+                        </div>
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;line-height:1.6;color:#374151;">
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;width:140px;color:#6b7280;font-weight:600;">Họ tên phụ huynh:</td><td style="padding:8px 0;font-weight:700;color:#111827;">${payload.parent_name || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Số Zalo:</td><td style="padding:8px 0;font-weight:700;color:#047857;"><a href="tel:${payload.phone}" style="color:#047857;text-decoration:none;">${payload.phone || '-'}</a></td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Email:</td><td style="padding:8px 0;">${payload.email || 'Không có'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Độ tuổi của con:</td><td style="padding:8px 0;">${payload.baby_age || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Tài liệu đã nhận:</td><td style="padding:8px 0;font-weight:600;color:#1d4ed8;">${payload.resource_name || '-'}</td></tr>
+                            <tr><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thời gian đăng ký:</td><td style="padding:8px 0;font-size:12px;color:#9ca3af;">${payload.created_at || nowStr}</td></tr>
+                        </table>
+                        <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;text-align:center;">
+                            <a href="https://zalo.me/${(payload.phone || '').replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#0284c7;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;">Kết Nối Zalo Với Mẹ</a>
+                        </div>
+                    </div>
+                </div>`;
+            } else if (type === 'evaluation') {
+                if (emailCfg.notify_on_evaluation === false) return null;
+                const riskTitle = payload.risk_title || (payload.risk_level === 'high' ? 'Nguy cơ cao' : (payload.risk_level === 'medium' ? 'Nguy cơ trung bình' : 'Nguy cơ thấp'));
+                const riskColor = payload.risk_level === 'high' ? '#dc2626' : (payload.risk_level === 'medium' ? '#d97706' : '#059669');
+                const riskBg = payload.risk_level === 'high' ? '#fee2e2' : (payload.risk_level === 'medium' ? '#fef3c7' : '#d1fae5');
+                
+                subject = `[Phiếu Đánh Giá Dinh Dưỡng] Bé ${payload.child_name || 'Bé'} (${payload.child_age || '-'}) - ${riskTitle}`;
+                bodyText = `THÔNG BÁO PHIẾU ĐÁNH GIÁ DINH DƯỠNG MỚI\n\n` +
+                    `- Họ tên bé: ${payload.child_name || 'Chưa cập nhật'}\n` +
+                    `- Tuổi / Giới tính: ${payload.child_age || '-'} | ${payload.gender || '-'}\n` +
+                    `- Phụ huynh: ${payload.parent_name || 'Phụ huynh'} (SĐT: ${payload.phone || 'Chưa có'})\n` +
+                    `- Thể trạng: ${payload.weight ? payload.weight + ' kg' : '-'} / ${payload.height ? payload.height + ' cm' : '-'}\n` +
+                    `- Mức độ nguy cơ: ${riskTitle} (Điểm: ${payload.score || 0})\n` +
+                    `- Khẩu phần / Thói quen ăn: ${payload.daily_diet || '-'}\n` +
+                    `- Dị ứng thực phẩm: ${Array.isArray(payload.allergies) ? payload.allergies.join(', ') : (payload.allergies || 'Không có')}\n` +
+                    `- Khó khăn khác: ${payload.other_difficulties || '-'}\n` +
+                    `- Lượng nước uống: ${payload.water || '-'}\n` +
+                    `- Thời gian gửi: ${payload.created_at || nowStr}`;
+
+                htmlBody = `
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f9fafb;padding:20px;border-radius:12px;">
+                    <div style="background:#174c3b;padding:24px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
+                        <h1 style="margin:0;font-size:20px;font-weight:700;letter-spacing:0.5px;">THU HIỀN - CÙNG MẸ HIỂU CON</h1>
+                        <p style="margin:6px 0 0;font-size:12px;opacity:0.85;">Phiếu Đánh Giá Dinh Dưỡng Của Trẻ</p>
+                    </div>
+                    <div style="background:#ffffff;padding:24px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
+                        <div style="display:inline-block;background:${riskBg};border:1px solid ${riskColor};color:${riskColor};font-size:12px;font-weight:700;padding:5px 12px;border-radius:9999px;margin-bottom:16px;">
+                            ${riskTitle.toUpperCase()} (ĐIỂM SỐ: ${payload.score || 0})
+                        </div>
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;line-height:1.6;color:#374151;">
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;width:140px;color:#6b7280;font-weight:600;">Họ tên bé:</td><td style="padding:8px 0;font-weight:700;color:#111827;">${payload.child_name || 'Bé'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Độ tuổi / Giới tính:</td><td style="padding:8px 0;">${payload.child_age || '-'} (${payload.gender || '-'})</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Cân nặng / Chiều cao:</td><td style="padding:8px 0;">${payload.weight ? payload.weight + ' kg' : '-'} / ${payload.height ? payload.height + ' cm' : '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Phụ huynh:</td><td style="padding:8px 0;font-weight:600;">${payload.parent_name || 'Phụ huynh'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">SĐT / Zalo:</td><td style="padding:8px 0;font-weight:700;color:#047857;"><a href="tel:${payload.phone}" style="color:#047857;text-decoration:none;">${payload.phone || 'Chưa cung cấp'}</a></td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thói quen / Bữa ăn:</td><td style="padding:8px 0;color:#4b5563;">${payload.daily_diet || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Dị ứng thực phẩm:</td><td style="padding:8px 0;color:#dc2626;">${Array.isArray(payload.allergies) ? payload.allergies.join(', ') : (payload.allergies || 'Không có')}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Lượng nước uống:</td><td style="padding:8px 0;">${payload.water || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Khó khăn khác:</td><td style="padding:8px 0;color:#4b5563;">${payload.other_difficulties || '-'}</td></tr>
+                            <tr><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thời gian hoàn thành:</td><td style="padding:8px 0;font-size:12px;color:#9ca3af;">${payload.created_at || nowStr}</td></tr>
+                        </table>
+                        <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;text-align:center;">
+                            ${payload.phone ? `<a href="https://zalo.me/${(payload.phone || '').replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#0284c7;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;margin-right:8px;">Nhắn Zalo Cho Mẹ</a>` : ''}
+                            <a href="/danh-gia-dinh-duong/tra-cuu.html?phone=${(payload.phone || '').replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#174c3b;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;">Xem Phiếu Tra Cứu</a>
+                        </div>
+                    </div>
+                </div>`;
             } else if (type === 'test') {
                 subject = `[Kiểm Tra Hệ Thống] Email thử nghiệm từ Website Thu Hiền`;
                 bodyText = `Xin chào,\n\nĐây là email kiểm tra kết nối từ hệ thống quản trị Thu Hiền - Cùng Mẹ Hiểu Con.\nNếu bạn nhận được email này, cấu hình thông báo đã hoạt động thành công!\n\nThời gian: ${nowStr}`;
+                htmlBody = `
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f9fafb;padding:20px;border-radius:12px;">
+                    <div style="background:#174c3b;padding:24px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
+                        <h1 style="margin:0;font-size:20px;font-weight:700;letter-spacing:0.5px;">THU HIỀN - CÙNG MẸ HIỂU CON</h1>
+                        <p style="margin:6px 0 0;font-size:12px;opacity:0.85;">Kiểm Tra Kết Nối Email Thông Báo</p>
+                    </div>
+                    <div style="background:#ffffff;padding:24px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
+                        <div style="background:#ecfdf5;border:1px solid #10b981;color:#065f46;padding:12px 16px;border-radius:8px;font-size:13px;line-height:1.5;margin-bottom:16px;">
+                            <strong>✓ THÀNH CÔNG:</strong> Email kiểm tra kết nối từ Website Thu Hiền đã hoạt động chuẩn xác!
+                        </div>
+                        <p style="font-size:13px;color:#4b5563;margin-bottom:12px;">Khi có phụ huynh đặt lịch hẹn, tải cẩm nang hoặc làm phiếu đánh giá dinh dưỡng, hệ thống sẽ tự động gửi email báo cáo chi tiết đến hộp thư này.</p>
+                        <p style="font-size:12px;color:#9ca3af;margin:0;">Thời gian gửi: ${nowStr}</p>
+                    </div>
+                </div>`;
             }
 
             const targetRecipient = payload.recipient || emailCfg.admin_notify_email;
@@ -1858,8 +2006,40 @@ const DB = (() => {
                 details: bodyText
             };
 
-            // Attempt delivery via Webhook if configured
-            if (emailCfg.provider === 'webhook' && emailCfg.webhook_url) {
+            // Attempt delivery via SMTP
+            if (emailCfg.provider === 'smtp') {
+                try {
+                    const res = await fetch('/api/send-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'send',
+                            smtp: {
+                                host: emailCfg.smtp_host || 'smtp.gmail.com',
+                                port: Number(emailCfg.smtp_port) || 465,
+                                secure: emailCfg.smtp_secure !== false,
+                                user: emailCfg.smtp_user || '',
+                                pass: emailCfg.smtp_pass || '',
+                                fromName: emailCfg.smtp_from_name || 'Thu Hiền - Cùng Mẹ Hiểu Con',
+                                fromEmail: emailCfg.smtp_from_email || emailCfg.smtp_user || ''
+                            },
+                            to: targetRecipient,
+                            subject: subject,
+                            text: bodyText,
+                            html: htmlBody
+                        })
+                    });
+                    const json = await res.json();
+                    if (res.ok && json.success) {
+                        logEntry.status = 'Delivered (SMTP gửi thành công)';
+                    } else {
+                        logEntry.status = `Error (SMTP: ${json.error || 'Thất bại'})`;
+                        if (json.hint) logEntry.hint = json.hint;
+                    }
+                } catch (err) {
+                    logEntry.status = 'Error (Không kết nối được server mail: ' + err.message + ')';
+                }
+            } else if (emailCfg.provider === 'webhook' && emailCfg.webhook_url) {
                 try {
                     await fetch(emailCfg.webhook_url, {
                         method: 'POST',
@@ -1870,6 +2050,7 @@ const DB = (() => {
                             recipient: targetRecipient,
                             payload: payload,
                             text: bodyText,
+                            html: htmlBody,
                             timestamp: new Date().toISOString()
                         })
                     });
@@ -1904,11 +2085,91 @@ const DB = (() => {
             return logEntry;
         },
 
-        async testEmail(targetEmail) {
-            return await this.sendNotificationEmail('test', {
-                recipient: targetEmail || this.getSettings().email.admin_notify_email,
-                parent_name: 'Quản Trị Viên'
-            });
+        async testEmail(targetEmail, customConfig = null) {
+            const settings = this.getSettings();
+            const emailCfg = customConfig || settings.email || {};
+            const target = targetEmail || emailCfg.admin_notify_email;
+
+            if (emailCfg.provider === 'smtp') {
+                try {
+                    const res = await fetch('/api/send-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'send',
+                            smtp: {
+                                host: emailCfg.smtp_host || 'smtp.gmail.com',
+                                port: Number(emailCfg.smtp_port) || 465,
+                                secure: emailCfg.smtp_secure !== false,
+                                user: emailCfg.smtp_user || '',
+                                pass: emailCfg.smtp_pass || '',
+                                fromName: emailCfg.smtp_from_name || 'Thu Hiền - Cùng Mẹ Hiểu Con',
+                                fromEmail: emailCfg.smtp_from_email || emailCfg.smtp_user || ''
+                            },
+                            to: target,
+                            subject: `[Kiểm Tra SMTP] Thử nghiệm gửi email từ Website Thu Hiền`,
+                            text: `Xin chào,\n\nĐây là email kiểm tra kết nối SMTP từ hệ thống quản trị Thu Hiền - Cùng Mẹ Hiểu Con.\nThời gian: ${new Date().toLocaleString('vi-VN')}`,
+                            html: `
+                            <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;border:1px solid #e4e4e7;border-radius:12px;background:#ffffff;">
+                                <div style="border-bottom:2px solid #10b981;padding-bottom:12px;margin-bottom:16px;">
+                                    <h2 style="margin:0;color:#064e3b;font-size:20px;">Thu Hiền - Cùng Mẹ Hiểu Con</h2>
+                                    <p style="margin:4px 0 0 0;color:#6b7280;font-size:13px;">Hệ thống thông báo tự động Website</p>
+                                </div>
+                                <div style="background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;padding:14px 18px;border-radius:8px;font-size:14px;margin-bottom:16px;">
+                                    <strong>✓ KẾT NỐI SMTP THÀNH CÔNG!</strong><br>
+                                    Email thử nghiệm đã được gửi từ tài khoản <strong>${emailCfg.smtp_user || 'SMTP'}</strong> đến <strong>${target}</strong>.
+                                </div>
+                                <table style="width:100%;font-size:13px;color:#374151;border-collapse:collapse;">
+                                    <tr><td style="padding:6px 0;font-weight:600;width:130px;">SMTP Host:</td><td>${emailCfg.smtp_host || 'smtp.gmail.com'}</td></tr>
+                                    <tr><td style="padding:6px 0;font-weight:600;">Cổng (Port):</td><td>${emailCfg.smtp_port || 465} (SSL/TLS: ${emailCfg.smtp_secure !== false ? 'Bật' : 'Tắt'})</td></tr>
+                                    <tr><td style="padding:6px 0;font-weight:600;">Thời gian gửi:</td><td>${new Date().toLocaleString('vi-VN')}</td></tr>
+                                </table>
+                            </div>`
+                        })
+                    });
+                    const json = await res.json();
+                    if (res.ok && json.success) {
+                        return { success: true, message: `Gửi email thử nghiệm thành công đến ${target}! (MessageID: ${json.messageId || 'OK'})` };
+                    } else {
+                        return { success: false, message: json.error || 'Không gửi được email', hint: json.hint };
+                    }
+                } catch (err) {
+                    return { success: false, message: 'Lỗi kết nối tới API: ' + err.message, hint: 'Kiểm tra xem backend server /api/send-email có đang chạy không.' };
+                }
+            } else {
+                const log = await this.sendNotificationEmail('test', { recipient: target });
+                const isSuccess = log && !log.status.startsWith('Error');
+                return { 
+                    success: isSuccess, 
+                    message: log ? log.status : 'Không thể gửi email kiểm tra',
+                    hint: log?.hint
+                };
+            }
+        },
+
+        async verifySmtp(customConfig = null) {
+            const settings = this.getSettings();
+            const emailCfg = customConfig || settings.email || {};
+            try {
+                const res = await fetch('/api/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'verify',
+                        smtp: {
+                            host: emailCfg.smtp_host || 'smtp.gmail.com',
+                            port: Number(emailCfg.smtp_port) || 465,
+                            secure: emailCfg.smtp_secure !== false,
+                            user: emailCfg.smtp_user || '',
+                            pass: emailCfg.smtp_pass || ''
+                        }
+                    })
+                });
+                const json = await res.json();
+                return json;
+            } catch (err) {
+                return { success: false, error: err.message, hint: 'Không kết nối được API /api/send-email. Hãy kiểm tra server backend.' };
+            }
         },
 
         // ====================================================================

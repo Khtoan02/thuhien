@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Khtoan02/thuhien#readme",
   "dependencies": {
-    "@vercel/global-config": "^1.5.1"
+    "@vercel/global-config": "^1.5.1",
+    "nodemailer": "^10.0.13"
   }
 }

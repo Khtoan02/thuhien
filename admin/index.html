@@ -984,17 +984,101 @@
 
                             <div class="space-y-1.5">
                                 <label class="text-xs font-semibold text-zinc-700">Dịch Vụ Gửi Email</label>
-                                <select id="emailProviderSelect" onchange="toggleEmailProviderFields()" class="flex h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                <select id="emailProviderSelect" onchange="toggleEmailProviderFields()" class="flex h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 font-medium">
+                                    <option value="smtp">Email SMTP (Khuyên Dùng: Gmail / Google Workspace / Outlook / Cpanel)</option>
                                     <option value="webhook">Webhook Tự Động (Make.com / Zapier / N8N / Google Apps Script)</option>
                                     <option value="emailjs">EmailJS (Gửi trực tiếp từ trình duyệt)</option>
                                     <option value="formspree">Formspree (Endpoint Form)</option>
                                     <option value="resend">Resend API (Gửi qua Resend API Key)</option>
                                 </select>
-                                <p class="text-[11px] text-zinc-400">Chọn giải pháp gửi thư phù hợp với hạ tầng triển khai tĩnh.</p>
+                                <p class="text-[11px] text-zinc-400">Khuyên dùng SMTP để hệ thống tự động gửi trực tiếp từ hộp thư Gmail của chuyên gia với độ ổn định cao nhất.</p>
+                            </div>
+
+                            <!-- SMTP Fields (Default / Recommended) -->
+                            <div id="providerFieldsSmtp" class="space-y-4 pt-2">
+                                <!-- Presets -->
+                                <div class="flex items-center flex-wrap gap-2 p-2.5 rounded-lg bg-emerald-50/70 border border-emerald-200 text-xs">
+                                    <span class="text-emerald-800 font-bold whitespace-nowrap">⚡ Mẫu điền nhanh:</span>
+                                    <button type="button" onclick="applySmtpPreset('gmail')" class="px-2.5 py-1 rounded bg-white border border-emerald-300 text-emerald-900 font-semibold hover:bg-emerald-100 transition-colors shadow-2xs cursor-pointer">
+                                        Gmail (smtp.gmail.com:465)
+                                    </button>
+                                    <button type="button" onclick="applySmtpPreset('outlook')" class="px-2.5 py-1 rounded bg-white border border-emerald-300 text-emerald-900 font-semibold hover:bg-emerald-100 transition-colors shadow-2xs cursor-pointer">
+                                        Outlook (smtp.office365.com:587)
+                                    </button>
+                                </div>
+
+                                <!-- Host & Port & SSL -->
+                                <div class="grid grid-cols-12 gap-3">
+                                    <div class="col-span-12 sm:col-span-7 space-y-1">
+                                        <label class="text-xs font-semibold text-zinc-700">SMTP Host *</label>
+                                        <input type="text" id="smtpHost" placeholder="smtp.gmail.com" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono">
+                                    </div>
+                                    <div class="col-span-7 sm:col-span-3 space-y-1">
+                                        <label class="text-xs font-semibold text-zinc-700">Cổng (Port) *</label>
+                                        <input type="number" id="smtpPort" placeholder="465" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono">
+                                    </div>
+                                    <div class="col-span-5 sm:col-span-2 flex flex-col justify-end pb-1.5">
+                                        <label class="flex items-center gap-1.5 text-xs text-zinc-700 cursor-pointer">
+                                            <input type="checkbox" id="smtpSecure" checked class="w-4 h-4 text-brand-500 rounded border-zinc-300 focus:ring-brand-500">
+                                            <span class="font-semibold">SSL/TLS</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- User & Pass -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-semibold text-zinc-700">Tài Khoản / Email Gửi *</label>
+                                        <input type="email" id="smtpUser" placeholder="thuhien.cungmehieucon@gmail.com" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-semibold text-zinc-700 flex items-center justify-between">
+                                            <span>Mật Khẩu Ứng Dụng (App Password) *</span>
+                                            <button type="button" onclick="toggleSmtpPassVisibility()" id="btnToggleSmtpPass" class="text-[11px] text-brand-600 hover:underline cursor-pointer">Hiện</button>
+                                        </label>
+                                        <div class="relative">
+                                            <input type="password" id="smtpPass" placeholder="16 ký tự mã ứng dụng Gmail" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- From Name & From Email -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-semibold text-zinc-700">Tên Người Gửi (From Name)</label>
+                                        <input type="text" id="smtpFromName" placeholder="Thu Hiền - Cùng Mẹ Hiểu Con" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                    </div>
+                                    <div class="space-y-1">
+                                        <label class="text-xs font-semibold text-zinc-700">Email Người Gửi (From Email)</label>
+                                        <input type="email" id="smtpFromEmail" placeholder="Để trống sẽ dùng Email gửi ở trên" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                    </div>
+                                </div>
+
+                                <!-- Verify Connection Button & Result Box -->
+                                <div class="pt-3 border-t border-zinc-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <button type="button" onclick="handleVerifySmtp()" id="btnVerifySmtp" class="inline-flex h-8 items-center justify-center rounded-md bg-emerald-600 px-3.5 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 transition-colors cursor-pointer">
+                                        <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        Kiểm Tra Kết Nối (Verify SMTP)
+                                    </button>
+                                    <span class="text-[11px] text-zinc-400">Kiểm tra tài khoản & mật khẩu SMTP với máy chủ mail mà không cần gửi thư</span>
+                                </div>
+                                <div id="smtpVerifyResultBox" class="hidden p-3 rounded-lg text-xs leading-relaxed"></div>
+
+                                <!-- Gmail Guide -->
+                                <div class="p-3 rounded-lg bg-amber-50/70 border border-amber-200/80 text-[11px] text-amber-900 space-y-1 leading-relaxed">
+                                    <p class="font-bold flex items-center gap-1.5 text-amber-950">
+                                        <svg class="w-3.5 h-3.5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        Hướng dẫn lấy Mật Khẩu Ứng Dụng (App Password) cho Gmail:
+                                    </p>
+                                    <p>1. Bật <strong>Xác minh 2 bước</strong> trên tài khoản Google: <a href="https://myaccount.google.com/security" target="_blank" class="underline font-semibold text-brand-700">myaccount.google.com/security</a>.</p>
+                                    <p>2. Truy cập trang tạo mật khẩu ứng dụng: <a href="https://myaccount.google.com/apppasswords" target="_blank" class="underline font-semibold text-brand-700">myaccount.google.com/apppasswords</a>.</p>
+                                    <p>3. Đặt tên (vd: "Website Thu Hien") và bấm <strong>Tạo</strong>, Google sẽ cấp mã 16 chữ cái (vd: <code>abcd efgh ijkl mnop</code>).</p>
+                                    <p>4. Dán mã 16 chữ cái vào ô Mật Khẩu Ứng Dụng ở trên và bấm <strong>Kiểm Tra Kết Nối</strong>.</p>
+                                </div>
                             </div>
 
                             <!-- Dynamic fields based on provider -->
-                            <div id="providerFieldsWebhook" class="space-y-1.5 pt-2">
+                            <div id="providerFieldsWebhook" class="hidden space-y-1.5 pt-2">
                                 <label class="text-xs font-semibold text-zinc-700">Webhook URL Nhận Dữ Liệu *</label>
                                 <input type="url" id="emailWebhookUrl" placeholder="https://hook.eu1.make.com/xxxxxxxxx hoặc Google Apps Script Web App" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
                                 <p class="text-[11px] text-zinc-400">Khi có sự kiện mới, website sẽ gửi HTTP POST payload JSON đến webhook này để tự động chuyển thư đến Gmail.</p>
@@ -1038,7 +1122,7 @@
                             <div class="space-y-1.5">
                                 <label class="text-xs font-semibold text-zinc-700">Email Chuyên Gia Nhận Thông Báo *</label>
                                 <input type="email" id="adminNotifyEmail" placeholder="thuhien.cungmehieucon@gmail.com" class="flex h-9 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
-                                <p class="text-[11px] text-zinc-400">Các thông báo đặt lịch mới và khách hàng tiềm năng sẽ được gửi đến hộp thư này.</p>
+                                <p class="text-[11px] text-zinc-400">Các thông báo đặt lịch mới, tải cẩm nang và phiếu đánh giá sẽ được gửi đến hộp thư này.</p>
                             </div>
 
                             <div class="space-y-3 pt-2">
@@ -1055,6 +1139,14 @@
                                     <div>
                                         <span class="text-xs font-bold text-zinc-900 block">Gửi thông báo khi có phụ huynh tải cẩm nang</span>
                                         <span class="text-[11px] text-zinc-500">Ghi nhận thông tin số Zalo của phụ huynh để chăm sóc sau.</span>
+                                    </div>
+                                </label>
+
+                                <label class="flex items-center gap-3 p-3 rounded-lg border border-zinc-200 bg-zinc-50/60 cursor-pointer hover:bg-zinc-100/60 transition-colors">
+                                    <input type="checkbox" id="notifyOnEvaluationCheckbox" class="w-4 h-4 text-brand-500 rounded border-zinc-300 focus:ring-brand-500">
+                                    <div>
+                                        <span class="text-xs font-bold text-zinc-900 block">Gửi thông báo khi có phụ huynh làm Phiếu Đánh Giá Dinh Dưỡng</span>
+                                        <span class="text-[11px] text-zinc-500">Báo cáo ngay tên bé, mức độ nguy cơ, điểm số, thói quen ăn uống và số Zalo phụ huynh.</span>
                                     </div>
                                 </label>
                             </div>
@@ -3187,8 +3279,18 @@
         const em = settings.email || {};
 
         const provSelect = document.getElementById('emailProviderSelect');
-        if (provSelect) provSelect.value = em.provider || 'webhook';
+        if (provSelect) provSelect.value = em.provider || 'smtp';
 
+        // SMTP Fields
+        if (document.getElementById('smtpHost')) document.getElementById('smtpHost').value = em.smtp_host || 'smtp.gmail.com';
+        if (document.getElementById('smtpPort')) document.getElementById('smtpPort').value = em.smtp_port || 465;
+        if (document.getElementById('smtpSecure')) document.getElementById('smtpSecure').checked = em.smtp_secure !== false;
+        if (document.getElementById('smtpUser')) document.getElementById('smtpUser').value = em.smtp_user || '';
+        if (document.getElementById('smtpPass')) document.getElementById('smtpPass').value = em.smtp_pass || '';
+        if (document.getElementById('smtpFromName')) document.getElementById('smtpFromName').value = em.smtp_from_name || 'Thu Hiền - Cùng Mẹ Hiểu Con';
+        if (document.getElementById('smtpFromEmail')) document.getElementById('smtpFromEmail').value = em.smtp_from_email || '';
+
+        // Webhook & other fields
         if (document.getElementById('emailWebhookUrl')) document.getElementById('emailWebhookUrl').value = em.webhook_url || '';
         if (document.getElementById('emailjsServiceId')) document.getElementById('emailjsServiceId').value = em.emailjs_service_id || '';
         if (document.getElementById('emailjsTemplateId')) document.getElementById('emailjsTemplateId').value = em.emailjs_template_id || '';
@@ -3199,14 +3301,16 @@
         if (document.getElementById('adminNotifyEmail')) document.getElementById('adminNotifyEmail').value = em.admin_notify_email || 'thuhien.cungmehieucon@gmail.com';
         if (document.getElementById('notifyOnBookingCheckbox')) document.getElementById('notifyOnBookingCheckbox').checked = em.notify_on_booking !== false;
         if (document.getElementById('notifyOnLeadCheckbox')) document.getElementById('notifyOnLeadCheckbox').checked = em.notify_on_lead !== false;
+        if (document.getElementById('notifyOnEvaluationCheckbox')) document.getElementById('notifyOnEvaluationCheckbox').checked = em.notify_on_evaluation !== false;
 
         toggleEmailProviderFields();
         renderEmailLogsTable();
     };
 
     window.toggleEmailProviderFields = function() {
-        const provider = document.getElementById('emailProviderSelect') ? document.getElementById('emailProviderSelect').value : 'webhook';
+        const provider = document.getElementById('emailProviderSelect') ? document.getElementById('emailProviderSelect').value : 'smtp';
         const fields = {
+            'smtp': document.getElementById('providerFieldsSmtp'),
             'webhook': document.getElementById('providerFieldsWebhook'),
             'emailjs': document.getElementById('providerFieldsEmailJS'),
             'formspree': document.getElementById('providerFieldsFormspree'),
@@ -3220,6 +3324,31 @@
         });
     };
 
+    window.applySmtpPreset = function(preset) {
+        if (preset === 'gmail') {
+            if (document.getElementById('smtpHost')) document.getElementById('smtpHost').value = 'smtp.gmail.com';
+            if (document.getElementById('smtpPort')) document.getElementById('smtpPort').value = 465;
+            if (document.getElementById('smtpSecure')) document.getElementById('smtpSecure').checked = true;
+        } else if (preset === 'outlook') {
+            if (document.getElementById('smtpHost')) document.getElementById('smtpHost').value = 'smtp.office365.com';
+            if (document.getElementById('smtpPort')) document.getElementById('smtpPort').value = 587;
+            if (document.getElementById('smtpSecure')) document.getElementById('smtpSecure').checked = false;
+        }
+    };
+
+    window.toggleSmtpPassVisibility = function() {
+        const passInput = document.getElementById('smtpPass');
+        const btn = document.getElementById('btnToggleSmtpPass');
+        if (!passInput) return;
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            if (btn) btn.innerText = 'Ẩn';
+        } else {
+            passInput.type = 'password';
+            if (btn) btn.innerText = 'Hiện';
+        }
+    };
+
     window.saveEmailSettings = function() {
         const current = DB.getSettings();
         const provider = document.getElementById('emailProviderSelect').value;
@@ -3231,23 +3360,94 @@
         }
 
         const newEmailSettings = {
+            ...current.email,
             provider: provider,
             admin_notify_email: adminEmail || 'thuhien.cungmehieucon@gmail.com',
-            notify_on_booking: document.getElementById('notifyOnBookingCheckbox').checked,
-            notify_on_lead: document.getElementById('notifyOnLeadCheckbox').checked,
-            webhook_url: document.getElementById('emailWebhookUrl').value.trim(),
-            emailjs_service_id: document.getElementById('emailjsServiceId').value.trim(),
-            emailjs_template_id: document.getElementById('emailjsTemplateId').value.trim(),
-            emailjs_public_key: document.getElementById('emailjsPublicKey').value.trim(),
-            formspree_endpoint: document.getElementById('formspreeEndpoint').value.trim(),
-            resend_api_key: document.getElementById('resendApiKey').value.trim()
+            notify_on_booking: document.getElementById('notifyOnBookingCheckbox') ? document.getElementById('notifyOnBookingCheckbox').checked : true,
+            notify_on_lead: document.getElementById('notifyOnLeadCheckbox') ? document.getElementById('notifyOnLeadCheckbox').checked : true,
+            notify_on_evaluation: document.getElementById('notifyOnEvaluationCheckbox') ? document.getElementById('notifyOnEvaluationCheckbox').checked : true,
+            
+            // SMTP
+            smtp_host: document.getElementById('smtpHost') ? document.getElementById('smtpHost').value.trim() : 'smtp.gmail.com',
+            smtp_port: document.getElementById('smtpPort') ? Number(document.getElementById('smtpPort').value) || 465 : 465,
+            smtp_secure: document.getElementById('smtpSecure') ? document.getElementById('smtpSecure').checked : true,
+            smtp_user: document.getElementById('smtpUser') ? document.getElementById('smtpUser').value.trim() : '',
+            smtp_pass: document.getElementById('smtpPass') ? document.getElementById('smtpPass').value.trim() : '',
+            smtp_from_name: document.getElementById('smtpFromName') ? document.getElementById('smtpFromName').value.trim() : 'Thu Hiền - Cùng Mẹ Hiểu Con',
+            smtp_from_email: document.getElementById('smtpFromEmail') ? document.getElementById('smtpFromEmail').value.trim() : '',
+
+            webhook_url: document.getElementById('emailWebhookUrl') ? document.getElementById('emailWebhookUrl').value.trim() : '',
+            emailjs_service_id: document.getElementById('emailjsServiceId') ? document.getElementById('emailjsServiceId').value.trim() : '',
+            emailjs_template_id: document.getElementById('emailjsTemplateId') ? document.getElementById('emailjsTemplateId').value.trim() : '',
+            emailjs_public_key: document.getElementById('emailjsPublicKey') ? document.getElementById('emailjsPublicKey').value.trim() : '',
+            formspree_endpoint: document.getElementById('formspreeEndpoint') ? document.getElementById('formspreeEndpoint').value.trim() : '',
+            resend_api_key: document.getElementById('resendApiKey') ? document.getElementById('resendApiKey').value.trim() : ''
         };
 
         DB.saveSettings({ email: newEmailSettings });
         alert('Đã lưu cấu hình hệ thống Email thành công!');
     };
 
-    window.handleSendTestEmail = function() {
+    window.handleVerifySmtp = async function() {
+        const btn = document.getElementById('btnVerifySmtp');
+        const box = document.getElementById('smtpVerifyResultBox');
+        
+        const host = document.getElementById('smtpHost') ? document.getElementById('smtpHost').value.trim() : 'smtp.gmail.com';
+        const port = document.getElementById('smtpPort') ? Number(document.getElementById('smtpPort').value) || 465 : 465;
+        const secure = document.getElementById('smtpSecure') ? document.getElementById('smtpSecure').checked : true;
+        const user = document.getElementById('smtpUser') ? document.getElementById('smtpUser').value.trim() : '';
+        const pass = document.getElementById('smtpPass') ? document.getElementById('smtpPass').value.trim() : '';
+
+        if (!user || !pass) {
+            alert('Vui lòng nhập đầy đủ Tài Khoản / Email Gửi và Mật Khẩu Ứng Dụng trước khi kiểm tra kết nối!');
+            return;
+        }
+
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg> Đang kết nối...`;
+        }
+
+        if (box) {
+            box.classList.remove('hidden');
+            box.className = 'p-3 rounded-lg text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200';
+            box.innerHTML = 'Đang kết nối tới máy chủ SMTP <strong>' + host + ':' + port + '</strong> và kiểm tra xác thực...';
+        }
+
+        try {
+            const res = await DB.verifySmtp({
+                smtp_host: host,
+                smtp_port: port,
+                smtp_secure: secure,
+                smtp_user: user,
+                smtp_pass: pass
+            });
+
+            if (res.success) {
+                if (box) {
+                    box.className = 'p-3 rounded-lg text-xs leading-relaxed bg-emerald-50 text-emerald-900 border border-emerald-300';
+                    box.innerHTML = `<strong>✓ KẾT NỐI SMTP THÀNH CÔNG!</strong><br>Máy chủ mail đã xác thực thông tin tài khoản <strong>${user}</strong> hoàn toàn chính xác. Bạn có thể bấm nút <em>Lưu Cấu Hình Email</em> và gửi email thử nghiệm!`;
+                }
+            } else {
+                if (box) {
+                    box.className = 'p-3 rounded-lg text-xs leading-relaxed bg-rose-50 text-rose-900 border border-rose-300';
+                    box.innerHTML = `<strong>✕ KẾT NỐI THẤT BẠI:</strong> ${res.error || 'Không thể xác thực'}<br>${res.hint ? `<span class="mt-1 block text-rose-800">💡 <em>Gợi ý khắc phục:</em> ${res.hint}</span>` : ''}`;
+                }
+            }
+        } catch (err) {
+            if (box) {
+                box.className = 'p-3 rounded-lg text-xs leading-relaxed bg-rose-50 text-rose-900 border border-rose-300';
+                box.innerHTML = `<strong>✕ LỖI HỆ THỐNG:</strong> ${err.message}`;
+            }
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Kiểm Tra Kết Nối (Verify SMTP)`;
+            }
+        }
+    };
+
+    window.handleSendTestEmail = async function() {
         const targetInput = document.getElementById('testEmailInput');
         const targetEmail = targetInput ? targetInput.value.trim() : '';
         const resultBox = document.getElementById('testEmailResultBox');
@@ -3263,25 +3463,36 @@
             btn.innerText = 'Đang gửi email thử nghiệm...';
         }
 
-        setTimeout(() => {
-            const res = DB.testEmail(targetEmail);
-            if (btn) {
-                btn.disabled = false;
-                btn.innerText = 'Gửi Email Thử Nghiệm Ngay';
-            }
+        if (resultBox) {
+            resultBox.classList.remove('hidden');
+            resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200';
+            resultBox.innerText = 'Đang gửi email thử nghiệm tới ' + targetEmail + '...';
+        }
 
+        try {
+            const res = await DB.testEmail(targetEmail);
             if (resultBox) {
                 resultBox.classList.remove('hidden');
                 if (res.success) {
                     resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200';
                     resultBox.innerText = `✓ ${res.message}`;
                 } else {
-                    resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
-                    resultBox.innerText = `✕ Lỗi: ${res.message}`;
+                    resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200 leading-relaxed';
+                    resultBox.innerHTML = `✕ <strong>Lỗi:</strong> ${res.message}${res.hint ? `<br>💡 <em>Gợi ý:</em> ${res.hint}` : ''}`;
                 }
             }
+        } catch (err) {
+            if (resultBox) {
+                resultBox.className = 'p-3 rounded-lg text-xs font-medium bg-rose-50 text-rose-800 border border-rose-200';
+                resultBox.innerText = `✕ Lỗi hệ thống: ${err.message}`;
+            }
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = 'Gửi Email Thử Nghiệm Ngay';
+            }
             renderEmailLogsTable();
-        }, 600);
+        }
     };
 
     window.handleClearEmailLogs = function() {
