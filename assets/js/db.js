@@ -2525,15 +2525,6 @@ const DB = (() => {
             // Never restrict or insert bar inside the admin panel
             if (currentPath.includes('/admin')) return;
 
-            // Auto-detect admin authentication via URL param ?admin=1 or #admin
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('admin') === '1' || window.location.hash === '#admin') {
-                    sessionStorage.setItem('thuhien_admin_auth', 'true');
-                    localStorage.setItem('thuhien_admin_auth', 'true');
-                }
-            } catch (e) {}
-
             // Automatically render unified global layout (Header, Mobile Drawer & Footer)
             if (typeof LayoutEngine !== 'undefined') {
                 try {
