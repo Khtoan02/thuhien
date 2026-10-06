@@ -12,6 +12,7 @@ const LayoutEngine = (() => {
                          path.includes('/cong-dong') || 
                          path.includes('/pricing') || 
                          path.includes('/danh-gia-dinh-duong') || 
+                         path.includes('/danh-gia-thieu-sat') || 
                          path.includes('/tra-cuu') || 
                          path.includes('/dat-lich') ||
                          path.includes('/admin');

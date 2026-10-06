@@ -3037,15 +3037,32 @@
         'supp_vitd_use': 'Bổ sung: Bổ sung Vitamin D hàng ngày/liều cao',
         'supp_enzyme': 'Bổ sung: Dùng men tiêu hóa Enzyme',
         'supp_omega': 'Bổ sung: Dùng Omega-3, Kẽm, Magie, Acid folic...',
-        'supp_probiotic': 'Bổ sung: Dùng men vi sinh Probiotic / Lên men'
+        'supp_probiotic': 'Bổ sung: Dùng men vi sinh Probiotic / Lên men',
+        'iron_q1': '1. Da, môi hoặc lòng bàn tay nhợt hơn bình thường',
+        'iron_q2': '2. Dễ mệt, ít vận động hoặc nhanh đuối hơn so với trước đây',
+        'iron_q3': '3. Thường xuyên biếng ăn, ăn ít hoặc giảm hứng thú với thức ăn',
+        'iron_q4': '4. Ít ăn các thực phẩm giàu sắt (thịt đỏ, gia cầm, cá, trứng...)',
+        'iron_q5': '5. Kén ăn kéo dài, chế độ ăn ít đa dạng hoặc loại bỏ nhiều nhóm',
+        'iron_q6': '6. Trẻ >12 tháng uống nhiều sữa bò/sữa tươi (>500-600ml/ngày)',
+        'iron_q7': '7. Sau 6 tháng ăn dặm ít thực phẩm giàu sắt (chủ yếu cháo/bột)',
+        'iron_q8': '8. Sinh non, nhẹ cân khi sinh hoặc từng có nguy cơ thiếu sắt',
+        'iron_q9': '9. Tăng cân chậm, chậm phát triển thể chất',
+        'iron_q10': '10. Biểu hiện Pica: thích ăn đất, giấy, đá lạnh, vật lạ',
+        'iron_q11': '11. Chưa từng hoặc hiếm khi bổ sung sắt trong thời gian trước',
+        'iron_q12': '12. Hội chứng chân không yên (bồn chồn, cọ xát chân...) [+2đ]',
+        'iron_q13': '13. Tiền sử dị ứng / bất dung nạp thực phẩm',
+        'iron_q14': '14. Không tẩy giun thường xuyên theo định kỳ 6 tháng/lần'
     };
 
     function formatEvalAnswerValue(val) {
+        if (val === 2 || val === '2') {
+            return '<span class="text-rose-700 font-bold bg-rose-50 px-2 py-0.5 rounded border border-rose-200">Có (+2 điểm nguy cơ)</span>';
+        }
         if (val === 1 || val === '1' || val === true) {
-            return '<span class="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Có (+1 nguy cơ)</span>';
+            return '<span class="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Có (+1 điểm)</span>';
         }
         if (val === 0 || val === '0' || val === false) {
-            return '<span class="text-zinc-500 font-medium">Không / Bình thường</span>';
+            return '<span class="text-zinc-500 font-medium">Không / Bình thường (0đ)</span>';
         }
         if (val === 'chua') return '<span class="text-zinc-600">Chưa từng thử / Chưa xét nghiệm</span>';
         if (val === 'khong') return '<span class="text-zinc-500">Không dùng / Không có</span>';

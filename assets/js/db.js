@@ -258,14 +258,38 @@ const DB = (() => {
                 can_disable: true,
                 category: 'Đặt Lịch & Biểu Mẫu',
                 description: 'Form khảo sát tình trạng bé và đăng ký giờ hẹn trao đổi riêng'
+            },
+            {
+                id: 'danh-gia-thieu-sat',
+                title: 'Checklist Đánh Giá Thiếu Sắt',
+                path: '/danh-gia-thieu-sat/',
+                slug: 'danh-gia-thieu-sat',
+                enabled: true,
+                can_disable: true,
+                category: 'Đánh Giá & Khảo Sát',
+                description: 'Checklist 14 câu hỏi đánh giá nguy cơ thiếu sắt ở trẻ rối loạn phát triển'
             }
         ],
-        pages_schema_v: 4,
+        pages_schema_v: 5,
         pages_behavior: 'maintenance_screen', // 'maintenance_screen' | 'redirect_home'
         pages_maintenance_message: 'Trang này hiện đang được Chuyên gia Bùi Thu Hiền và đội ngũ hoàn thiện nội dung để mang đến trải nghiệm chuẩn mực nhất cho phụ huynh. Ba mẹ vui lòng quay lại sau nhé!'
     };
 
     const DEFAULT_CHECKLISTS = [
+        {
+            id: 'checklist_iron_deficiency',
+            title: 'Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ Rối Loạn Phát Triển',
+            category: 'Vi Chất & Dinh Dưỡng Chuyên Sâu',
+            slug: 'danh-gia-thieu-sat',
+            path: '/danh-gia-thieu-sat/',
+            question_count: 14,
+            target_age: 'Từ 6 tháng trở lên',
+            status: 'active',
+            description: 'Sàng lọc 14 dấu hiệu thiếu máu thiếu sắt, hội chứng chân không yên, thói quen ăn uống và rào cản chuyển hóa ở trẻ đặc biệt.',
+            created_at: '06/10/2026',
+            lead_magnet: 'Cẩm Nang Bổ Sung Sắt An Toàn & Thực Đơn Giàu Sắt Dễ Hấp Thu Cho Trẻ',
+            scoring_guide: '0-2đ: Nguy cơ thấp | 3-5đ: Có nguy cơ thiếu sắt | ≥6đ: Nguy cơ cao (Cần xét nghiệm Ferritin)'
+        },
         {
             id: 'checklist_nutrition',
             title: 'Sàng Lọc Dinh Dưỡng & Tiêu Hóa Trẻ Đặc Biệt',
@@ -621,6 +645,20 @@ const DB = (() => {
         }
         if (!localStorage.getItem(STORAGE_KEY_CHECKLISTS)) {
             localStorage.setItem(STORAGE_KEY_CHECKLISTS, JSON.stringify(DEFAULT_CHECKLISTS));
+        } else {
+            try {
+                let chks = JSON.parse(localStorage.getItem(STORAGE_KEY_CHECKLISTS));
+                let chkChanged = false;
+                DEFAULT_CHECKLISTS.forEach(def => {
+                    if (!chks.some(c => c.id === def.id)) {
+                        chks.unshift(def);
+                        chkChanged = true;
+                    }
+                });
+                if (chkChanged) {
+                    localStorage.setItem(STORAGE_KEY_CHECKLISTS, JSON.stringify(chks));
+                }
+            } catch (e) {}
         }
         if (!localStorage.getItem(STORAGE_KEY_SETTINGS)) {
             localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
@@ -630,19 +668,19 @@ const DB = (() => {
                 let changed = false;
                 if (!s.pages || !Array.isArray(s.pages) || s.pages.length === 0) {
                     s.pages = DEFAULT_SETTINGS.pages;
-                    s.pages_schema_v = 4;
+                    s.pages_schema_v = 5;
                     s.pages_updated_at = Date.now();
                     changed = true;
                 } else {
-                    // Always ensure all default pages (e.g. danh-gia) exist in s.pages
+                    // Always ensure all default pages exist in s.pages
                     DEFAULT_SETTINGS.pages.forEach(defP => {
                         if (!s.pages.some(p => p.id === defP.id || p.slug === defP.slug)) {
                             s.pages.push(defP);
                             changed = true;
                         }
                     });
-                    if (!s.pages_schema_v || s.pages_schema_v < 4) {
-                        s.pages_schema_v = 4;
+                    if (!s.pages_schema_v || s.pages_schema_v < 5) {
+                        s.pages_schema_v = 5;
                         changed = true;
                     }
                 }

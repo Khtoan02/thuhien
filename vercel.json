@@ -25,6 +25,14 @@
       "destination": "/danh-gia-dinh-duong"
     },
     {
+      "source": "/danh-gia-thieu-sat",
+      "destination": "/danh-gia-thieu-sat"
+    },
+    {
+      "source": "/thieu-sat",
+      "destination": "/danh-gia-thieu-sat"
+    },
+    {
       "source": "/tra-cuu",
       "destination": "/tra-cuu"
     },

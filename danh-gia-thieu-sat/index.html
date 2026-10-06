@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ Rối Loạn Phát Triển | Thu Hiền</title>
+    <meta name="description" content="Checklist 14 câu hỏi sàng lọc nguy cơ thiếu sắt, thiếu máu, hội chứng chân không yên và rào cản ăn uống ở trẻ tự kỷ, chậm nói và rối loạn phát triển.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+
+    <!-- OpenGraph & Meta -->
+    <meta property="og:title" content="Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ Rối Loạn Phát Triển | Thu Hiền">
+    <meta property="og:description" content="Sàng lọc 14 dấu hiệu thiếu máu thiếu sắt, hội chứng chân không yên và khẩu phần ăn ở trẻ đặc biệt.">
+    <meta property="og:image" content="../assets/images/thu-hien-hero-banner.png">
+    <meta property="og:type" content="article">
+    <meta name="theme-color" content="#174C3B">
+
+    <!-- Google Fonts Preconnect & Direct Stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#174C3B',
+                            primaryLight: '#1F5A45',
+                            sage: '#8FAF91',
+                            sageLight: '#A9C2A4',
+                            mintSub: '#EEF5EA',
+                            creamBg: '#FAF7F0',
+                            peach: '#F08A4B',
+                            peachHover: '#E07837',
+                            textMuted: '#5F6E66'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Alata"', 'system-ui', 'sans-serif'],
+                        serif: ['"Alata"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Design System Stylesheet -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <style>
+        .choice-btn {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            user-select: none;
+        }
+        .choice-btn:hover {
+            border-color: #8FAF91;
+            background-color: #F6FAF4;
+        }
+        .choice-btn.selected-yes {
+            border-color: #E07837;
+            background-color: #FFF7ED;
+            color: #C2410C;
+            box-shadow: 0 2px 8px rgba(224, 120, 55, 0.15);
+        }
+        .choice-btn.selected-no {
+            border-color: #174C3B;
+            background-color: #EEF5EA;
+            color: #174C3B;
+        }
+        .question-card {
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .question-card:hover {
+            border-color: #8FAF91;
+        }
+    </style>
+</head>
+<body data-page="danh-gia-thieu-sat" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-24 md:pb-28">
+
+<header class="nav-island" id="globalNavIsland"></header>
+
+<!-- ==========================================================================
+     HERO SECTION
+     ========================================================================== -->
+<section class="pt-24 sm:pt-32 md:pt-36 pb-8 md:pb-12 text-center max-w-4xl mx-auto px-4 sm:px-6">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#174C3B]/10 text-[#174C3B] text-xs font-bold uppercase tracking-wider mb-4">
+        <svg class="w-3.5 h-3.5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+        </svg>
+        <span>Công Cụ Khảo Sát Sàng Lọc Vi Chất Chuyên Sâu</span>
+    </div>
+    
+    <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-[#174C3B] uppercase tracking-tight leading-tight mb-4">
+        Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ Rối Loạn Phát Triển
+    </h1>
+    
+    <p class="text-sm sm:text-base md:text-lg text-[#5F6E66] max-w-2xl mx-auto leading-relaxed">
+        Sắt là vi chất then chốt cho dẫn truyền thần kinh Dopamine, sự tập trung và giấc ngủ của trẻ. Dành 3 phút hoàn thành 14 câu hỏi dưới đây để phát hiện sớm nguy cơ thiếu sắt của con.
+    </p>
+
+    <!-- Tra cứu link banner -->
+    <div class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-[#8FAF91]/30 text-xs font-bold text-[#174C3B] shadow-2xs hover:border-[#174C3B] transition-all">
+        <svg class="w-4 h-4 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <span>Ba mẹ đã từng thực hiện đánh giá?</span>
+        <a href="../tra-cuu/" class="text-[#F08A4B] hover:underline flex items-center gap-1">Tra cứu kết quả qua SĐT tại đây →</a>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     MAIN ASSESSMENT FORM
+     ========================================================================== -->
+<main class="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
+
+    <form id="ironAssessmentForm" class="space-y-8 sm:space-y-10" onsubmit="event.preventDefault(); calculateIronResult();">
+
+        <!-- ======================================================================
+             SECTION 1: THÔNG TIN TRẺ & PHỤ HUYNH
+             ====================================================================== -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
+            <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">1</span>
+                <div>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">THÔNG TIN TRẺ & PHỤ HUYNH</h2>
+                    <p class="text-xs sm:text-sm text-[#5F6E66]">Giúp lưu hồ sơ tra cứu và chuyên gia liên hệ gửi phác đồ dinh dưỡng</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                <!-- Họ và tên phụ huynh -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">
+                        Họ và tên Phụ huynh <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="parentName" required placeholder="VD: Mẹ Nguyễn Thị Lan" 
+                           class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] placeholder-[#8FAF91] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] focus:border-transparent transition-all">
+                </div>
+
+                <!-- Số điện thoại / Zalo -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">
+                        Số điện thoại / Zalo nhận kết quả <span class="text-red-500">*</span>
+                    </label>
+                    <input type="tel" id="parentPhone" required placeholder="VD: 0912 345 678" 
+                           pattern="[0-9\s\.\-\+]{9,15}"
+                           class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] placeholder-[#8FAF91] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] focus:border-transparent transition-all">
+                </div>
+
+                <!-- Tên của bé -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">
+                        Họ và tên của bé
+                    </label>
+                    <input type="text" id="childName" placeholder="VD: Bé Bơ / Gia Bảo" 
+                           class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] placeholder-[#8FAF91] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] focus:border-transparent transition-all">
+                </div>
+
+                <!-- Tuổi của bé -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">
+                        Tuổi / Tháng tuổi của bé <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="childAge" required placeholder="VD: 18 tháng hoặc 3 tuổi" 
+                           class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] placeholder-[#8FAF91] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] focus:border-transparent transition-all">
+                </div>
+
+                <!-- Giới tính -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">Giới tính của bé</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center justify-center gap-2 p-3 rounded-2xl border border-[#8FAF91]/40 bg-[#FAF7F0] cursor-pointer hover:bg-white transition-all text-xs font-bold text-[#174C3B]">
+                            <input type="radio" name="childGender" value="Bé Trai" checked class="text-[#174C3B] focus:ring-0">
+                            <span>Bé Trai</span>
+                        </label>
+                        <label class="flex items-center justify-center gap-2 p-3 rounded-2xl border border-[#8FAF91]/40 bg-[#FAF7F0] cursor-pointer hover:bg-white transition-all text-xs font-bold text-[#174C3B]">
+                            <input type="radio" name="childGender" value="Bé Gái" class="text-[#174C3B] focus:ring-0">
+                            <span>Bé Gái</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Cân nặng / Chiều cao -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">Cân nặng & Chiều cao (nếu nhớ)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="childWeight" placeholder="Cân nặng (kg)" class="w-full px-3 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-xs text-[#174C3B] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#174C3B]">
+                        <input type="text" id="childHeight" placeholder="Chiều cao (cm)" class="w-full px-3 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-xs text-[#174C3B] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#174C3B]">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             SECTION 2: 14 CÂU HỎI KIỂM TRA NGUY CƠ THIẾU SẮT
+             ====================================================================== -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-[#8FAF91]/20">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">2</span>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">14 CÂU HỎI SÀNG LỌC NGUY CƠ THIẾU SẮT</h2>
+                        <p class="text-xs sm:text-sm text-[#5F6E66]">Ba mẹ vui lòng chọn "Có" hoặc "Không" tương ứng với biểu hiện của con</p>
+                    </div>
+                </div>
+                <div class="hidden sm:block text-right">
+                    <span class="text-xs font-bold text-[#F08A4B] bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200" id="progressCounter">Đã chọn 0/14 câu</span>
+                </div>
+            </div>
+
+            <!-- List of 14 Questions -->
+            <div class="space-y-4" id="questionsContainer">
+                <!-- Populated via JS or static HTML -->
+            </div>
+        </div>
+
+        <!-- ======================================================================
+             SECTION 3: THÔNG TIN BỔ SUNG & GHI CHÚ
+             ====================================================================== -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-5">
+            <div class="flex items-center gap-3 pb-3 border-b border-[#8FAF91]/20">
+                <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">3</span>
+                <div>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">THÓI QUEN ĂN UỐNG & GHI CHÚ THÊM CỦA MẸ</h2>
+                    <p class="text-xs sm:text-sm text-[#5F6E66]">Giúp chuyên gia hiểu rõ hơn về khẩu phần ăn thực tế của con</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">Lượng sữa và nước bé uống mỗi ngày (ước tính)</label>
+                    <input type="text" id="waterAndMilkAmount" placeholder="VD: Uống khoảng 600ml sữa tươi và 400ml nước lọc..." class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#174C3B]">
+                </div>
+
+                <div>
+                    <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">Món ăn bé thích nhất hoặc món bé kiên quyết từ chối</label>
+                    <textarea id="dietDesc" rows="2" placeholder="VD: Bé chỉ thích ăn cơm chan canh hoặc cháo thịt băm, không chịu ăn thịt bò, cá và rau lá xanh..." class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#174C3B]"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">Khó khăn về giấc ngủ, hành vi hoặc băn khoăn khác</label>
+                    <textarea id="otherDifficulties" rows="2" placeholder="VD: Bé trằn trọc khó vào giấc, hay cựa quậy lăn lộn ban đêm, ngủ không sâu giấc..." class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#174C3B]"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center pt-2">
+            <button type="submit" id="btnSubmitIron" class="w-full sm:w-auto px-8 py-4 rounded-full bg-[#174C3B] text-white hover:bg-[#1F5A45] font-black text-base uppercase tracking-wider shadow-lg hover:shadow-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer">
+                <span>Hoàn Thành & Xem Kết Quả Ngay</span>
+                <svg class="w-5 h-5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+            </button>
+            <p class="text-xs text-[#5F6E66] mt-3">Cam kết bảo mật 100% thông tin cá nhân của phụ huynh và trẻ nhỏ.</p>
+        </div>
+
+    </form>
+
+    <!-- ======================================================================
+         RESULT SECTION (Revealed after calculation)
+         ====================================================================== -->
+    <div id="ironResultSection" class="hidden mt-12 bg-white rounded-3xl p-6 sm:p-10 border-2 border-[#174C3B] shadow-xl space-y-6">
+        <div class="text-center space-y-3 pb-6 border-b border-[#8FAF91]/20">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#174C3B]/10 text-[#174C3B] text-xs font-bold uppercase tracking-wider">
+                Kết Quả Đánh Giá Nguy Cơ Thiếu Sắt
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-black text-[#174C3B]" id="resultTitle">
+                <!-- Dynamic Title -->
+            </h3>
+            <div class="inline-block px-4 py-2 rounded-2xl text-sm font-bold" id="resultScoreBadge">
+                <!-- Score badge -->
+            </div>
+        </div>
+
+        <!-- Advice Body -->
+        <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/30 space-y-3">
+            <h4 class="font-bold text-base text-[#174C3B] flex items-center gap-2">
+                <svg class="w-5 h-5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Nhận Định Chuyên Môn &amp; Định Hướng Cho Con:</span>
+            </h4>
+            <p class="text-sm sm:text-base text-[#174C3B] leading-relaxed font-medium" id="resultAdviceText">
+                <!-- Dynamic text -->
+            </p>
+        </div>
+
+        <!-- Restless Legs Syndrome Alert if Q12 is yes -->
+        <div id="rlsAlertBox" class="hidden p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 text-xs sm:text-sm space-y-1.5">
+            <div class="font-bold flex items-center gap-2 text-rose-800">
+                <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <span>Lưu ý đặc biệt: Hội Chứng Chân Không Yên (Restless Legs Syndrome)</span>
+            </div>
+            <p class="leading-relaxed">
+                Bé có biểu hiện bồn chồn, cọ xát chân hoặc khó chịu vùng chân về đêm. Đây là triệu chứng thần kinh rất điển hình do não bộ thiếu sắt làm suy giảm chức năng Dopamine. Việc bổ sung sắt đúng dạng hữu cơ và đo nồng độ Ferritin là rất cấp thiết.
+            </p>
+        </div>
+
+        <!-- Call to Action Buttons -->
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button onclick="sendIronResultToZalo()" class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-[#0068FF] text-white hover:bg-blue-600 font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.44 3.84 7.07l-.95 3.51a1 1 0 001.3 1.18l4.02-1.63c.58.11 1.18.17 1.79.17 5.52 0 10-4.03 10-9s-4.48-9-10-9z"/></svg>
+                <span>Nhắn Zalo Nhận Tư Vấn Cùng Chuyên Gia</span>
+            </button>
+
+            <a href="../dat-lich/" class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-[#174C3B] text-white hover:bg-[#1F5A45] font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 text-center">
+                <span>Đặt Lịch Tư Vấn 1:1 Với Thu Hiền</span>
+            </a>
+
+            <a href="../tra-cuu/" class="w-full sm:w-auto px-5 py-3.5 rounded-full bg-white border border-[#174C3B] text-[#174C3B] hover:bg-zinc-50 font-bold text-sm transition-all text-center">
+                <span>Tra Cứu Lại Lịch Sử</span>
+            </a>
+        </div>
+    </div>
+
+</main>
+
+<footer id="globalFooter"></footer>
+
+<!-- Core DB & Layout Engine -->
+<script src="../assets/js/db.js?v=2.5"></script>
+<script src="../assets/js/layout.js?v=1.2"></script>
+
+<script>
+    // 14 Questions Specification from Expert Checklist Image
+    const IRON_QUESTIONS = [
+        {
+            id: 'iron_q1',
+            text: 'Trẻ thường xuyên có biểu hiện da, môi hoặc lòng bàn tay nhợt hơn bình thường?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q2',
+            text: 'Trẻ dễ mệt, ít vận động hoặc nhanh đuối hơn so với trước đây?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q3',
+            text: 'Trẻ thường xuyên biếng ăn, ăn ít hoặc giảm hứng thú với thức ăn?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q4',
+            text: 'Trẻ ít ăn các thực phẩm giàu sắt như thịt đỏ, thịt gia cầm, cá, trứng, đậu hoặc thực phẩm tăng cường sắt?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q5',
+            text: 'Trẻ kén ăn kéo dài, chế độ ăn ít đa dạng hoặc loại bỏ nhiều nhóm thực phẩm?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q6',
+            text: 'Với trẻ trên 12 tháng: trẻ uống nhiều sữa bò / sữa tươi, khoảng trên 500–600 ml mỗi ngày và vì vậy ăn ít bữa chính?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q7',
+            text: 'Sau 6 tháng tuổi, trẻ ăn dặm ít thực phẩm giàu sắt hoặc khẩu phần ăn dặm chủ yếu là cháo/bột, rau củ?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q8',
+            text: 'Trẻ sinh non, nhẹ cân khi sinh hoặc từng được đánh giá có nguy cơ thiếu sắt?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q9',
+            text: 'Trẻ tăng cân chậm, chậm phát triển thể chất hoặc có giai đoạn tăng trưởng rất nhanh nhưng khẩu phần ăn không đáp ứng tốt?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q10',
+            text: 'Trẻ có biểu hiện bất thường như thích ăn/nhai đất, giấy, đá lạnh hoặc các vật không phải thức ăn (Hội chứng Pica)?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q11',
+            text: 'Trẻ chưa từng/hiếm khi bổ sung sắt trong thời gian trước đây?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q12',
+            text: 'Trẻ có biểu hiện hội chứng chân không yên (bồn chồn, cọ xát hai chân, chân khó chịu, hay gãi chân, tác động vào chân,...)?',
+            pointsYes: 2,
+            pointsNo: 0,
+            specialNotice: '+2 điểm nguy cơ (Dấu hiệu thần kinh nhạy cảm)'
+        },
+        {
+            id: 'iron_q13',
+            text: 'Trẻ có tiền sử dị ứng / bất dung nạp thực phẩm?',
+            pointsYes: 1,
+            pointsNo: 0
+        },
+        {
+            id: 'iron_q14',
+            text: 'Trẻ không tẩy giun thường xuyên theo định kỳ 6 tháng/lần?',
+            pointsYes: 1,
+            pointsNo: 0
+        }
+    ];
+
+    // State object to track answers: { iron_q1: 1, iron_q2: 0, ... }
+    const ironAnswers = {};
+
+    function renderQuestions() {
+        const container = document.getElementById('questionsContainer');
+        if (!container) return;
+
+        container.innerHTML = IRON_QUESTIONS.map((q, idx) => {
+            const num = idx + 1;
+            return `
+                <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/30 question-card" id="card_${q.id}">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="space-y-1 flex-1">
+                            <div class="flex items-start gap-2">
+                                <span class="font-bold text-sm text-[#174C3B] shrink-0">${num}.</span>
+                                <p class="text-xs sm:text-sm font-semibold text-[#174C3B] leading-snug">
+                                    ${q.text}
+                                </p>
+                            </div>
+                            ${q.specialNotice ? `
+                                <span class="inline-block text-[11px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200 ml-5">
+                                    ★ ${q.specialNotice}
+                                </span>
+                            ` : ''}
+                        </div>
+
+                        <!-- Yes/No buttons -->
+                        <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                            <button type="button" onclick="selectChoice('${q.id}', 1, ${q.pointsYes})" id="btn_${q.id}_yes" class="choice-btn px-4 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-bold text-zinc-700">
+                                Có (+${q.pointsYes}đ)
+                            </button>
+                            <button type="button" onclick="selectChoice('${q.id}', 0, 0)" id="btn_${q.id}_no" class="choice-btn px-4 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-bold text-zinc-700">
+                                Không (0đ)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    window.selectChoice = function(qId, answerValue, points) {
+        ironAnswers[qId] = points; // points earned: 1 or 2 for yes, 0 for no
+
+        const btnYes = document.getElementById(`btn_${qId}_yes`);
+        const btnNo = document.getElementById(`btn_${qId}_no`);
+        const card = document.getElementById(`card_${qId}`);
+
+        if (btnYes && btnNo) {
+            if (answerValue === 1) {
+                btnYes.className = 'choice-btn px-4 py-2 rounded-xl border selected-yes text-xs font-bold';
+                btnNo.className = 'choice-btn px-4 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-500';
+                if (card) card.style.borderColor = '#F08A4B';
+            } else {
+                btnNo.className = 'choice-btn px-4 py-2 rounded-xl border selected-no text-xs font-bold';
+                btnYes.className = 'choice-btn px-4 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-500';
+                if (card) card.style.borderColor = '#8FAF91';
+            }
+        }
+
+        updateProgress();
+    };
+
+    function updateProgress() {
+        const answeredCount = Object.keys(ironAnswers).length;
+        const counter = document.getElementById('progressCounter');
+        if (counter) {
+            counter.innerText = `Đã chọn ${answeredCount}/14 câu`;
+            if (answeredCount === 14) {
+                counter.className = 'text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200';
+            }
+        }
+    }
+
+    window.calculateIronResult = function() {
+        const answeredCount = Object.keys(ironAnswers).length;
+        if (answeredCount < 14) {
+            alert(`Ba mẹ vui lòng chọn trả lời đủ 14 câu hỏi (Hiện đã làm ${answeredCount}/14 câu)!`);
+            // Scroll to the first unanswered question
+            for (let q of IRON_QUESTIONS) {
+                if (ironAnswers[q.id] === undefined) {
+                    const el = document.getElementById(`card_${q.id}`);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    break;
+                }
+            }
+            return;
+        }
+
+        // Calculate total score
+        let totalScore = 0;
+        Object.values(ironAnswers).forEach(pts => {
+            totalScore += Number(pts);
+        });
+
+        // Classification according to expert chart
+        let riskLevel = 'low';
+        let riskTitle = 'Nguy cơ thấp (0–2 điểm)';
+        let adviceText = '';
+        let badgeClass = '';
+
+        if (totalScore <= 2) {
+            riskLevel = 'low';
+            riskTitle = 'Nguy Cơ Thiếu Sắt Thấp (0–2 điểm)';
+            adviceText = 'Tiếp tục duy trì chế độ ăn đa dạng và có nguồn thực phẩm giàu sắt hằng ngày (thịt đỏ, cá, trứng, các loại đậu). Chú ý không cho trẻ uống quá nhiều sữa bò tươi (>500ml/ngày) và duy trì tẩy giun định kỳ 6 tháng/lần.';
+            badgeClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300';
+        } else if (totalScore <= 5) {
+            riskLevel = 'medium';
+            riskTitle = 'Có Nguy Cơ Thiếu Sắt (3–5 điểm)';
+            adviceText = 'Bé có một số dấu hiệu cảnh báo thiếu hụt sắt. Gia đình nên xem lại khẩu phần, đặc biệt lượng thực phẩm giàu sắt, giảm lượng sữa bò nếu đang uống quá nhiều, và cân nhắc trao đổi với chuyên gia để đánh giá thêm trước khi bổ sung.';
+            badgeClass = 'bg-amber-100 text-amber-900 border border-amber-300';
+        } else {
+            riskLevel = 'high';
+            riskTitle = 'Nguy Cơ Cao Thiếu Sắt (≥ 6 điểm)';
+            adviceText = 'Bé có nhiều triệu chứng điển hình của tình trạng thiếu sắt / thiếu máu dinh dưỡng. Nên cho trẻ được đánh giá tình trạng sắt; thường cần kết hợp triệu chứng, chế độ ăn và các xét nghiệm như công thức máu, hemoglobin và ferritin để xác định chính xác liều lượng bổ sung an toàn.';
+            badgeClass = 'bg-rose-100 text-rose-900 border border-rose-300';
+        }
+
+        // Display results UI
+        const resSection = document.getElementById('ironResultSection');
+        document.getElementById('resultTitle').innerText = riskTitle;
+        document.getElementById('resultAdviceText').innerText = adviceText;
+        const badgeEl = document.getElementById('resultScoreBadge');
+        badgeEl.className = `inline-block px-4 py-2 rounded-2xl text-sm font-bold ${badgeClass}`;
+        badgeEl.innerText = `Tổng điểm khảo sát: ${totalScore} điểm / 15 điểm tối đa`;
+
+        // Check Restless legs syndrome
+        const hasRLS = ironAnswers['iron_q12'] === 2;
+        const rlsBox = document.getElementById('rlsAlertBox');
+        if (rlsBox) {
+            rlsBox.classList.toggle('hidden', !hasRLS);
+        }
+
+        resSection.classList.remove('hidden');
+        resSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        // Save evaluation to DB & CRM
+        saveEvaluationData(totalScore, riskLevel, riskTitle, adviceText);
+    };
+
+    function saveEvaluationData(score, riskLevel, riskTitle, advice) {
+        const parentName = document.getElementById('parentName').value.trim() || 'Phụ huynh';
+        const parentPhone = document.getElementById('parentPhone').value.trim();
+        const childName = document.getElementById('childName').value.trim() || 'Bé';
+        const childAge = document.getElementById('childAge').value.trim();
+        const gender = document.querySelector('input[name="childGender"]:checked')?.value || 'Bé';
+        const weight = document.getElementById('childWeight').value.trim();
+        const height = document.getElementById('childHeight').value.trim();
+        const water = document.getElementById('waterAndMilkAmount').value.trim();
+        const diet = document.getElementById('dietDesc').value.trim();
+        const diff = document.getElementById('otherDifficulties').value.trim();
+
+        const payload = {
+            id: 'eval_iron_' + Date.now(),
+            checklist_id: 'checklist_iron_deficiency',
+            checklist_title: 'Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ Rối Loạn Phát Triển',
+            child_name: childName,
+            child_age: childAge,
+            parent_name: parentName,
+            phone: parentPhone,
+            gender: gender,
+            weight: weight,
+            height: height,
+            risk_level: riskLevel,
+            risk_title: riskTitle,
+            score: score,
+            water: water,
+            daily_diet: diet,
+            other_difficulties: diff,
+            answers: ironAnswers,
+            advice_summary: advice,
+            source: 'Checklist Thiếu Sắt',
+            created_at: new Date().toLocaleString('vi-VN'),
+            created_at_iso: new Date().toISOString()
+        };
+
+        try {
+            if (typeof DB !== 'undefined' && typeof DB.addEvaluation === 'function') {
+                DB.addEvaluation(payload);
+            } else {
+                const list = JSON.parse(localStorage.getItem('thuhien_evaluations_v1') || '[]');
+                list.unshift(payload);
+                localStorage.setItem('thuhien_evaluations_v1', JSON.stringify(list));
+            }
+        } catch (e) {
+            console.warn('Evaluation save error:', e);
+        }
+
+        window._lastIronPayload = payload;
+    }
+
+    window.sendIronResultToZalo = function() {
+        const p = window._lastIronPayload || {};
+        const parentName = p.parent_name || document.getElementById('parentName').value.trim() || 'Phụ huynh';
+        const childName = p.child_name || document.getElementById('childName').value.trim() || 'bé';
+        const childAge = p.child_age || document.getElementById('childAge').value.trim() || '';
+        const score = p.score !== undefined ? p.score : '';
+        const risk = p.risk_title || '';
+
+        const text = encodeURIComponent(
+            `Chào Chuyên gia Bùi Thu Hiền, em là ${parentName}, vừa làm xong Checklist Đánh Giá Nguy Cơ Thiếu Sắt cho con (${childName}, ${childAge}).\n` +
+            `Điểm khảo sát: ${score} điểm (${risk}).\n` +
+            `Em gửi kết quả để xin tư vấn và hướng dẫn xét nghiệm Ferritin/bổ sung sắt an toàn cho con ạ.`
+        );
+
+        const settings = typeof DB !== 'undefined' ? DB.getSettings() : {};
+        const zaloNumber = settings?.social?.zalo_number || '0988776655';
+        window.open(`https://zalo.me/${zaloNumber.replace(/\D/g, '')}?text=${text}`, '_blank');
+    };
+
+    // Render questions on load
+    document.addEventListener('DOMContentLoaded', () => {
+        renderQuestions();
+    });
+</script>
+
+</body>
+</html>
