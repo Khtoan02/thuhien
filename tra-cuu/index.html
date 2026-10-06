@@ -294,7 +294,7 @@
                         <div class="shrink-0">
                             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border ${badgeClass}">
                                 <span class="w-2.5 h-2.5 rounded-full ${dotColor}"></span>
-                                <span>${escapeHtml(item.risk_title || 'Đã đánh giá')}</span>
+                                <span>${escapeHtml((item.risk_title || 'Đã đánh giá').replace(/\s*\([^)]*điểm[^)]*\)/gi, ''))}</span>
                             </span>
                         </div>
                     </div>

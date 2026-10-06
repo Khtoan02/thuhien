@@ -514,27 +514,31 @@
             totalScore += Number(pts);
         });
 
-        // Classification according to expert chart
+        // Classification according to expert chart (points calculated internally, hidden from UI)
         let riskLevel = 'low';
-        let riskTitle = 'Nguy cơ thấp (0–2 điểm)';
+        let riskTitle = 'Nguy Cơ Thiếu Sắt Thấp';
+        let statusNotice = '';
         let adviceText = '';
         let badgeClass = '';
 
         if (totalScore <= 2) {
             riskLevel = 'low';
-            riskTitle = 'Nguy Cơ Thiếu Sắt Thấp (0–2 điểm)';
+            riskTitle = 'Nguy Cơ Thiếu Sắt Thấp';
+            statusNotice = '<span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Khẩu phần dinh dưỡng hiện tại đang ở mức an toàn</span>';
             adviceText = 'Tiếp tục duy trì chế độ ăn đa dạng và có nguồn thực phẩm giàu sắt hằng ngày (thịt đỏ, cá, trứng, các loại đậu). Chú ý không cho trẻ uống quá nhiều sữa bò tươi (>500ml/ngày) và duy trì tẩy giun định kỳ 6 tháng/lần.';
-            badgeClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300';
+            badgeClass = 'bg-emerald-50 text-emerald-800 border border-emerald-300';
         } else if (totalScore <= 5) {
             riskLevel = 'medium';
-            riskTitle = 'Có Nguy Cơ Thiếu Sắt (3–5 điểm)';
+            riskTitle = 'Có Nguy Cơ Thiếu Sắt';
+            statusNotice = '<span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Cần rà soát khẩu phần ăn & theo dõi biểu hiện</span>';
             adviceText = 'Bé có một số dấu hiệu cảnh báo thiếu hụt sắt. Gia đình nên xem lại khẩu phần, đặc biệt lượng thực phẩm giàu sắt, giảm lượng sữa bò nếu đang uống quá nhiều, và cân nhắc trao đổi với chuyên gia để đánh giá thêm trước khi bổ sung.';
-            badgeClass = 'bg-amber-100 text-amber-900 border border-amber-300';
+            badgeClass = 'bg-amber-50 text-amber-800 border border-amber-300';
         } else {
             riskLevel = 'high';
-            riskTitle = 'Nguy Cơ Cao Thiếu Sắt (≥ 6 điểm)';
+            riskTitle = 'Nguy Cơ Cao Thiếu Sắt';
+            statusNotice = '<span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Khuyến nghị trao đổi chuyên gia & xét nghiệm Ferritin</span>';
             adviceText = 'Bé có nhiều triệu chứng điển hình của tình trạng thiếu sắt / thiếu máu dinh dưỡng. Nên cho trẻ được đánh giá tình trạng sắt; thường cần kết hợp triệu chứng, chế độ ăn và các xét nghiệm như công thức máu, hemoglobin và ferritin để xác định chính xác liều lượng bổ sung an toàn.';
-            badgeClass = 'bg-rose-100 text-rose-900 border border-rose-300';
+            badgeClass = 'bg-rose-50 text-rose-800 border border-rose-300';
         }
 
         // Display results UI
@@ -542,8 +546,8 @@
         document.getElementById('resultTitle').innerText = riskTitle;
         document.getElementById('resultAdviceText').innerText = adviceText;
         const badgeEl = document.getElementById('resultScoreBadge');
-        badgeEl.className = `inline-block px-4 py-2 rounded-2xl text-sm font-bold ${badgeClass}`;
-        badgeEl.innerText = `Tổng điểm khảo sát: ${totalScore} điểm / 15 điểm tối đa`;
+        badgeEl.className = `inline-flex items-center px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold shadow-2xs ${badgeClass}`;
+        badgeEl.innerHTML = statusNotice;
 
         // Check Restless legs syndrome
         const hasRLS = ironAnswers['iron_q12'] === 2;
@@ -620,8 +624,8 @@
 
         const text = encodeURIComponent(
             `Chào Chuyên gia Bùi Thu Hiền, em là ${parentName}, vừa làm xong Checklist Đánh Giá Nguy Cơ Thiếu Sắt cho con (${childName}, ${childAge}).\n` +
-            `Điểm khảo sát: ${score} điểm (${risk}).\n` +
-            `Em gửi kết quả để xin tư vấn và hướng dẫn xét nghiệm Ferritin/bổ sung sắt an toàn cho con ạ.`
+            `Kết quả đánh giá: ${risk}.\n` +
+            `Em gửi kết quả để xin tư vấn và hướng dẫn phác đồ/xét nghiệm Ferritin cho con ạ.`
         );
 
         const settings = typeof DB !== 'undefined' ? DB.getSettings() : {};
