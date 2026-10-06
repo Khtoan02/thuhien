@@ -281,42 +281,38 @@
         </div>
 
         <!-- Advice Body -->
-        <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/30 space-y-3">
-            <h4 class="font-bold text-base text-[#174C3B] flex items-center gap-2">
-                <svg class="w-5 h-5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/30 space-y-2">
+            <h4 class="font-bold text-sm sm:text-base text-[#174C3B] flex items-center gap-2">
+                <svg class="w-4 h-4 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <span>Nhận Định Chuyên Môn &amp; Định Hướng Cho Con:</span>
+                <span>Định Hướng Cho Bé:</span>
             </h4>
-            <p class="text-sm sm:text-base text-[#174C3B] leading-relaxed font-medium" id="resultAdviceText">
+            <p class="text-xs sm:text-sm text-[#174C3B] leading-relaxed" id="resultAdviceText">
                 <!-- Dynamic text -->
             </p>
         </div>
 
         <!-- Restless Legs Syndrome Alert if Q12 is yes -->
-        <div id="rlsAlertBox" class="hidden p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 text-xs sm:text-sm space-y-1.5">
-            <div class="font-bold flex items-center gap-2 text-rose-800">
+        <div id="rlsAlertBox" class="hidden p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 text-xs sm:text-sm space-y-1">
+            <div class="font-bold flex items-center gap-2 text-rose-800 text-xs sm:text-sm">
                 <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                <span>Lưu ý đặc biệt: Hội Chứng Chân Không Yên (Restless Legs Syndrome)</span>
+                <span>Lưu ý: Biểu hiện chân không yên về đêm</span>
             </div>
-            <p class="leading-relaxed">
-                Bé có biểu hiện bồn chồn, cọ xát chân hoặc khó chịu vùng chân về đêm. Đây là triệu chứng thần kinh rất điển hình do não bộ thiếu sắt làm suy giảm chức năng Dopamine. Việc bổ sung sắt đúng dạng hữu cơ và đo nồng độ Ferritin là rất cấp thiết.
+            <p class="leading-relaxed text-xs">
+                Bé hay bồn chồn, cọ xát hoặc khó chịu chân. Đây là dấu hiệu thần kinh liên quan mật thiết đến thiếu hụt sắt, cần ưu tiên xét nghiệm Ferritin sớm.
             </p>
         </div>
 
         <!-- Call to Action Buttons -->
         <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button onclick="sendIronResultToZalo()" class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-[#0068FF] text-white hover:bg-blue-600 font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <button onclick="sendIronResultToZalo()" class="w-full sm:w-auto px-7 py-3 rounded-full bg-[#0068FF] text-white hover:bg-blue-600 font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
                 <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.44 3.84 7.07l-.95 3.51a1 1 0 001.3 1.18l4.02-1.63c.58.11 1.18.17 1.79.17 5.52 0 10-4.03 10-9s-4.48-9-10-9z"/></svg>
-                <span>Nhắn Zalo Nhận Tư Vấn Cùng Chuyên Gia</span>
+                <span>Nhắn Zalo Tư Vấn</span>
             </button>
 
-            <a href="../dat-lich/" class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-[#174C3B] text-white hover:bg-[#1F5A45] font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 text-center">
-                <span>Đặt Lịch Tư Vấn 1:1 Với Thu Hiền</span>
-            </a>
-
-            <a href="../tra-cuu/" class="w-full sm:w-auto px-5 py-3.5 rounded-full bg-white border border-[#174C3B] text-[#174C3B] hover:bg-zinc-50 font-bold text-sm transition-all text-center">
-                <span>Tra Cứu Lại Lịch Sử</span>
+            <a href="../tra-cuu/" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white border border-[#174C3B] text-[#174C3B] hover:bg-zinc-50 font-bold text-sm transition-all text-center">
+                <span>Tra Cứu Kết Quả</span>
             </a>
         </div>
     </div>
@@ -525,19 +521,19 @@
             riskLevel = 'low';
             riskTitle = 'Nguy Cơ Thiếu Sắt Thấp';
             statusNotice = '<span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Khẩu phần dinh dưỡng hiện tại đang ở mức an toàn</span>';
-            adviceText = 'Tiếp tục duy trì chế độ ăn đa dạng và có nguồn thực phẩm giàu sắt hằng ngày (thịt đỏ, cá, trứng, các loại đậu). Chú ý không cho trẻ uống quá nhiều sữa bò tươi (>500ml/ngày) và duy trì tẩy giun định kỳ 6 tháng/lần.';
+            adviceText = 'Bé có nguy cơ thiếu sắt thấp. Ba mẹ duy trì chế độ ăn đa dạng nguồn giàu sắt tự nhiên (thịt đỏ, cá, trứng, các loại đậu), tránh uống quá nhiều sữa tươi (>500ml/ngày) và duy trì tẩy giun định kỳ.';
             badgeClass = 'bg-emerald-50 text-emerald-800 border border-emerald-300';
         } else if (totalScore <= 5) {
             riskLevel = 'medium';
             riskTitle = 'Có Nguy Cơ Thiếu Sắt';
             statusNotice = '<span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Cần rà soát khẩu phần ăn & theo dõi biểu hiện</span>';
-            adviceText = 'Bé có một số dấu hiệu cảnh báo thiếu hụt sắt. Gia đình nên xem lại khẩu phần, đặc biệt lượng thực phẩm giàu sắt, giảm lượng sữa bò nếu đang uống quá nhiều, và cân nhắc trao đổi với chuyên gia để đánh giá thêm trước khi bổ sung.';
+            adviceText = 'Bé có dấu hiệu cảnh báo thiếu sắt. Gia đình nên tăng cường thực phẩm giàu sắt trong bữa chính, giảm bớt lượng sữa tươi nếu con đang uống nhiều và trao đổi với chuyên gia trước khi bổ sung.';
             badgeClass = 'bg-amber-50 text-amber-800 border border-amber-300';
         } else {
             riskLevel = 'high';
             riskTitle = 'Nguy Cơ Cao Thiếu Sắt';
             statusNotice = '<span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Khuyến nghị trao đổi chuyên gia & xét nghiệm Ferritin</span>';
-            adviceText = 'Bé có nhiều triệu chứng điển hình của tình trạng thiếu sắt / thiếu máu dinh dưỡng. Nên cho trẻ được đánh giá tình trạng sắt; thường cần kết hợp triệu chứng, chế độ ăn và các xét nghiệm như công thức máu, hemoglobin và ferritin để xác định chính xác liều lượng bổ sung an toàn.';
+            adviceText = 'Bé có nhiều biểu hiện điển hình của thiếu sắt. Khuyến nghị ba mẹ cho con làm xét nghiệm công thức máu và ferritin để chuyên gia hướng dẫn phác đồ bổ sung an toàn, đúng liều lượng.';
             badgeClass = 'bg-rose-50 text-rose-800 border border-rose-300';
         }
 
