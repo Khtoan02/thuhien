@@ -16,6 +16,7 @@ const DB = (() => {
     const STORAGE_KEY_LOGIN_ATTEMPTS = 'thuhien_login_attempts_v1';
     const STORAGE_KEY_EVALUATIONS = 'thuhien_evaluations_v1';
     const STORAGE_KEY_DELETED_EVALUATIONS = 'thuhien_deleted_evaluations_v1';
+    const STORAGE_KEY_CHECKLISTS = 'thuhien_checklists_v1';
 
     const FIREBASE_CONFIG = {
         apiKey: "AIzaSyDdt8u-SD8fvqtW4j9e5FBxPQT0_RXIKhQ",
@@ -264,6 +265,65 @@ const DB = (() => {
         pages_maintenance_message: 'Trang này hiện đang được Chuyên gia Bùi Thu Hiền và đội ngũ hoàn thiện nội dung để mang đến trải nghiệm chuẩn mực nhất cho phụ huynh. Ba mẹ vui lòng quay lại sau nhé!'
     };
 
+    const DEFAULT_CHECKLISTS = [
+        {
+            id: 'checklist_nutrition',
+            title: 'Sàng Lọc Dinh Dưỡng & Tiêu Hóa Trẻ Đặc Biệt',
+            category: 'Dinh Dưỡng GFCF+SF',
+            slug: 'danh-gia-dinh-duong',
+            path: '/danh-gia-dinh-duong/',
+            question_count: 10,
+            target_age: '1 - 10 tuổi',
+            status: 'active',
+            description: 'Đánh giá thói quen ăn uống, nhai nuốt, táo bón, dị ứng và nguy cơ thiếu hụt vi chất dinh dưỡng cho trẻ.',
+            created_at: '01/10/2026',
+            lead_magnet: 'Nhận Báo Cáo Phân Tích Thể Trạng & Phác Đồ Ăn Uống 1:1',
+            scoring_guide: '1-5đ: Nguy cơ thấp | 5-10đ: Nguy cơ trung bình | >10đ: Nguy cơ cao'
+        },
+        {
+            id: 'checklist_autism_early',
+            title: 'Sàng Lọc Dấu Hiệu Phổ Tự Kỷ & Giao Tiếp Sớm (M-CHAT-R)',
+            category: 'Phát Triển & Hành Vi',
+            slug: 'checklist-tu-ky-som',
+            path: '/danh-gia-dinh-duong/?type=autism',
+            question_count: 12,
+            target_age: '16 - 36 tháng',
+            status: 'active',
+            description: 'Khảo sát giao tiếp mắt, chỉ tay, phản ứng tên gọi, bắt chước và biểu hiện tương tác xã hội trong giai đoạn vàng.',
+            created_at: '02/10/2026',
+            lead_magnet: 'Cẩm Nang 10 Hoạt Động Kích Hoạt Lời Nói Đầu Đời Tại Nhà',
+            scoring_guide: '0-2đ: Nguy cơ thấp | 3-7đ: Nguy cơ trung bình | 8-12đ: Nguy cơ cao'
+        },
+        {
+            id: 'checklist_sensory',
+            title: 'Đánh Giá Rối Loạn Xử Lý Cảm Giác & Nhạy Cảm Giác Quan',
+            category: 'Giác Quan & Vận Động',
+            slug: 'checklist-giac-quan',
+            path: '/danh-gia-dinh-duong/?type=sensory',
+            question_count: 10,
+            target_age: '2 - 8 tuổi',
+            status: 'active',
+            description: 'Đo lường mức độ quá tải hoặc tìm kiếm cảm giác về xúc giác, thính giác, thị giác, tiền đình và vận động cơ sâu.',
+            created_at: '03/10/2026',
+            lead_magnet: 'Bộ Trò Chơi Điều Hòa Giác Quan 15 Phút Mỗi Ngày',
+            scoring_guide: 'Dưới 10đ: Nhẹ | 10-20đ: Đáng lưu ý | Trên 20đ: Rối loạn giác quan nặng'
+        },
+        {
+            id: 'checklist_readiness',
+            title: 'Đo Lường Mức Độ Sẵn Sàng Can Thiệp Tại Nhà Cùng Mẹ',
+            category: 'Tâm Lý Cha Mẹ',
+            slug: 'checklist-san-sang',
+            path: '/danh-gia-dinh-duong/?type=readiness',
+            question_count: 8,
+            target_age: 'Phụ huynh',
+            status: 'draft',
+            description: 'Đánh giá thời gian, tâm lý, sự đồng thuận gia đình và nguồn lực hỗ trợ để chọn lộ trình can thiệp khả thi nhất.',
+            created_at: '04/10/2026',
+            lead_magnet: 'Bản Đồ Lộ Trình Can Thiệp Cá Nhân Hóa Cho Gia Đình',
+            scoring_guide: 'Đo lường chỉ số sẵn sàng và mức độ kiệt sức (burnout) của mẹ'
+        }
+    ];
+
     // Helper to format date YYYY-MM-DD HH:mm:ss relative to now
     function getRelativeDateStr(daysAgo = 0, hours = 9, minutes = 15) {
         const d = new Date();
@@ -429,6 +489,8 @@ const DB = (() => {
     const DEMO_EVALUATIONS = [
         {
             id: 'eval_demo_101',
+            checklist_id: 'checklist_nutrition',
+            checklist_title: 'Sàng Lọc Dinh Dưỡng & Tiêu Hóa Trẻ Đặc Biệt',
             child_name: 'Bé Bơ',
             child_age: '3 tuổi',
             gender: 'Bé Trai',
@@ -440,6 +502,9 @@ const DB = (() => {
             risk_level: 'low',
             risk_title: 'Nguy cơ dinh dưỡng thấp / Cần điều chỉnh nhẹ',
             score: 3,
+            crm_status: 'contacted',
+            crm_priority: 'normal',
+            crm_notes: 'Đã nhắn Zalo gửi cẩm nang GFCF, mẹ đang đọc và hẹn tuần sau phản hồi.',
             water: '500ml - 1000ml',
             allergies: ['Sữa bò thông thường'],
             other_difficulties: 'Hay ngậm thức ăn khi ngồi ăn cùng cả nhà quá 25 phút',
@@ -454,6 +519,8 @@ const DB = (() => {
         },
         {
             id: 'eval_demo_102',
+            checklist_id: 'checklist_sensory',
+            checklist_title: 'Đánh Giá Rối Loạn Xử Lý Cảm Giác & Nhạy Cảm Giác Quan',
             child_name: 'Bé Sóc',
             child_age: '4 tuổi',
             gender: 'Bé Trai',
@@ -465,6 +532,9 @@ const DB = (() => {
             risk_level: 'medium',
             risk_title: 'Nguy cơ dinh dưỡng trung bình / Cần can thiệp',
             score: 8,
+            crm_status: 'consulting',
+            crm_priority: 'high',
+            crm_notes: 'Bé kén ăn nặng do sợ mùi và nhớt xúc giác. Mẹ đã nhận cẩm nang, đang hướng dẫn massage miệng.',
             water: 'Dưới 500ml',
             allergies: ['Trứng gà', 'Hải sản'],
             other_difficulties: 'Từ chối tuyệt đối rau xanh, chỉ ăn đồ giòn khô, sợ thức ăn ướt hoặc có sốt',
@@ -479,6 +549,8 @@ const DB = (() => {
         },
         {
             id: 'eval_demo_103',
+            checklist_id: 'checklist_autism_early',
+            checklist_title: 'Sàng Lọc Dấu Hiệu Phổ Tự Kỷ & Giao Tiếp Sớm (M-CHAT-R)',
             child_name: 'Bé Bon',
             child_age: '2.5 tuổi',
             gender: 'Bé Gái',
@@ -490,6 +562,9 @@ const DB = (() => {
             risk_level: 'high',
             risk_title: 'Nguy cơ dinh dưỡng cao / Cần can thiệp chuyên sâu',
             score: 13,
+            crm_status: 'new',
+            crm_priority: 'urgent',
+            crm_notes: 'Bé 2.5 tuổi trong giai đoạn vàng, táo bón 4-5 ngày + chậm nói. CẦN GỌI ĐIỆN TƯ VẤN NGAY HÔM NAY!',
             water: 'Dưới 500ml',
             allergies: ['Gluten (Lúa mì)', 'Sữa bò', 'Đậu nành'],
             other_difficulties: 'Táo bón kéo dài 4-5 ngày/lần, phân cứng chảy máu, hay bùng nổ ăn vạ lúc ăn, khó ngủ đêm',
@@ -543,6 +618,9 @@ const DB = (() => {
         }
         if (!localStorage.getItem(STORAGE_KEY_HEARTBEATS)) {
             localStorage.setItem(STORAGE_KEY_HEARTBEATS, JSON.stringify([]));
+        }
+        if (!localStorage.getItem(STORAGE_KEY_CHECKLISTS)) {
+            localStorage.setItem(STORAGE_KEY_CHECKLISTS, JSON.stringify(DEFAULT_CHECKLISTS));
         }
         if (!localStorage.getItem(STORAGE_KEY_SETTINGS)) {
             localStorage.setItem(STORAGE_KEY_SETTINGS, JSON.stringify(DEFAULT_SETTINGS));
@@ -790,7 +868,15 @@ const DB = (() => {
             try {
                 const deletedSet = new Set(this.getDeletedEvaluationIds().map(String));
                 const list = JSON.parse(localStorage.getItem(STORAGE_KEY_EVALUATIONS)) || [];
-                return list.filter(item => !item.is_deleted && !deletedSet.has(String(item.id)));
+                return list.filter(item => !item.is_deleted && !deletedSet.has(String(item.id))).map(item => ({
+                    ...item,
+                    checklist_id: item.checklist_id || 'checklist_nutrition',
+                    checklist_title: item.checklist_title || 'Sàng Lọc Dinh Dưỡng & Tiêu Hóa Trẻ Đặc Biệt',
+                    crm_status: item.crm_status || 'new',
+                    crm_priority: item.crm_priority || (item.risk_level === 'high' ? 'urgent' : (item.risk_level === 'medium' ? 'high' : 'normal')),
+                    crm_notes: item.crm_notes || '',
+                    crm_history: item.crm_history || []
+                }));
             } catch (e) {
                 return [];
             }
@@ -812,6 +898,8 @@ const DB = (() => {
 
             const newRecord = {
                 id: sId,
+                checklist_id: data.checklist_id || 'checklist_nutrition',
+                checklist_title: data.checklist_title || 'Sàng Lọc Dinh Dưỡng & Tiêu Hóa Trẻ Đặc Biệt',
                 child_name: data.child_name || '',
                 child_age: data.child_age || '',
                 gender: data.gender || data.child_gender || 'Bé',
@@ -823,12 +911,18 @@ const DB = (() => {
                 risk_level: data.risk_level || 'low', // 'low' | 'medium' | 'high'
                 risk_title: data.risk_title || 'Nguy cơ dinh dưỡng thấp',
                 score: Number(data.score || 0),
+                crm_status: data.crm_status || 'new', // 'new' | 'contacted' | 'consulting' | 'booked' | 'converted' | 'lost'
+                crm_priority: data.crm_priority || (data.risk_level === 'high' ? 'urgent' : (data.risk_level === 'medium' ? 'high' : 'normal')), // 'urgent' | 'high' | 'normal'
+                crm_notes: data.crm_notes || '',
+                crm_history: data.crm_history || [{ time: now.toLocaleString('vi-VN'), action: 'Khách hàng hoàn thành checklist' }],
                 answers: data.answers || {},
                 water: data.water || data.water_intake || '',
                 allergies: data.allergies || [],
                 daily_diet: data.daily_diet || data.diet_description || '',
                 other_difficulties: data.other_difficulties || '',
                 advice_summary: data.advice_summary || data.feedback || '',
+                source: data.source || 'Website Checklist',
+                utm_source: data.utm_source || '',
                 created_at: data.created_at || now.toLocaleString('vi-VN'),
                 created_at_iso: data.created_at_iso || now.toISOString()
             };
@@ -863,6 +957,240 @@ const DB = (() => {
             } catch (e) {}
 
             return newRecord;
+        },
+
+        updateEvaluationCRMStatus(id, newStatus) {
+            const sId = String(id);
+            let list = this.getEvaluations();
+            const item = list.find(e => String(e.id) === sId);
+            if (!item) return false;
+            item.crm_status = newStatus;
+            item.updated_at = new Date().toLocaleString('vi-VN');
+            if (!item.crm_history) item.crm_history = [];
+            item.crm_history.push({
+                time: item.updated_at,
+                action: `Cập nhật trạng thái CRM: ${newStatus}`
+            });
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(list));
+
+            if (this._firestoreDb) {
+                this._firestoreDb.collection('evaluations').doc(sId).set({
+                    crm_status: newStatus,
+                    updated_at: item.updated_at,
+                    crm_history: item.crm_history
+                }, { merge: true }).catch(() => {});
+            }
+            this.broadcastChange('evaluations_changed', { id: sId, crm_status: newStatus });
+            return true;
+        },
+
+        updateEvaluationPriority(id, newPriority) {
+            const sId = String(id);
+            let list = this.getEvaluations();
+            const item = list.find(e => String(e.id) === sId);
+            if (!item) return false;
+            item.crm_priority = newPriority;
+            item.updated_at = new Date().toLocaleString('vi-VN');
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(list));
+
+            if (this._firestoreDb) {
+                this._firestoreDb.collection('evaluations').doc(sId).set({
+                    crm_priority: newPriority,
+                    updated_at: item.updated_at
+                }, { merge: true }).catch(() => {});
+            }
+            this.broadcastChange('evaluations_changed', { id: sId, crm_priority: newPriority });
+            return true;
+        },
+
+        updateEvaluationCRMNotes(id, noteText) {
+            const sId = String(id);
+            let list = this.getEvaluations();
+            const item = list.find(e => String(e.id) === sId);
+            if (!item) return false;
+            item.crm_notes = noteText;
+            item.updated_at = new Date().toLocaleString('vi-VN');
+            localStorage.setItem(STORAGE_KEY_EVALUATIONS, JSON.stringify(list));
+
+            if (this._firestoreDb) {
+                this._firestoreDb.collection('evaluations').doc(sId).set({
+                    crm_notes: noteText,
+                    updated_at: item.updated_at
+                }, { merge: true }).catch(() => {});
+            }
+            this.broadcastChange('evaluations_changed', { id: sId, crm_notes: noteText });
+            return true;
+        },
+
+        // CHECKLIST MANAGEMENT METHODS
+        getChecklists() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY_CHECKLISTS);
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+            } catch (e) {}
+            return DEFAULT_CHECKLISTS;
+        },
+
+        saveChecklist(item) {
+            let list = this.getChecklists();
+            const nowStr = new Date().toLocaleDateString('vi-VN');
+            if (item.id) {
+                const idx = list.findIndex(c => c.id === item.id);
+                if (idx !== -1) {
+                    list[idx] = { ...list[idx], ...item, updated_at: nowStr };
+                } else {
+                    list.unshift({ ...item, created_at: item.created_at || nowStr });
+                }
+            } else {
+                const newId = 'chk_' + Date.now();
+                list.unshift({
+                    id: newId,
+                    status: 'active',
+                    created_at: nowStr,
+                    ...item
+                });
+            }
+            localStorage.setItem(STORAGE_KEY_CHECKLISTS, JSON.stringify(list));
+            this.broadcastChange('checklists_changed', list);
+            return true;
+        },
+
+        deleteChecklist(id) {
+            let list = this.getChecklists();
+            list = list.filter(c => c.id !== id);
+            localStorage.setItem(STORAGE_KEY_CHECKLISTS, JSON.stringify(list));
+            this.broadcastChange('checklists_changed', list);
+            return true;
+        },
+
+        toggleChecklistStatus(id) {
+            let list = this.getChecklists();
+            const chk = list.find(c => c.id === id);
+            if (chk) {
+                chk.status = chk.status === 'active' ? 'draft' : 'active';
+                localStorage.setItem(STORAGE_KEY_CHECKLISTS, JSON.stringify(list));
+                this.broadcastChange('checklists_changed', list);
+                return chk.status;
+            }
+            return null;
+        },
+
+        getChecklistAnalytics() {
+            const evals = this.getEvaluations();
+            const checklists = this.getChecklists();
+
+            const total = evals.length;
+            const statusCounts = {
+                new: 0,
+                contacted: 0,
+                consulting: 0,
+                booked: 0,
+                converted: 0,
+                lost: 0
+            };
+            const priorityCounts = {
+                urgent: 0,
+                high: 0,
+                normal: 0
+            };
+            const riskCounts = {
+                high: 0,
+                medium: 0,
+                low: 0
+            };
+            const ageSegments = {
+                under2: 0,
+                age2to3: 0,
+                age3to5: 0,
+                above5: 0,
+                other: 0
+            };
+            const checklistBreakdown = {};
+
+            checklists.forEach(c => {
+                checklistBreakdown[c.id] = {
+                    id: c.id,
+                    title: c.title,
+                    category: c.category,
+                    submissions: 0,
+                    contacted: 0,
+                    converted: 0,
+                    high_risk: 0
+                };
+            });
+
+            evals.forEach(e => {
+                const st = e.crm_status || 'new';
+                if (statusCounts[st] !== undefined) statusCounts[st]++;
+                else statusCounts.new++;
+
+                const pr = e.crm_priority || (e.risk_level === 'high' ? 'urgent' : 'normal');
+                if (priorityCounts[pr] !== undefined) priorityCounts[pr]++;
+
+                const rk = e.risk_level || 'low';
+                if (riskCounts[rk] !== undefined) riskCounts[rk]++;
+
+                const ageText = (e.child_age || '').toString().toLowerCase();
+                const num = parseFloat(ageText.replace(',', '.'));
+                if (ageText.includes('tháng') || (num > 0 && num < 2)) {
+                    ageSegments.under2++;
+                } else if (num >= 2 && num <= 3) {
+                    ageSegments.age2to3++;
+                } else if (num > 3 && num <= 5) {
+                    ageSegments.age3to5++;
+                } else if (num > 5) {
+                    ageSegments.above5++;
+                } else {
+                    ageSegments.other++;
+                }
+
+                const chkId = e.checklist_id || 'checklist_nutrition';
+                if (!checklistBreakdown[chkId]) {
+                    checklistBreakdown[chkId] = {
+                        id: chkId,
+                        title: e.checklist_title || chkId,
+                        category: 'Khác',
+                        submissions: 0,
+                        contacted: 0,
+                        converted: 0,
+                        high_risk: 0
+                    };
+                }
+                checklistBreakdown[chkId].submissions++;
+                if (['contacted', 'consulting', 'booked', 'converted'].includes(st)) {
+                    checklistBreakdown[chkId].contacted++;
+                }
+                if (st === 'converted' || st === 'booked') {
+                    checklistBreakdown[chkId].converted++;
+                }
+                if (rk === 'high') {
+                    checklistBreakdown[chkId].high_risk++;
+                }
+            });
+
+            const totalLeads = total;
+            const contactedOrAbove = totalLeads - statusCounts.new;
+            const consultingOrAbove = statusCounts.consulting + statusCounts.booked + statusCounts.converted;
+            const bookedOrAbove = statusCounts.booked + statusCounts.converted;
+            const converted = statusCounts.converted;
+
+            return {
+                total,
+                statusCounts,
+                priorityCounts,
+                riskCounts,
+                ageSegments,
+                checklistBreakdown: Object.values(checklistBreakdown),
+                funnel: {
+                    totalLeads,
+                    contactedRate: totalLeads > 0 ? ((contactedOrAbove / totalLeads) * 100).toFixed(1) : '0.0',
+                    consultingRate: totalLeads > 0 ? ((consultingOrAbove / totalLeads) * 100).toFixed(1) : '0.0',
+                    bookedRate: totalLeads > 0 ? ((bookedOrAbove / totalLeads) * 100).toFixed(1) : '0.0',
+                    conversionRate: totalLeads > 0 ? ((converted / totalLeads) * 100).toFixed(1) : '0.0'
+                }
+            };
         },
 
         deleteEvaluation(id) {
@@ -1223,9 +1551,10 @@ const DB = (() => {
                 });
             } else if (type === 'evaluations') {
                 const evals = this.getEvaluations();
-                csvContent += '"ID","Thời gian","Tên bé","Tuổi","Giới tính","Cân nặng (kg)","Chiều cao (cm)","Phụ huynh","Số điện thoại","Mức độ","Điểm nguy cơ","Nước (ml)","Chế độ ăn 1 ngày","Khó khăn khác"\n';
+                csvContent += '"Mã Phiếu","Thời gian","Tên Checklist","Phụ huynh","Số điện thoại","SĐT Chuẩn hóa","Tên bé","Tuổi bé","Giới tính","Cân nặng (kg)","Chiều cao (cm)","Mức độ nguy cơ","Điểm số","Trạng thái CRM","Mức độ ưu tiên","Ghi chú CSKH","Lượng nước","Dị ứng","Chế độ ăn 1 ngày","Khó khăn khác","Nguồn Lead"\n';
                 evals.forEach(e => {
-                    csvContent += `"${e.id}","${e.created_at}","${(e.child_name || '').replace(/"/g, '""')}","${e.child_age || ''}","${e.gender || ''}","${e.weight || ''}","${e.height || ''}","${(e.parent_name || '').replace(/"/g, '""')}","${e.phone || ''}","${e.risk_title || ''}","${e.score || 0}","${e.water || ''}","${(e.daily_diet || '').replace(/"/g, '""')}","${(e.other_difficulties || '').replace(/"/g, '""')}"\n`;
+                    const allergiesStr = Array.isArray(e.allergies) ? e.allergies.join('; ') : (e.allergies || '');
+                    csvContent += `"${e.id}","${e.created_at}","${(e.checklist_title || '').replace(/"/g, '""')}","${(e.parent_name || '').replace(/"/g, '""')}","${e.phone || ''}","${e.phone_normalized || ''}","${(e.child_name || '').replace(/"/g, '""')}","${e.child_age || ''}","${e.gender || ''}","${e.weight || ''}","${e.height || ''}","${(e.risk_title || e.risk_level || '').replace(/"/g, '""')}","${e.score || 0}","${e.crm_status || 'new'}","${e.crm_priority || 'normal'}","${(e.crm_notes || '').replace(/"/g, '""')}","${e.water || ''}","${allergiesStr.replace(/"/g, '""')}","${(e.daily_diet || '').replace(/"/g, '""')}","${(e.other_difficulties || '').replace(/"/g, '""')}","${e.source || 'Website'}"\n`;
                 });
             } else {
                 const bookings = this.getBookings();

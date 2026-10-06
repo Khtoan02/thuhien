@@ -267,7 +267,7 @@
                         <button onclick="switchView('evaluations')" id="nav-evaluations" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-md transition-colors text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900">
                             <div class="flex items-center gap-2.5">
                                 <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                                <span>Đánh Giá Dinh Dưỡng</span>
+                                <span>Hệ Thống Checklist & CRM</span>
                             </div>
                             <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200" id="badgeNavEvaluations">0</span>
                         </button>
@@ -690,15 +690,26 @@
             <!-- ==========================================================
                  VIEW 4: PHIẾU ĐÁNH GIÁ DINH DƯỠNG (Checklist Submissions)
                  ========================================================== -->
-            <div id="view-evaluations" class="hidden space-y-4">
+            <!-- ==========================================================
+                 VIEW 4: HỆ THỐNG CHECKLIST & CHĂM SÓC KHÁCH HÀNG (CRM)
+                 ========================================================== -->
+            <div id="view-evaluations" class="hidden space-y-5">
                 
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <!-- Main Header with Global Actions -->
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-1">
                     <div>
-                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Phiếu Đánh Giá Dinh Dưỡng Phụ Huynh</h2>
-                        <p class="text-xs text-zinc-500">Dữ liệu đánh giá dinh dưỡng gửi về từ website, phân nhóm nguy cơ và tra cứu theo số điện thoại</p>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xl font-bold tracking-tight text-zinc-900">Hệ Thống Checklist & Chăm Sóc Khách Hàng (CRM)</h2>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-brand-50 text-brand-700 border border-brand-200">CRM Intelligence</span>
+                        </div>
+                        <p class="text-xs text-zinc-500 mt-0.5">Quản lý phễu khách hàng tiềm năng từ bài test, điều phối chăm sóc phụ huynh 1:1 và mở rộng kho checklist</p>
                     </div>
 
                     <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="openChecklistModal()" class="inline-flex h-8 items-center justify-center rounded-md bg-brand-500 hover:bg-brand-600 px-3 text-xs font-bold text-white shadow-xs transition-colors gap-1.5">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                            <span>+ Tạo Checklist Mới</span>
+                        </button>
                         <a href="../danh-gia-dinh-duong/" target="_blank" class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-800 shadow-xs hover:bg-zinc-50 transition-colors gap-1.5">
                             <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                             <span>Mở Trang Đánh Giá</span>
@@ -709,71 +720,237 @@
                         </a>
                         <button onclick="syncEvaluationsFromCloud()" id="btnSyncEvals" class="inline-flex h-8 items-center justify-center rounded-md border border-brand-200 bg-white px-3 text-xs font-semibold text-brand-700 shadow-xs hover:bg-brand-50 transition-colors gap-1.5" title="Kéo dữ liệu đánh giá mới nhất từ Firebase Firestore">
                             <svg id="syncEvalsIcon" class="w-3.5 h-3.5 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                            <span>Đồng Bộ Dữ Liệu</span>
+                            <span>Đồng Bộ Firestore</span>
                         </button>
                         <button onclick="DB.exportCSV('evaluations')" class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-800 shadow-xs hover:bg-zinc-50 transition-colors gap-1.5">
                             <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                            <span>Xuất Excel CSV</span>
+                            <span>Xuất File CRM (CSV)</span>
                         </button>
                         <button onclick="clearAllEvaluationsAdmin()" class="inline-flex h-8 items-center justify-center rounded-md border border-rose-200 bg-rose-50 px-3 text-xs font-semibold text-rose-700 shadow-xs hover:bg-rose-100 transition-colors gap-1.5" title="Xóa toàn bộ danh sách phiếu đánh giá">
                             <svg class="w-3.5 h-3.5 text-rose-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            <span>Xóa Tất Cả</span>
+                            <span>Xóa Hết</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- KPI Metric Summary -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                    <div class="p-3.5 rounded-xl border border-zinc-200 bg-white shadow-xs">
-                        <span class="text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">Tổng Phiếu Đánh Giá</span>
-                        <span class="text-xl font-bold text-zinc-900 mt-1 block" id="evalTotalCount">0</span>
+                <!-- Sub-tab Navigation (Pill switcher) -->
+                <div class="flex items-center gap-1.5 p-1 bg-zinc-100 rounded-lg border border-zinc-200 w-fit text-xs font-semibold">
+                    <button type="button" onclick="switchEvalSubTab('crm')" id="subtab-btn-crm" class="flex items-center gap-2 px-3.5 py-1.5 rounded-md transition-colors bg-white text-zinc-900 shadow-xs">
+                        <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        <span>Hồ Sơ Khách Hàng (CRM Pipeline)</span>
+                        <span id="badgeSubtabCRM" class="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-brand-50 text-brand-700 border border-brand-200">0</span>
+                    </button>
+
+                    <button type="button" onclick="switchEvalSubTab('checklists')" id="subtab-btn-checklists" class="flex items-center gap-2 px-3.5 py-1.5 rounded-md transition-colors text-zinc-600 hover:text-zinc-900">
+                        <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                        <span>Danh Mục Bộ Checklist</span>
+                        <span id="badgeSubtabChecklists" class="ml-1 text-[10px] px-1.5 py-0.2 rounded-full bg-zinc-200 text-zinc-700">4</span>
+                    </button>
+
+                    <button type="button" onclick="switchEvalSubTab('analytics')" id="subtab-btn-analytics" class="flex items-center gap-2 px-3.5 py-1.5 rounded-md transition-colors text-zinc-600 hover:text-zinc-900">
+                        <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        <span>Đo Lường &amp; Marketing Leads</span>
+                    </button>
+                </div>
+
+                <!-- SUB-PANE 1: CRM LEADS PIPELINE -->
+                <div id="subpane-crm" class="space-y-4">
+                    <!-- CRM KPI Metric Cards -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                        <div class="p-4 rounded-xl border border-zinc-200 bg-white shadow-xs">
+                            <div class="flex items-center justify-between text-zinc-400 mb-1">
+                                <span class="text-[10px] font-bold uppercase tracking-wider">Tổng Hồ Sơ Từ Checklist</span>
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-bold text-zinc-900" id="crmKpiTotal">0</span>
+                                <span class="text-[11px] text-zinc-500">leads nộp bài</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl border border-rose-200 bg-rose-50/50 shadow-xs">
+                            <div class="flex items-center justify-between text-rose-600 mb-1">
+                                <span class="text-[10px] font-bold uppercase tracking-wider">Cần Liên Hệ Gấp (Hot)</span>
+                                <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-bold text-rose-800" id="crmKpiUrgent">0</span>
+                                <span class="text-[11px] text-rose-600">nguy cơ cao / bé &lt; 3T</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl border border-amber-200 bg-amber-50/50 shadow-xs">
+                            <div class="flex items-center justify-between text-amber-700 mb-1">
+                                <span class="text-[10px] font-bold uppercase tracking-wider">Đang Chăm Sóc / Tư Vấn</span>
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-bold text-amber-800" id="crmKpiInCare">0</span>
+                                <span class="text-[11px] text-amber-700">đã liên hệ &amp; gửi tài liệu</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/50 shadow-xs">
+                            <div class="flex items-center justify-between text-emerald-700 mb-1">
+                                <span class="text-[10px] font-bold uppercase tracking-wider">Đã Hẹn 1:1 / Chuyển Đổi</span>
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-bold text-emerald-800" id="crmKpiConverted">0</span>
+                                <span class="text-[11px] text-emerald-700" id="crmKpiConvRate">0% chuyển đổi</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/60 shadow-xs">
-                        <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Nguy Cơ Thấp (1-5đ)</span>
-                        <span class="text-xl font-bold text-emerald-800 mt-1 block" id="evalLowCount">0</span>
+
+                    <!-- Filters bar -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 p-3 bg-zinc-50 border border-zinc-200 rounded-xl">
+                        <div class="flex flex-wrap items-center gap-2.5 flex-1 min-w-[280px]">
+                            <div class="relative flex-1 min-w-[200px] max-w-sm">
+                                <svg class="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                <input type="text" id="evalSearchInput" placeholder="Tìm theo SĐT, tên mẹ, tên bé, ghi chú..." class="h-8 w-full pl-8 pr-3 rounded-md border border-zinc-200 bg-white text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                            </div>
+
+                            <select id="evalChecklistFilter" class="h-8 rounded-md border border-zinc-200 bg-white px-2.5 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                <option value="all">Tất cả bộ checklist</option>
+                            </select>
+
+                            <select id="evalCrmStatusFilter" class="h-8 rounded-md border border-zinc-200 bg-white px-2.5 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                <option value="all">Tất cả trạng thái CRM</option>
+                                <option value="new">Mới tiếp nhận</option>
+                                <option value="contacted">Đã liên hệ ban đầu</option>
+                                <option value="consulting">Đang tư vấn chuyên sâu</option>
+                                <option value="booked">Đã chốt hẹn 1:1</option>
+                                <option value="converted">Đã chuyển đổi gói đồng hành</option>
+                                <option value="lost">Chưa phù hợp / Tạm dừng</option>
+                            </select>
+
+                            <select id="evalRiskFilter" class="h-8 rounded-md border border-zinc-200 bg-white px-2.5 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                <option value="all">Tất cả mức nguy cơ</option>
+                                <option value="high">Nguy cơ cao (&gt;10đ)</option>
+                                <option value="medium">Nguy cơ trung bình (5-10đ)</option>
+                                <option value="low">Nguy cơ thấp (1-5đ)</option>
+                            </select>
+                        </div>
+
+                        <div class="text-[11px] text-zinc-500 font-medium">
+                            Hiển thị: <span id="crmFilteredCount" class="font-bold text-zinc-900">0</span> hồ sơ
+                        </div>
                     </div>
-                    <div class="p-3.5 rounded-xl border border-amber-200 bg-amber-50/60 shadow-xs">
-                        <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">Nguy Cơ TB (5-10đ)</span>
-                        <span class="text-xl font-bold text-amber-800 mt-1 block" id="evalMediumCount">0</span>
-                    </div>
-                    <div class="p-3.5 rounded-xl border border-rose-200 bg-rose-50/60 shadow-xs">
-                        <span class="text-[10px] font-bold text-rose-700 uppercase tracking-wider block">Nguy Cơ Cao (>10đ)</span>
-                        <span class="text-xl font-bold text-rose-800 mt-1 block" id="evalHighCount">0</span>
+
+                    <!-- CRM Table -->
+                    <div class="rounded-xl border border-zinc-200 bg-white shadow-xs overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs" id="evaluationsTable">
+                                <thead class="bg-zinc-50 text-zinc-500 uppercase font-semibold tracking-wider border-b border-zinc-200">
+                                    <tr>
+                                        <th class="p-3.5 pl-4">Thời Gian</th>
+                                        <th class="p-3.5">Phụ Huynh &amp; Liên Hệ</th>
+                                        <th class="p-3.5">Thông Tin Bé</th>
+                                        <th class="p-3.5">Bộ Checklist</th>
+                                        <th class="p-3.5">Điểm &amp; Nguy Cơ</th>
+                                        <th class="p-3.5">Tiến Trình Chăm Sóc (CRM)</th>
+                                        <th class="p-3.5">Ưu Tiên</th>
+                                        <th class="p-3.5">Ghi Chú CSKH</th>
+                                        <th class="p-3.5 text-center">Chi Tiết</th>
+                                        <th class="p-3.5 pr-4 text-center">Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-zinc-100 text-zinc-800" id="evaluationsTableBody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Filters -->
-                <div class="flex flex-wrap items-center gap-2.5">
-                    <input type="text" id="evalSearchInput" placeholder="Tìm theo số điện thoại, tên mẹ, tên bé..." class="h-8 w-72 rounded-md border border-zinc-200 bg-white px-3 text-xs text-zinc-800 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-brand-500">
-                    
-                    <select id="evalRiskFilter" class="h-8 rounded-md border border-zinc-200 bg-white px-2.5 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-brand-500">
-                        <option value="all">Tất cả mức độ nguy cơ</option>
-                        <option value="low">Nguy cơ dinh dưỡng thấp (1-5)</option>
-                        <option value="medium">Nguy cơ dinh dưỡng TB (5-10)</option>
-                        <option value="high">Nguy cơ dinh dưỡng cao (>10)</option>
-                    </select>
+                <!-- SUB-PANE 2: CHECKLIST CATALOG & BUILDER -->
+                <div id="subpane-checklists" class="hidden space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-zinc-50 border border-zinc-200 rounded-xl">
+                        <div>
+                            <h3 class="text-sm font-bold text-zinc-900">Danh Sách Bộ Checklist Dành Cho Phụ Huynh</h3>
+                            <p class="text-xs text-zinc-500">Mỗi checklist là một bài trắc nghiệm thu hút tệp khách hàng mục tiêu riêng, kèm quà tặng (Lead Magnet) và phác đồ phân loại tự động</p>
+                        </div>
+                        <button onclick="openChecklistModal()" class="inline-flex h-8 items-center justify-center rounded-md bg-brand-500 hover:bg-brand-600 px-3 text-xs font-bold text-white shadow-xs transition-colors gap-1.5 shrink-0">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                            <span>Thêm Bộ Checklist Mới</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="checklistsGridAdmin">
+                        <!-- Populated by JS -->
+                    </div>
                 </div>
 
-                <!-- Table -->
-                <div class="rounded-xl border border-zinc-200 bg-white shadow-xs overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs" id="evaluationsTable">
-                            <thead class="bg-zinc-50 text-zinc-500 uppercase font-semibold tracking-wider border-b border-zinc-200">
-                                <tr>
-                                    <th class="p-3.5 pl-4">Thời Gian</th>
-                                    <th class="p-3.5">Phụ Huynh</th>
-                                    <th class="p-3.5">Số Điện Thoại</th>
-                                    <th class="p-3.5">Thông Tin Bé</th>
-                                    <th class="p-3.5">Mức Độ Nguy Cơ</th>
-                                    <th class="p-3.5">Dị Ứng / Chế Độ Ăn</th>
-                                    <th class="p-3.5 text-center">Xem Chi Tiết</th>
-                                    <th class="p-3.5 pr-4 text-center">Xóa</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-zinc-100 text-zinc-800" id="evaluationsTableBody">
+                <!-- SUB-PANE 3: MARKETING ANALYTICS & CONVERSION FUNNEL -->
+                <div id="subpane-analytics" class="hidden space-y-6">
+                    <!-- Funnel Conversion Flow -->
+                    <div class="p-5 bg-white border border-zinc-200 rounded-xl shadow-xs space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-sm font-bold text-zinc-900">Phễu Chuyển Đổi Khách Hàng Từ Checklist Vào Lộ Trình 1:1</h3>
+                                <p class="text-xs text-zinc-500">Đo lường từng bước từ lúc cha mẹ hoàn thành khảo sát đến khi chốt lịch tư vấn chuyên sâu cùng Chuyên Gia Bùi Thu Hiền</p>
+                            </div>
+                            <span class="text-xs font-bold text-brand-600 px-2.5 py-1 rounded-full bg-brand-50 border border-brand-200" id="funnelTotalLeadBadge">0 Leads</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-2" id="funnelStepCards">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Customer Segmentation & Child Age Breakdown -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                        <!-- Child Age Segmentation -->
+                        <div class="p-5 bg-white border border-zinc-200 rounded-xl shadow-xs space-y-3">
+                            <h3 class="text-sm font-bold text-zinc-900 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span>Phân Khúc Độ Tuổi Bé (Giai Đoạn Vàng Can Thiệp)</span>
+                            </h3>
+                            <p class="text-xs text-zinc-500">Dữ liệu quan trọng giúp điều hướng thông điệp quảng cáo và ưu tiên gọi điện can thiệp sớm cho bé dưới 36 tháng</p>
+                            <div class="space-y-3 pt-2" id="ageBreakdownList">
                                 <!-- Populated by JS -->
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
+
+                        <!-- Checklist Lead Magnet Performance -->
+                        <div class="p-5 bg-white border border-zinc-200 rounded-xl shadow-xs space-y-3">
+                            <h3 class="text-sm font-bold text-zinc-900 flex items-center gap-2">
+                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                                <span>Hiệu Quả Chuyển Đổi Theo Từng Checklist</span>
+                            </h3>
+                            <p class="text-xs text-zinc-500">Xác định bộ checklist nào mang lại nhiều phụ huynh có nguy cơ cao và tỷ lệ đặt lịch tư vấn tốt nhất</p>
+                            <div class="overflow-x-auto pt-1">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-zinc-50 text-zinc-500 uppercase font-semibold border-b border-zinc-200">
+                                        <tr>
+                                            <th class="p-2.5">Checklist</th>
+                                            <th class="p-2.5 text-center">Nộp</th>
+                                            <th class="p-2.5 text-center">Nguy Cơ Cao</th>
+                                            <th class="p-2.5 text-center">Đã Tư Vấn</th>
+                                            <th class="p-2.5 text-center">Chuyển Đổi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-zinc-100 text-zinc-800" id="checklistPerformanceBody">
+                                        <!-- Populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CSKH & Marketing Playbook Card -->
+                    <div class="p-5 bg-gradient-to-r from-brand-50/70 via-white to-emerald-50/50 border border-brand-200 rounded-xl space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span class="p-1.5 rounded-lg bg-brand-500 text-white">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                            </span>
+                            <h4 class="text-sm font-bold text-zinc-900">Chiến Lược Chăm Sóc &amp; Chuyển Đổi Dành Riêng Cho Đội Ngũ</h4>
+                        </div>
+                        <p class="text-xs text-zinc-600 leading-relaxed">
+                            <strong>1. Cuộc gọi trong 15 phút đầu:</strong> Với hồ sơ có gắn nhãn <span class="text-rose-600 font-bold bg-rose-50 px-1 py-0.2 rounded border border-rose-200">Cần Gọi Gấp (Urgent)</span> hoặc bé dưới 36 tháng tuổi, việc liên hệ qua Zalo hoặc Hotline ngay lập tức tăng 4.2 lần khả năng mẹ đồng ý nhận phác đồ dinh dưỡng và đặt lịch tư vấn 1:1.<br>
+                            <strong>2. Gửi Cẩm Nang &amp; Báo Cáo Phân Tích Cá Nhân:</strong> Dùng nút <em>"Nhắn Zalo"</em> để gửi ngay liên kết kết quả tra cứu của mẹ kèm tài liệu Lead Magnet tương ứng trước khi mời mẹ tham gia buổi trò chuyện trực tiếp cùng Chuyên gia Bùi Thu Hiền.<br>
+                            <strong>3. Đồng bộ &amp; Xuất dữ liệu:</strong> Sử dụng nút <em>"Xuất File CRM (CSV)"</em> hàng tuần để nạp vào tệp Custom Audience trên Facebook Ads hoặc Zalo ZNS nhằm nuôi dưỡng lại tệp cha mẹ quan tâm nhưng chưa đặt lịch.
+                        </p>
                     </div>
                 </div>
 
@@ -1671,12 +1848,88 @@
     <div class="modal-content max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between pb-3 border-b border-zinc-100 mb-4">
             <div>
-                <h3 class="text-base font-bold text-zinc-900" id="evalModalTitle">Chi Tiết Phiếu Đánh Giá Dinh Dưỡng</h3>
-                <p class="text-xs text-zinc-500" id="evalModalSubtitle">Thông tin câu trả lời và phân loại nguy cơ</p>
+                <h3 class="text-base font-bold text-zinc-900" id="evalModalTitle">Hồ Sơ Đánh Giá & Chăm Sóc Khách Hàng (CRM)</h3>
+                <p class="text-xs text-zinc-500" id="evalModalSubtitle">Phân loại thể trạng, câu trả lời và điều phối chăm sóc 1:1</p>
             </div>
             <button onclick="closeEvalDetailModal()" class="text-zinc-400 hover:text-zinc-600 text-sm p-1">✕</button>
         </div>
         <div id="evalDetailModalContent"></div>
+    </div>
+</div>
+
+<!-- Checklist Edit/Create Modal -->
+<div id="checklistModal" class="modal-overlay">
+    <div class="modal-content max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100 mb-4">
+            <div>
+                <h3 class="text-base font-bold text-zinc-900" id="checklistModalTitle">Thêm Bộ Checklist Mới</h3>
+                <p class="text-xs text-zinc-500">Tạo bài khảo sát trắc nghiệm thu hút và sàng lọc khách hàng</p>
+            </div>
+            <button onclick="closeChecklistModal()" class="text-zinc-400 hover:text-zinc-600 text-sm p-1">✕</button>
+        </div>
+
+        <form id="checklistForm" onsubmit="handleSaveChecklist(event)" class="space-y-3.5 text-xs">
+            <input type="hidden" id="chkEditId" value="">
+
+            <div class="space-y-1">
+                <label class="font-semibold text-zinc-700">Tên Bộ Checklist *</label>
+                <input type="text" id="chkTitle" required placeholder="VD: Sàng Lọc Dấu Hiệu Phổ Tự Kỷ & Giao Tiếp Sớm" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="space-y-1">
+                    <label class="font-semibold text-zinc-700">Chủ Đề / Phân Nhóm *</label>
+                    <input type="text" id="chkCategory" required placeholder="VD: Phát Triển & Hành Vi" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+                <div class="space-y-1">
+                    <label class="font-semibold text-zinc-700">Đối Tượng / Độ Tuổi *</label>
+                    <input type="text" id="chkTargetAge" required placeholder="VD: 16 - 36 tháng" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div class="space-y-1">
+                    <label class="font-semibold text-zinc-700">Đường Dẫn Truy Cập (Path) *</label>
+                    <input type="text" id="chkPath" required placeholder="/danh-gia-dinh-duong/?type=autism" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+                <div class="space-y-1">
+                    <label class="font-semibold text-zinc-700">Số Lượng Câu Hỏi</label>
+                    <input type="number" id="chkQuestionCount" min="1" max="50" value="10" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="font-semibold text-zinc-700">Quà Tặng Tải Về (Lead Magnet)</label>
+                <input type="text" id="chkLeadMagnet" placeholder="VD: Cẩm Nang 10 Hoạt Động Kích Hoạt Lời Nói Đầu Đời Tại Nhà" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+
+            <div class="space-y-1">
+                <label class="font-semibold text-zinc-700">Mô Tả Mục Đích Khảo Sát</label>
+                <textarea id="chkDescription" rows="2" placeholder="Tóm tắt nội dung và lợi ích phụ huynh nhận được sau khi làm trắc nghiệm..." class="w-full rounded-md border border-zinc-200 p-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500"></textarea>
+            </div>
+
+            <div class="space-y-1">
+                <label class="font-semibold text-zinc-700">Hướng Dẫn Phân Loại Nguy Cơ & Thang Điểm</label>
+                <input type="text" id="chkScoringGuide" placeholder="VD: 0-2đ: Thấp | 3-7đ: Trung bình | >7đ: Nguy cơ cao" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+            </div>
+
+            <div class="space-y-1">
+                <label class="font-semibold text-zinc-700">Trạng Thái Công Khai</label>
+                <select id="chkStatus" class="flex h-8 w-full rounded-md border border-zinc-200 px-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                    <option value="active">Đang mở (Công khai cho phụ huynh)</option>
+                    <option value="draft">Bản nháp (Tạm ẩn)</option>
+                </select>
+            </div>
+
+            <div class="pt-3 flex items-center justify-end gap-2 border-t border-zinc-100">
+                <button type="button" onclick="closeChecklistModal()" class="px-3.5 py-1.5 rounded-md border border-zinc-200 text-zinc-600 hover:bg-zinc-50 font-medium">
+                    Hủy Bỏ
+                </button>
+                <button type="submit" class="px-4 py-1.5 rounded-md bg-brand-500 hover:bg-brand-600 text-white font-bold shadow-xs">
+                    Lưu Checklist
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -2018,7 +2271,7 @@
         'marketing': 'Phân Tích Marketing & Phễu Chuyển Đổi',
         'bookings': 'Quản Lý Lịch Hẹn Tư Vấn 1-1',
         'leads': 'Khách Hàng Tải Cẩm Nang Ebook',
-        'evaluations': 'Quản Lý Phiếu Đánh Giá Dinh Dưỡng',
+        'evaluations': 'Hệ Thống Checklist & Chăm Sóc Khách Hàng (CRM)',
         'data': 'Quản Trị Dữ Liệu & Xuất Báo Cáo',
         'settings-pages': 'Quản Lý Các Trang & Trạng Thái Publics',
         'settings-email': 'Hệ Thống Email & Thông Báo',
@@ -2053,6 +2306,8 @@
             initOverviewCharts();
         } else if (viewName === 'evaluations') {
             renderEvaluations();
+            renderChecklistsAdmin();
+            renderChecklistAnalytics();
             if (typeof DB !== 'undefined' && typeof DB.fetchAllEvaluationsRemote === 'function') {
                 DB.fetchAllEvaluationsRemote().catch(() => {});
             }
@@ -2804,20 +3059,85 @@
         return String(val);
     }
 
+    // ========================================================================
+    // 7.1 CHECKLIST MANAGEMENT & CRM LEAD INTELLIGENCE SYSTEM
+    // ========================================================================
+    window.currentEvalSubTab = 'crm';
+
+    window.switchEvalSubTab = function(tabName) {
+        window.currentEvalSubTab = tabName;
+        const tabs = ['crm', 'checklists', 'analytics'];
+        tabs.forEach(t => {
+            const pane = document.getElementById(`subpane-${t}`);
+            const btn = document.getElementById(`subtab-btn-${t}`);
+            if (pane) pane.classList.toggle('hidden', t !== tabName);
+            if (btn) {
+                if (t === tabName) {
+                    btn.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-md transition-colors bg-white text-zinc-900 shadow-xs font-bold';
+                    const icon = btn.querySelector('svg');
+                    if (icon) icon.className = 'w-4 h-4 text-brand-500';
+                } else {
+                    btn.className = 'flex items-center gap-2 px-3.5 py-1.5 rounded-md transition-colors text-zinc-600 hover:text-zinc-900 font-medium';
+                    const icon = btn.querySelector('svg');
+                    if (icon) icon.className = 'w-4 h-4 text-zinc-400';
+                }
+            }
+        });
+
+        if (tabName === 'crm') {
+            renderEvaluations();
+        } else if (tabName === 'checklists') {
+            renderChecklistsAdmin();
+        } else if (tabName === 'analytics') {
+            renderChecklistAnalytics();
+        }
+    };
+
+    const CRM_STATUS_MAP = {
+        'new': { label: 'Mới tiếp nhận', bg: 'bg-blue-50 text-blue-700 border-blue-200' },
+        'contacted': { label: 'Đã liên hệ', bg: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
+        'consulting': { label: 'Đang tư vấn 1:1', bg: 'bg-amber-50 text-amber-800 border-amber-200' },
+        'booked': { label: 'Đã chốt lịch hẹn', bg: 'bg-emerald-50 text-emerald-800 border-emerald-200' },
+        'converted': { label: 'Đã chuyển đổi', bg: 'bg-emerald-100 text-emerald-900 border-emerald-300 font-bold' },
+        'lost': { label: 'Tạm ngưng / Không phù hợp', bg: 'bg-zinc-100 text-zinc-600 border-zinc-200' }
+    };
+
+    const CRM_PRIORITY_MAP = {
+        'urgent': { label: 'Cần gọi gấp', bg: 'bg-rose-100 text-rose-800 border-rose-300 font-bold' },
+        'high': { label: 'Ưu tiên cao', bg: 'bg-amber-100 text-amber-800 border-amber-200' },
+        'normal': { label: 'Bình thường', bg: 'bg-zinc-100 text-zinc-700 border-zinc-200' }
+    };
+
     window.renderEvaluations = function() {
         const list = (typeof DB.getEvaluations === 'function') ? DB.getEvaluations() : [];
+        const checklists = (typeof DB.getChecklists === 'function') ? DB.getChecklists() : [];
         
-        // Summary KPIs
+        // CRM KPIs
         const total = list.length;
-        const low = list.filter(e => e.risk_level === 'low').length;
-        const med = list.filter(e => e.risk_level === 'medium').length;
-        const high = list.filter(e => e.risk_level === 'high').length;
+        const urgent = list.filter(e => (e.crm_priority === 'urgent' || e.risk_level === 'high')).length;
+        const inCare = list.filter(e => ['contacted', 'consulting'].includes(e.crm_status)).length;
+        const converted = list.filter(e => ['booked', 'converted'].includes(e.crm_status)).length;
+        const convRate = total > 0 ? ((converted / total) * 100).toFixed(1) : '0.0';
 
-        if (document.getElementById('evalTotalCount')) document.getElementById('evalTotalCount').innerText = total;
-        if (document.getElementById('evalLowCount')) document.getElementById('evalLowCount').innerText = low;
-        if (document.getElementById('evalMediumCount')) document.getElementById('evalMediumCount').innerText = med;
-        if (document.getElementById('evalHighCount')) document.getElementById('evalHighCount').innerText = high;
+        if (document.getElementById('crmKpiTotal')) document.getElementById('crmKpiTotal').innerText = total;
+        if (document.getElementById('crmKpiUrgent')) document.getElementById('crmKpiUrgent').innerText = urgent;
+        if (document.getElementById('crmKpiInCare')) document.getElementById('crmKpiInCare').innerText = inCare;
+        if (document.getElementById('crmKpiConverted')) document.getElementById('crmKpiConverted').innerText = converted;
+        if (document.getElementById('crmKpiConvRate')) document.getElementById('crmKpiConvRate').innerText = `${convRate}% chuyển đổi`;
+        if (document.getElementById('badgeSubtabCRM')) document.getElementById('badgeSubtabCRM').innerText = total;
         if (document.getElementById('badgeNavEvaluations')) document.getElementById('badgeNavEvaluations').innerText = total;
+        if (document.getElementById('crmFilteredCount')) document.getElementById('crmFilteredCount').innerText = total;
+
+        // Populate Checklist Filter Dropdown
+        const chkFilterSelect = document.getElementById('evalChecklistFilter');
+        if (chkFilterSelect && chkFilterSelect.options.length <= 1) {
+            checklists.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = c.title;
+                chkFilterSelect.appendChild(opt);
+            });
+        }
 
         const tbody = document.getElementById('evaluationsTableBody');
         if (!tbody) return;
@@ -2825,16 +3145,16 @@
         if (list.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="8" class="p-8 text-center text-zinc-500">
+                    <td colspan="10" class="p-8 text-center text-zinc-500">
                         <div class="max-w-md mx-auto space-y-2">
-                            <p class="font-bold text-sm text-zinc-800">Chưa có phiếu đánh giá nào trong hệ thống</p>
-                            <p class="text-xs text-zinc-400">Khi phụ huynh hoàn thành bài đánh giá tại trang <code>/danh-gia-dinh-duong/</code>, kết quả sẽ tự động lưu và hiển thị tại đây.</p>
+                            <p class="font-bold text-sm text-zinc-800">Chưa có hồ sơ khách hàng nào từ checklist</p>
+                            <p class="text-xs text-zinc-400">Khi phụ huynh hoàn thành bài đánh giá, hồ sơ lead sẽ tự động lưu và chuyển vào luồng CRM tại đây.</p>
                             <div class="pt-3 flex flex-wrap items-center justify-center gap-2">
                                 <a href="../danh-gia-dinh-duong/" target="_blank" class="px-3.5 py-1.5 rounded-md bg-brand-500 text-white text-xs font-bold hover:bg-brand-600 transition-colors">
                                     Làm Thử 1 Bài Đánh Giá
                                 </a>
                                 <button onclick="loadSampleEvaluations()" class="px-3.5 py-1.5 rounded-md border border-zinc-200 bg-white text-zinc-700 text-xs font-semibold hover:bg-zinc-50 transition-colors">
-                                    Nạp 3 Phiếu Mẫu Để Xem Thử
+                                    Nạp 3 Hồ Sơ Mẫu
                                 </button>
                                 <button onclick="syncEvaluationsFromCloud()" class="px-3.5 py-1.5 rounded-md border border-emerald-200 bg-emerald-50 text-emerald-800 text-xs font-semibold hover:bg-emerald-100 transition-colors">
                                     Đồng Bộ Từ Firestore
@@ -2847,14 +3167,14 @@
             return;
         }
 
-        const riskBadge = (level) => {
+        const riskBadge = (level, score) => {
             if (level === 'high') {
-                return '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-100 text-rose-800 border border-rose-200">Nguy cơ cao (&gt;10đ)</span>';
+                return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-200" title="Điểm: ${score || '>10'}">Cao (${score || '>10'}đ)</span>`;
             }
             if (level === 'medium') {
-                return '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200">Nguy cơ TB (5-10đ)</span>';
+                return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200" title="Điểm: ${score || '5-10'}">TB (${score || '5-10'}đ)</span>`;
             }
-            return '<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">Nguy cơ thấp (1-5đ)</span>';
+            return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200" title="Điểm: ${score || '1-5'}">Thấp (${score || '1-5'}đ)</span>`;
         };
 
         tbody.innerHTML = list.map(e => {
@@ -2862,7 +3182,7 @@
             try {
                 if (e.created_at_iso) {
                     dateStr = new Date(e.created_at_iso).toLocaleString('vi-VN', {
-                        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                        day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
                     });
                 } else if (e.created_at) {
                     dateStr = e.created_at;
@@ -2873,43 +3193,99 @@
 
             const cleanPhone = (e.phone || '').replace(/[^0-9]/g, '');
             const childGender = e.gender || e.child_gender || '';
-            const childInfo = `${escapeHtml(e.child_name || 'Bé')} ${e.child_age ? `(${escapeHtml(e.child_age)})` : ''} ${childGender ? `• ${escapeHtml(childGender)}` : ''}`;
-            
-            const allergiesText = Array.isArray(e.allergies) ? e.allergies.join(', ') : (e.allergies || '');
-            const waterText = e.water || e.water_intake || '';
-            const dietText = e.daily_diet || e.diet_description || '';
-            const dietAllergy = [
-                allergiesText ? `Dị ứng: ${allergiesText}` : '',
-                waterText ? `Nước: ${waterText}` : '',
-                dietText ? `Ăn: ${dietText}` : ''
-            ].filter(Boolean).join(' • ') || 'Chưa ghi chú';
-
+            const childInfo = `${escapeHtml(e.child_name || 'Bé')} ${e.child_age ? `(${escapeHtml(e.child_age)})` : ''}`;
+            const chkTitle = escapeHtml(e.checklist_title || 'Sàng Lọc Dinh Dưỡng');
             const safeId = encodeURIComponent(String(e.id || ''));
+            const crmSt = e.crm_status || 'new';
+            const crmPr = e.crm_priority || (e.risk_level === 'high' ? 'urgent' : 'normal');
+
+            const searchIndex = [
+                e.parent_name || '',
+                e.phone || '',
+                e.child_name || '',
+                e.child_age || '',
+                e.crm_notes || '',
+                chkTitle
+            ].join(' ').toLowerCase();
 
             return `
-                <tr class="hover:bg-zinc-50/80 transition-colors eval-row" data-risk="${escapeHtml(e.risk_level || 'low')}" data-search="${escapeHtml(((e.parent_name || '') + ' ' + (e.phone || '') + ' ' + (e.child_name || '')).toLowerCase())}">
-                    <td class="p-3.5 pl-4 text-zinc-500 font-mono text-[11px]">${escapeHtml(dateStr)}</td>
-                    <td class="p-3.5 font-semibold text-zinc-900">${escapeHtml(e.parent_name || 'Phụ huynh')}</td>
+                <tr class="hover:bg-zinc-50/80 transition-colors eval-row" 
+                    data-id="${safeId}"
+                    data-checklist="${escapeHtml(e.checklist_id || 'checklist_nutrition')}"
+                    data-crm="${escapeHtml(crmSt)}"
+                    data-risk="${escapeHtml(e.risk_level || 'low')}"
+                    data-priority="${escapeHtml(crmPr)}"
+                    data-search="${escapeHtml(searchIndex)}">
+                    
+                    <td class="p-3.5 pl-4 text-zinc-500 font-mono text-[11px] whitespace-nowrap">
+                        ${escapeHtml(dateStr)}
+                    </td>
+
                     <td class="p-3.5">
-                        <div class="flex items-center gap-1.5">
-                            <span class="font-mono text-zinc-800">${escapeHtml(e.phone || '-')}</span>
+                        <div class="font-bold text-zinc-900">${escapeHtml(e.parent_name || 'Phụ huynh')}</div>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            <span class="font-mono text-zinc-600 text-xs">${escapeHtml(e.phone || '-')}</span>
                             ${cleanPhone ? `
-                                <a href="https://zalo.me/${escapeHtml(cleanPhone)}" target="_blank" class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] font-bold hover:bg-blue-100" title="Nhắn Zalo">
+                                <a href="https://zalo.me/${escapeHtml(cleanPhone)}" target="_blank" class="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 text-[10px] font-bold hover:bg-blue-100 border border-blue-200" title="Nhắn Zalo">
                                     Zalo
+                                </a>
+                                <a href="tel:${escapeHtml(cleanPhone)}" class="px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 text-[10px] font-bold hover:bg-emerald-100 border border-emerald-200" title="Gọi Hotline">
+                                    Gọi
                                 </a>
                             ` : ''}
                         </div>
                     </td>
-                    <td class="p-3.5 text-zinc-700">${childInfo}</td>
-                    <td class="p-3.5">${riskBadge(e.risk_level)}</td>
-                    <td class="p-3.5 max-w-xs text-zinc-500 truncate" title="${escapeHtml(dietAllergy)}">${escapeHtml(dietAllergy)}</td>
-                    <td class="p-3.5 text-center">
-                        <button onclick="openEvalDetail(decodeURIComponent('${safeId}'))" class="h-7 px-2.5 rounded border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 font-medium text-xs">
-                            Xem
+
+                    <td class="p-3.5">
+                        <div class="font-semibold text-zinc-800">${childInfo}</div>
+                        <div class="text-[11px] text-zinc-500">${childGender ? escapeHtml(childGender) + ' • ' : ''}${escapeHtml(e.weight || '-')}</div>
+                    </td>
+
+                    <td class="p-3.5 max-w-[170px]">
+                        <span class="text-zinc-800 font-medium block truncate text-[11px]" title="${chkTitle}">${chkTitle}</span>
+                        <span class="text-[10px] text-zinc-400 font-mono">${escapeHtml(e.checklist_id || 'dinh-duong')}</span>
+                    </td>
+
+                    <td class="p-3.5 whitespace-nowrap">
+                        ${riskBadge(e.risk_level, e.score)}
+                    </td>
+
+                    <!-- Live CRM Status Selector -->
+                    <td class="p-3.5">
+                        <select onchange="updateEvalCRMStatus(decodeURIComponent('${safeId}'), this.value)" class="h-7 px-2 rounded-md text-xs font-semibold focus:outline-none border transition-colors ${CRM_STATUS_MAP[crmSt]?.bg || 'bg-white border-zinc-200 text-zinc-700'}">
+                            <option value="new" ${crmSt === 'new' ? 'selected' : ''}>Mới tiếp nhận</option>
+                            <option value="contacted" ${crmSt === 'contacted' ? 'selected' : ''}>Đã liên hệ</option>
+                            <option value="consulting" ${crmSt === 'consulting' ? 'selected' : ''}>Đang tư vấn 1:1</option>
+                            <option value="booked" ${crmSt === 'booked' ? 'selected' : ''}>Đã chốt lịch hẹn</option>
+                            <option value="converted" ${crmSt === 'converted' ? 'selected' : ''}>Đã chuyển đổi</option>
+                            <option value="lost" ${crmSt === 'lost' ? 'selected' : ''}>Tạm ngưng</option>
+                        </select>
+                    </td>
+
+                    <!-- Priority Selector -->
+                    <td class="p-3.5 whitespace-nowrap">
+                        <select onchange="updateEvalPriority(decodeURIComponent('${safeId}'), this.value)" class="h-7 px-1.5 rounded-md text-[11px] font-semibold focus:outline-none border ${CRM_PRIORITY_MAP[crmPr]?.bg || 'bg-zinc-50 border-zinc-200 text-zinc-700'}">
+                            <option value="urgent" ${crmPr === 'urgent' ? 'selected' : ''}>Cần gọi gấp</option>
+                            <option value="high" ${crmPr === 'high' ? 'selected' : ''}>Ưu tiên cao</option>
+                            <option value="normal" ${crmPr === 'normal' ? 'selected' : ''}>Bình thường</option>
+                        </select>
+                    </td>
+
+                    <!-- Inline CSKH Notes -->
+                    <td class="p-3.5 max-w-xs">
+                        <input type="text" value="${escapeHtml(e.crm_notes || '')}" placeholder="Ghi chú CSKH..." onblur="DB.updateEvaluationCRMNotes(decodeURIComponent('${safeId}'), this.value)" class="w-full px-2 py-1 rounded border border-zinc-200 bg-transparent text-xs text-zinc-700 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500">
+                    </td>
+
+                    <!-- View Detail Button -->
+                    <td class="p-3.5 text-center whitespace-nowrap">
+                        <button onclick="openEvalDetail(decodeURIComponent('${safeId}'))" class="h-7 px-2.5 rounded border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 font-semibold text-xs transition-colors">
+                            Xem &amp; CSKH
                         </button>
                     </td>
+
+                    <!-- Delete Button -->
                     <td class="p-3.5 pr-4 text-center">
-                        <button onclick="deleteEvaluationRow(decodeURIComponent('${safeId}'))" class="text-zinc-400 hover:text-red-600 p-1" title="Xóa">
+                        <button onclick="deleteEvaluationRow(decodeURIComponent('${safeId}'))" class="text-zinc-400 hover:text-red-600 p-1" title="Xóa hồ sơ">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </td>
@@ -2917,6 +3293,286 @@
             `;
         }).join('');
     };
+
+    window.updateEvalCRMStatus = function(id, newStatus) {
+        if (typeof DB.updateEvaluationCRMStatus === 'function') {
+            DB.updateEvaluationCRMStatus(id, newStatus);
+        }
+        renderEvaluations();
+        renderChecklistAnalytics();
+    };
+
+    window.updateEvalPriority = function(id, newPriority) {
+        if (typeof DB.updateEvaluationPriority === 'function') {
+            DB.updateEvaluationPriority(id, newPriority);
+        }
+        renderEvaluations();
+        renderChecklistAnalytics();
+    };
+
+    // ========================================================================
+    // 7.2 CHECKLIST CATALOG MANAGEMENT
+    // ========================================================================
+    window.renderChecklistsAdmin = function() {
+        const checklists = (typeof DB.getChecklists === 'function') ? DB.getChecklists() : [];
+        const grid = document.getElementById('checklistsGridAdmin');
+        if (document.getElementById('badgeSubtabChecklists')) {
+            document.getElementById('badgeSubtabChecklists').innerText = checklists.length;
+        }
+        if (!grid) return;
+
+        if (checklists.length === 0) {
+            grid.innerHTML = '<div class="col-span-2 p-8 text-center text-zinc-400 bg-white rounded-xl border border-zinc-200">Chưa có bộ checklist nào. Bấm nút "+ Thêm Bộ Checklist Mới" để tạo!</div>';
+            return;
+        }
+
+        grid.innerHTML = checklists.map(c => {
+            const isActive = c.status === 'active';
+            const fullUrl = window.location.origin + c.path;
+
+            return `
+                <div class="p-5 bg-white border ${isActive ? 'border-zinc-200' : 'border-zinc-200/60 bg-zinc-50/50'} rounded-xl shadow-xs space-y-3 relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between gap-3 mb-2">
+                            <div>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200">${escapeHtml(c.category || 'Dinh Dưỡng')}</span>
+                                <h4 class="font-bold text-sm text-zinc-900 mt-1">${escapeHtml(c.title)}</h4>
+                            </div>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold ${isActive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-zinc-100 text-zinc-600'}">
+                                ${isActive ? 'Đang mở' : 'Bản nháp'}
+                            </span>
+                        </div>
+
+                        <p class="text-xs text-zinc-600 leading-relaxed line-clamp-2">${escapeHtml(c.description || 'Chưa có mô tả')}</p>
+
+                        <div class="grid grid-cols-2 gap-2 pt-3 text-[11px] text-zinc-500 border-t border-zinc-100 mt-3">
+                            <div><strong>Độ tuổi:</strong> ${escapeHtml(c.target_age || 'Tất cả')}</div>
+                            <div><strong>Số câu:</strong> ${c.question_count || 10} câu trắc nghiệm</div>
+                        </div>
+
+                        ${c.lead_magnet ? `
+                            <div class="mt-2.5 p-2 rounded-lg bg-amber-50/60 border border-amber-200/80 text-[11px] text-amber-900 flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
+                                <span class="truncate"><strong>Quà tặng:</strong> ${escapeHtml(c.lead_magnet)}</span>
+                            </div>
+                        ` : ''}
+
+                        <div class="mt-2.5 flex items-center gap-1 text-[11px] font-mono text-zinc-500 bg-zinc-50 px-2 py-1 rounded border border-zinc-200">
+                            <span class="truncate flex-1">${escapeHtml(c.path)}</span>
+                            <button onclick="copyChecklistLink('${escapeHtml(c.path)}')" class="text-brand-600 font-bold hover:underline shrink-0 text-[10px]">
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-zinc-100 flex items-center justify-between text-xs">
+                        <label class="flex items-center gap-2 cursor-pointer text-zinc-600 text-[11px]">
+                            <input type="checkbox" ${isActive ? 'checked' : ''} onchange="handleToggleChecklistStatus('${c.id}')" class="rounded text-brand-600 focus:ring-0">
+                            <span>Mở công khai</span>
+                        </label>
+
+                        <div class="flex items-center gap-2">
+                            <a href="..${c.path}" target="_blank" class="px-2.5 py-1 rounded text-zinc-700 border border-zinc-200 bg-white hover:bg-zinc-50 font-semibold text-[11px] flex items-center gap-1">
+                                <span>Xem</span>
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                            <button onclick="openChecklistModal('${c.id}')" class="px-2.5 py-1 rounded bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-[11px]">
+                                Sửa
+                            </button>
+                            <button onclick="handleDeleteChecklist('${c.id}')" class="text-zinc-400 hover:text-rose-600 p-1" title="Xóa">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    };
+
+    window.openChecklistModal = function(id = null) {
+        const modal = document.getElementById('checklistModal');
+        if (!modal) return;
+        const form = document.getElementById('checklistForm');
+        form.reset();
+
+        if (id) {
+            const list = DB.getChecklists();
+            const chk = list.find(c => c.id === id);
+            if (chk) {
+                document.getElementById('checklistModalTitle').innerText = 'Chỉnh Sửa Bộ Checklist';
+                document.getElementById('chkEditId').value = chk.id;
+                document.getElementById('chkTitle').value = chk.title || '';
+                document.getElementById('chkCategory').value = chk.category || '';
+                document.getElementById('chkTargetAge').value = chk.target_age || '';
+                document.getElementById('chkPath').value = chk.path || '';
+                document.getElementById('chkQuestionCount').value = chk.question_count || 10;
+                document.getElementById('chkLeadMagnet').value = chk.lead_magnet || '';
+                document.getElementById('chkDescription').value = chk.description || '';
+                document.getElementById('chkScoringGuide').value = chk.scoring_guide || '';
+                document.getElementById('chkStatus').value = chk.status || 'active';
+            }
+        } else {
+            document.getElementById('checklistModalTitle').innerText = 'Thêm Bộ Checklist Mới';
+            document.getElementById('chkEditId').value = '';
+            document.getElementById('chkQuestionCount').value = 10;
+            document.getElementById('chkStatus').value = 'active';
+        }
+
+        modal.classList.add('active');
+    };
+
+    window.closeChecklistModal = function() {
+        const modal = document.getElementById('checklistModal');
+        if (modal) modal.classList.remove('active');
+    };
+
+    window.handleSaveChecklist = function(e) {
+        e.preventDefault();
+        const editId = document.getElementById('chkEditId').value;
+        const checklistData = {
+            id: editId || undefined,
+            title: document.getElementById('chkTitle').value.trim(),
+            category: document.getElementById('chkCategory').value.trim(),
+            target_age: document.getElementById('chkTargetAge').value.trim(),
+            path: document.getElementById('chkPath').value.trim(),
+            question_count: Number(document.getElementById('chkQuestionCount').value || 10),
+            lead_magnet: document.getElementById('chkLeadMagnet').value.trim(),
+            description: document.getElementById('chkDescription').value.trim(),
+            scoring_guide: document.getElementById('chkScoringGuide').value.trim(),
+            status: document.getElementById('chkStatus').value
+        };
+
+        DB.saveChecklist(checklistData);
+        closeChecklistModal();
+        renderChecklistsAdmin();
+        renderEvaluations();
+        alert('Đã lưu thông tin bộ checklist thành công!');
+    };
+
+    window.handleToggleChecklistStatus = function(id) {
+        DB.toggleChecklistStatus(id);
+        renderChecklistsAdmin();
+    };
+
+    window.handleDeleteChecklist = function(id) {
+        if (confirm('Bạn có chắc chắn muốn xóa bộ checklist này?')) {
+            DB.deleteChecklist(id);
+            renderChecklistsAdmin();
+            renderEvaluations();
+        }
+    };
+
+    window.copyChecklistLink = function(path) {
+        const full = window.location.origin + (path.startsWith('/') ? path : '/' + path);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(full).then(() => {
+                alert(`Đã sao chép link checklist thành công:\n${full}`);
+            }).catch(() => {
+                prompt('Sao chép liên kết checklist:', full);
+            });
+        } else {
+            prompt('Sao chép liên kết checklist:', full);
+        }
+    };
+
+    // ========================================================================
+    // 7.3 MARKETING ANALYTICS & CONVERSION FUNNEL
+    // ========================================================================
+    window.renderChecklistAnalytics = function() {
+        if (typeof DB.getChecklistAnalytics !== 'function') return;
+        const data = DB.getChecklistAnalytics();
+
+        if (document.getElementById('funnelTotalLeadBadge')) {
+            document.getElementById('funnelTotalLeadBadge').innerText = `${data.total} Leads`;
+        }
+
+        // Funnel Step Cards
+        const funnelContainer = document.getElementById('funnelStepCards');
+        if (funnelContainer) {
+            const f = data.funnel;
+            const contacted = data.total - data.statusCounts.new;
+            const consulting = data.statusCounts.consulting + data.statusCounts.booked + data.statusCounts.converted;
+            const converted = data.statusCounts.booked + data.statusCounts.converted;
+
+            funnelContainer.innerHTML = `
+                <div class="p-4 rounded-xl border border-blue-200 bg-blue-50/50 space-y-1">
+                    <span class="text-[10px] font-bold text-blue-700 uppercase block">Bước 1: Nộp Bài Khảo Sát</span>
+                    <div class="text-2xl font-bold text-blue-950">${data.total}</div>
+                    <p class="text-[11px] text-blue-700">100% người hoàn thành</p>
+                </div>
+
+                <div class="p-4 rounded-xl border border-indigo-200 bg-indigo-50/50 space-y-1">
+                    <span class="text-[10px] font-bold text-indigo-700 uppercase block">Bước 2: CSKH Đã Liên Hệ</span>
+                    <div class="text-2xl font-bold text-indigo-950">${contacted}</div>
+                    <p class="text-[11px] text-indigo-700">${f.contactedRate}% tỷ lệ tiếp cận</p>
+                </div>
+
+                <div class="p-4 rounded-xl border border-amber-200 bg-amber-50/50 space-y-1">
+                    <span class="text-[10px] font-bold text-amber-700 uppercase block">Bước 3: Đang Tư Vấn Sâu</span>
+                    <div class="text-2xl font-bold text-amber-950">${consulting}</div>
+                    <p class="text-[11px] text-amber-700">${f.consultingRate}% chuyển sang tư vấn</p>
+                </div>
+
+                <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/50 space-y-1">
+                    <span class="text-[10px] font-bold text-emerald-700 uppercase block">Bước 4: Chốt Lịch &amp; Đồng Hành</span>
+                    <div class="text-2xl font-bold text-emerald-950">${converted}</div>
+                    <p class="text-[11px] text-emerald-700 font-bold">${f.bookedRate}% chuyển đổi cuối</p>
+                </div>
+            `;
+        }
+
+        // Child Age Segmentation Bars
+        const ageContainer = document.getElementById('ageBreakdownList');
+        if (ageContainer) {
+            const ages = data.ageSegments;
+            const t = data.total || 1;
+            const items = [
+                { label: 'Dưới 24 tháng (Giai Đoạn Vàng Tối Ưu)', count: ages.under2, color: 'bg-rose-500', text: 'text-rose-700' },
+                { label: '2 - 3 tuổi (Giai đoạn vàng phát triển ngôn ngữ)', count: ages.age2to3, color: 'bg-amber-500', text: 'text-amber-700' },
+                { label: '3 - 5 tuổi (Tiền tiểu học, can thiệp ăn uống & cảm giác)', count: ages.age3to5, color: 'bg-blue-500', text: 'text-blue-700' },
+                { label: 'Trên 5 tuổi (Đồng hành hòa nhập trường học)', count: ages.above5, color: 'bg-emerald-500', text: 'text-emerald-700' }
+            ];
+
+            ageContainer.innerHTML = items.map(it => {
+                const pct = ((it.count / t) * 100).toFixed(1);
+                return `
+                    <div class="space-y-1 text-xs">
+                        <div class="flex justify-between font-medium">
+                            <span class="text-zinc-800">${it.label}</span>
+                            <span class="${it.text} font-bold">${it.count} bé (${pct}%)</span>
+                        </div>
+                        <div class="w-full h-2 rounded-full bg-zinc-100 overflow-hidden">
+                            <div class="${it.color} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Checklist Performance Table
+        const chkBody = document.getElementById('checklistPerformanceBody');
+        if (chkBody) {
+            chkBody.innerHTML = data.checklistBreakdown.map(c => {
+                const convRate = c.submissions > 0 ? ((c.converted / c.submissions) * 100).toFixed(1) : '0.0';
+                return `
+                    <tr class="hover:bg-zinc-50/70">
+                        <td class="p-2.5 font-semibold text-zinc-900">
+                            <div>${escapeHtml(c.title)}</div>
+                            <span class="text-[10px] text-zinc-400 font-normal">${escapeHtml(c.category)}</span>
+                        </td>
+                        <td class="p-2.5 text-center font-bold text-zinc-800">${c.submissions}</td>
+                        <td class="p-2.5 text-center text-rose-600 font-bold">${c.high_risk}</td>
+                        <td class="p-2.5 text-center text-amber-700">${c.contacted}</td>
+                        <td class="p-2.5 text-center font-bold text-emerald-700">${c.converted} (${convRate}%)</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    };
+
+    // ========================================================================
+    // 7.4 ENHANCED EVALUATION & CRM MODAL
+    // ========================================================================
 
     window.openEvalDetail = function(id) {
         const item = (typeof DB.getEvaluations === 'function') ? DB.getEvaluations().find(e => String(e.id) === String(id)) : null;
@@ -2941,13 +3597,16 @@
             dateStr = item.created_at || '-';
         }
 
+        const crmSt = item.crm_status || 'new';
+        const crmPr = item.crm_priority || (item.risk_level === 'high' ? 'urgent' : 'normal');
+
         let riskBadge = '';
         if (item.risk_level === 'high') {
-            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200">Nguy Cơ Dinh Dưỡng Cao (>10 Điểm)</span>';
+            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200">Nguy Cơ Cao (>10 Điểm)</span>';
         } else if (item.risk_level === 'medium') {
-            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Nguy Cơ Dinh Dưỡng Trung Bình (5-10 Điểm)</span>';
+            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Nguy Cơ TB (5-10 Điểm)</span>';
         } else {
-            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Nguy Cơ Dinh Dưỡng Thấp (1-5 Điểm)</span>';
+            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Nguy Cơ Thấp (1-5 Điểm)</span>';
         }
 
         let answersHtml = '<div class="space-y-2">';
@@ -2985,37 +3644,79 @@
 
         content.innerHTML = `
             <div class="space-y-4 text-xs">
-                <!-- Header card -->
-                <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200/80 space-y-3">
+                <!-- Header card with CRM Status & Priority -->
+                <div class="p-4 rounded-xl bg-zinc-50 border border-zinc-200 space-y-3">
                     <div class="flex flex-wrap items-center justify-between gap-2">
                         <div>
-                            <span class="text-[10px] text-zinc-400 font-semibold uppercase block">Thời gian nộp</span>
+                            <span class="text-[10px] text-zinc-400 font-semibold uppercase block">Thời gian nộp bài</span>
                             <span class="font-mono font-medium text-zinc-700">${dateStr}</span>
                         </div>
-                        <div>${riskBadge}</div>
+                        <div class="flex items-center gap-2">
+                            ${riskBadge}
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-zinc-200/60">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 border-t border-zinc-200">
                         <div>
                             <span class="text-zinc-400 text-[11px] block">Phụ Huynh</span>
-                            <span class="font-bold text-zinc-900 text-sm">${item.parent_name || 'Phụ huynh'}</span>
+                            <span class="font-bold text-zinc-900 text-sm">${escapeHtml(item.parent_name || 'Phụ huynh')}</span>
                         </div>
                         <div>
                             <span class="text-zinc-400 text-[11px] block">Số Điện Thoại / Zalo</span>
                             <div class="flex items-center gap-1.5 mt-0.5">
-                                <span class="font-mono font-bold text-zinc-900">${item.phone || '-'}</span>
+                                <span class="font-mono font-bold text-zinc-900">${escapeHtml(item.phone || '-')}</span>
                                 ${cleanPhone ? `
                                     <a href="https://zalo.me/${cleanPhone}" target="_blank" class="px-2 py-0.5 rounded bg-blue-600 text-white text-[10px] font-bold hover:bg-blue-700">
-                                        Mở Zalo
+                                        Zalo
+                                    </a>
+                                    <a href="tel:${cleanPhone}" class="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-bold hover:bg-emerald-700">
+                                        Gọi
                                     </a>
                                 ` : ''}
                             </div>
                         </div>
                         <div>
                             <span class="text-zinc-400 text-[11px] block">Thông Tin Bé</span>
-                            <span class="font-bold text-zinc-900">${item.child_name || 'Bé'} (${item.child_age || '-'}, ${childGender})</span>
-                            ${item.weight || item.height ? `<div class="text-[11px] text-zinc-500">${item.weight || '-'} • ${item.height || '-'}</div>` : ''}
+                            <span class="font-bold text-zinc-900">${escapeHtml(item.child_name || 'Bé')} (${escapeHtml(item.child_age || '-')}, ${escapeHtml(childGender)})</span>
+                            ${item.weight || item.height ? `<div class="text-[11px] text-zinc-500">${escapeHtml(item.weight || '-')} • ${escapeHtml(item.height || '-')}</div>` : ''}
                         </div>
+                    </div>
+
+                    <!-- CRM Care Controls in Modal -->
+                    <div class="grid sm:grid-cols-2 gap-3 pt-2 border-t border-zinc-200">
+                        <div>
+                            <label class="font-semibold text-zinc-700 block mb-1">Trạng Thái Chăm Sóc CRM:</label>
+                            <select id="modalCrmStatusSelect" onchange="updateEvalCRMStatus('${item.id}', this.value)" class="flex h-8 w-full rounded-md border border-zinc-200 bg-white px-2.5 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                <option value="new" ${crmSt === 'new' ? 'selected' : ''}>Mới tiếp nhận</option>
+                                <option value="contacted" ${crmSt === 'contacted' ? 'selected' : ''}>Đã liên hệ</option>
+                                <option value="consulting" ${crmSt === 'consulting' ? 'selected' : ''}>Đang tư vấn 1:1</option>
+                                <option value="booked" ${crmSt === 'booked' ? 'selected' : ''}>Đã chốt lịch hẹn</option>
+                                <option value="converted" ${crmSt === 'converted' ? 'selected' : ''}>Đã chuyển đổi</option>
+                                <option value="lost" ${crmSt === 'lost' ? 'selected' : ''}>Tạm ngưng</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="font-semibold text-zinc-700 block mb-1">Mức Độ Ưu Tiên:</label>
+                            <select id="modalCrmPrioritySelect" onchange="updateEvalPriority('${item.id}', this.value)" class="flex h-8 w-full rounded-md border border-zinc-200 bg-white px-2.5 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-brand-500">
+                                <option value="urgent" ${crmPr === 'urgent' ? 'selected' : ''}>Cần gọi gấp (Urgent)</option>
+                                <option value="high" ${crmPr === 'high' ? 'selected' : ''}>Ưu tiên cao</option>
+                                <option value="normal" ${crmPr === 'normal' ? 'selected' : ''}>Bình thường</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CSKH Notes Section -->
+                <div class="p-3.5 rounded-xl border border-zinc-200 bg-white space-y-2">
+                    <label class="font-bold text-zinc-900 block flex items-center justify-between">
+                        <span>Ghi Chú Tiến Trình CSKH (Lịch Sử Cuộc Gọi / Tư Vấn):</span>
+                        <span class="text-[10px] text-zinc-400 font-normal">Tự động đồng bộ</span>
+                    </label>
+                    <textarea id="modalEvalCrmNotes" rows="2" placeholder="Ghi nhận phản hồi của mẹ qua Zalo/Hotline, khó khăn của con, hẹn ngày liên hệ lại..." class="w-full rounded-lg border border-zinc-200 p-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">${escapeHtml(item.crm_notes || '')}</textarea>
+                    <div class="flex justify-end">
+                        <button onclick="saveModalEvalNotes('${item.id}')" class="px-3 py-1 rounded bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs">
+                            Lưu Ghi Chú CSKH
+                        </button>
                     </div>
                 </div>
 
@@ -3023,10 +3724,10 @@
                 <div>
                     <h4 class="font-bold text-zinc-900 mb-1.5 flex items-center gap-1.5">
                         <svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span>Nhận Xét & Đánh Giá Tình Trạng:</span>
+                        <span>Nhận Xét &amp; Đánh Giá Tình Trạng:</span>
                     </h4>
                     <div class="p-3.5 rounded-lg bg-emerald-50/60 border border-emerald-200/80 text-emerald-950 leading-relaxed text-xs sm:text-sm">
-                        ${item.advice_summary || item.feedback || item.risk_title || 'Chưa có nhận xét'}
+                        ${escapeHtml(item.advice_summary || item.feedback || item.risk_title || 'Chưa có nhận xét')}
                     </div>
                 </div>
 
@@ -3038,42 +3739,35 @@
                     </div>
                     <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
                         <span class="font-bold text-zinc-800 block mb-1.5">Lượng Nước Uống Mỗi Ngày:</span>
-                        <p class="text-zinc-700 font-medium">${waterVal}</p>
+                        <p class="text-zinc-700 font-medium">${escapeHtml(waterVal)}</p>
                     </div>
                 </div>
 
                 ${dietVal ? `
                     <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
                         <span class="font-bold text-zinc-800 block mb-1">Mô Tả Chế Độ Ăn Trong Ngày Của Con:</span>
-                        <p class="text-zinc-700 whitespace-pre-line leading-relaxed">${dietVal}</p>
+                        <p class="text-zinc-700 whitespace-pre-line leading-relaxed">${escapeHtml(dietVal)}</p>
                     </div>
                 ` : ''}
 
                 ${diffVal ? `
                     <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
                         <span class="font-bold text-zinc-800 block mb-1">Khó Khăn Ăn Uống Khác:</span>
-                        <p class="text-zinc-700 whitespace-pre-line leading-relaxed">${diffVal}</p>
-                    </div>
-                ` : ''}
-
-                ${item.notes ? `
-                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
-                        <span class="font-bold text-zinc-800 block mb-1">Ghi Chú Khác Của Mẹ:</span>
-                        <p class="text-zinc-700 whitespace-pre-line leading-relaxed">${item.notes}</p>
+                        <p class="text-zinc-700 whitespace-pre-line leading-relaxed">${escapeHtml(diffVal)}</p>
                     </div>
                 ` : ''}
 
                 <!-- Answers List -->
                 <div>
                     <h4 class="font-bold text-zinc-900 mb-2">Chi Tiết Từng Câu Trắc Nghiệm:</h4>
-                    <div class="max-h-64 overflow-y-auto p-3.5 rounded-lg border border-zinc-200 bg-white">
+                    <div class="max-h-56 overflow-y-auto p-3.5 rounded-lg border border-zinc-200 bg-white">
                         ${answersHtml}
                     </div>
                 </div>
 
                 <div class="pt-2 flex items-center justify-between border-t border-zinc-100">
                     <a href="../tra-cuu/?phone=${encodeURIComponent(item.phone || '')}" target="_blank" class="text-xs text-brand-600 font-semibold hover:underline flex items-center gap-1">
-                        <span>Mở liên kết tra cứu của phụ huynh</span>
+                        <span>Mở liên kết tra cứu của mẹ</span>
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     </a>
                     <button type="button" onclick="closeEvalDetailModal()" class="px-4 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold">
@@ -3086,17 +3780,27 @@
         modal.classList.add('active');
     };
 
+    window.saveModalEvalNotes = function(id) {
+        const val = document.getElementById('modalEvalCrmNotes').value;
+        if (typeof DB.updateEvaluationCRMNotes === 'function') {
+            DB.updateEvaluationCRMNotes(id, val);
+        }
+        alert('Đã cập nhật ghi chú CSKH thành công!');
+        renderEvaluations();
+    };
+
     window.closeEvalDetailModal = function() {
         const modal = document.getElementById('evalDetailModal');
         if (modal) modal.classList.remove('active');
     };
 
     window.deleteEvaluationRow = function(id) {
-        if (confirm('Xóa phiếu đánh giá dinh dưỡng này khỏi hệ thống? Thao tác này sẽ xóa vĩnh viễn và không bị tải lại khi reload.')) {
+        if (confirm('Xóa hồ sơ đánh giá này khỏi hệ thống? Thao tác này sẽ xóa vĩnh viễn và không bị tải lại khi reload.')) {
             if (typeof DB.deleteEvaluation === 'function') {
                 DB.deleteEvaluation(id);
             }
             renderEvaluations();
+            renderChecklistAnalytics();
             renderAll();
         }
     };
@@ -3104,16 +3808,17 @@
     window.clearAllEvaluationsAdmin = function() {
         const list = (typeof DB.getEvaluations === 'function') ? DB.getEvaluations() : [];
         if (!list || list.length === 0) {
-            alert('Hiện không có phiếu đánh giá nào để xóa!');
+            alert('Hiện không có hồ sơ nào để xóa!');
             return;
         }
-        if (confirm(`Bạn có chắc chắn muốn xóa toàn bộ ${list.length} phiếu đánh giá hiện có không? Thao tác này sẽ xóa vĩnh viễn và không bị phục hồi khi tải lại trang.`)) {
+        if (confirm(`Bạn có chắc chắn muốn xóa toàn bộ ${list.length} hồ sơ hiện có không? Thao tác này sẽ xóa vĩnh viễn và không bị phục hồi khi tải lại trang.`)) {
             if (typeof DB.clearAllEvaluations === 'function') {
                 DB.clearAllEvaluations();
             }
             renderEvaluations();
+            renderChecklistAnalytics();
             renderAll();
-            alert('Đã xóa toàn bộ phiếu đánh giá thành công!');
+            alert('Đã xóa toàn bộ hồ sơ đánh giá thành công!');
         }
     };
 
@@ -3126,10 +3831,11 @@
             }
         } catch (e) {}
         renderEvaluations();
+        renderChecklistAnalytics();
         renderAll();
         setTimeout(() => {
             if (icon) icon.classList.remove('animate-spin');
-            alert('Đã đồng bộ phiếu đánh giá mới nhất thành công!');
+            alert('Đã đồng bộ hồ sơ đánh giá mới nhất từ Firestore thành công!');
         }, 500);
     };
 
@@ -3137,8 +3843,9 @@
         if (typeof DB !== 'undefined' && typeof DB.resetSampleData === 'function') {
             DB.resetSampleData();
             renderEvaluations();
+            renderChecklistAnalytics();
             renderAll();
-            alert('Đã nạp 3 phiếu đánh giá mẫu thành công! Bạn có thể bấm "Xem" để kiểm tra giao diện chi tiết.');
+            alert('Đã nạp hồ sơ mẫu thành công! Bạn có thể kiểm tra luồng CRM và phân tích Marketing.');
         }
     };
 
@@ -3269,18 +3976,33 @@
 
     const evalSearch = document.getElementById('evalSearchInput');
     const evalRisk = document.getElementById('evalRiskFilter');
+    const evalChecklist = document.getElementById('evalChecklistFilter');
+    const evalCrm = document.getElementById('evalCrmStatusFilter');
     if (evalSearch) evalSearch.addEventListener('input', filterEvaluations);
     if (evalRisk) evalRisk.addEventListener('change', filterEvaluations);
+    if (evalChecklist) evalChecklist.addEventListener('change', filterEvaluations);
+    if (evalCrm) evalCrm.addEventListener('change', filterEvaluations);
 
     function filterEvaluations() {
         const q = (document.getElementById('evalSearchInput')?.value || '').toLowerCase().trim();
+        const chk = document.getElementById('evalChecklistFilter')?.value || 'all';
+        const crm = document.getElementById('evalCrmStatusFilter')?.value || 'all';
         const r = document.getElementById('evalRiskFilter')?.value || 'all';
 
+        let count = 0;
         document.querySelectorAll('.eval-row').forEach(row => {
             const matchQ = !q || (row.dataset.search || '').includes(q);
+            const matchChk = chk === 'all' || row.dataset.checklist === chk;
+            const matchCrm = crm === 'all' || row.dataset.crm === crm;
             const matchR = r === 'all' || row.dataset.risk === r;
-            row.style.display = (matchQ && matchR) ? '' : 'none';
+            const isMatch = matchQ && matchChk && matchCrm && matchR;
+            row.style.display = isMatch ? '' : 'none';
+            if (isMatch) count++;
         });
+
+        if (document.getElementById('crmFilteredCount')) {
+            document.getElementById('crmFilteredCount').innerText = count;
+        }
     }
 
     // ========================================================================
