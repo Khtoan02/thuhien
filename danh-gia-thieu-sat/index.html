@@ -403,7 +403,7 @@
             text: 'Trẻ có biểu hiện hội chứng chân không yên (bồn chồn, cọ xát hai chân, chân khó chịu, hay gãi chân, tác động vào chân,...)?',
             pointsYes: 2,
             pointsNo: 0,
-            specialNotice: '+2 điểm nguy cơ (Dấu hiệu thần kinh nhạy cảm)'
+            specialNotice: 'Dấu hiệu thần kinh nhạy cảm'
         },
         {
             id: 'iron_q13',
@@ -435,7 +435,7 @@
                             <div class="flex items-start gap-2">
                                 <span class="font-bold text-sm text-[#174C3B] shrink-0">${num}.</span>
                                 <p class="text-xs sm:text-sm font-semibold text-[#174C3B] leading-snug">
-                                    ${q.text}
+                                     ${q.text}
                                 </p>
                             </div>
                             ${q.specialNotice ? `
@@ -445,13 +445,13 @@
                             ` : ''}
                         </div>
 
-                        <!-- Yes/No buttons -->
+                        <!-- Yes/No buttons without point numbers -->
                         <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
-                            <button type="button" onclick="selectChoice('${q.id}', 1, ${q.pointsYes})" id="btn_${q.id}_yes" class="choice-btn px-4 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-bold text-zinc-700">
-                                Có (+${q.pointsYes}đ)
+                            <button type="button" onclick="selectChoice('${q.id}', 1, ${q.pointsYes})" id="btn_${q.id}_yes" class="choice-btn px-5 py-2 min-w-[68px] rounded-xl border border-zinc-200 bg-white text-xs font-bold text-zinc-700 text-center">
+                                Có
                             </button>
-                            <button type="button" onclick="selectChoice('${q.id}', 0, 0)" id="btn_${q.id}_no" class="choice-btn px-4 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-bold text-zinc-700">
-                                Không (0đ)
+                            <button type="button" onclick="selectChoice('${q.id}', 0, 0)" id="btn_${q.id}_no" class="choice-btn px-5 py-2 min-w-[68px] rounded-xl border border-zinc-200 bg-white text-xs font-bold text-zinc-700 text-center">
+                                Không
                             </button>
                         </div>
                     </div>
@@ -469,12 +469,12 @@
 
         if (btnYes && btnNo) {
             if (answerValue === 1) {
-                btnYes.className = 'choice-btn px-4 py-2 rounded-xl border selected-yes text-xs font-bold';
-                btnNo.className = 'choice-btn px-4 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-500';
+                btnYes.className = 'choice-btn px-5 py-2 min-w-[68px] rounded-xl border selected-yes text-xs font-bold text-center';
+                btnNo.className = 'choice-btn px-5 py-2 min-w-[68px] rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-500 text-center';
                 if (card) card.style.borderColor = '#F08A4B';
             } else {
-                btnNo.className = 'choice-btn px-4 py-2 rounded-xl border selected-no text-xs font-bold';
-                btnYes.className = 'choice-btn px-4 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-500';
+                btnNo.className = 'choice-btn px-5 py-2 min-w-[68px] rounded-xl border selected-no text-xs font-bold text-center';
+                btnYes.className = 'choice-btn px-5 py-2 min-w-[68px] rounded-xl border border-zinc-200 bg-white text-xs font-medium text-zinc-500 text-center';
                 if (card) card.style.borderColor = '#8FAF91';
             }
         }
