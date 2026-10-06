@@ -151,7 +151,7 @@ const DB = (() => {
         social: {
             hotline: '0988.776.655',
             hotline_display: '0988 776 655',
-            zalo_link: 'https://zalo.me/0988776655',
+            zalo_link: 'https://hieucontugoc.online/zalo',
             zalo_number: '0988776655',
             facebook_url: 'https://www.facebook.com/thuhien.cungmehieucon?sub_confirmation=1',
             tiktok_url: 'https://www.tiktok.com/@thuhien.cungmehieucon?is_from_webapp=1&sender_device=pc&sub_confirmation=1',
@@ -698,6 +698,11 @@ const DB = (() => {
                 }
                 if (s?.social?.tiktok_url && s.social.tiktok_url.includes('thuhien_cungmehieucon')) {
                     s.social.tiktok_url = 'https://www.tiktok.com/@thuhien.cungmehieucon';
+                    changed = true;
+                }
+                if (!s.social) s.social = DEFAULT_SETTINGS.social;
+                if (!s.social.zalo_link || s.social.zalo_link === 'https://zalo.me/0988776655' || s.social.zalo_link.includes('0988776655')) {
+                    s.social.zalo_link = 'https://hieucontugoc.online/zalo';
                     changed = true;
                 }
                 if (changed) {
@@ -3157,7 +3162,7 @@ const DB = (() => {
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
                                         </svg>
                                     </a>
-                                    <a href="https://zalo.me/0988776655" target="_blank" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white text-[#174C3B] border border-[#C5DCCF] text-xs sm:text-sm font-bold hover:bg-[#F4F8F5] transition-all">
+                                    <a href="${settings.social?.zalo_link || 'https://hieucontugoc.online/zalo'}" target="_blank" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white text-[#174C3B] border border-[#C5DCCF] text-xs sm:text-sm font-bold hover:bg-[#F4F8F5] transition-all">
                                         Liên Hệ Với Thu Hiền
                                     </a>
                                 </div>

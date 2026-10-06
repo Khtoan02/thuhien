@@ -1227,23 +1227,11 @@
         return payload;
     }
 
-    // Open Zalo with prefilled summary
+    // Open Zalo
     function sendResultToZalo() {
-        const childName = document.getElementById('childName').value.trim() || 'bé';
-        const childAge = document.getElementById('childAge').value.trim() || '';
-        const parentName = document.getElementById('parentName').value.trim() || 'Phụ huynh';
-        const badgeEl = document.getElementById('resultBadge');
-        const levelText = badgeEl ? badgeEl.innerText.replace('Mức Độ:', '').trim() : 'Đã hoàn thành đánh giá';
-
-        const text = encodeURIComponent(
-            `Chào bạn, em là ${parentName}, vừa làm Phiếu Đánh Giá Dinh Dưỡng cho con (${childName}, ${childAge}).\n` +
-            `Kết quả đánh giá: ${levelText}.\n` +
-            `Em gửi kết quả để nhận tư vấn và định hướng hỗ trợ thêm cho bé ạ.`
-        );
-
         const settings = typeof DB !== 'undefined' ? DB.getSettings() : {};
-        const zaloNumber = settings?.social?.zalo_number || '0988776655';
-        window.open(`https://zalo.me/${zaloNumber.replace(/\D/g, '')}?text=${text}`, '_blank');
+        const zaloUrl = settings?.social?.zalo_link || 'https://hieucontugoc.online/zalo';
+        window.open(zaloUrl, '_blank');
     }
 </script>
 

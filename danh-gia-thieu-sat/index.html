@@ -614,22 +614,9 @@
     }
 
     window.sendIronResultToZalo = function() {
-        const p = window._lastIronPayload || {};
-        const parentName = p.parent_name || document.getElementById('parentName').value.trim() || 'Phụ huynh';
-        const childName = p.child_name || document.getElementById('childName').value.trim() || 'bé';
-        const childAge = p.child_age || document.getElementById('childAge').value.trim() || '';
-        const score = p.score !== undefined ? p.score : '';
-        const risk = p.risk_title || '';
-
-        const text = encodeURIComponent(
-            `Chào Chuyên gia Bùi Thu Hiền, em là ${parentName}, vừa làm xong Checklist Đánh Giá Nguy Cơ Thiếu Sắt cho con (${childName}, ${childAge}).\n` +
-            `Kết quả đánh giá: ${risk}.\n` +
-            `Em gửi kết quả để xin tư vấn và hướng dẫn phác đồ/xét nghiệm Ferritin cho con ạ.`
-        );
-
         const settings = typeof DB !== 'undefined' ? DB.getSettings() : {};
-        const zaloNumber = settings?.social?.zalo_number || '0988776655';
-        window.open(`https://zalo.me/${zaloNumber.replace(/\D/g, '')}?text=${text}`, '_blank');
+        const zaloUrl = settings?.social?.zalo_link || 'https://hieucontugoc.online/zalo';
+        window.open(zaloUrl, '_blank');
     };
 
     // Render questions on load

@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <a href="/" class="btn-pill-primary">
                                     <span>Về Trang Chủ</span>
                                 </a>
-                                <a href="https://zalo.me" target="_blank" rel="noopener" class="btn-pill-peach">
+                                <a href="https://hieucontugoc.online/zalo" target="_blank" rel="noopener" class="btn-pill-peach">
                                     <span>Nhắn Zalo Riêng Với Thu Hiền</span>
                                 </a>
                             </div>

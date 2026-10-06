@@ -58,7 +58,7 @@ const LayoutEngine = (() => {
 
         const settings = typeof DB !== 'undefined' ? DB.getSettings() : {};
         const hotline = settings.social?.hotline_display || settings.social?.hotline || '0988 776 655';
-        const zaloLink = settings.social?.zalo_link || 'https://zalo.me/0988776655';
+        const zaloLink = settings.social?.zalo_link || 'https://hieucontugoc.online/zalo';
 
         drawerEl.innerHTML = `
             <div class="fixed inset-y-0 right-0 w-full max-w-xs bg-white shadow-2xl p-6 flex flex-col justify-between overflow-y-auto">
@@ -282,7 +282,7 @@ const LayoutEngine = (() => {
             }).join('');
 
         const hotline = soc.hotline_display || soc.hotline || '0988 776 655';
-        const zaloLink = soc.zalo_link || `https://zalo.me/${(soc.zalo_number || '0988776655').replace(/[^0-9]/g, '')}`;
+        const zaloLink = soc.zalo_link || 'https://hieucontugoc.online/zalo';
         const facebookUrl = soc.facebook_url || 'https://www.facebook.com/thuhien.cungmehieucon?sub_confirmation=1';
         const tiktokUrl = soc.tiktok_url || 'https://www.tiktok.com/@thuhien.cungmehieucon?sub_confirmation=1';
         const youtubeUrl = soc.youtube_url || 'https://www.youtube.com/@thuhien.cungmehieucon?sub_confirmation=1';
