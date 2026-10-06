@@ -212,8 +212,8 @@ const LayoutEngine = (() => {
                 <a href="${prefix}" class="flex items-center gap-2.5 sm:gap-3 group text-decoration-none shrink-0">
                     <img src="${prefix}favicon.png" alt="Thu Hiền Logo" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-sm ring-2 ring-white/80 group-hover:scale-105 transition-transform duration-300">
                     <div class="flex flex-col">
-                        <span class="font-bold text-base sm:text-lg md:text-xl text-white leading-none tracking-tight">Thu Hiền</span>
-                        <span class="text-[10px] sm:text-[11px] font-medium text-white/90 tracking-wide mt-0.5 sm:mt-1 uppercase">Cùng Mẹ Hiểu Con</span>
+                        <span class="font-bold text-base sm:text-lg md:text-xl text-white leading-snug tracking-normal">Thu Hiền</span>
+                        <span class="text-[10px] sm:text-[11px] font-medium text-white/90 tracking-wide uppercase">Cùng Mẹ Hiểu Con</span>
                     </div>
                 </a>
 
@@ -297,8 +297,8 @@ const LayoutEngine = (() => {
                         <a href="${prefix}" class="inline-flex items-center gap-3 text-decoration-none group">
                             <img src="${prefix}favicon.png" alt="Thu Hiền Logo" class="w-10 h-10 rounded-full object-cover ring-2 ring-[#8FAF91]/30">
                             <div>
-                                <span class="font-bold text-lg text-[#174C3B] block leading-none">Thu Hiền</span>
-                                <span class="text-[11px] font-medium text-[#5F6E66] tracking-wider uppercase mt-1 block">Cùng Mẹ Hiểu Con</span>
+                                <span class="font-bold text-lg text-[#174C3B] block leading-snug">Thu Hiền</span>
+                                <span class="text-[11px] font-medium text-[#5F6E66] tracking-wider uppercase mt-0.5 block">Cùng Mẹ Hiểu Con</span>
                             </div>
                         </a>
                         <p class="text-xs text-[#5F6E66] leading-relaxed max-w-sm">

@@ -57,9 +57,43 @@ button, input, select, textarea {
   font-family: 'Alata', system-ui, -apple-system, sans-serif;
 }
 
-/* Typography Overrides */
-h1, h2, h3 {
+/* Typography Overrides & Safe Heading Line-Heights for Vietnamese Diacritics */
+h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
+  line-height: 1.38;
+}
+
+h1, .h1 {
+  line-height: 1.34 !important;
+}
+
+h2, .h2 {
+  line-height: 1.36 !important;
+}
+
+h3, .h3 {
+  line-height: 1.4 !important;
+}
+
+h4, h5, h6 {
+  line-height: 1.42 !important;
+}
+
+/* Extra line clearance for uppercase headings with accents like Ắ, Ế, Ố, Ể, Ở */
+h1.uppercase, h2.uppercase, h3.uppercase,
+.uppercase h1, .uppercase h2, .uppercase h3,
+[class*="font-black"][class*="uppercase"],
+[class*="font-bold"][class*="uppercase"] {
+  line-height: 1.36 !important;
+  letter-spacing: 0.01em;
+}
+
+/* Override overly tight Tailwind line-heights on headings */
+h1.leading-tight, h2.leading-tight, h3.leading-tight,
+h1.leading-none, h2.leading-none, h3.leading-none,
+h1[class*="leading-[1.1"], h2[class*="leading-[1.1"],
+h1[class*="leading-[1.2"], h2[class*="leading-[1.2"] {
+  line-height: 1.36 !important;
 }
 
 .font-serif {
