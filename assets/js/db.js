@@ -2281,125 +2281,291 @@ const DB = (() => {
             let htmlBody = '';
             const logs = this.getEmailLogs();
 
+            let siteBaseUrl = 'https://www.thuhien.online';
+            if (typeof window !== 'undefined' && window.location.origin && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('.local') && !window.location.hostname.includes('servbay')) {
+                siteBaseUrl = window.location.origin;
+            }
+
             if (type === 'booking') {
                 if (emailCfg.notify_on_booking === false) return null;
-                subject = `[Lịch Hẹn Mới] Phụ huynh ${payload.parent_name || 'Phụ huynh'} - ${payload.consult_type || 'Tư vấn'}`;
+                const pName = (payload.parent_name || '').trim();
+                const pPhone = (payload.phone || '').trim();
+                const bName = (payload.baby_name || '').trim();
+                const bAge = (payload.baby_age || '').trim();
+                const cType = payload.consult_type || 'Tư vấn 1-1';
+
+                subject = `[Lịch Hẹn Mới] PH: ${pName || 'Phụ huynh'}${pPhone ? ` (${pPhone})` : ''} - ${cType}`;
                 bodyText = `THÔNG BÁO LỊCH HẸN TƯ VẤN 1-1 MỚI\n\n` +
-                    `- Họ tên mẹ: ${payload.parent_name || '-'}\n` +
-                    `- SĐT / Zalo: ${payload.phone || '-'}\n` +
+                    `- Họ tên mẹ: ${pName || '-'}\n` +
+                    `- SĐT / Zalo: ${pPhone || '-'}\n` +
                     `- Email: ${payload.email || 'Không có'}\n` +
-                    `- Thông tin bé: ${payload.baby_name || 'Bé'} (${payload.baby_age || '-'})\n` +
+                    `- Thông tin bé: ${bName || 'Bé'} (${bAge || '-'})\n` +
                     `- Biểu hiện của con: ${payload.issues || '-'}\n` +
                     `- Chia sẻ của mẹ: ${payload.feeding_notes || '-'}\n` +
-                    `- Gói đồng hành: ${payload.consult_type || '-'}\n` +
+                    `- Gói đồng hành: ${cType}\n` +
                     `- Khung giờ mong muốn: ${payload.preferred_time || '-'}\n` +
                     `- Thời gian gửi: ${payload.created_at || nowStr}`;
 
                 htmlBody = `
-                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f9fafb;padding:20px;border-radius:12px;">
-                    <div style="background:#174c3b;padding:24px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
-                        <h1 style="margin:0;font-size:20px;font-weight:700;letter-spacing:0.5px;">THU HIỀN - CÙNG MẸ HIỂU CON</h1>
-                        <p style="margin:6px 0 0;font-size:12px;opacity:0.85;">Thông Báo Lịch Hẹn Tư Vấn 1-1 Mới Từ Website</p>
+                <!-- Mobile Email Preheader -->
+                <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;">
+                    📅 Lịch hẹn 1-1 mới • Phụ huynh: ${pName || 'Phụ huynh'} ${pPhone ? `(${pPhone})` : ''} • Bé: ${bName || 'Bé'} (${bAge || '-'}) • Gói: ${cType}
+                </div>
+                <div style="display:none;max-height:0px;overflow:hidden;">&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f3f4f6;padding:16px;border-radius:12px;">
+                    <div style="background:#174c3b;padding:22px 20px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
+                        <span style="display:inline-block;background:rgba(255,255,255,0.18);padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">
+                            LỊCH HẸN TƯ VẤN 1-1
+                        </span>
+                        <h1 style="margin:0;font-size:18px;font-weight:700;line-height:1.4;">Thông Báo Đăng Ký Lịch Hẹn Mới</h1>
+                        <p style="margin:6px 0 0;font-size:12px;color:#d1fae5;opacity:0.9;">Thu Hiền - Cùng Mẹ Hiểu Con</p>
                     </div>
-                    <div style="background:#ffffff;padding:24px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
-                        <div style="display:inline-block;background:#ecfdf5;border:1px solid #10b981;color:#065f46;font-size:11px;font-weight:700;padding:4px 10px;border-radius:9999px;margin-bottom:16px;">
-                            LỊCH HẸN MỚI CHỜ XÁC NHẬN
+                    <div style="background:#ffffff;padding:20px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
+                        <div style="background:#ecfdf5;border:1px solid #10b981;border-radius:8px;padding:12px 16px;margin-bottom:18px;">
+                            <table style="width:100%;border-collapse:collapse;">
+                                <tr>
+                                    <td>
+                                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#065f46;">Trạng thái</div>
+                                        <div style="font-size:14px;font-weight:700;color:#047857;margin-top:2px;">Chờ Xác Nhận Tư Vấn</div>
+                                    </td>
+                                    <td style="text-align:right;">
+                                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#065f46;">Gói dịch vụ</div>
+                                        <div style="font-size:13px;font-weight:600;color:#b45309;margin-top:2px;">${cType}</div>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <table style="width:100%;border-collapse:collapse;font-size:13px;line-height:1.6;color:#374151;">
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;width:140px;color:#6b7280;font-weight:600;">Họ tên phụ huynh:</td><td style="padding:8px 0;font-weight:700;color:#111827;">${payload.parent_name || '-'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">SĐT / Zalo:</td><td style="padding:8px 0;font-weight:700;color:#047857;"><a href="tel:${payload.phone}" style="color:#047857;text-decoration:none;">${payload.phone || '-'}</a></td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;width:130px;color:#6b7280;font-weight:600;">Phụ huynh:</td><td style="padding:8px 0;font-weight:700;color:#111827;">${pName || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">SĐT / Zalo:</td><td style="padding:8px 0;font-weight:700;color:#047857;"><a href="tel:${pPhone}" style="color:#047857;text-decoration:none;">${pPhone || '-'}</a></td></tr>
                             <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Email:</td><td style="padding:8px 0;">${payload.email || 'Không có'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thông tin bé:</td><td style="padding:8px 0;"><strong>${payload.baby_name || 'Bé'}</strong> (${payload.baby_age || '-'})</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Gói đăng ký:</td><td style="padding:8px 0;font-weight:600;color:#b45309;">${payload.consult_type || '-'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Khung giờ mong muốn:</td><td style="padding:8px 0;">${payload.preferred_time || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thông tin bé:</td><td style="padding:8px 0;"><strong>${bName || 'Bé'}</strong> (${bAge || '-'})</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Khung giờ mong muốn:</td><td style="padding:8px 0;font-weight:600;color:#1e3a8a;">${payload.preferred_time || '-'}</td></tr>
                             <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Biểu hiện của con:</td><td style="padding:8px 0;color:#4b5563;">${payload.issues || '-'}</td></tr>
                             <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Chia sẻ của mẹ:</td><td style="padding:8px 0;color:#4b5563;">${payload.feeding_notes || '-'}</td></tr>
                             <tr><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thời gian đăng ký:</td><td style="padding:8px 0;font-size:12px;color:#9ca3af;">${payload.created_at || nowStr}</td></tr>
                         </table>
                         <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;text-align:center;">
-                            <a href="https://zalo.me/${(payload.phone || '').replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#0284c7;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;margin-right:8px;">Nhắn Zalo Phụ Huynh</a>
-                            <a href="/admin/?tab=bookings" target="_blank" style="display:inline-block;background:#174c3b;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;">Mở Trang Quản Trị</a>
+                            ${pPhone ? `
+                            <a href="https://zalo.me/${pPhone.replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#0068ff;color:#ffffff;text-decoration:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;margin:3px;">💬 Nhắn Zalo Cho Mẹ</a>
+                            <a href="tel:${pPhone}" style="display:inline-block;background:#059669;color:#ffffff;text-decoration:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;margin:3px;">📞 Gọi Cho Mẹ</a>
+                            ` : ''}
+                            <a href="${siteBaseUrl}/admin/?tab=bookings" target="_blank" style="display:inline-block;background:#174c3b;color:#ffffff;text-decoration:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;margin:3px;">⚙️ Mở Quản Trị</a>
                         </div>
                     </div>
                 </div>`;
             } else if (type === 'lead') {
                 if (emailCfg.notify_on_lead === false) return null;
-                subject = `[Tải Cẩm Nang Mới] Phụ huynh ${payload.parent_name || 'Phụ huynh'} - ${payload.phone || ''}`;
+                const pName = (payload.parent_name || '').trim();
+                const pPhone = (payload.phone || '').trim();
+                const bAge = (payload.baby_age || '').trim();
+                const rName = payload.resource_name || 'Cẩm Nang';
+
+                subject = `[Tải Cẩm Nang] PH: ${pName || 'Phụ huynh'}${pPhone ? ` (${pPhone})` : ''} - Bé ${bAge || '-'}`;
                 bodyText = `THÔNG BÁO TẢI CẨM NANG / TÀI LIỆU MỚI\n\n` +
-                    `- Họ tên mẹ: ${payload.parent_name || '-'}\n` +
-                    `- Số Zalo: ${payload.phone || '-'}\n` +
+                    `- Họ tên mẹ: ${pName || '-'}\n` +
+                    `- Số Zalo: ${pPhone || '-'}\n` +
                     `- Email: ${payload.email || 'Không có'}\n` +
-                    `- Độ tuổi bé: ${payload.baby_age || '-'}\n` +
-                    `- Tài liệu nhận: ${payload.resource_name || '-'}\n` +
+                    `- Độ tuổi bé: ${bAge || '-'}\n` +
+                    `- Tài liệu nhận: ${rName}\n` +
                     `- Thời gian gửi: ${payload.created_at || nowStr}`;
 
                 htmlBody = `
-                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f9fafb;padding:20px;border-radius:12px;">
-                    <div style="background:#174c3b;padding:24px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
-                        <h1 style="margin:0;font-size:20px;font-weight:700;letter-spacing:0.5px;">THU HIỀN - CÙNG MẸ HIỂU CON</h1>
-                        <p style="margin:6px 0 0;font-size:12px;opacity:0.85;">Khách Hàng Tiềm Năng Mới Nhận Tài Liệu</p>
+                <!-- Mobile Email Preheader -->
+                <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;">
+                    🎁 Tải cẩm nang mới • Phụ huynh: ${pName || 'Phụ huynh'} ${pPhone ? `(${pPhone})` : ''} • Bé: ${bAge || '-'} • Tài liệu: ${rName}
+                </div>
+                <div style="display:none;max-height:0px;overflow:hidden;">&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f3f4f6;padding:16px;border-radius:12px;">
+                    <div style="background:#174c3b;padding:22px 20px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
+                        <span style="display:inline-block;background:rgba(255,255,255,0.18);padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">
+                            ĐĂNG KÝ TẢI TÀI LIỆU
+                        </span>
+                        <h1 style="margin:0;font-size:18px;font-weight:700;line-height:1.4;">Khách Hàng Mới Nhận Cẩm Nang</h1>
+                        <p style="margin:6px 0 0;font-size:12px;color:#d1fae5;opacity:0.9;">Thu Hiền - Cùng Mẹ Hiểu Con</p>
                     </div>
-                    <div style="background:#ffffff;padding:24px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
-                        <div style="display:inline-block;background:#fef3c7;border:1px solid #f59e0b;color:#92400e;font-size:11px;font-weight:700;padding:4px 10px;border-radius:9999px;margin-bottom:16px;">
-                            ĐĂNG KÝ TẢI TÀI LIỆU MỚI
+                    <div style="background:#ffffff;padding:20px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
+                        <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:12px 16px;margin-bottom:18px;">
+                            <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#92400e;">Tài liệu đã nhận</div>
+                            <div style="font-size:14px;font-weight:700;color:#78350f;margin-top:2px;">${rName}</div>
                         </div>
                         <table style="width:100%;border-collapse:collapse;font-size:13px;line-height:1.6;color:#374151;">
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;width:140px;color:#6b7280;font-weight:600;">Họ tên phụ huynh:</td><td style="padding:8px 0;font-weight:700;color:#111827;">${payload.parent_name || '-'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Số Zalo:</td><td style="padding:8px 0;font-weight:700;color:#047857;"><a href="tel:${payload.phone}" style="color:#047857;text-decoration:none;">${payload.phone || '-'}</a></td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;width:130px;color:#6b7280;font-weight:600;">Họ tên phụ huynh:</td><td style="padding:8px 0;font-weight:700;color:#111827;">${pName || '-'}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Số Zalo:</td><td style="padding:8px 0;font-weight:700;color:#047857;"><a href="tel:${pPhone}" style="color:#047857;text-decoration:none;">${pPhone || '-'}</a></td></tr>
                             <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Email:</td><td style="padding:8px 0;">${payload.email || 'Không có'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Độ tuổi của con:</td><td style="padding:8px 0;">${payload.baby_age || '-'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Tài liệu đã nhận:</td><td style="padding:8px 0;font-weight:600;color:#1d4ed8;">${payload.resource_name || '-'}</td></tr>
-                            <tr><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thời gian đăng ký:</td><td style="padding:8px 0;font-size:12px;color:#9ca3af;">${payload.created_at || nowStr}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Độ tuổi của con:</td><td style="padding:8px 0;">${bAge || '-'}</td></tr>
+                            <tr><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thời gian tải:</td><td style="padding:8px 0;font-size:12px;color:#9ca3af;">${payload.created_at || nowStr}</td></tr>
                         </table>
                         <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;text-align:center;">
-                            <a href="https://zalo.me/${(payload.phone || '').replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#0284c7;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;">Kết Nối Zalo Với Mẹ</a>
+                            ${pPhone ? `<a href="https://zalo.me/${pPhone.replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#0068ff;color:#ffffff;text-decoration:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;margin:3px;">💬 Kết Nối Zalo Với Mẹ</a>` : ''}
+                            <a href="${siteBaseUrl}/admin/?tab=leads" target="_blank" style="display:inline-block;background:#174c3b;color:#ffffff;text-decoration:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;margin:3px;">⚙️ Quản Trị Khách Hàng</a>
                         </div>
                     </div>
                 </div>`;
             } else if (type === 'evaluation') {
                 if (emailCfg.notify_on_evaluation === false) return null;
-                const riskTitle = payload.risk_title || (payload.risk_level === 'high' ? 'Nguy cơ cao' : (payload.risk_level === 'medium' ? 'Nguy cơ trung bình' : 'Nguy cơ thấp'));
-                const riskColor = payload.risk_level === 'high' ? '#dc2626' : (payload.risk_level === 'medium' ? '#d97706' : '#059669');
-                const riskBg = payload.risk_level === 'high' ? '#fee2e2' : (payload.risk_level === 'medium' ? '#fef3c7' : '#d1fae5');
-                
-                subject = `[Phiếu Đánh Giá Dinh Dưỡng] Bé ${payload.child_name || 'Bé'} (${payload.child_age || '-'}) - ${riskTitle}`;
-                bodyText = `THÔNG BÁO PHIẾU ĐÁNH GIÁ DINH DƯỠNG MỚI\n\n` +
-                    `- Họ tên bé: ${payload.child_name || 'Chưa cập nhật'}\n` +
-                    `- Tuổi / Giới tính: ${payload.child_age || '-'} | ${payload.gender || '-'}\n` +
-                    `- Phụ huynh: ${payload.parent_name || 'Phụ huynh'} (SĐT: ${payload.phone || 'Chưa có'})\n` +
-                    `- Thể trạng: ${payload.weight ? payload.weight + ' kg' : '-'} / ${payload.height ? payload.height + ' cm' : '-'}\n` +
-                    `- Mức độ nguy cơ: ${riskTitle} (Điểm: ${payload.score || 0})\n` +
-                    `- Khẩu phần / Thói quen ăn: ${payload.daily_diet || '-'}\n` +
-                    `- Dị ứng thực phẩm: ${Array.isArray(payload.allergies) ? payload.allergies.join(', ') : (payload.allergies || 'Không có')}\n` +
-                    `- Khó khăn khác: ${payload.other_difficulties || '-'}\n` +
-                    `- Lượng nước uống: ${payload.water || '-'}\n` +
-                    `- Thời gian gửi: ${payload.created_at || nowStr}`;
 
+                // 1. Identify distinct Checklist Name & Tag
+                let checklistTag = 'Checklist';
+                let fullChecklistTitle = payload.checklist_title || 'Phiếu Đánh Giá Sàng Lọc';
+
+                if (payload.checklist_id === 'checklist_iron_deficiency' || (payload.checklist_title && /thiếu sắt/i.test(payload.checklist_title))) {
+                    checklistTag = 'Checklist Thiếu Sắt';
+                    fullChecklistTitle = 'Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ';
+                } else if (payload.checklist_id === 'checklist_nutrition' || (payload.checklist_title && /dinh dưỡng/i.test(payload.checklist_title))) {
+                    checklistTag = 'Checklist Dinh Dưỡng';
+                    fullChecklistTitle = 'Phiếu Sàng Lọc Dinh Dưỡng & Tiêu Hóa Của Trẻ';
+                } else if (payload.checklist_title) {
+                    let clean = payload.checklist_title.replace(/^(Phiếu|Bộ|Checklist)\s*/i, '').trim();
+                    if (clean.length > 20) {
+                        clean = clean.substring(0, 18) + '…';
+                    }
+                    checklistTag = 'Checklist ' + clean;
+                    fullChecklistTitle = payload.checklist_title;
+                }
+
+                // 2. Risk classification colors (clean, clinical look)
+                const riskTitle = payload.risk_title || (payload.risk_level === 'high' ? 'Nguy cơ cao' : (payload.risk_level === 'medium' ? 'Nguy cơ trung bình' : 'Nguy cơ thấp'));
+                const riskColor = payload.risk_level === 'high' ? '#b91c1c' : (payload.risk_level === 'medium' ? '#b45309' : '#047857');
+                const riskBg = payload.risk_level === 'high' ? '#fef2f2' : (payload.risk_level === 'medium' ? '#fffbeb' : '#ecfdf5');
+                const riskBorder = payload.risk_level === 'high' ? '#fecaca' : (payload.risk_level === 'medium' ? '#fde68a' : '#a7f3d0');
+
+                const pName = (payload.parent_name || '').trim();
+                const cName = (payload.child_name || '').trim();
+                const pPhone = (payload.phone || '').trim();
+                const cAge = (payload.child_age || '').trim();
+
+                const childDisplay = cName ? (cName.toLowerCase().startsWith('bé ') ? cName : `Bé ${cName}`) : 'Bé';
+
+                // 3. Clear, distinguishable Subject for mobile lockscreen & email list
+                if (pName && pName.toLowerCase() !== 'phụ huynh') {
+                    subject = `[${checklistTag}] PH: ${pName}${cName ? ` (${childDisplay})` : ''} - ${riskTitle}`;
+                } else if (pPhone) {
+                    subject = `[${checklistTag}] PH: ${pPhone}${cName ? ` (${childDisplay})` : ''} - ${riskTitle}`;
+                } else {
+                    subject = `[${checklistTag}] ${childDisplay}${cAge ? ` (${cAge})` : ''} - ${riskTitle}`;
+                }
+
+                // 4. Plain Text Body
+                bodyText = `THÔNG BÁO KẾT QUẢ: ${fullChecklistTitle.toUpperCase()}\n` +
+                    `----------------------------------------\n` +
+                    `📋 Bộ Checklist: ${fullChecklistTitle}\n` +
+                    `👤 Phụ huynh: ${pName || 'Chưa cung cấp'}\n` +
+                    `📞 SĐT / Zalo: ${pPhone || 'Chưa cung cấp'}\n` +
+                    `👶 Họ tên bé: ${childDisplay} (${cAge || '-'} | ${payload.gender || '-'})\n` +
+                    `⚖️ Thể trạng: Cân nặng ${payload.weight ? payload.weight + ' kg' : '-'} / Chiều cao ${payload.height ? payload.height + ' cm' : '-'}\n` +
+                    `🎯 Kết quả đánh giá: ${riskTitle}\n` +
+                    (payload.daily_diet ? `🥣 Khẩu phần / Bữa ăn: ${payload.daily_diet}\n` : '') +
+                    (payload.water ? `💧 Lượng nước / Sữa: ${payload.water}\n` : '') +
+                    (payload.allergies && payload.allergies.length ? `🚫 Dị ứng: ${Array.isArray(payload.allergies) ? payload.allergies.join(', ') : payload.allergies}\n` : '') +
+                    (payload.other_difficulties ? `⚠️ Khó khăn khác: ${payload.other_difficulties}\n` : '') +
+                    (payload.advice_summary ? `💡 Định hướng: ${payload.advice_summary}\n` : '') +
+                    `⏰ Thời gian nộp: ${payload.created_at || nowStr}\n`;
+
+                let siteBaseUrl = 'https://www.thuhien.online';
+                if (typeof window !== 'undefined' && window.location.origin && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('.local') && !window.location.hostname.includes('servbay')) {
+                    siteBaseUrl = window.location.origin;
+                }
+
+                // 5. HTML Body with Hidden Preheader for phone preview
                 htmlBody = `
-                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f9fafb;padding:20px;border-radius:12px;">
-                    <div style="background:#174c3b;padding:24px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
-                        <h1 style="margin:0;font-size:20px;font-weight:700;letter-spacing:0.5px;">THU HIỀN - CÙNG MẸ HIỂU CON</h1>
-                        <p style="margin:6px 0 0;font-size:12px;opacity:0.85;">Phiếu Đánh Giá Dinh Dưỡng Của Trẻ</p>
+                <!-- Mobile Email Preheader Preview Snippet (shows on lockscreen) -->
+                <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;">
+                    📋 ${checklistTag} • Phụ huynh: ${pName || 'Chưa để tên'}${pPhone ? ` (${pPhone})` : ''} • ${childDisplay}${cAge ? ` (${cAge})` : ''} • Kết quả: ${riskTitle}
+                </div>
+                <div style="display:none;max-height:0px;overflow:hidden;">
+                    &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+                </div>
+
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f3f4f6;padding:16px;border-radius:12px;">
+                    <!-- Header -->
+                    <div style="background:#174c3b;padding:22px 20px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
+                        <span style="display:inline-block;background:rgba(255,255,255,0.18);padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">
+                            ${checklistTag.toUpperCase()}
+                        </span>
+                        <h1 style="margin:0;font-size:18px;font-weight:700;line-height:1.4;">${fullChecklistTitle}</h1>
+                        <p style="margin:6px 0 0;font-size:12px;color:#d1fae5;opacity:0.9;">Thu Hiền - Cùng Mẹ Hiểu Con • Thông báo kết quả nộp phiếu mới</p>
                     </div>
-                    <div style="background:#ffffff;padding:24px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
-                        <div style="display:inline-block;background:${riskBg};border:1px solid ${riskColor};color:${riskColor};font-size:12px;font-weight:700;padding:5px 12px;border-radius:9999px;margin-bottom:16px;">
-                            ${riskTitle.toUpperCase()} (ĐIỂM SỐ: ${payload.score || 0})
+
+                    <!-- Main Content Card -->
+                    <div style="background:#ffffff;padding:20px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
+                        
+                        <!-- Parent & Classification Summary Box -->
+                        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;margin-bottom:18px;">
+                            <table style="width:100%;border-collapse:collapse;">
+                                <tr>
+                                    <td style="vertical-align:top;padding-right:12px;">
+                                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#64748b;letter-spacing:0.5px;">Phụ huynh</div>
+                                        <div style="font-size:15px;font-weight:700;color:#0f172a;margin-top:2px;">
+                                            ${pName || 'Chưa cung cấp'}
+                                        </div>
+                                        <div style="font-size:13px;color:#047857;font-weight:600;margin-top:3px;">
+                                            ${pPhone ? `<a href="tel:${pPhone}" style="color:#047857;text-decoration:none;">📞 ${pPhone}</a>` : '<span style="color:#94a3b8;font-weight:normal;">Chưa để SĐT</span>'}
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align:top;text-align:right;border-left:1px solid #e2e8f0;padding-left:12px;">
+                                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#64748b;letter-spacing:0.5px;">Kết quả đánh giá</div>
+                                        <div style="display:inline-block;background:${riskBg};border:1px solid ${riskBorder};color:${riskColor};font-size:12px;font-weight:700;padding:4px 10px;border-radius:9999px;margin-top:4px;">
+                                            ${riskTitle}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
+
+                        <!-- Details Table -->
                         <table style="width:100%;border-collapse:collapse;font-size:13px;line-height:1.6;color:#374151;">
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;width:140px;color:#6b7280;font-weight:600;">Họ tên bé:</td><td style="padding:8px 0;font-weight:700;color:#111827;">${payload.child_name || 'Bé'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Độ tuổi / Giới tính:</td><td style="padding:8px 0;">${payload.child_age || '-'} (${payload.gender || '-'})</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Cân nặng / Chiều cao:</td><td style="padding:8px 0;">${payload.weight ? payload.weight + ' kg' : '-'} / ${payload.height ? payload.height + ' cm' : '-'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Phụ huynh:</td><td style="padding:8px 0;font-weight:600;">${payload.parent_name || 'Phụ huynh'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">SĐT / Zalo:</td><td style="padding:8px 0;font-weight:700;color:#047857;"><a href="tel:${payload.phone}" style="color:#047857;text-decoration:none;">${payload.phone || 'Chưa cung cấp'}</a></td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thói quen / Bữa ăn:</td><td style="padding:8px 0;color:#4b5563;">${payload.daily_diet || '-'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Dị ứng thực phẩm:</td><td style="padding:8px 0;color:#dc2626;">${Array.isArray(payload.allergies) ? payload.allergies.join(', ') : (payload.allergies || 'Không có')}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Lượng nước uống:</td><td style="padding:8px 0;">${payload.water || '-'}</td></tr>
-                            <tr style="border-bottom:1px solid #f3f4f6;"><td style="padding:8px 0;color:#6b7280;font-weight:600;">Khó khăn khác:</td><td style="padding:8px 0;color:#4b5563;">${payload.other_difficulties || '-'}</td></tr>
-                            <tr><td style="padding:8px 0;color:#6b7280;font-weight:600;">Thời gian hoàn thành:</td><td style="padding:8px 0;font-size:12px;color:#9ca3af;">${payload.created_at || nowStr}</td></tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;">
+                                <td style="padding:8px 0;width:130px;color:#6b7280;font-weight:600;">Bộ Checklist:</td>
+                                <td style="padding:8px 0;font-weight:700;color:#174c3b;">${fullChecklistTitle}</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;">
+                                <td style="padding:8px 0;color:#6b7280;font-weight:600;">Thông tin bé:</td>
+                                <td style="padding:8px 0;font-weight:700;color:#111827;">${cName || 'Bé'} <span style="font-weight:normal;color:#6b7280;">(${cAge || '-'} | ${payload.gender || '-'})</span></td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #f3f4f6;">
+                                <td style="padding:8px 0;color:#6b7280;font-weight:600;">Thể trạng của bé:</td>
+                                <td style="padding:8px 0;">Cân nặng: <strong>${payload.weight ? payload.weight + ' kg' : '-'}</strong> • Chiều cao: <strong>${payload.height ? payload.height + ' cm' : '-'}</strong></td>
+                            </tr>
+                            ${payload.daily_diet ? `
+                            <tr style="border-bottom:1px solid #f3f4f6;">
+                                <td style="padding:8px 0;color:#6b7280;font-weight:600;">Khẩu phần / Bữa ăn:</td>
+                                <td style="padding:8px 0;color:#4b5563;">${payload.daily_diet}</td>
+                            </tr>` : ''}
+                            ${payload.water ? `
+                            <tr style="border-bottom:1px solid #f3f4f6;">
+                                <td style="padding:8px 0;color:#6b7280;font-weight:600;">Lượng nước / Sữa:</td>
+                                <td style="padding:8px 0;color:#4b5563;">${payload.water}</td>
+                            </tr>` : ''}
+                            ${payload.allergies && payload.allergies.length ? `
+                            <tr style="border-bottom:1px solid #f3f4f6;">
+                                <td style="padding:8px 0;color:#6b7280;font-weight:600;">Dị ứng thực phẩm:</td>
+                                <td style="padding:8px 0;color:#dc2626;font-weight:600;">${Array.isArray(payload.allergies) ? payload.allergies.join(', ') : payload.allergies}</td>
+                            </tr>` : ''}
+                            ${payload.other_difficulties ? `
+                            <tr style="border-bottom:1px solid #f3f4f6;">
+                                <td style="padding:8px 0;color:#6b7280;font-weight:600;">Khó khăn khác:</td>
+                                <td style="padding:8px 0;color:#4b5563;">${payload.other_difficulties}</td>
+                            </tr>` : ''}
+                            ${payload.advice_summary ? `
+                            <tr style="border-bottom:1px solid #f3f4f6;">
+                                <td style="padding:8px 0;color:#6b7280;font-weight:600;">Định hướng / Lưu ý:</td>
+                                <td style="padding:8px 0;color:#1e3a8a;font-style:italic;">${payload.advice_summary}</td>
+                            </tr>` : ''}
+                            <tr>
+                                <td style="padding:8px 0;color:#6b7280;font-weight:600;">Thời gian nộp:</td>
+                                <td style="padding:8px 0;font-size:12px;color:#9ca3af;">${payload.created_at || nowStr}</td>
+                            </tr>
                         </table>
+
+                        <!-- Action Buttons -->
                         <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;text-align:center;">
-                            ${payload.phone ? `<a href="https://zalo.me/${(payload.phone || '').replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#0284c7;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;margin-right:8px;">Nhắn Zalo Cho Mẹ</a>` : ''}
-                            <a href="/danh-gia-dinh-duong/tra-cuu.html?phone=${(payload.phone || '').replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#174c3b;color:#ffffff;text-decoration:none;padding:8px 18px;border-radius:6px;font-size:12px;font-weight:600;">Xem Phiếu Tra Cứu</a>
+                            ${pPhone ? `
+                            <a href="https://zalo.me/${pPhone.replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#0068ff;color:#ffffff;text-decoration:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;margin:3px;">💬 Nhắn Zalo Cho Mẹ</a>
+                            <a href="tel:${pPhone}" style="display:inline-block;background:#059669;color:#ffffff;text-decoration:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;margin:3px;">📞 Gọi Cho Mẹ</a>
+                            ` : ''}
+                            <a href="${siteBaseUrl}/tra-cuu/?phone=${pPhone.replace(/\D/g, '')}" target="_blank" style="display:inline-block;background:#174c3b;color:#ffffff;text-decoration:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;margin:3px;">🔍 Tra Cứu Kết Quả</a>
+                            <a href="${siteBaseUrl}/admin/?tab=evaluations" target="_blank" style="display:inline-block;background:#f3f4f6;color:#374151;border:1px solid #d1d5db;text-decoration:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;margin:3px;">⚙️ Quản Trị CRM</a>
                         </div>
                     </div>
                 </div>`;
@@ -2407,16 +2573,24 @@ const DB = (() => {
                 subject = `[Kiểm Tra Hệ Thống] Email thử nghiệm từ Website Thu Hiền`;
                 bodyText = `Xin chào,\n\nĐây là email kiểm tra kết nối từ hệ thống quản trị Thu Hiền - Cùng Mẹ Hiểu Con.\nNếu bạn nhận được email này, cấu hình thông báo đã hoạt động thành công!\n\nThời gian: ${nowStr}`;
                 htmlBody = `
-                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f9fafb;padding:20px;border-radius:12px;">
-                    <div style="background:#174c3b;padding:24px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
-                        <h1 style="margin:0;font-size:20px;font-weight:700;letter-spacing:0.5px;">THU HIỀN - CÙNG MẸ HIỂU CON</h1>
-                        <p style="margin:6px 0 0;font-size:12px;opacity:0.85;">Kiểm Tra Kết Nối Email Thông Báo</p>
+                <!-- Mobile Email Preheader -->
+                <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;">
+                    ✅ Kiểm tra cấu hình email thông báo thành công • Website Thu Hiền - Cùng Mẹ Hiểu Con
+                </div>
+                <div style="display:none;max-height:0px;overflow:hidden;">&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+                <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f3f4f6;padding:16px;border-radius:12px;">
+                    <div style="background:#174c3b;padding:22px 20px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
+                        <span style="display:inline-block;background:rgba(255,255,255,0.18);padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">
+                            KIỂM TRA HỆ THỐNG
+                        </span>
+                        <h1 style="margin:0;font-size:18px;font-weight:700;line-height:1.4;">Kiểm Tra Kết Nối Email Thông Báo</h1>
+                        <p style="margin:6px 0 0;font-size:12px;color:#d1fae5;opacity:0.9;">Thu Hiền - Cùng Mẹ Hiểu Con</p>
                     </div>
-                    <div style="background:#ffffff;padding:24px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
+                    <div style="background:#ffffff;padding:20px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
                         <div style="background:#ecfdf5;border:1px solid #10b981;color:#065f46;padding:12px 16px;border-radius:8px;font-size:13px;line-height:1.5;margin-bottom:16px;">
                             <strong>✓ THÀNH CÔNG:</strong> Email kiểm tra kết nối từ Website Thu Hiền đã hoạt động chuẩn xác!
                         </div>
-                        <p style="font-size:13px;color:#4b5563;margin-bottom:12px;">Khi có phụ huynh đặt lịch hẹn, tải cẩm nang hoặc làm phiếu đánh giá dinh dưỡng, hệ thống sẽ tự động gửi email báo cáo chi tiết đến hộp thư này.</p>
+                        <p style="font-size:13px;color:#4b5563;margin-bottom:12px;line-height:1.6;">Khi có phụ huynh đặt lịch hẹn, tải cẩm nang hoặc hoàn thành bất kỳ phiếu checklist đánh giá nào, hệ thống sẽ tự động gửi email báo cáo chi tiết đến hộp thư này.</p>
                         <p style="font-size:12px;color:#9ca3af;margin:0;">Thời gian gửi: ${nowStr}</p>
                     </div>
                 </div>`;
