@@ -302,7 +302,7 @@
                 <span>Nhắn Zalo Tư Vấn</span>
             </button>
 
-            <a href="../tra-cuu/" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white border border-[#174C3B] text-[#174C3B] hover:bg-zinc-50 font-bold text-sm transition-all text-center">
+            <a href="../tra-cuu/" id="btnLookupIron" class="w-full sm:w-auto px-6 py-3 rounded-full bg-white border border-[#174C3B] text-[#174C3B] hover:bg-zinc-50 font-bold text-sm transition-all text-center">
                 <span>Tra Cứu Kết Quả</span>
             </a>
         </div>
@@ -608,6 +608,11 @@
             }
         } catch (e) {
             console.warn('Evaluation save error:', e);
+        }
+
+        const lookupLink = document.getElementById('btnLookupIron');
+        if (lookupLink && parentPhone) {
+            lookupLink.href = `../tra-cuu/?phone=${encodeURIComponent(parentPhone)}`;
         }
 
         window._lastIronPayload = payload;

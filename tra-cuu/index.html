@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tra Cứu Kết Quả Đánh Giá Dinh Dưỡng | Thu Hiền</title>
-    <meta name="description" content="Tra cứu lịch sử và kết quả phiếu đánh giá tình trạng dinh dưỡng của bé theo số điện thoại phụ huynh.">
+    <title>Tra Cứu Kết Quả Đánh Giá &amp; Sàng Lọc Sức Khỏe Cho Bé | Thu Hiền</title>
+    <meta name="description" content="Tra cứu lịch sử và kết quả tất cả các bài đánh giá sức khỏe của bé theo số điện thoại phụ huynh: Checklist Thiếu Sắt, Sàng Lọc Dinh Dưỡng &amp; Tiêu Hóa.">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -12,8 +12,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 
     <!-- OpenGraph & Meta -->
-    <meta property="og:title" content="Tra Cứu Kết Quả Đánh Giá Dinh Dưỡng | Thu Hiền">
-    <meta property="og:description" content="Tra cứu lịch sử và kết quả phiếu đánh giá tình trạng dinh dưỡng của bé theo số điện thoại.">
+    <meta property="og:title" content="Tra Cứu Kết Quả Đánh Giá &amp; Sàng Lọc Sức Khỏe Cho Bé | Thu Hiền">
+    <meta property="og:description" content="Tra cứu lịch sử và kết quả tất cả các bài đánh giá sức khỏe của bé theo số điện thoại phụ huynh: Checklist Thiếu Sắt, Sàng Lọc Dinh Dưỡng &amp; Tiêu Hóa.">
     <meta property="og:image" content="../assets/images/thu-hien-hero-banner.png">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#174C3B">
@@ -78,7 +78,7 @@
             </h1>
             
             <p class="text-sm sm:text-base text-[#5F6E66] max-w-xl mx-auto leading-relaxed">
-                Nhập số điện thoại mà ba mẹ đã dùng khi thực hiện phiếu đánh giá để xem lại mức độ nguy cơ, nhận xét và định hướng chăm sóc dinh dưỡng cho con.
+                Nhập số điện thoại mà ba mẹ đã dùng khi làm bài đánh giá để tra cứu lại toàn bộ kết quả: <strong>Checklist Đánh Giá Nguy Cơ Thiếu Sắt</strong> hoặc <strong>Phiếu Sàng Lọc Dinh Dưỡng &amp; Tiêu Hóa</strong>.
             </p>
         </div>
 
@@ -108,7 +108,7 @@
                     <button 
                         type="submit" 
                         id="btnSearchLookup" 
-                        class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl bg-[#174C3B] hover:bg-[#133F31] text-white text-sm sm:text-base font-bold shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all shrink-0"
+                        class="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-2xl bg-[#174C3B] hover:bg-[#133F31] text-white text-sm sm:text-base font-bold shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all shrink-0 cursor-pointer"
                     >
                         <svg class="w-4 h-4 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -117,11 +117,14 @@
                     </button>
                 </div>
 
-                <div class="flex items-center justify-between text-xs text-[#5F6E66] pt-1">
-                    <span>Hệ thống bảo mật dữ liệu an toàn.</span>
-                    <a href="../danh-gia-dinh-duong/" class="text-[#174C3B] font-bold hover:text-[#F08A4B] transition-colors">
-                        Chưa làm phiếu? Đánh giá ngay →
-                    </a>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#5F6E66] pt-1">
+                    <span>Hệ thống bảo mật dữ liệu an toàn theo SĐT.</span>
+                    <div class="flex items-center gap-2 font-bold flex-wrap">
+                        <span class="text-zinc-400">Chưa làm bài?</span>
+                        <a href="../danh-gia-thieu-sat/" class="text-amber-700 hover:text-amber-800 hover:underline">Checklist Thiếu Sắt (14 câu) →</a>
+                        <span class="text-zinc-300">•</span>
+                        <a href="../danh-gia-dinh-duong/" class="text-[#174C3B] hover:text-[#F08A4B] hover:underline">Sàng Lọc Dinh Dưỡng (28 câu) →</a>
+                    </div>
                 </div>
             </form>
         </div>
@@ -137,10 +140,21 @@
 <footer id="globalFooter"></footer>
 
 <!-- Database and Core Scripts -->
-<script src="../assets/js/db.js?v=2.4"></script>
+<script src="../assets/js/db.js?v=2.5"></script>
 <script src="../assets/js/layout.js?v=1.1"></script>
 
 <script>
+    // Security & XSS Sanitization Utility
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     // Execute phone search
     async function executeLookup(targetPhone = null) {
         const input = document.getElementById('searchPhoneInput');
@@ -161,7 +175,7 @@
         container.innerHTML = `
             <div class="bg-white rounded-3xl p-8 border border-zinc-200 text-center space-y-3">
                 <div class="w-8 h-8 border-3 border-[#174C3B] border-t-transparent rounded-full animate-spin mx-auto"></div>
-                <p class="text-sm font-bold text-[#174C3B]">Đang tìm kiếm hồ sơ đánh giá của bé...</p>
+                <p class="text-sm font-bold text-[#174C3B]">Đang tìm kiếm tất cả hồ sơ đánh giá của bé...</p>
             </div>
         `;
 
@@ -205,12 +219,17 @@
                     <div>
                         <h3 class="text-lg font-bold text-[#174C3B]">Chưa Tìm Thấy Kết Quả</h3>
                         <p class="text-xs sm:text-sm text-[#5F6E66] max-w-md mx-auto mt-1">
-                            Hệ thống chưa ghi nhận phiếu đánh giá nào gắn với số điện thoại <strong>${searchedPhone}</strong>.
+                            Hệ thống chưa ghi nhận phiếu đánh giá nào gắn với số điện thoại <strong>${escapeHtml(searchedPhone)}</strong>.
                         </p>
                     </div>
-                    <div class="pt-2">
-                        <a href="../danh-gia-dinh-duong/" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#174C3B] hover:bg-[#133F31] text-white text-xs sm:text-sm font-bold shadow-md transition-all">
-                            <span>Thực Hiện Bài Đánh Giá Mới (5 Phút)</span>
+                    <p class="text-xs text-zinc-500 font-medium">Ba mẹ có thể chọn bài đánh giá phù hợp dưới đây để thực hiện ngay cho con:</p>
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <a href="../danh-gia-thieu-sat/" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm font-bold shadow-md transition-all">
+                            <span>Checklist Thiếu Sắt (14 câu)</span>
+                            <span>→</span>
+                        </a>
+                        <a href="../danh-gia-dinh-duong/" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#174C3B] hover:bg-[#133F31] text-white text-xs sm:text-sm font-bold shadow-md transition-all">
+                            <span>Sàng Lọc Dinh Dưỡng &amp; Tiêu Hóa (28 câu)</span>
                             <span>→</span>
                         </a>
                     </div>
@@ -219,52 +238,115 @@
             return;
         }
 
-        const countText = list.length === 1 ? '1 kết quả' : `${list.length} kết quả`;
+        const countText = list.length === 1 ? '1 bài đánh giá' : `${list.length} bài đánh giá`;
 
         const cardsHtml = list.map((item, index) => {
+            const isIron = (item.checklist_id === 'checklist_iron_deficiency') || 
+                           ((item.checklist_title || '').toLowerCase().includes('sắt')) ||
+                           ((item.source || '').toLowerCase().includes('sắt'));
+
+            const chkName = isIron 
+                ? 'Checklist Đánh Giá Nguy Cơ Thiếu Sắt' 
+                : (item.checklist_title || 'Phiếu Sàng Lọc Dinh Dưỡng & Tiêu Hóa');
+
+            const chkBadge = isIron ? `
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-900 border border-amber-300 shadow-2xs">
+                    <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                    Checklist Thiếu Sắt (14 câu)
+                </span>
+            ` : `
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-900 border border-emerald-300 shadow-2xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Sàng Lọc Dinh Dưỡng &amp; Tiêu Hóa (28 câu)
+                </span>
+            `;
+
             const riskLevel = item.risk_level || 'low';
+            let riskLabel = '';
             let badgeClass = 'bg-emerald-50 text-emerald-800 border-emerald-300';
             let dotColor = 'bg-emerald-500';
-            let borderCard = 'border-emerald-200';
+            let borderCard = isIron ? 'border-amber-200' : 'border-emerald-200';
             let feedbackBg = 'bg-emerald-50/60 border-emerald-200 text-emerald-950';
 
-            if (riskLevel === 'medium') {
-                badgeClass = 'bg-amber-50 text-amber-800 border-amber-300';
-                dotColor = 'bg-amber-500';
-                borderCard = 'border-amber-200';
-                feedbackBg = 'bg-amber-50/60 border-amber-200 text-amber-950';
-            } else if (riskLevel === 'high') {
-                badgeClass = 'bg-rose-50 text-rose-800 border-rose-300';
-                dotColor = 'bg-rose-500';
-                borderCard = 'border-rose-200';
-                feedbackBg = 'bg-rose-50/60 border-rose-200 text-rose-950';
+            if (isIron) {
+                if (riskLevel === 'high') {
+                    riskLabel = 'Nguy cơ cao';
+                    badgeClass = 'bg-rose-50 text-rose-800 border-rose-300';
+                    dotColor = 'bg-rose-500';
+                    borderCard = 'border-rose-300';
+                    feedbackBg = 'bg-rose-50/60 border-rose-200 text-rose-950';
+                } else if (riskLevel === 'medium') {
+                    riskLabel = 'Có nguy cơ thiếu sắt';
+                    badgeClass = 'bg-amber-50 text-amber-800 border-amber-300';
+                    dotColor = 'bg-amber-500';
+                    borderCard = 'border-amber-300';
+                    feedbackBg = 'bg-amber-50/60 border-amber-200 text-amber-950';
+                } else {
+                    riskLabel = 'Nguy cơ thấp';
+                }
+            } else {
+                if (riskLevel === 'high') {
+                    riskLabel = 'Nguy cơ cao';
+                    badgeClass = 'bg-rose-50 text-rose-800 border-rose-300';
+                    dotColor = 'bg-rose-500';
+                    borderCard = 'border-rose-300';
+                    feedbackBg = 'bg-rose-50/60 border-rose-200 text-rose-950';
+                } else if (riskLevel === 'medium') {
+                    riskLabel = item.risk_title ? item.risk_title.replace(/\s*\([^)]*điểm[^)]*\)/gi, '') : 'Nguy cơ trung bình';
+                    badgeClass = 'bg-amber-50 text-amber-800 border-amber-300';
+                    dotColor = 'bg-amber-500';
+                    borderCard = 'border-amber-300';
+                    feedbackBg = 'bg-amber-50/60 border-amber-200 text-amber-950';
+                } else {
+                    riskLabel = 'Nguy cơ thấp';
+                }
             }
 
-    // Security & XSS Sanitization Utility
-    function escapeHtml(str) {
-        if (str === null || str === undefined) return '';
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-    }
+            // Physical stats
+            let physicalParts = [];
+            const gender = item.gender || item.child_gender || '';
+            if (gender) physicalParts.push(`Giới tính: <strong>${escapeHtml(gender)}</strong>`);
+            if (item.weight) {
+                const w = String(item.weight).trim();
+                physicalParts.push(`Cân nặng: <strong>${escapeHtml(w.toLowerCase().includes('kg') ? w : w + ' kg')}</strong>`);
+            }
+            if (item.height) {
+                const h = String(item.height).trim();
+                physicalParts.push(`Chiều cao: <strong>${escapeHtml(h.toLowerCase().includes('cm') ? h : h + ' cm')}</strong>`);
+            }
+            const physicalStr = physicalParts.join(' • ');
 
-    // Answers details list
+            // Clinical feedback content
+            let feedbackHtml = '';
+            if (item.advice_summary || item.feedback) {
+                feedbackHtml = `<p class="whitespace-pre-line leading-relaxed">${escapeHtml(item.advice_summary || item.feedback)}</p>`;
+            } else if (isIron) {
+                if (riskLevel === 'high') {
+                    feedbackHtml = `<p class="leading-relaxed"><strong>Nguy cơ cao.</strong> Nên cho trẻ được đánh giá tình trạng sắt; thường cần kết hợp triệu chứng, chế độ ăn và các xét nghiệm như công thức máu, hemoglobin và ferritin để xác định chính xác.</p>`;
+                } else if (riskLevel === 'medium') {
+                    feedbackHtml = `<p class="leading-relaxed"><strong>Có nguy cơ thiếu sắt.</strong> Nên xem lại khẩu phần, đặc biệt lượng thực phẩm giàu sắt, và cân nhắc trao đổi với chuyên gia để đánh giá thêm.</p>`;
+                } else {
+                    feedbackHtml = `<p class="leading-relaxed"><strong>Nguy cơ thấp.</strong> Tiếp tục duy trì chế độ ăn đa dạng và có nguồn thực phẩm giàu sắt hằng ngày.</p>`;
+                }
+            } else {
+                feedbackHtml = getFeedbackContentByLevel(riskLevel);
+            }
+
+            // Answers details list
             const answers = item.answers || {};
-            const answersListHtml = Object.keys(answers).length > 0
-                ? Object.entries(answers).map(([key, val]) => `
-                    <div class="flex items-start justify-between py-1.5 border-b border-zinc-100 text-xs">
+            const answerKeys = Object.keys(answers);
+            const answersListHtml = answerKeys.length > 0
+                ? answerKeys.map(key => `
+                    <div class="flex items-start justify-between py-1.5 border-b border-zinc-100 text-xs gap-3">
                         <span class="text-[#5F6E66]">${escapeHtml(formatQuestionKey(key))}:</span>
-                        <strong class="text-[#174C3B] text-right ml-2">${escapeHtml(val)}</strong>
+                        <span class="shrink-0 text-right">${formatAnswerValue(answers[key])}</span>
                     </div>
                 `).join('')
                 : '<p class="text-xs text-zinc-400 italic">Không có chi tiết câu trả lời bổ sung.</p>';
 
             const encodedZaloText = encodeURIComponent(
-                `Chào bạn, em vừa tra cứu lại Phiếu Đánh Giá Dinh Dưỡng cho bé ${item.child_name || 'bé'} (${item.child_age || ''}).\n` +
-                `Mức độ đánh giá: ${item.risk_title || ''}.\n` +
+                `Chào Chuyên gia Thu Hiền, em vừa tra cứu lại ${chkName} cho bé ${item.child_name || 'bé'} (${item.child_age || ''}).\n` +
+                `Mức độ đánh giá: ${riskLabel}.\n` +
                 `Em muốn gửi lại kết quả để nhận tư vấn và hướng dẫn thêm cho bé ạ.`
             );
 
@@ -273,18 +355,23 @@
                     
                     <!-- Card Header -->
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-100">
-                        <div>
-                            <span class="text-[11px] font-bold text-[#8FAF91] uppercase tracking-wider block">
-                                📅 Ngày đánh giá: ${escapeHtml(item.created_at || 'Mới đây')}
-                            </span>
-                            <h3 class="text-xl sm:text-2xl font-black text-[#174C3B]">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                ${chkBadge}
+                                <span class="text-[11px] font-mono font-medium text-zinc-400">
+                                    📅 ${escapeHtml(item.created_at || 'Gần đây')}
+                                </span>
+                            </div>
+
+                            <h3 class="text-xl sm:text-2xl font-black text-[#174C3B] pt-1">
                                 Bé: ${escapeHtml(item.child_name || 'Bé')}
                             </h3>
-                            <p class="text-xs text-[#5F6E66] mt-0.5">
-                                Độ tuổi: <strong>${escapeHtml(item.child_age || '-')}</strong> • Giới tính: <strong>${escapeHtml(item.gender || 'Nam')}</strong>
-                                ${item.weight ? ` • Cân nặng: <strong>${escapeHtml(item.weight)} kg</strong>` : ''}
-                                ${item.height ? ` • Chiều cao: <strong>${escapeHtml(item.height)} cm</strong>` : ''}
+
+                            <p class="text-xs text-[#5F6E66]">
+                                Độ tuổi: <strong>${escapeHtml(item.child_age || '-')}</strong>
+                                ${physicalStr ? ` • ${physicalStr}` : ''}
                             </p>
+
                             <p class="text-xs text-[#5F6E66]">
                                 Phụ huynh: <strong>${escapeHtml(item.parent_name || 'Ba mẹ')}</strong> (${escapeHtml(item.phone || searchedPhone)})
                             </p>
@@ -294,18 +381,23 @@
                         <div class="shrink-0">
                             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border ${badgeClass}">
                                 <span class="w-2.5 h-2.5 rounded-full ${dotColor}"></span>
-                                <span>${escapeHtml((item.risk_title || 'Đã đánh giá').replace(/\s*\([^)]*điểm[^)]*\)/gi, ''))}</span>
+                                <span>${escapeHtml(riskLabel)}</span>
                             </span>
                         </div>
                     </div>
 
                     <!-- Clinical Feedback Box -->
                     <div class="p-4 sm:p-5 rounded-2xl border ${feedbackBg} leading-relaxed text-xs sm:text-sm space-y-2">
-                        <strong class="block text-sm">Nhận Xét & Đánh Giá Tình Trạng:</strong>
-                        ${getFeedbackContentByLevel(riskLevel)}
+                        <strong class="block text-sm text-[#174C3B] flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-brand-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>Nhận Xét &amp; Đánh Giá Tình Trạng Của Bé:</span>
+                        </strong>
+                        <div class="text-zinc-800">
+                            ${feedbackHtml}
+                        </div>
                     </div>
 
-                    <!-- Diet and special difficulties -->
+                    <!-- Diet and special difficulties if recorded -->
                     ${item.daily_diet ? `
                         <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/70 text-xs">
                             <span class="font-bold text-[#174C3B] block mb-1">Mô tả chế độ ăn 1 ngày của con:</span>
@@ -323,7 +415,7 @@
                     <!-- Expandable Full Answers -->
                     <details class="group border border-zinc-200 rounded-2xl p-3.5 bg-[#FAF7F0]/30 transition-all">
                         <summary class="text-xs font-bold text-[#174C3B] cursor-pointer flex items-center justify-between select-none">
-                            <span>Xem chi tiết các câu trả lời trong phiếu (${Object.keys(answers).length} mục)</span>
+                            <span>Xem chi tiết các câu trả lời trong phiếu (${answerKeys.length} mục)</span>
                             <span class="text-xs text-[#8FAF91] group-open:rotate-180 transition-transform">▼</span>
                         </summary>
                         <div class="mt-3 pt-3 border-t border-zinc-200/60 space-y-1">
@@ -338,9 +430,17 @@
                             <span>Nhận Tư Vấn Thêm Qua Zalo</span>
                         </a>
 
-                        <a href="../danh-gia-dinh-duong/" class="text-xs text-[#174C3B] font-bold hover:underline">
-                            Làm bài đánh giá mới →
-                        </a>
+                        <div class="flex items-center gap-3 text-xs font-bold">
+                            ${isIron ? `
+                                <a href="../danh-gia-dinh-duong/" class="text-[#174C3B] hover:text-[#F08A4B] hover:underline">
+                                    Làm thêm Sàng Lọc Dinh Dưỡng →
+                                </a>
+                            ` : `
+                                <a href="../danh-gia-thieu-sat/" class="text-amber-700 hover:text-amber-800 hover:underline">
+                                    Làm thêm Checklist Thiếu Sắt →
+                                </a>
+                            `}
+                        </div>
                     </div>
 
                 </div>
@@ -351,16 +451,33 @@
             <div class="space-y-4">
                 <div class="flex items-center justify-between px-2 text-xs text-[#5F6E66]">
                     <span>Tìm thấy <strong>${escapeHtml(countText)}</strong> cho số <strong>${escapeHtml(searchedPhone)}</strong></span>
-                    <button onclick="document.getElementById('searchPhoneInput').select()" class="text-[#174C3B] font-bold hover:underline">Đổi số khác</button>
+                    <button onclick="document.getElementById('searchPhoneInput').select()" class="text-[#174C3B] font-bold hover:underline cursor-pointer">Đổi số khác</button>
                 </div>
                 ${cardsHtml}
             </div>
         `;
     }
 
-    // Helper: readable question titles
+    // Helper: readable question titles for both checklists
     function formatQuestionKey(key) {
         const map = {
+            // Checklist Thiếu Sắt (14 câu)
+            iron_q1: '1. Da, môi hoặc lòng bàn tay nhợt nhạt hơn bình thường',
+            iron_q2: '2. Dễ mệt, ít vận động hoặc nhanh đuối sức',
+            iron_q3: '3. Thường xuyên biếng ăn, ăn ít hoặc giảm hứng thú ăn',
+            iron_q4: '4. Ít ăn thực phẩm giàu sắt (thịt đỏ, cá, trứng, đậu)',
+            iron_q5: '5. Kén ăn kéo dài, chế độ ăn ít đa dạng',
+            iron_q6: '6. Trẻ trên 12m uống nhiều sữa tươi/bò (>500-600ml/ngày)',
+            iron_q7: '7. Ăn dặm sau 6 tháng ít thực phẩm giàu sắt',
+            iron_q8: '8. Tiền sử sinh non, nhẹ cân khi sinh',
+            iron_q9: '9. Tăng cân chậm, chậm phát triển thể chất',
+            iron_q10: '10. Biểu hiện thèm ăn vật lạ (đất, đá lạnh, giấy...)',
+            iron_q11: '11. Chưa từng hoặc hiếm khi bổ sung sắt trước đây',
+            iron_q12: '12. Biểu hiện chân không yên (bồn chồn, cọ xát/gãi chân)',
+            iron_q13: '13. Tiền sử dị ứng / bất dung nạp thực phẩm',
+            iron_q14: '14. Không tẩy giun định kỳ 6 tháng/lần',
+
+            // Phiếu Sàng Lọc Dinh Dưỡng & Tiêu Hóa (28 câu)
             q1: 'Thói quen ăn hàng ngày',
             q2: 'Khả năng nhai nuốt',
             q3_digest: 'Triệu chứng tiêu hóa',
@@ -393,7 +510,21 @@
         return map[key] || key;
     }
 
-    // Helper: feedback text by level
+    // Helper: format answer values
+    function formatAnswerValue(val) {
+        if (val === 1 || val === '1' || val === true) {
+            return '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-rose-50 text-rose-700 border border-rose-200">Có</span>';
+        }
+        if (val === 0 || val === '0' || val === false) {
+            return '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Không</span>';
+        }
+        if (val === 2 || val === '2') {
+            return '<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-300">Có (Dấu hiệu nhạy cảm)</span>';
+        }
+        return escapeHtml(String(val || '-'));
+    }
+
+    // Helper: feedback text by level for nutrition
     function getFeedbackContentByLevel(level) {
         if (level === 'low') {
             return `

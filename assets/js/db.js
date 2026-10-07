@@ -1260,25 +1260,41 @@ const DB = (() => {
 
         getEvaluationsByPhone(phone) {
             if (!phone) return [];
-            const clean = phone.toString().replace(/\D/g, '');
+            let clean = phone.toString().replace(/\D/g, '');
             if (!clean) return [];
+            if (clean.startsWith('84') && clean.length === 11) {
+                clean = '0' + clean.slice(2);
+            }
+            const coreClean = clean.replace(/^0/, '');
             const list = this.getEvaluations();
             return list.filter(item => {
-                const itemClean = (item.phone_normalized || item.phone || '').replace(/\D/g, '');
-                return itemClean.includes(clean) || clean.includes(itemClean);
+                let itemClean = (item.phone_normalized || item.phone || '').toString().replace(/\D/g, '');
+                if (!itemClean) return false;
+                if (itemClean.startsWith('84') && itemClean.length === 11) {
+                    itemClean = '0' + itemClean.slice(2);
+                }
+                const coreItem = itemClean.replace(/^0/, '');
+                return itemClean === clean || 
+                       (coreClean.length >= 7 && coreItem.includes(coreClean)) ||
+                       (coreItem.length >= 7 && coreClean.includes(coreItem));
             });
         },
 
         async fetchEvaluationsByPhoneRemote(phone) {
-            const clean = (phone || '').toString().replace(/\D/g, '');
+            let clean = (phone || '').toString().replace(/\D/g, '');
             if (!clean) return [];
+            if (clean.startsWith('84') && clean.length === 11) {
+                clean = '0' + clean.slice(2);
+            }
             try {
                 const db = await this.initFirebase();
                 if (db) {
+                    const remoteResults = [];
+                    const deletedSet = new Set(this.getDeletedEvaluationIds().map(String));
+
+                    // 1. Query by phone_normalized
                     const snap = await db.collection('evaluations').where('phone_normalized', '==', clean).get();
                     if (!snap.empty) {
-                        const remoteResults = [];
-                        const deletedSet = new Set(this.getDeletedEvaluationIds().map(String));
                         snap.forEach(doc => {
                             const data = doc.data() || {};
                             if (data.is_deleted) {
@@ -1287,6 +1303,24 @@ const DB = (() => {
                                 remoteResults.push({ id: doc.id, ...data });
                             }
                         });
+                    }
+
+                    // 2. Fallback query by raw phone if empty
+                    if (remoteResults.length === 0) {
+                        const snapRaw = await db.collection('evaluations').where('phone', '==', phone).get();
+                        if (!snapRaw.empty) {
+                            snapRaw.forEach(doc => {
+                                const data = doc.data() || {};
+                                if (data.is_deleted) {
+                                    this.addDeletedEvaluationId(doc.id);
+                                } else if (!deletedSet.has(String(doc.id))) {
+                                    remoteResults.push({ id: doc.id, ...data });
+                                }
+                            });
+                        }
+                    }
+
+                    if (remoteResults.length > 0) {
                         this.mergeRemoteEvaluations(remoteResults);
                     }
                 }

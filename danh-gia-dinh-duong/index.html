@@ -901,7 +901,7 @@
                     <span class="text-xs text-[#5F6E66]">Ba mẹ có thể dùng số điện thoại <strong id="resSavedPhone" class="text-[#174C3B]"></strong> để tra cứu lại lịch sử bất cứ lúc nào.</span>
                 </div>
             </div>
-            <a href="../tra-cuu/" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white border border-[#8FAF91]/50 text-xs font-bold text-[#174C3B] hover:bg-[#174C3B] hover:text-white transition-all shadow-2xs shrink-0">
+            <a href="../tra-cuu/" id="resLookupLink" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-white border border-[#8FAF91]/50 text-xs font-bold text-[#174C3B] hover:bg-[#174C3B] hover:text-white transition-all shadow-2xs shrink-0">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 <span>Trang Tra Cứu</span>
             </a>
@@ -1094,6 +1094,10 @@
         document.getElementById('resChildAge').innerText = childAge;
         document.getElementById('resParentName').innerText = parentName;
         document.getElementById('resSavedPhone').innerText = parentPhone;
+        const resLookup = document.getElementById('resLookupLink');
+        if (resLookup && parentPhone) {
+            resLookup.href = `../tra-cuu/?phone=${encodeURIComponent(parentPhone)}`;
+        }
 
         const badgeEl = document.getElementById('resultBadge');
         const boxEl = document.getElementById('resultFeedbackBox');
