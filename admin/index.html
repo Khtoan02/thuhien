@@ -851,18 +851,15 @@
                     <div class="rounded-xl border border-zinc-200 bg-white shadow-xs overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs" id="evaluationsTable">
-                                <thead class="bg-zinc-50 text-zinc-500 uppercase font-semibold tracking-wider border-b border-zinc-200">
+                                <thead class="bg-zinc-50/80 text-zinc-500 uppercase font-semibold tracking-wider border-b border-zinc-200 text-[11px]">
                                     <tr>
-                                        <th class="p-3.5 pl-4">Thời Gian</th>
-                                        <th class="p-3.5">Phụ Huynh &amp; Liên Hệ</th>
-                                        <th class="p-3.5">Thông Tin Bé</th>
-                                        <th class="p-3.5">Bộ Checklist</th>
-                                        <th class="p-3.5">Điểm &amp; Nguy Cơ</th>
-                                        <th class="p-3.5">Tiến Trình Chăm Sóc (CRM)</th>
-                                        <th class="p-3.5">Ưu Tiên</th>
-                                        <th class="p-3.5">Ghi Chú CSKH</th>
-                                        <th class="p-3.5 text-center">Chi Tiết</th>
-                                        <th class="p-3.5 pr-4 text-center">Xóa</th>
+                                        <th class="py-3 px-3 pl-4 whitespace-nowrap">Thời Gian</th>
+                                        <th class="py-3 px-3">Phụ Huynh &amp; Liên Hệ</th>
+                                        <th class="py-3 px-3">Thông Tin Bé</th>
+                                        <th class="py-3 px-3">Bộ Checklist &amp; Đánh Giá</th>
+                                        <th class="py-3 px-3">Tiến Trình CRM</th>
+                                        <th class="py-3 px-3">Ghi Chú CSKH</th>
+                                        <th class="py-3 px-3 pr-4 text-right">Thao Tác</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-zinc-100 text-zinc-800" id="evaluationsTableBody">
@@ -3177,7 +3174,7 @@
         if (list.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="10" class="p-8 text-center text-zinc-500">
+                    <td colspan="7" class="p-8 text-center text-zinc-500">
                         <div class="max-w-md mx-auto space-y-2">
                             <p class="font-bold text-sm text-zinc-800">Chưa có hồ sơ khách hàng nào từ checklist</p>
                             <p class="text-xs text-zinc-400">Khi phụ huynh hoàn thành bài đánh giá, hồ sơ lead sẽ tự động lưu và chuyển vào luồng CRM tại đây.</p>
@@ -3207,27 +3204,34 @@
             const isIron = (e.checklist_id === 'checklist_iron_deficiency') || (e.checklist_title && e.checklist_title.toLowerCase().includes('sắt'));
             
             if (level === 'high') {
-                return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-50 text-rose-800 border border-rose-200 whitespace-nowrap">Nguy cơ cao</span>`;
+                return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-800 border border-rose-200 whitespace-nowrap">Nguy cơ cao</span>`;
             }
             if (level === 'medium') {
                 const label = isIron ? 'Có nguy cơ thiếu sắt' : (e.risk_title || 'Nguy cơ trung bình');
-                return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">${escapeHtml(label)}</span>`;
+                return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">${escapeHtml(label)}</span>`;
             }
-            return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 whitespace-nowrap">Nguy cơ thấp</span>`;
+            return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 whitespace-nowrap">Nguy cơ thấp</span>`;
         };
 
         tbody.innerHTML = list.map(e => {
-            let dateStr = '-';
+            let timePart = '';
+            let datePart = '';
             try {
                 if (e.created_at_iso) {
-                    dateStr = new Date(e.created_at_iso).toLocaleString('vi-VN', {
-                        day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
-                    });
+                    const d = new Date(e.created_at_iso);
+                    timePart = d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                    datePart = d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
                 } else if (e.created_at) {
-                    dateStr = e.created_at;
+                    const parts = String(e.created_at).trim().split(' ');
+                    if (parts.length >= 2) {
+                        timePart = parts[0];
+                        datePart = parts[1];
+                    } else {
+                        datePart = e.created_at;
+                    }
                 }
             } catch (err) {
-                dateStr = e.created_at || '-';
+                datePart = e.created_at || '-';
             }
 
             const cleanPhone = (e.phone || '').replace(/[^0-9]/g, '');
@@ -3254,21 +3258,15 @@
             // Distinct, clean badge for the 2 checklists without tech IDs
             const isIronChk = (e.checklist_id === 'checklist_iron_deficiency') || (chkTitle.toLowerCase().includes('sắt'));
             const chkBadgeHtml = isIronChk ? `
-                <div class="inline-flex flex-col">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-50 text-amber-900 border border-amber-200 whitespace-nowrap shadow-2xs">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                        Checklist Thiếu Sắt
-                    </span>
-                    <span class="text-[10px] text-zinc-400 mt-0.5 pl-0.5">14 câu • Đánh giá vi chất</span>
-                </div>
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-bold bg-amber-50 text-amber-900 border border-amber-200 whitespace-nowrap shadow-2xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    Checklist Thiếu Sắt
+                </span>
             ` : `
-                <div class="inline-flex flex-col">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-900 border border-emerald-200 whitespace-nowrap shadow-2xs">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                        Sàng Lọc Dinh Dưỡng
-                    </span>
-                    <span class="text-[10px] text-zinc-400 mt-0.5 pl-0.5">28 câu • Tiêu hóa & thể trạng</span>
-                </div>
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-50 text-emerald-900 border border-emerald-200 whitespace-nowrap shadow-2xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Sàng Lọc Dinh Dưỡng
+                </span>
             `;
 
             const searchIndex = [
@@ -3281,7 +3279,7 @@
             ].join(' ').toLowerCase();
 
             return `
-                <tr class="hover:bg-zinc-50/80 transition-colors eval-row" 
+                <tr class="hover:bg-zinc-50/80 transition-colors eval-row group" 
                     data-id="${safeId}"
                     data-checklist="${escapeHtml(e.checklist_id || 'checklist_nutrition')}"
                     data-crm="${escapeHtml(crmSt)}"
@@ -3289,14 +3287,17 @@
                     data-priority="${escapeHtml(crmPr)}"
                     data-search="${escapeHtml(searchIndex)}">
                     
-                    <td class="p-3.5 pl-4 text-zinc-500 font-mono text-[11px] whitespace-nowrap">
-                        ${escapeHtml(dateStr)}
+                    <!-- 1. Thời Gian -->
+                    <td class="py-3 px-3 pl-4 text-zinc-500 font-mono text-[11px] whitespace-nowrap align-top">
+                        <div class="font-bold text-zinc-800 leading-tight">${timePart || '-'}</div>
+                        <div class="text-[10px] text-zinc-400 mt-0.5">${datePart}</div>
                     </td>
 
-                    <td class="p-3.5">
-                        <div class="font-bold text-zinc-900">${escapeHtml(e.parent_name || 'Phụ huynh')}</div>
-                        <div class="flex items-center gap-1.5 mt-0.5">
-                            <span class="font-mono text-zinc-600 text-xs">${escapeHtml(e.phone || '-')}</span>
+                    <!-- 2. Phụ Huynh & Liên Hệ -->
+                    <td class="py-3 px-3 align-top min-w-[145px]">
+                        <div class="font-bold text-zinc-900 leading-snug">${escapeHtml(e.parent_name || 'Phụ huynh')}</div>
+                        <div class="flex items-center gap-1.5 mt-1">
+                            <span class="font-mono text-zinc-600 text-xs font-medium">${escapeHtml(e.phone || '-')}</span>
                             ${cleanPhone ? `
                                 <a href="https://zalo.me/${escapeHtml(cleanPhone)}" target="_blank" class="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 text-[10px] font-bold hover:bg-blue-100 border border-blue-200" title="Nhắn Zalo">
                                     Zalo
@@ -3308,57 +3309,54 @@
                         </div>
                     </td>
 
-                    <td class="p-3.5">
-                        <div class="font-semibold text-zinc-800">${childInfo}</div>
-                        <div class="text-[11px] text-zinc-500">${escapeHtml(physicalStr)}</div>
+                    <!-- 3. Thông Tin Bé -->
+                    <td class="py-3 px-3 align-top min-w-[140px]">
+                        <div class="font-semibold text-zinc-800 leading-snug">${childInfo}</div>
+                        <div class="text-[11px] text-zinc-500 mt-0.5">${escapeHtml(physicalStr)}</div>
                     </td>
 
-                    <td class="p-3.5 whitespace-nowrap">
-                        ${chkBadgeHtml}
+                    <!-- 4. Bộ Checklist & Đánh Giá (Merged) -->
+                    <td class="py-3 px-3 align-top whitespace-nowrap min-w-[160px]">
+                        <div class="space-y-1">
+                            <div>${chkBadgeHtml}</div>
+                            <div>${riskBadge(e)}</div>
+                        </div>
                     </td>
 
-                    <td class="p-3.5 whitespace-nowrap">
-                        ${riskBadge(e)}
+                    <!-- 5. Tiến Trình CRM & Ưu Tiên (Merged) -->
+                    <td class="py-3 px-3 align-top whitespace-nowrap w-[140px]">
+                        <div class="space-y-1 w-[138px]">
+                            <select onchange="updateEvalCRMStatus(decodeURIComponent('${safeId}'), this.value)" class="h-6.5 w-full px-2 rounded text-[11px] font-semibold focus:outline-none border transition-colors ${CRM_STATUS_MAP[crmSt]?.bg || 'bg-white border-zinc-200 text-zinc-700'}" title="Trạng thái chăm sóc CRM">
+                                <option value="new" ${crmSt === 'new' ? 'selected' : ''}>Mới tiếp nhận</option>
+                                <option value="contacted" ${crmSt === 'contacted' ? 'selected' : ''}>Đã liên hệ</option>
+                                <option value="consulting" ${crmSt === 'consulting' ? 'selected' : ''}>Đang tư vấn 1:1</option>
+                                <option value="booked" ${crmSt === 'booked' ? 'selected' : ''}>Đã chốt lịch hẹn</option>
+                                <option value="converted" ${crmSt === 'converted' ? 'selected' : ''}>Đã chuyển đổi</option>
+                                <option value="lost" ${crmSt === 'lost' ? 'selected' : ''}>Tạm ngưng</option>
+                            </select>
+                            <select onchange="updateEvalPriority(decodeURIComponent('${safeId}'), this.value)" class="h-5.5 w-full px-1.5 rounded text-[10px] font-semibold focus:outline-none border ${CRM_PRIORITY_MAP[crmPr]?.bg || 'bg-zinc-50 border-zinc-200 text-zinc-700'}" title="Mức độ ưu tiên">
+                                <option value="urgent" ${crmPr === 'urgent' ? 'selected' : ''}>Cần gọi gấp</option>
+                                <option value="high" ${crmPr === 'high' ? 'selected' : ''}>Ưu tiên cao</option>
+                                <option value="normal" ${crmPr === 'normal' ? 'selected' : ''}>Bình thường</option>
+                            </select>
+                        </div>
                     </td>
 
-                    <!-- Live CRM Status Selector -->
-                    <td class="p-3.5">
-                        <select onchange="updateEvalCRMStatus(decodeURIComponent('${safeId}'), this.value)" class="h-7 px-2 rounded-md text-xs font-semibold focus:outline-none border transition-colors ${CRM_STATUS_MAP[crmSt]?.bg || 'bg-white border-zinc-200 text-zinc-700'}">
-                            <option value="new" ${crmSt === 'new' ? 'selected' : ''}>Mới tiếp nhận</option>
-                            <option value="contacted" ${crmSt === 'contacted' ? 'selected' : ''}>Đã liên hệ</option>
-                            <option value="consulting" ${crmSt === 'consulting' ? 'selected' : ''}>Đang tư vấn 1:1</option>
-                            <option value="booked" ${crmSt === 'booked' ? 'selected' : ''}>Đã chốt lịch hẹn</option>
-                            <option value="converted" ${crmSt === 'converted' ? 'selected' : ''}>Đã chuyển đổi</option>
-                            <option value="lost" ${crmSt === 'lost' ? 'selected' : ''}>Tạm ngưng</option>
-                        </select>
+                    <!-- 6. Ghi Chú CSKH -->
+                    <td class="py-3 px-3 align-top">
+                        <input type="text" value="${escapeHtml(e.crm_notes || '')}" placeholder="Ghi chú CSKH..." onblur="DB.updateEvaluationCRMNotes(decodeURIComponent('${safeId}'), this.value)" class="w-full min-w-[110px] max-w-[160px] h-7 px-2 py-1 rounded border border-zinc-200 bg-transparent text-xs text-zinc-700 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500">
                     </td>
 
-                    <!-- Priority Selector -->
-                    <td class="p-3.5 whitespace-nowrap">
-                        <select onchange="updateEvalPriority(decodeURIComponent('${safeId}'), this.value)" class="h-7 px-1.5 rounded-md text-[11px] font-semibold focus:outline-none border ${CRM_PRIORITY_MAP[crmPr]?.bg || 'bg-zinc-50 border-zinc-200 text-zinc-700'}">
-                            <option value="urgent" ${crmPr === 'urgent' ? 'selected' : ''}>Cần gọi gấp</option>
-                            <option value="high" ${crmPr === 'high' ? 'selected' : ''}>Ưu tiên cao</option>
-                            <option value="normal" ${crmPr === 'normal' ? 'selected' : ''}>Bình thường</option>
-                        </select>
-                    </td>
-
-                    <!-- Inline CSKH Notes -->
-                    <td class="p-3.5 min-w-[160px] max-w-xs">
-                        <input type="text" value="${escapeHtml(e.crm_notes || '')}" placeholder="Ghi chú CSKH..." onblur="DB.updateEvaluationCRMNotes(decodeURIComponent('${safeId}'), this.value)" class="w-full px-2 py-1 rounded border border-zinc-200 bg-transparent text-xs text-zinc-700 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500">
-                    </td>
-
-                    <!-- View Detail Button -->
-                    <td class="p-3.5 text-center whitespace-nowrap">
-                        <button onclick="openEvalDetail(decodeURIComponent('${safeId}'))" class="h-7 px-2.5 rounded border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 font-semibold text-xs transition-colors">
-                            Xem &amp; CSKH
-                        </button>
-                    </td>
-
-                    <!-- Delete Button -->
-                    <td class="p-3.5 pr-4 text-center">
-                        <button onclick="deleteEvaluationRow(decodeURIComponent('${safeId}'))" class="text-zinc-400 hover:text-red-600 p-1" title="Xóa hồ sơ">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        </button>
+                    <!-- 7. Thao Tác (Merged) -->
+                    <td class="py-3 px-3 pr-4 text-right align-top whitespace-nowrap">
+                        <div class="flex items-center justify-end gap-1.5">
+                            <button onclick="openEvalDetail(decodeURIComponent('${safeId}'))" class="h-7 px-2.5 rounded border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 font-semibold text-xs transition-colors flex items-center gap-1 shadow-2xs" title="Xem hồ sơ &amp; CSKH">
+                                <span>Xem &amp; CSKH</span>
+                            </button>
+                            <button onclick="deleteEvaluationRow(decodeURIComponent('${safeId}'))" class="h-7 w-7 rounded border border-transparent hover:border-zinc-200 hover:bg-rose-50 text-zinc-400 hover:text-rose-600 flex items-center justify-center transition-colors" title="Xóa hồ sơ">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
