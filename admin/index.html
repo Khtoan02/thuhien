@@ -836,9 +836,9 @@
 
                             <select id="evalRiskFilter" class="h-8 rounded-md border border-zinc-200 bg-white px-2.5 text-xs text-zinc-800 focus:outline-none focus:ring-1 focus:ring-brand-500">
                                 <option value="all">Tất cả mức nguy cơ</option>
-                                <option value="high">Nguy cơ cao (&gt;10đ)</option>
-                                <option value="medium">Nguy cơ trung bình (5-10đ)</option>
-                                <option value="low">Nguy cơ thấp (1-5đ)</option>
+                                <option value="high">Nguy cơ cao</option>
+                                <option value="medium">Có nguy cơ / Trung bình</option>
+                                <option value="low">Nguy cơ thấp</option>
                             </select>
                         </div>
 
@@ -3155,15 +3155,20 @@
         if (document.getElementById('badgeNavEvaluations')) document.getElementById('badgeNavEvaluations').innerText = total;
         if (document.getElementById('crmFilteredCount')) document.getElementById('crmFilteredCount').innerText = total;
 
-        // Populate Checklist Filter Dropdown
+        // Populate Checklist Filter Dropdown dynamically with exact available checklists
         const chkFilterSelect = document.getElementById('evalChecklistFilter');
-        if (chkFilterSelect && chkFilterSelect.options.length <= 1) {
+        if (chkFilterSelect) {
+            const currentVal = chkFilterSelect.value;
+            chkFilterSelect.innerHTML = '<option value="all">Tất cả bộ checklist</option>';
             checklists.forEach(c => {
                 const opt = document.createElement('option');
                 opt.value = c.id;
                 opt.textContent = c.title;
                 chkFilterSelect.appendChild(opt);
             });
+            if (currentVal && Array.from(chkFilterSelect.options).some(o => o.value === currentVal)) {
+                chkFilterSelect.value = currentVal;
+            }
         }
 
         const tbody = document.getElementById('evaluationsTableBody');
@@ -3177,11 +3182,14 @@
                             <p class="font-bold text-sm text-zinc-800">Chưa có hồ sơ khách hàng nào từ checklist</p>
                             <p class="text-xs text-zinc-400">Khi phụ huynh hoàn thành bài đánh giá, hồ sơ lead sẽ tự động lưu và chuyển vào luồng CRM tại đây.</p>
                             <div class="pt-3 flex flex-wrap items-center justify-center gap-2">
+                                <a href="../danh-gia-thieu-sat/" target="_blank" class="px-3.5 py-1.5 rounded-md bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition-colors">
+                                    Làm Thử Checklist Thiếu Sắt
+                                </a>
                                 <a href="../danh-gia-dinh-duong/" target="_blank" class="px-3.5 py-1.5 rounded-md bg-brand-500 text-white text-xs font-bold hover:bg-brand-600 transition-colors">
-                                    Làm Thử 1 Bài Đánh Giá
+                                    Làm Thử Sàng Lọc Dinh Dưỡng
                                 </a>
                                 <button onclick="loadSampleEvaluations()" class="px-3.5 py-1.5 rounded-md border border-zinc-200 bg-white text-zinc-700 text-xs font-semibold hover:bg-zinc-50 transition-colors">
-                                    Nạp 3 Hồ Sơ Mẫu
+                                    Nạp Hồ Sơ Mẫu
                                 </button>
                                 <button onclick="syncEvaluationsFromCloud()" class="px-3.5 py-1.5 rounded-md border border-emerald-200 bg-emerald-50 text-emerald-800 text-xs font-semibold hover:bg-emerald-100 transition-colors">
                                     Đồng Bộ Từ Firestore
@@ -3194,14 +3202,18 @@
             return;
         }
 
-        const riskBadge = (level, score) => {
+        const riskBadge = (e) => {
+            const level = e.risk_level || 'low';
+            const isIron = (e.checklist_id === 'checklist_iron_deficiency') || (e.checklist_title && e.checklist_title.toLowerCase().includes('sắt'));
+            
             if (level === 'high') {
-                return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 border border-rose-200" title="Điểm: ${score || '>10'}">Cao (${score || '>10'}đ)</span>`;
+                return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-50 text-rose-800 border border-rose-200 whitespace-nowrap">Nguy cơ cao</span>`;
             }
             if (level === 'medium') {
-                return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 border border-amber-200" title="Điểm: ${score || '5-10'}">TB (${score || '5-10'}đ)</span>`;
+                const label = isIron ? 'Có nguy cơ thiếu sắt' : (e.risk_title || 'Nguy cơ trung bình');
+                return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">${escapeHtml(label)}</span>`;
             }
-            return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200" title="Điểm: ${score || '1-5'}">Thấp (${score || '1-5'}đ)</span>`;
+            return `<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 whitespace-nowrap">Nguy cơ thấp</span>`;
         };
 
         tbody.innerHTML = list.map(e => {
@@ -3225,6 +3237,39 @@
             const safeId = encodeURIComponent(String(e.id || ''));
             const crmSt = e.crm_status || 'new';
             const crmPr = e.crm_priority || (e.risk_level === 'high' ? 'urgent' : 'normal');
+
+            // Format physical measurements
+            let physicalParts = [];
+            if (childGender) physicalParts.push(childGender);
+            if (e.weight) {
+                const w = String(e.weight).trim();
+                physicalParts.push(w.toLowerCase().includes('kg') ? w : `${w} kg`);
+            }
+            if (e.height) {
+                const h = String(e.height).trim();
+                physicalParts.push(h.toLowerCase().includes('cm') ? h : `${h} cm`);
+            }
+            const physicalStr = physicalParts.length > 0 ? physicalParts.join(' • ') : '-';
+
+            // Distinct, clean badge for the 2 checklists without tech IDs
+            const isIronChk = (e.checklist_id === 'checklist_iron_deficiency') || (chkTitle.toLowerCase().includes('sắt'));
+            const chkBadgeHtml = isIronChk ? `
+                <div class="inline-flex flex-col">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-50 text-amber-900 border border-amber-200 whitespace-nowrap shadow-2xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                        Checklist Thiếu Sắt
+                    </span>
+                    <span class="text-[10px] text-zinc-400 mt-0.5 pl-0.5">14 câu • Đánh giá vi chất</span>
+                </div>
+            ` : `
+                <div class="inline-flex flex-col">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-900 border border-emerald-200 whitespace-nowrap shadow-2xs">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        Sàng Lọc Dinh Dưỡng
+                    </span>
+                    <span class="text-[10px] text-zinc-400 mt-0.5 pl-0.5">28 câu • Tiêu hóa & thể trạng</span>
+                </div>
+            `;
 
             const searchIndex = [
                 e.parent_name || '',
@@ -3265,16 +3310,15 @@
 
                     <td class="p-3.5">
                         <div class="font-semibold text-zinc-800">${childInfo}</div>
-                        <div class="text-[11px] text-zinc-500">${childGender ? escapeHtml(childGender) + ' • ' : ''}${escapeHtml(e.weight || '-')}</div>
-                    </td>
-
-                    <td class="p-3.5 max-w-[170px]">
-                        <span class="text-zinc-800 font-medium block truncate text-[11px]" title="${chkTitle}">${chkTitle}</span>
-                        <span class="text-[10px] text-zinc-400 font-mono">${escapeHtml(e.checklist_id || 'dinh-duong')}</span>
+                        <div class="text-[11px] text-zinc-500">${escapeHtml(physicalStr)}</div>
                     </td>
 
                     <td class="p-3.5 whitespace-nowrap">
-                        ${riskBadge(e.risk_level, e.score)}
+                        ${chkBadgeHtml}
+                    </td>
+
+                    <td class="p-3.5 whitespace-nowrap">
+                        ${riskBadge(e)}
                     </td>
 
                     <!-- Live CRM Status Selector -->
@@ -3299,8 +3343,8 @@
                     </td>
 
                     <!-- Inline CSKH Notes -->
-                    <td class="p-3.5 max-w-xs">
-                        <input type="text" value="${escapeHtml(e.crm_notes || '')}" placeholder="Ghi chú CSKH..." onblur="DB.updateEvaluationCRMNotes(decodeURIComponent('${safeId}'), this.value)" class="w-full px-2 py-1 rounded border border-zinc-200 bg-transparent text-xs text-zinc-700 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500">
+                    <td class="p-3.5 min-w-[160px] max-w-xs">
+                        <input type="text" value="${escapeHtml(e.crm_notes || '')}" placeholder="Ghi chú CSKH..." onblur="DB.updateEvaluationCRMNotes(decodeURIComponent('${safeId}'), this.value)" class="w-full px-2 py-1 rounded border border-zinc-200 bg-transparent text-xs text-zinc-700 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-brand-500">
                     </td>
 
                     <!-- View Detail Button -->
@@ -3353,28 +3397,59 @@
             return;
         }
 
+        const allEvals = (typeof DB.getEvaluations === 'function') ? DB.getEvaluations() : [];
+
         grid.innerHTML = checklists.map(c => {
             const isActive = c.status === 'active';
-            const fullUrl = window.location.origin + c.path;
+            const isIron = (c.id === 'checklist_iron_deficiency') || (c.title && c.title.toLowerCase().includes('sắt'));
+
+            // Real CRM statistics for this checklist
+            const evalsForThis = allEvals.filter(ev => {
+                if (ev.checklist_id === c.id) return true;
+                if (isIron && (ev.checklist_title || '').toLowerCase().includes('sắt')) return true;
+                if (!isIron && (ev.checklist_title || '').toLowerCase().includes('dinh dưỡng')) return true;
+                return false;
+            });
+            const subCount = evalsForThis.length;
+            const highRiskCount = evalsForThis.filter(ev => ev.risk_level === 'high').length;
+            const inCareCount = evalsForThis.filter(ev => ['consulting', 'booked', 'converted'].includes(ev.crm_status)).length;
 
             return `
-                <div class="p-5 bg-white border ${isActive ? 'border-zinc-200' : 'border-zinc-200/60 bg-zinc-50/50'} rounded-xl shadow-xs space-y-3 relative flex flex-col justify-between">
+                <div class="p-5 bg-white border ${isIron ? 'border-amber-200/90' : 'border-emerald-200/90'} rounded-xl shadow-xs space-y-4 relative flex flex-col justify-between hover:shadow-md transition-shadow">
                     <div>
                         <div class="flex items-start justify-between gap-3 mb-2">
                             <div>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200">${escapeHtml(c.category || 'Dinh Dưỡng')}</span>
-                                <h4 class="font-bold text-sm text-zinc-900 mt-1">${escapeHtml(c.title)}</h4>
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${isIron ? 'bg-amber-100 text-amber-900 border border-amber-300' : 'bg-emerald-100 text-emerald-900 border border-emerald-300'}">
+                                    ${escapeHtml(c.category || (isIron ? 'Đánh Giá Vi Chất' : 'Dinh Dưỡng & Thể Trạng'))}
+                                </span>
+                                <h4 class="font-bold text-base text-zinc-900 mt-1.5 leading-snug">${escapeHtml(c.title)}</h4>
                             </div>
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold ${isActive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-zinc-100 text-zinc-600'}">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold shrink-0 ${isActive ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-zinc-100 text-zinc-600'}">
                                 ${isActive ? 'Đang mở' : 'Bản nháp'}
                             </span>
                         </div>
 
-                        <p class="text-xs text-zinc-600 leading-relaxed line-clamp-2">${escapeHtml(c.description || 'Chưa có mô tả')}</p>
+                        <p class="text-xs text-zinc-600 leading-relaxed">${escapeHtml(c.description || 'Chưa có mô tả')}</p>
+
+                        <!-- Live CRM Statistics for this checklist -->
+                        <div class="grid grid-cols-3 gap-2 p-2.5 rounded-lg bg-zinc-50 border border-zinc-100 text-center mt-3">
+                            <div>
+                                <div class="text-[10px] text-zinc-400 uppercase font-semibold">Lượt nộp CRM</div>
+                                <div class="text-xs font-bold text-zinc-900 mt-0.5">${subCount} hồ sơ</div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] text-rose-500 uppercase font-semibold">Nguy cơ cao</div>
+                                <div class="text-xs font-bold text-rose-600 mt-0.5">${highRiskCount} bé</div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] text-brand-600 uppercase font-semibold">Đang tư vấn</div>
+                                <div class="text-xs font-bold text-brand-700 mt-0.5">${inCareCount} mẹ</div>
+                            </div>
+                        </div>
 
                         <div class="grid grid-cols-2 gap-2 pt-3 text-[11px] text-zinc-500 border-t border-zinc-100 mt-3">
-                            <div><strong>Độ tuổi:</strong> ${escapeHtml(c.target_age || 'Tất cả')}</div>
-                            <div><strong>Số câu:</strong> ${c.question_count || 10} câu trắc nghiệm</div>
+                            <div><strong>Độ tuổi áp dụng:</strong> ${escapeHtml(c.target_age || 'Tất cả')}</div>
+                            <div><strong>Quy mô câu hỏi:</strong> ${c.question_count || 10} câu trắc nghiệm</div>
                         </div>
 
                         ${c.lead_magnet ? `
@@ -3628,12 +3703,14 @@
         const crmPr = item.crm_priority || (item.risk_level === 'high' ? 'urgent' : 'normal');
 
         let riskBadge = '';
+        const isIron = (item.checklist_id === 'checklist_iron_deficiency') || (item.checklist_title && item.checklist_title.toLowerCase().includes('sắt'));
         if (item.risk_level === 'high') {
-            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200">Nguy Cơ Cao (>10 Điểm)</span>';
+            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200">Nguy cơ cao</span>';
         } else if (item.risk_level === 'medium') {
-            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Nguy Cơ TB (5-10 Điểm)</span>';
+            const label = isIron ? 'Có nguy cơ thiếu sắt' : (item.risk_title || 'Nguy cơ trung bình');
+            riskBadge = `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">${escapeHtml(label)}</span>`;
         } else {
-            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Nguy Cơ Thấp (1-5 Điểm)</span>';
+            riskBadge = '<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Nguy cơ thấp</span>';
         }
 
         let answersHtml = '<div class="space-y-2">';
@@ -3705,7 +3782,18 @@
                         <div>
                             <span class="text-zinc-400 text-[11px] block">Thông Tin Bé</span>
                             <span class="font-bold text-zinc-900">${escapeHtml(item.child_name || 'Bé')} (${escapeHtml(item.child_age || '-')}, ${escapeHtml(childGender)})</span>
-                            ${item.weight || item.height ? `<div class="text-[11px] text-zinc-500">${escapeHtml(item.weight || '-')} • ${escapeHtml(item.height || '-')}</div>` : ''}
+                            ${(() => {
+                                let parts = [];
+                                if (item.weight) {
+                                    const w = String(item.weight).trim();
+                                    parts.push(w.toLowerCase().includes('kg') ? w : `${w} kg`);
+                                }
+                                if (item.height) {
+                                    const h = String(item.height).trim();
+                                    parts.push(h.toLowerCase().includes('cm') ? h : `${h} cm`);
+                                }
+                                return parts.length > 0 ? `<div class="text-[11px] text-zinc-500 font-medium">${escapeHtml(parts.join(' • '))}</div>` : '';
+                            })()}
                         </div>
                     </div>
 

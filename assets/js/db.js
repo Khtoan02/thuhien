@@ -278,73 +278,31 @@ const DB = (() => {
     const DEFAULT_CHECKLISTS = [
         {
             id: 'checklist_iron_deficiency',
-            title: 'Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ Rối Loạn Phát Triển',
-            category: 'Vi Chất & Dinh Dưỡng Chuyên Sâu',
+            title: 'Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ',
+            category: 'Vi Chất & Hấp Thu',
             slug: 'danh-gia-thieu-sat',
             path: '/danh-gia-thieu-sat/',
             question_count: 14,
             target_age: 'Từ 6 tháng trở lên',
             status: 'active',
-            description: 'Sàng lọc 14 dấu hiệu thiếu máu thiếu sắt, hội chứng chân không yên, thói quen ăn uống và rào cản chuyển hóa ở trẻ đặc biệt.',
+            description: 'Sàng lọc 14 dấu hiệu lâm sàng: thiếu máu, ngủ chập chờn, biếng ăn thịt cá, co giật/tic, rào cản hấp thu và thói quen uống sữa.',
             created_at: '06/10/2026',
             lead_magnet: 'Cẩm Nang Bổ Sung Sắt An Toàn & Thực Đơn Giàu Sắt Dễ Hấp Thu Cho Trẻ',
-            scoring_guide: '0-2đ: Nguy cơ thấp | 3-5đ: Có nguy cơ thiếu sắt | ≥6đ: Nguy cơ cao (Cần xét nghiệm Ferritin)'
+            scoring_guide: '0–2: Nguy cơ thấp | 3–5: Có nguy cơ thiếu sắt | 6–10: Nguy cơ cao'
         },
         {
             id: 'checklist_nutrition',
-            title: 'Sàng Lọc Dinh Dưỡng & Tiêu Hóa Trẻ Đặc Biệt',
-            category: 'Dinh Dưỡng GFCF+SF',
+            title: 'Phiếu Sàng Lọc Dinh Dưỡng & Tiêu Hóa Trẻ Đặc Biệt',
+            category: 'Dinh Dưỡng & Tiêu Hóa',
             slug: 'danh-gia-dinh-duong',
             path: '/danh-gia-dinh-duong/',
-            question_count: 10,
-            target_age: '1 - 10 tuổi',
+            question_count: 28,
+            target_age: 'Từ 1 – 10 tuổi',
             status: 'active',
-            description: 'Đánh giá thói quen ăn uống, nhai nuốt, táo bón, dị ứng và nguy cơ thiếu hụt vi chất dinh dưỡng cho trẻ.',
+            description: 'Khảo sát toàn diện 28 tiêu chí: hành vi ăn nhai, nôn trớ, táo bón, phân sống, dị ứng và nguy cơ thiếu hụt dinh dưỡng.',
             created_at: '01/10/2026',
-            lead_magnet: 'Nhận Báo Cáo Phân Tích Thể Trạng & Phác Đồ Ăn Uống 1:1',
-            scoring_guide: '1-5đ: Nguy cơ thấp | 5-10đ: Nguy cơ trung bình | >10đ: Nguy cơ cao'
-        },
-        {
-            id: 'checklist_autism_early',
-            title: 'Sàng Lọc Dấu Hiệu Phổ Tự Kỷ & Giao Tiếp Sớm (M-CHAT-R)',
-            category: 'Phát Triển & Hành Vi',
-            slug: 'checklist-tu-ky-som',
-            path: '/danh-gia-dinh-duong/?type=autism',
-            question_count: 12,
-            target_age: '16 - 36 tháng',
-            status: 'active',
-            description: 'Khảo sát giao tiếp mắt, chỉ tay, phản ứng tên gọi, bắt chước và biểu hiện tương tác xã hội trong giai đoạn vàng.',
-            created_at: '02/10/2026',
-            lead_magnet: 'Cẩm Nang 10 Hoạt Động Kích Hoạt Lời Nói Đầu Đời Tại Nhà',
-            scoring_guide: '0-2đ: Nguy cơ thấp | 3-7đ: Nguy cơ trung bình | 8-12đ: Nguy cơ cao'
-        },
-        {
-            id: 'checklist_sensory',
-            title: 'Đánh Giá Rối Loạn Xử Lý Cảm Giác & Nhạy Cảm Giác Quan',
-            category: 'Giác Quan & Vận Động',
-            slug: 'checklist-giac-quan',
-            path: '/danh-gia-dinh-duong/?type=sensory',
-            question_count: 10,
-            target_age: '2 - 8 tuổi',
-            status: 'active',
-            description: 'Đo lường mức độ quá tải hoặc tìm kiếm cảm giác về xúc giác, thính giác, thị giác, tiền đình và vận động cơ sâu.',
-            created_at: '03/10/2026',
-            lead_magnet: 'Bộ Trò Chơi Điều Hòa Giác Quan 15 Phút Mỗi Ngày',
-            scoring_guide: 'Dưới 10đ: Nhẹ | 10-20đ: Đáng lưu ý | Trên 20đ: Rối loạn giác quan nặng'
-        },
-        {
-            id: 'checklist_readiness',
-            title: 'Đo Lường Mức Độ Sẵn Sàng Can Thiệp Tại Nhà Cùng Mẹ',
-            category: 'Tâm Lý Cha Mẹ',
-            slug: 'checklist-san-sang',
-            path: '/danh-gia-dinh-duong/?type=readiness',
-            question_count: 8,
-            target_age: 'Phụ huynh',
-            status: 'draft',
-            description: 'Đánh giá thời gian, tâm lý, sự đồng thuận gia đình và nguồn lực hỗ trợ để chọn lộ trình can thiệp khả thi nhất.',
-            created_at: '04/10/2026',
-            lead_magnet: 'Bản Đồ Lộ Trình Can Thiệp Cá Nhân Hóa Cho Gia Đình',
-            scoring_guide: 'Đo lường chỉ số sẵn sàng và mức độ kiệt sức (burnout) của mẹ'
+            lead_magnet: 'Báo Cáo Phân Tích Thể Trạng & Phác Đồ Ăn Uống 1:1',
+            scoring_guide: 'Phân loại nguy cơ dinh dưỡng thấp / trung bình / cao'
         }
     ];
 
@@ -543,8 +501,8 @@ const DB = (() => {
         },
         {
             id: 'eval_demo_102',
-            checklist_id: 'checklist_sensory',
-            checklist_title: 'Đánh Giá Rối Loạn Xử Lý Cảm Giác & Nhạy Cảm Giác Quan',
+            checklist_id: 'checklist_iron_deficiency',
+            checklist_title: 'Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ',
             child_name: 'Bé Sóc',
             child_age: '4 tuổi',
             gender: 'Bé Trai',
@@ -554,27 +512,26 @@ const DB = (() => {
             weight: '13.8 kg',
             height: '98 cm',
             risk_level: 'medium',
-            risk_title: 'Nguy cơ dinh dưỡng trung bình / Cần can thiệp',
-            score: 8,
+            risk_title: 'Có nguy cơ thiếu sắt',
+            score: 4,
             crm_status: 'consulting',
             crm_priority: 'high',
-            crm_notes: 'Bé kén ăn nặng do sợ mùi và nhớt xúc giác. Mẹ đã nhận cẩm nang, đang hướng dẫn massage miệng.',
+            crm_notes: 'Bé biếng ăn đạm động vật, trằn trọc khó ngủ, ngủ hay giật mình. Đang hướng dẫn thực đơn giàu sắt dễ hấp thu.',
             water: 'Dưới 500ml',
             allergies: ['Trứng gà', 'Hải sản'],
-            other_difficulties: 'Từ chối tuyệt đối rau xanh, chỉ ăn đồ giòn khô, sợ thức ăn ướt hoặc có sốt',
-            daily_diet: 'Sáng: Bánh mì nướng khô giòn.\nTrưa: Thịt heo chiên giòn rụm, cơm trắng khô.\nTối: Gà rán hoặc khoai tây chiên.',
-            advice_summary: 'Bé có nguy cơ dinh dưỡng trung bình do chế độ ăn quá chọn lọc, thiếu hụt chất xơ, vitamin C, kẽm và khoáng chất vi lượng. Cần kế hoạch giải mẫn cảm vị giác từng bước.',
+            other_difficulties: 'Từ chối tuyệt đối thịt bò và gan, chỉ thích uống sữa tươi',
+            daily_diet: 'Sáng: Bánh mì nướng khô.\nTrưa: Cơm trắng chan nước canh, không chịu ăn thịt.\nTối: Uống 3 hộp sữa tươi 180ml.',
+            advice_summary: 'Bé có nguy cơ thiếu sắt do uống quá nhiều sữa tươi gây ức chế hấp thu sắt và khẩu phần ăn thiếu hụt nguồn đạm heme. Nên xem lại khẩu phần và cân nhắc xét nghiệm vi chất.',
             answers: {
-                'q1_height_weight': 1, 'q2_eating_diff': 1, 'q3_digest': 1, 'q4_exercise': 0,
-                'q5_sleep': 1, 'q6_screen': 1, 'q7_2': 1, 'q7_3': 1, 'q7_8': 1, 'supp_omega': 'khong'
+                'iron_q1': 1, 'iron_q2': 1, 'iron_q3': 1, 'iron_q4': 1, 'iron_q5': 0
             },
             created_at: getRelativeDateStr(2, 14, 45),
             created_at_iso: new Date(Date.now() - 172800000).toISOString()
         },
         {
             id: 'eval_demo_103',
-            checklist_id: 'checklist_autism_early',
-            checklist_title: 'Sàng Lọc Dấu Hiệu Phổ Tự Kỷ & Giao Tiếp Sớm (M-CHAT-R)',
+            checklist_id: 'checklist_iron_deficiency',
+            checklist_title: 'Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ',
             child_name: 'Bé Bon',
             child_age: '2.5 tuổi',
             gender: 'Bé Gái',
@@ -584,20 +541,18 @@ const DB = (() => {
             weight: '10.2 kg',
             height: '84 cm',
             risk_level: 'high',
-            risk_title: 'Nguy cơ dinh dưỡng cao / Cần can thiệp chuyên sâu',
-            score: 13,
+            risk_title: 'Nguy cơ cao',
+            score: 7,
             crm_status: 'new',
             crm_priority: 'urgent',
-            crm_notes: 'Bé 2.5 tuổi trong giai đoạn vàng, táo bón 4-5 ngày + chậm nói. CẦN GỌI ĐIỆN TƯ VẤN NGAY HÔM NAY!',
+            crm_notes: 'Bé da xanh, niêm mạc nhợt, chân tay bồn chồn trằn trọc ngủ đêm. CẦN GỌI ĐIỆN HƯỚNG DẪN XÉT NGHIỆM FERRITIN NGAY!',
             water: 'Dưới 500ml',
-            allergies: ['Gluten (Lúa mì)', 'Sữa bò', 'Đậu nành'],
-            other_difficulties: 'Táo bón kéo dài 4-5 ngày/lần, phân cứng chảy máu, hay bùng nổ ăn vạ lúc ăn, khó ngủ đêm',
-            daily_diet: 'Sáng: Uống sữa công thức.\nTrưa: Cố ép được 3 thìa cơm nhão rồi nôn trớ.\nTối: Ăn xúc xích, bim bim, nước ngọt có gas.',
-            advice_summary: 'Bé có nguy cơ dinh dưỡng cao với nhiều dấu hiệu rối loạn tiêu hóa và quá tải hệ thần kinh. Cần xây dựng phác đồ phục hồi niêm mạc ruột, kiểm tra vi chất và đồng hành chuyên sâu.',
+            allergies: ['Gluten (Lúa mì)', 'Sữa bò'],
+            other_difficulties: 'Hay nhai đồ chơi cứng, khó ngủ đêm, bứt rứt chân không yên',
+            daily_diet: 'Sáng: Uống sữa.\nTrưa: Vài thìa cháo loãng rồi nôn.\nTối: Bú sữa đêm liên tục.',
+            advice_summary: 'Bé có nguy cơ cao thiếu sắt với các triệu chứng lâm sàng rõ rệt. Nên cho trẻ được đánh giá tình trạng sắt; thường cần kết hợp triệu chứng, chế độ ăn và các xét nghiệm như công thức máu, hemoglobin và ferritin để xác định chính xác.',
             answers: {
-                'q1_height_weight': 1, 'q2_eating_diff': 1, 'q3_digest': 2, 'q4_exercise': 1,
-                'q5_sleep': 1, 'q6_screen': 1, 'q7_1': 1, 'q7_2': 1, 'q7_4': 1, 'q7_5': 1,
-                'q7_6': 1, 'q7_8': 1, 'q7_14': 1
+                'iron_q1': 1, 'iron_q2': 1, 'iron_q3': 1, 'iron_q4': 1, 'iron_q5': 1, 'iron_q6': 1, 'iron_q7': 1
             },
             created_at: getRelativeDateStr(3, 19, 15),
             created_at_iso: new Date(Date.now() - 259200000).toISOString()
@@ -647,12 +602,24 @@ const DB = (() => {
             localStorage.setItem(STORAGE_KEY_CHECKLISTS, JSON.stringify(DEFAULT_CHECKLISTS));
         } else {
             try {
-                let chks = JSON.parse(localStorage.getItem(STORAGE_KEY_CHECKLISTS));
-                let chkChanged = false;
+                let chks = JSON.parse(localStorage.getItem(STORAGE_KEY_CHECKLISTS)) || [];
+                // Purge obsolete dummy mock checklists
+                const obsoleteIds = ['checklist_autism_early', 'checklist_sensory', 'checklist_readiness'];
+                const filtered = chks.filter(c => !obsoleteIds.includes(c.id));
+                let chkChanged = filtered.length !== chks.length;
+                chks = filtered;
+
                 DEFAULT_CHECKLISTS.forEach(def => {
-                    if (!chks.some(c => c.id === def.id)) {
+                    const existing = chks.find(c => c.id === def.id);
+                    if (!existing) {
                         chks.unshift(def);
                         chkChanged = true;
+                    } else {
+                        if (existing.question_count !== def.question_count || existing.path !== def.path) {
+                            existing.question_count = def.question_count;
+                            existing.path = def.path;
+                            chkChanged = true;
+                        }
                     }
                 });
                 if (chkChanged) {
