@@ -178,7 +178,7 @@ const DB = (() => {
             require_captcha: true,
             honeypot_enabled: true
         },
-        default_og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png',
+        default_og_image: 'https://www.thuhien.online/assets/images/thu-hien-share-banner.jpg',
         pages: [
             {
                 id: 'home',
@@ -189,7 +189,7 @@ const DB = (() => {
                 can_disable: false,
                 category: 'Trang Chính',
                 description: 'Trang thông tin tổng quan giới thiệu dịch vụ và đồng hành cùng phụ huynh',
-                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-share-banner.jpg'
             },
             {
                 id: 'chuyen-gia',
@@ -200,7 +200,7 @@ const DB = (() => {
                 can_disable: true,
                 category: 'Hồ Sơ Chuyên Môn',
                 description: 'Hồ sơ năng lực, 4 điểm tựa kinh nghiệm và phong cách làm việc',
-                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-share-banner.jpg'
             },
             {
                 id: 'dinh-duong',
@@ -211,7 +211,7 @@ const DB = (() => {
                 can_disable: true,
                 category: 'Kiến Thức Khoa Học',
                 description: 'Chế độ ăn GFCF+SF, thực phẩm khuyên dùng và nhóm cần hạn chế',
-                og_image: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-gfcf.png'
+                og_image: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-share.jpg'
             },
             {
                 id: 'cong-dong',
@@ -222,7 +222,7 @@ const DB = (() => {
                 can_disable: true,
                 category: 'Mạng Xã Hội',
                 description: 'Cộng đồng Hiểu Con Từ Gốc và kênh TikTok, YouTube, Facebook có embed',
-                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-share-banner.jpg'
             },
             {
                 id: 'pricing',
@@ -233,7 +233,7 @@ const DB = (() => {
                 can_disable: true,
                 category: 'Dịch Vụ & Chi Phí',
                 description: 'Bảng giá các gói đồng hành 3 ngày, 1 tháng và cam kết hoàn tiền 100%',
-                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-share-banner.jpg'
             },
             {
                 id: 'danh-gia',
@@ -244,7 +244,7 @@ const DB = (() => {
                 can_disable: true,
                 category: 'Đánh Giá & Khảo Sát',
                 description: 'Checklist sàng lọc thói quen ăn uống, nhai nuốt và nguy cơ thiếu hụt vi chất cho trẻ',
-                og_image: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-gfcf.png'
+                og_image: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-share.jpg'
             },
             {
                 id: 'tra-cuu',
@@ -255,7 +255,7 @@ const DB = (() => {
                 can_disable: true,
                 category: 'Đánh Giá & Khảo Sát',
                 description: 'Trang tra cứu lịch sử đánh giá dinh dưỡng của bé theo số điện thoại của phụ huynh',
-                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-share-banner.jpg'
             },
             {
                 id: 'dat-lich',
@@ -266,7 +266,7 @@ const DB = (() => {
                 can_disable: true,
                 category: 'Đặt Lịch & Biểu Mẫu',
                 description: 'Form khảo sát tình trạng bé và đăng ký giờ hẹn trao đổi riêng',
-                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-share-banner.jpg'
             },
             {
                 id: 'danh-gia-thieu-sat',
@@ -277,10 +277,10 @@ const DB = (() => {
                 can_disable: true,
                 category: 'Đánh Giá & Khảo Sát',
                 description: 'Checklist 14 câu hỏi đánh giá nguy cơ thiếu sắt ở trẻ rối loạn phát triển',
-                og_image: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-gfcf.png'
+                og_image: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-share.jpg'
             }
         ],
-        pages_schema_v: 6,
+        pages_schema_v: 7,
         pages_behavior: 'maintenance_screen', // 'maintenance_screen' | 'redirect_home'
         pages_maintenance_message: 'Trang này hiện đang được Chuyên gia Bùi Thu Hiền và đội ngũ hoàn thiện nội dung để mang đến trải nghiệm chuẩn mực nhất cho phụ huynh. Ba mẹ vui lòng quay lại sau nhé!'
     };

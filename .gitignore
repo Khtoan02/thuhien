@@ -15,4 +15,5 @@ data/*.db-wal
 .idea/
 node_modules/
 .vercel/
+assets/videos/
 
