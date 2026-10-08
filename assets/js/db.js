@@ -178,6 +178,7 @@ const DB = (() => {
             require_captcha: true,
             honeypot_enabled: true
         },
+        default_og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png',
         pages: [
             {
                 id: 'home',
@@ -187,7 +188,8 @@ const DB = (() => {
                 enabled: true,
                 can_disable: false,
                 category: 'Trang Chính',
-                description: 'Trang thông tin tổng quan giới thiệu dịch vụ và đồng hành cùng phụ huynh'
+                description: 'Trang thông tin tổng quan giới thiệu dịch vụ và đồng hành cùng phụ huynh',
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
             },
             {
                 id: 'chuyen-gia',
@@ -197,7 +199,8 @@ const DB = (() => {
                 enabled: true,
                 can_disable: true,
                 category: 'Hồ Sơ Chuyên Môn',
-                description: 'Hồ sơ năng lực, 4 điểm tựa kinh nghiệm và phong cách làm việc'
+                description: 'Hồ sơ năng lực, 4 điểm tựa kinh nghiệm và phong cách làm việc',
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
             },
             {
                 id: 'dinh-duong',
@@ -207,7 +210,8 @@ const DB = (() => {
                 enabled: true,
                 can_disable: true,
                 category: 'Kiến Thức Khoa Học',
-                description: 'Chế độ ăn GFCF+SF, thực phẩm khuyên dùng và nhóm cần hạn chế'
+                description: 'Chế độ ăn GFCF+SF, thực phẩm khuyên dùng và nhóm cần hạn chế',
+                og_image: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-gfcf.png'
             },
             {
                 id: 'cong-dong',
@@ -217,7 +221,8 @@ const DB = (() => {
                 enabled: true,
                 can_disable: true,
                 category: 'Mạng Xã Hội',
-                description: 'Cộng đồng Hiểu Con Từ Gốc và kênh TikTok, YouTube, Facebook có embed'
+                description: 'Cộng đồng Hiểu Con Từ Gốc và kênh TikTok, YouTube, Facebook có embed',
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
             },
             {
                 id: 'pricing',
@@ -227,7 +232,8 @@ const DB = (() => {
                 enabled: true,
                 can_disable: true,
                 category: 'Dịch Vụ & Chi Phí',
-                description: 'Bảng giá các gói đồng hành 3 ngày, 1 tháng và cam kết hoàn tiền 100%'
+                description: 'Bảng giá các gói đồng hành 3 ngày, 1 tháng và cam kết hoàn tiền 100%',
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
             },
             {
                 id: 'danh-gia',
@@ -237,7 +243,8 @@ const DB = (() => {
                 enabled: true,
                 can_disable: true,
                 category: 'Đánh Giá & Khảo Sát',
-                description: 'Checklist sàng lọc thói quen ăn uống, nhai nuốt và nguy cơ thiếu hụt vi chất cho trẻ'
+                description: 'Checklist sàng lọc thói quen ăn uống, nhai nuốt và nguy cơ thiếu hụt vi chất cho trẻ',
+                og_image: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-gfcf.png'
             },
             {
                 id: 'tra-cuu',
@@ -247,7 +254,8 @@ const DB = (() => {
                 enabled: true,
                 can_disable: true,
                 category: 'Đánh Giá & Khảo Sát',
-                description: 'Trang tra cứu lịch sử đánh giá dinh dưỡng của bé theo số điện thoại của phụ huynh'
+                description: 'Trang tra cứu lịch sử đánh giá dinh dưỡng của bé theo số điện thoại của phụ huynh',
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
             },
             {
                 id: 'dat-lich',
@@ -257,7 +265,8 @@ const DB = (() => {
                 enabled: true,
                 can_disable: true,
                 category: 'Đặt Lịch & Biểu Mẫu',
-                description: 'Form khảo sát tình trạng bé và đăng ký giờ hẹn trao đổi riêng'
+                description: 'Form khảo sát tình trạng bé và đăng ký giờ hẹn trao đổi riêng',
+                og_image: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png'
             },
             {
                 id: 'danh-gia-thieu-sat',
@@ -267,10 +276,11 @@ const DB = (() => {
                 enabled: true,
                 can_disable: true,
                 category: 'Đánh Giá & Khảo Sát',
-                description: 'Checklist 14 câu hỏi đánh giá nguy cơ thiếu sắt ở trẻ rối loạn phát triển'
+                description: 'Checklist 14 câu hỏi đánh giá nguy cơ thiếu sắt ở trẻ rối loạn phát triển',
+                og_image: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-gfcf.png'
             }
         ],
-        pages_schema_v: 5,
+        pages_schema_v: 6,
         pages_behavior: 'maintenance_screen', // 'maintenance_screen' | 'redirect_home'
         pages_maintenance_message: 'Trang này hiện đang được Chuyên gia Bùi Thu Hiền và đội ngũ hoàn thiện nội dung để mang đến trải nghiệm chuẩn mực nhất cho phụ huynh. Ba mẹ vui lòng quay lại sau nhé!'
     };
@@ -633,21 +643,31 @@ const DB = (() => {
             try {
                 const s = JSON.parse(localStorage.getItem(STORAGE_KEY_SETTINGS));
                 let changed = false;
+                if (!s.default_og_image) {
+                    s.default_og_image = DEFAULT_SETTINGS.default_og_image;
+                    changed = true;
+                }
                 if (!s.pages || !Array.isArray(s.pages) || s.pages.length === 0) {
                     s.pages = DEFAULT_SETTINGS.pages;
-                    s.pages_schema_v = 5;
+                    s.pages_schema_v = 6;
                     s.pages_updated_at = Date.now();
                     changed = true;
                 } else {
                     // Always ensure all default pages exist in s.pages
                     DEFAULT_SETTINGS.pages.forEach(defP => {
-                        if (!s.pages.some(p => p.id === defP.id || p.slug === defP.slug)) {
+                        const existing = s.pages.find(p => p.id === defP.id || p.slug === defP.slug);
+                        if (!existing) {
                             s.pages.push(defP);
                             changed = true;
+                        } else {
+                            if (!existing.og_image) {
+                                existing.og_image = defP.og_image || s.default_og_image;
+                                changed = true;
+                            }
                         }
                     });
-                    if (!s.pages_schema_v || s.pages_schema_v < 5) {
-                        s.pages_schema_v = 5;
+                    if (!s.pages_schema_v || s.pages_schema_v < 6) {
+                        s.pages_schema_v = 6;
                         changed = true;
                     }
                 }
@@ -1665,8 +1685,9 @@ const DB = (() => {
                     social: soc,
                     integrations: { ...DEFAULT_SETTINGS.integrations, ...(s?.integrations || {}) },
                     security: { ...DEFAULT_SETTINGS.security, ...(s?.security || {}) },
+                    default_og_image: s?.default_og_image || DEFAULT_SETTINGS.default_og_image,
                     pages: s?.pages || DEFAULT_SETTINGS.pages,
-                    pages_schema_v: s?.pages_schema_v || 4,
+                    pages_schema_v: s?.pages_schema_v || 6,
                     pages_updated_at: s?.pages_updated_at || 0,
                     pages_behavior: s?.pages_behavior || DEFAULT_SETTINGS.pages_behavior,
                     pages_maintenance_message: s?.pages_maintenance_message !== undefined ? s.pages_maintenance_message : DEFAULT_SETTINGS.pages_maintenance_message
@@ -1823,8 +1844,9 @@ const DB = (() => {
                     social: { ...current.social, ...(newSettings.social || {}) },
                     integrations: { ...current.integrations, ...(newSettings.integrations || {}) },
                     security: { ...current.security, ...(newSettings.security || {}) },
+                    default_og_image: newSettings.default_og_image !== undefined ? newSettings.default_og_image : (current.default_og_image || DEFAULT_SETTINGS.default_og_image),
                     pages: newSettings.pages || current.pages,
-                    pages_schema_v: 4,
+                    pages_schema_v: 6,
                     pages_updated_at: newSettings.pages_updated_at || current.pages_updated_at || Date.now(),
                     pages_behavior: newSettings.pages_behavior || current.pages_behavior,
                     pages_maintenance_message: newSettings.pages_maintenance_message !== undefined ? newSettings.pages_maintenance_message : current.pages_maintenance_message
@@ -1955,6 +1977,45 @@ const DB = (() => {
                 this.pushGlobalConfig(list);
             }
             return true;
+        },
+
+        getDefaultOgImage() {
+            const s = this.getSettings();
+            return s.default_og_image || DEFAULT_SETTINGS.default_og_image;
+        },
+
+        setDefaultOgImage(url) {
+            const s = this.getSettings();
+            const clean = (url || '').trim();
+            s.default_og_image = clean || DEFAULT_SETTINGS.default_og_image;
+            this.saveSettings(s);
+            this.logSecurityEvent('DEFAULT_OG_IMAGE_UPDATED', 'SUCCESS', 'Cập nhật ảnh đại diện mạng xã hội mặc định của Website');
+            this.broadcastChange('default_og_image_changed', { default_og_image: s.default_og_image });
+            if (typeof this.pushFirebasePages === 'function') {
+                this.pushFirebasePages(s.pages);
+            }
+            return s.default_og_image;
+        },
+
+        getPageOgImage(pageIdOrPath) {
+            if (!pageIdOrPath) return this.getDefaultOgImage();
+            const pages = this.getPages();
+            const cleanPath = pageIdOrPath.toString().toLowerCase().replace(/\/index\.html$/, '/');
+            const p = pages.find(item => {
+                if (item.id === pageIdOrPath || item.slug === pageIdOrPath) return true;
+                const itemPath = (item.path || '').toLowerCase();
+                if (itemPath === cleanPath) return true;
+                if (cleanPath !== '/' && itemPath !== '/' && (cleanPath.includes(itemPath) || itemPath.includes(cleanPath))) return true;
+                return false;
+            });
+            if (p && p.og_image && p.og_image.trim()) {
+                return p.og_image.trim();
+            }
+            return this.getDefaultOgImage();
+        },
+
+        updatePageOgImage(pageId, ogImageUrl) {
+            return this.updatePage(pageId, { og_image: (ogImageUrl || '').trim() });
         },
 
         // ====================================================================
@@ -2223,7 +2284,8 @@ const DB = (() => {
                 can_disable: true,
                 is_custom: true,
                 category: pageData.category || 'Trang Tùy Chỉnh',
-                description: pageData.description || 'Trang mới được tạo từ trang quản trị'
+                description: pageData.description || 'Trang mới được tạo từ trang quản trị',
+                og_image: (pageData.og_image || '').trim()
             };
             list.push(newPage);
             settings.pages = list;

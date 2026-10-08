@@ -490,9 +490,26 @@ const LayoutEngine = (() => {
         } catch(e) {}
     }
 
+    function updateMetaSocialTags() {
+        if (typeof DB === 'undefined' || typeof document === 'undefined') return;
+        try {
+            const path = window.location.pathname;
+            const ogImage = DB.getPageOgImage(path);
+            if (ogImage) {
+                let metaOg = document.querySelector('meta[property="og:image"]');
+                if (metaOg) metaOg.setAttribute('content', ogImage);
+                let metaSec = document.querySelector('meta[property="og:image:secure_url"]');
+                if (metaSec) metaSec.setAttribute('content', ogImage);
+                let metaTw = document.querySelector('meta[name="twitter:image"]');
+                if (metaTw) metaTw.setAttribute('content', ogImage);
+            }
+        } catch(e) {}
+    }
+
     function init() {
         renderGlobalHeader();
         renderGlobalFooter();
+        updateMetaSocialTags();
         initSecurity();
     }
 
@@ -507,7 +524,8 @@ const LayoutEngine = (() => {
     return {
         init,
         renderGlobalHeader,
-        renderGlobalFooter
+        renderGlobalFooter,
+        updateMetaSocialTags
     };
 })();
 
@@ -516,6 +534,7 @@ if (typeof DB !== 'undefined') {
         if (typeof LayoutEngine !== 'undefined') {
             LayoutEngine.renderGlobalHeader();
             LayoutEngine.renderGlobalFooter();
+            LayoutEngine.updateMetaSocialTags();
         }
     });
 }

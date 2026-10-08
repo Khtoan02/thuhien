@@ -1072,6 +1072,76 @@
                     </div>
                 </div>
 
+                <!-- Cấu Hình Ảnh Đại Diện Mạng Xã Hội Mặc Định Của Website -->
+                <div class="rounded-xl border border-brand-200/80 bg-white p-5 shadow-2xs space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-zinc-100 gap-3">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="p-1 rounded bg-brand-50 text-brand-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                </span>
+                                <h3 class="font-bold text-sm text-zinc-900">Ảnh Đại Diện Mạng Xã Hội Mặc Định Của Website (Default Social Share / Open Graph)</h3>
+                            </div>
+                            <p class="text-xs text-zinc-500 mt-0.5">Ảnh này sẽ tự động xuất hiện trên Zalo, Facebook, Messenger, Telegram khi gửi link bất kỳ trang nào chưa cài ảnh riêng.</p>
+                        </div>
+                        <button type="button" onclick="saveDefaultOgImage()" class="inline-flex h-8 items-center justify-center rounded-md bg-brand-500 px-4 text-xs font-semibold text-white shadow-xs hover:bg-brand-600 transition-colors shrink-0 gap-1.5">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            <span>Lưu Ảnh Mặc Định</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+                        <!-- Preview Box (4 cols) -->
+                        <div class="md:col-span-4 flex flex-col items-center">
+                            <div class="w-full aspect-[16/9] rounded-lg border border-zinc-200 overflow-hidden bg-zinc-100 relative shadow-xs group">
+                                <img id="defaultOgPreviewImg" src="../assets/images/thu-hien-hero-banner.png" alt="Preview ảnh đại diện mặc định" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[11px] font-semibold">
+                                    <span>Tỉ lệ chuẩn 1.91:1 (1200x630)</span>
+                                </div>
+                            </div>
+                            <span class="text-[11px] text-zinc-400 mt-1.5 text-center">Xem trước hiển thị trên Zalo &amp; Facebook</span>
+                        </div>
+
+                        <!-- Controls & Input (8 cols) -->
+                        <div class="md:col-span-8 space-y-3 text-xs">
+                            <div class="space-y-1">
+                                <label class="font-semibold text-zinc-700 block">Đường Dẫn URL Ảnh Mặc Định *</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="defaultOgImageUrlInput" placeholder="https://www.thuhien.online/assets/images/thu-hien-hero-banner.png" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono" oninput="updateDefaultOgPreview(this.value)">
+                                    <label class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 px-3 text-xs font-medium text-zinc-700 cursor-pointer transition-colors shrink-0 gap-1.5" title="Chọn ảnh từ máy tính">
+                                        <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                        <span>Chọn Tệp</span>
+                                        <input type="file" id="defaultOgFileInput" accept="image/*" class="hidden" onchange="handleDefaultOgFileUpload(event)">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Quick Presets -->
+                            <div class="space-y-1">
+                                <span class="text-[11px] font-semibold text-zinc-500">Mẫu có sẵn trong hệ thống (Bấm để chọn nhanh):</span>
+                                <div class="flex flex-wrap gap-2 pt-0.5">
+                                    <button type="button" onclick="setDefaultOgPreset('banner_main')" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-zinc-200 bg-white hover:border-brand-500 hover:text-brand-700 text-[11px] text-zinc-700 transition-colors">
+                                        <span class="w-2 h-2 rounded-full bg-brand-500"></span>
+                                        <span>Banner Chính Thu Hiền</span>
+                                    </button>
+                                    <button type="button" onclick="setDefaultOgPreset('banner_nutrition')" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-zinc-200 bg-white hover:border-brand-500 hover:text-brand-700 text-[11px] text-zinc-700 transition-colors">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                        <span>Banner Dinh Dưỡng GFCF</span>
+                                    </button>
+                                    <button type="button" onclick="setDefaultOgPreset('logo_avatar')" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-zinc-200 bg-white hover:border-brand-500 hover:text-brand-700 text-[11px] text-zinc-700 transition-colors">
+                                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                        <span>Logo Vuông (512x512)</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <p class="text-[11px] text-zinc-400 leading-relaxed">
+                                Lưu ý: Zalo và Facebook ưu tiên ảnh có tỉ lệ <strong>1200 x 630 px</strong> (tỉ lệ 1.91:1) và đường dẫn URL tuyệt đối bắt đầu bằng <code>https://...</code>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Pages Management Table -->
                 <div class="rounded-xl border border-zinc-200 bg-white shadow-2xs overflow-hidden">
                     <div class="p-4 border-b border-zinc-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-zinc-50/50">
@@ -1085,6 +1155,7 @@
                             <thead class="bg-zinc-50 text-zinc-500 uppercase font-semibold tracking-wider border-b border-zinc-200">
                                 <tr>
                                     <th class="p-3.5 pl-4">Tên Trang & Đường Dẫn (Path)</th>
+                                    <th class="p-3.5">Ảnh Đại Diện (Social)</th>
                                     <th class="p-3.5">Phân Loại</th>
                                     <th class="p-3.5">Mô Tả Chức Năng</th>
                                     <th class="p-3.5 text-center">Trạng Thái</th>
@@ -2100,10 +2171,39 @@
                 <input type="text" id="pageDescInput" placeholder="Chia sẻ kinh nghiệm ăn uống thực tế cho trẻ" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
             </div>
 
+            <!-- Ảnh Đại Diện Mạng Xã Hội (OG Image / Social Share) -->
+            <div class="space-y-2 pt-2 border-t border-zinc-100">
+                <div class="flex items-center justify-between">
+                    <label class="font-semibold text-zinc-700">Ảnh Đại Diện Mạng Xã Hội (Zalo / Facebook / Open Graph)</label>
+                    <span id="pageOgSourceBadge" class="text-[10px] px-1.5 py-0.5 rounded font-bold bg-zinc-100 text-zinc-600">Đang dùng mặc định web</span>
+                </div>
+                
+                <div class="flex gap-3 items-center">
+                    <div class="w-24 aspect-[16/9] rounded-md border border-zinc-200 overflow-hidden bg-zinc-100 shrink-0">
+                        <img id="pageOgPreviewImg" src="../assets/images/thu-hien-hero-banner.png" alt="Preview ảnh đại diện trang" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1 space-y-1.5">
+                        <div class="flex gap-1.5">
+                            <input type="text" id="pageOgImageInput" placeholder="Để trống để dùng ảnh đại diện mặc định của web" class="flex h-8 w-full rounded-md border border-zinc-200 px-3 text-xs focus:outline-none focus:ring-1 focus:ring-brand-500 font-mono" oninput="updatePageOgPreview(this.value)">
+                            <label class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-zinc-50 hover:bg-zinc-100 px-2.5 text-xs font-medium text-zinc-700 cursor-pointer transition-colors shrink-0" title="Tải ảnh lên từ máy tính">
+                                <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                <input type="file" id="pageOgFileInput" accept="image/*" class="hidden" onchange="handlePageOgFileUpload(event)">
+                            </label>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button type="button" onclick="setPageOgPreset('default')" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-zinc-100 text-zinc-700 hover:bg-zinc-200 transition-colors">Dùng Mặc Định Web</button>
+                            <button type="button" onclick="setPageOgPreset('banner_main')" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-brand-50 text-brand-700 hover:bg-brand-100 transition-colors">Banner Thu Hiền</button>
+                            <button type="button" onclick="setPageOgPreset('banner_nutrition')" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">Banner Dinh Dưỡng</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-[10px] text-zinc-400">Nếu để trống ô này, khi chia sẻ trang lên Zalo/Facebook sẽ tự động dùng <strong>Ảnh đại diện mặc định của Website</strong>.</p>
+            </div>
+
             <div class="pt-1">
                 <label class="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" id="pageEnabledInput" class="w-4 h-4 text-brand-500 rounded border-zinc-300 focus:ring-brand-500" checked>
-                    <span class="text-xs font-semibold text-zinc-800">Bật công khai (Publics) ngay sau khi tạo</span>
+                    <span class="text-xs font-semibold text-zinc-800">Bật công khai (Publics)</span>
                 </label>
             </div>
 
@@ -4652,11 +4752,121 @@
     // ====================================================================
     // 11. PAGES MANAGEMENT & PUBLICS CONTROL
     // ====================================================================
+    const OG_IMAGE_PRESETS = {
+        banner_main: 'https://www.thuhien.online/assets/images/thu-hien-hero-banner.png',
+        banner_nutrition: 'https://www.thuhien.online/assets/images/loi-khuyen-dinh-duong-gfcf.png',
+        logo_avatar: 'https://www.thuhien.online/assets/images/favicon-512x512.png'
+    };
+
+    window.updateDefaultOgPreview = function(url) {
+        const previewImg = document.getElementById('defaultOgPreviewImg');
+        if (!previewImg) return;
+        const clean = (url || '').trim() || DB.getDefaultOgImage();
+        previewImg.src = clean;
+    };
+
+    window.setDefaultOgPreset = function(presetKey) {
+        const url = OG_IMAGE_PRESETS[presetKey] || OG_IMAGE_PRESETS.banner_main;
+        const input = document.getElementById('defaultOgImageUrlInput');
+        if (input) {
+            input.value = url;
+            updateDefaultOgPreview(url);
+        }
+    };
+
+    window.handleDefaultOgFileUpload = function(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+            alert('Vui lòng chọn một tệp hình ảnh!');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const dataUrl = evt.target.result;
+            const input = document.getElementById('defaultOgImageUrlInput');
+            if (input) input.value = dataUrl;
+            updateDefaultOgPreview(dataUrl);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    window.saveDefaultOgImage = function() {
+        const input = document.getElementById('defaultOgImageUrlInput');
+        const url = (input ? input.value : '').trim();
+        if (!url) {
+            alert('Vui lòng nhập đường dẫn URL ảnh hoặc chọn tệp!');
+            return;
+        }
+        DB.setDefaultOgImage(url);
+        alert('Đã lưu ảnh đại diện mặc định của website thành công!');
+        renderSettingsPages();
+    };
+
+    window.updatePageOgPreview = function(url) {
+        const previewImg = document.getElementById('pageOgPreviewImg');
+        const badge = document.getElementById('pageOgSourceBadge');
+        if (!previewImg) return;
+        const trimmed = (url || '').trim();
+        const defaultOg = DB.getDefaultOgImage();
+        if (trimmed) {
+            previewImg.src = trimmed;
+            if (badge) {
+                badge.innerText = 'Ảnh riêng của trang';
+                badge.className = 'text-[10px] px-1.5 py-0.5 rounded font-bold bg-indigo-50 text-indigo-700 border border-indigo-200';
+            }
+        } else {
+            previewImg.src = defaultOg;
+            if (badge) {
+                badge.innerText = 'Đang dùng mặc định web';
+                badge.className = 'text-[10px] px-1.5 py-0.5 rounded font-bold bg-zinc-100 text-zinc-600';
+            }
+        }
+    };
+
+    window.setPageOgPreset = function(presetKey) {
+        const input = document.getElementById('pageOgImageInput');
+        if (!input) return;
+        if (presetKey === 'default') {
+            input.value = '';
+            updatePageOgPreview('');
+        } else {
+            const url = OG_IMAGE_PRESETS[presetKey] || OG_IMAGE_PRESETS.banner_main;
+            input.value = url;
+            updatePageOgPreview(url);
+        }
+    };
+
+    window.handlePageOgFileUpload = function(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+            alert('Vui lòng chọn một tệp hình ảnh!');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const dataUrl = evt.target.result;
+            const input = document.getElementById('pageOgImageInput');
+            if (input) input.value = dataUrl;
+            updatePageOgPreview(dataUrl);
+        };
+        reader.readAsDataURL(file);
+    };
+
     window.renderSettingsPages = function() {
         const pages = DB.getPages();
         const settings = DB.getSettings();
         const tbody = document.getElementById('pagesTableBody');
         if (!tbody) return;
+
+        const defaultOg = DB.getDefaultOgImage();
+        if (document.getElementById('defaultOgImageUrlInput')) {
+            document.getElementById('defaultOgImageUrlInput').value = defaultOg;
+        }
+        if (document.getElementById('defaultOgPreviewImg')) {
+            document.getElementById('defaultOgPreviewImg').src = defaultOg;
+        }
 
         let activeCount = 0;
         let disabledCount = 0;
@@ -4692,6 +4902,12 @@
             // Calculate external preview link relative to admin folder
             const relativePath = p.path === '/' ? '../' : `..${p.path}`;
 
+            const pageOg = p.og_image && p.og_image.trim() ? p.og_image.trim() : defaultOg;
+            const isCustomOg = Boolean(p.og_image && p.og_image.trim());
+            const ogBadge = isCustomOg
+                ? `<span class="px-1.5 py-0.5 rounded text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold whitespace-nowrap">Riêng</span>`
+                : `<span class="px-1.5 py-0.5 rounded text-[10px] bg-zinc-100 text-zinc-600 border border-zinc-200 font-medium whitespace-nowrap">Mặc định web</span>`;
+
             return `
                 <tr class="hover:bg-zinc-50/70 transition-colors ${!isEnabled ? 'bg-zinc-50/40 opacity-80' : ''}">
                     <td class="p-3.5 pl-4">
@@ -4700,6 +4916,15 @@
                             ${p.is_custom ? '<span class="px-1.5 py-0.2 rounded text-[10px] bg-blue-50 text-blue-600 border border-blue-200 font-semibold">Tùy biến</span>' : ''}
                         </div>
                         <div class="text-[11px] font-mono text-zinc-500 mt-0.5">${p.path}</div>
+                    </td>
+                    <td class="p-3.5">
+                        <div class="flex items-center gap-2">
+                            <img src="${pageOg}" alt="${p.title}" class="w-14 h-8 rounded object-cover border border-zinc-200 shadow-2xs shrink-0 bg-zinc-100" onerror="this.src='../assets/images/thu-hien-hero-banner.png'">
+                            <div class="flex flex-col items-start">
+                                ${ogBadge}
+                                <button type="button" onclick="openPageModal('${p.id}')" class="text-[10px] text-brand-600 hover:text-brand-800 font-semibold mt-0.5 transition-colors">Đổi ảnh</button>
+                            </div>
+                        </div>
                     </td>
                     <td class="p-3.5 text-zinc-600 font-medium">
                         ${p.category || 'Nội Dung'}
@@ -4714,9 +4939,13 @@
                         ${toggleControl}
                     </td>
                     <td class="p-3.5 pr-4 text-right">
-                        <div class="flex items-center justify-end gap-2">
-                            <a href="${relativePath}" target="_blank" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-[11px] font-semibold text-brand-600 hover:text-brand-700 hover:bg-brand-50 transition-colors">
-                                <span>Xem trang</span>
+                        <div class="flex items-center justify-end gap-1.5">
+                            <button onclick="openPageModal('${p.id}')" class="inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-semibold text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 transition-colors" title="Chỉnh sửa thông tin & ảnh đại diện">
+                                <svg class="w-3 h-3 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                <span>Sửa</span>
+                            </button>
+                            <a href="${relativePath}" target="_blank" class="inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-semibold text-brand-600 hover:text-brand-700 hover:bg-brand-50 transition-colors">
+                                <span>Xem</span>
                                 <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                             </a>
                             ${p.is_custom ? `
@@ -4768,15 +4997,50 @@
         alert('Đã lưu cấu hình cơ chế hiển thị thành công!');
     };
 
-    window.openPageModal = function() {
-        document.getElementById('pageEditId').value = '';
-        document.getElementById('pageTitleInput').value = '';
-        document.getElementById('pagePathInput').value = '';
-        document.getElementById('pageSlugInput').value = '';
-        document.getElementById('pageCategoryInput').value = 'Trang Mới';
-        document.getElementById('pageDescInput').value = '';
-        document.getElementById('pageEnabledInput').checked = true;
-        document.getElementById('pageModalTitle').innerText = 'Thêm Trang Mới';
+    window.openPageModal = function(pageId) {
+        const pages = DB.getPages();
+        const editPage = pageId ? pages.find(p => p.id === pageId) : null;
+
+        if (editPage) {
+            document.getElementById('pageEditId').value = editPage.id;
+            document.getElementById('pageTitleInput').value = editPage.title || '';
+            document.getElementById('pagePathInput').value = editPage.path || '';
+            document.getElementById('pageSlugInput').value = editPage.slug || '';
+            document.getElementById('pageCategoryInput').value = editPage.category || 'Nội Dung';
+            document.getElementById('pageDescInput').value = editPage.description || '';
+            document.getElementById('pageEnabledInput').checked = editPage.enabled !== false;
+            document.getElementById('pageOgImageInput').value = editPage.og_image || '';
+            updatePageOgPreview(editPage.og_image || '');
+
+            const isCustom = Boolean(editPage.is_custom);
+            document.getElementById('pagePathInput').readOnly = !isCustom;
+            document.getElementById('pageSlugInput').readOnly = !isCustom;
+            if (!isCustom) {
+                document.getElementById('pagePathInput').classList.add('bg-zinc-100', 'text-zinc-500');
+                document.getElementById('pageSlugInput').classList.add('bg-zinc-100', 'text-zinc-500');
+            } else {
+                document.getElementById('pagePathInput').classList.remove('bg-zinc-100', 'text-zinc-500');
+                document.getElementById('pageSlugInput').classList.remove('bg-zinc-100', 'text-zinc-500');
+            }
+
+            document.getElementById('pageModalTitle').innerText = `Chỉnh Sửa Trang: ${editPage.title}`;
+        } else {
+            document.getElementById('pageEditId').value = '';
+            document.getElementById('pageTitleInput').value = '';
+            document.getElementById('pagePathInput').value = '';
+            document.getElementById('pageSlugInput').value = '';
+            document.getElementById('pageCategoryInput').value = 'Trang Mới';
+            document.getElementById('pageDescInput').value = '';
+            document.getElementById('pageEnabledInput').checked = true;
+            document.getElementById('pageOgImageInput').value = '';
+            document.getElementById('pagePathInput').readOnly = false;
+            document.getElementById('pageSlugInput').readOnly = false;
+            document.getElementById('pagePathInput').classList.remove('bg-zinc-100', 'text-zinc-500');
+            document.getElementById('pageSlugInput').classList.remove('bg-zinc-100', 'text-zinc-500');
+            updatePageOgPreview('');
+
+            document.getElementById('pageModalTitle').innerText = 'Thêm Trang Mới';
+        }
         document.getElementById('pageModal').classList.add('active');
     };
 
@@ -4786,34 +5050,50 @@
 
     window.handleSavePage = function(e) {
         e.preventDefault();
+        const editId = document.getElementById('pageEditId').value;
         const title = document.getElementById('pageTitleInput').value.trim();
         let path = document.getElementById('pagePathInput').value.trim();
         let slug = document.getElementById('pageSlugInput').value.trim();
         const category = document.getElementById('pageCategoryInput').value.trim();
         const desc = document.getElementById('pageDescInput').value.trim();
         const enabled = document.getElementById('pageEnabledInput').checked;
+        const ogImage = document.getElementById('pageOgImageInput').value.trim();
 
         if (!title || !path) {
             alert('Vui lòng điền đầy đủ tiêu đề và đường dẫn URL!');
             return;
         }
 
-        if (!path.startsWith('/')) path = '/' + path;
-        if (!path.endsWith('/') && !path.includes('.')) path = path + '/';
-        if (!slug) slug = path.replace(/\//g, '');
+        if (editId) {
+            DB.updatePage(editId, {
+                title: title,
+                category: category || 'Nội Dung',
+                description: desc,
+                enabled: enabled,
+                og_image: ogImage
+            });
+            closePageModal();
+            renderSettingsPages();
+            alert('Đã cập nhật thông tin trang và ảnh đại diện thành công!');
+        } else {
+            if (!path.startsWith('/')) path = '/' + path;
+            if (!path.endsWith('/') && !path.includes('.')) path = path + '/';
+            if (!slug) slug = path.replace(/\//g, '');
 
-        DB.addCustomPage({
-            title: title,
-            path: path,
-            slug: slug,
-            category: category || 'Trang Tùy Chỉnh',
-            description: desc,
-            enabled: enabled
-        });
+            DB.addCustomPage({
+                title: title,
+                path: path,
+                slug: slug,
+                category: category || 'Trang Tùy Chỉnh',
+                description: desc,
+                enabled: enabled,
+                og_image: ogImage
+            });
 
-        closePageModal();
-        renderSettingsPages();
-        alert('Đã thêm trang mới thành công!');
+            closePageModal();
+            renderSettingsPages();
+            alert('Đã thêm trang mới thành công!');
+        }
     };
 
     window.deleteCustomPage = function(id) {
