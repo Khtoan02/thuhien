@@ -177,18 +177,15 @@ const LayoutEngine = (() => {
                 ? `<span class="ml-1 text-[9px] px-1 py-0.2 rounded bg-amber-800 text-amber-200 border border-amber-600 font-bold">Ẩn</span>` 
                 : '';
 
-            // Short readable titles
             let displayTitle = p.title;
-            if (p.id === 'home') displayTitle = 'Trang Chủ';
-            else if (p.id === 'chuyen-gia') displayTitle = 'Chuyên Gia';
-            else if (p.id === 'dinh-duong') displayTitle = 'Dinh Dưỡng';
-            else if (p.id === 'danh-gia') displayTitle = 'Đánh Giá';
-            else if (p.id === 'tra-cuu') displayTitle = 'Tra Cứu';
-            else if (p.id === 'cong-dong') displayTitle = 'Cộng Đồng';
-            else if (p.id === 'pricing') displayTitle = 'Bảng Giá';
+            if (p.id === 'home') displayTitle = 'Trang chủ';
+            else if (p.id === 'chuyen-gia') displayTitle = 'Chuyên gia';
+            else if (p.id === 'dinh-duong') displayTitle = 'Dinh dưỡng';
+            else if (p.id === 'danh-gia') displayTitle = 'Đánh giá';
+            else if (p.id === 'tra-cuu') displayTitle = 'Tra cứu';
+            else if (p.id === 'cong-dong') displayTitle = 'Cộng đồng';
+            else if (p.id === 'pricing') displayTitle = 'Bảng giá';
 
-            // Responsive visibility: On desktop (lg: >=1024px), all enabled pages show.
-            // On mobile/tablet (<lg), secondary items collapse into Mobile Drawer.
             let responsiveClass = 'inline-flex';
             if (p.id === 'cong-dong' || p.id === 'pricing' || p.id === 'danh-gia' || p.id === 'tra-cuu') {
                 responsiveClass = 'hidden lg:inline-flex';
@@ -208,29 +205,25 @@ const LayoutEngine = (() => {
 
         headerEl.innerHTML = `
             <nav class="nav-island-inner justify-between">
-                <!-- Logo -->
                 <a href="${prefix}" class="flex items-center gap-2.5 sm:gap-3 group text-decoration-none shrink-0">
                     <img src="${prefix}favicon.png" alt="Thu Hiền Logo" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shadow-sm ring-2 ring-white/80 group-hover:scale-105 transition-transform duration-300">
                     <div class="flex flex-col">
                         <span class="font-bold text-base sm:text-lg md:text-xl text-white leading-snug tracking-normal">Thu Hiền</span>
-                        <span class="text-[10px] sm:text-[11px] font-medium text-white/90 tracking-wide uppercase">Cùng Mẹ Hiểu Con</span>
+                        <span class="text-[10px] sm:text-[11px] font-medium text-white/90 tracking-wide uppercase">Cùng mẹ hiểu con</span>
                     </div>
                 </a>
 
-                <!-- Desktop / Tablet Navigation Items -->
                 <div class="flex items-center gap-1 sm:gap-1.5 md:gap-2">
                     ${navItemsHtml}
 
-                    <!-- Mobile Menu Button -->
-                    <button id="globalMobileMenuBtn" aria-label="Mở Menu" class="lg:hidden p-2 rounded-full text-white hover:bg-white/10 transition-colors flex items-center justify-center">
+                    <button id="globalMobileMenuBtn" aria-label="Mở menu" class="lg:hidden p-2 rounded-full text-white hover:bg-white/10 transition-colors flex items-center justify-center">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"/>
                         </svg>
                     </button>
 
-                    <!-- Primary Action Button -->
                     <a href="${datLichHref}" class="bg-[#174C3B] hover:bg-[#133F31] text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-full text-xs sm:text-sm font-bold shadow-2xs flex items-center gap-1.5 group transition-all shrink-0">
-                        <span class="text-xs sm:text-sm font-bold">Đặt Lịch 1:1</span>
+                        <span class="text-xs sm:text-sm font-bold">Đặt lịch 1:1</span>
                         <span class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
                             <svg class="w-2.5 h-2.5 sm:w-3 sm:h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-7-7 7 7-7 7"/>
@@ -358,19 +351,151 @@ const LayoutEngine = (() => {
                         <span class="block sm:inline sm:ml-2 text-[#8B9992]">*Nội dung nhằm mục đích hỗ trợ dinh dưỡng và thói quen tại gia đình, không thay thế chẩn đoán y khoa chuyên khoa.*</span>
                     </p>
                     <div class="flex items-center gap-4">
-                        <a href="${prefix}admin/" class="hover:text-[#174C3B] opacity-60 hover:opacity-100 transition-opacity">Trang Quản Trị</a>
+                        <a href="${prefix}admin/" class="hover:text-[#174C3B] opacity-60 hover:opacity-100 transition-opacity">Trang quản trị</a>
                     </div>
                 </div>
             </div>
         `;
     }
 
+    function initSecurity() {
+        if (typeof window === 'undefined') return;
+        if (window.location.pathname.includes('/admin')) return;
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }, { capture: true });
+
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.clipboardData) e.clipboardData.setData('text/plain', '');
+            return false;
+        }, { capture: true });
+
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }, { capture: true });
+
+        document.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }, { capture: true });
+
+        document.addEventListener('selectstart', function(e) {
+            const tag = (e.target && e.target.tagName) ? e.target.tagName.toUpperCase() : '';
+            if (tag === 'INPUT' || tag === 'TEXTAREA') return true;
+            e.preventDefault();
+            return false;
+        }, { capture: true });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            const isMac = navigator.platform && navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            const ctrl = isMac ? (e.metaKey || e.ctrlKey) : e.ctrlKey;
+            const shift = e.shiftKey;
+            const alt = e.altKey;
+            const key = (e.key || '').toLowerCase();
+            const code = e.keyCode || e.which;
+
+            if ((ctrl && shift && (key === 'i' || code === 73 || key === 'j' || code === 74 || key === 'c' || code === 67)) ||
+                (ctrl && alt && (key === 'i' || code === 73 || key === 'j' || code === 74 || key === 'c' || code === 67))) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            if ((ctrl && (key === 'u' || code === 85)) || (ctrl && alt && (key === 'u' || code === 85))) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            if (ctrl && (key === 's' || code === 83)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            if (ctrl && (key === 'p' || code === 80)) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            if (key === 'printscreen' || code === 44) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText('');
+                }
+            }
+        }, { capture: true });
+
+        let devtoolsOpen = false;
+        const threshold = 160;
+
+        function onDevToolsTriggered() {
+            if (!devtoolsOpen) {
+                devtoolsOpen = true;
+                try { console.clear(); } catch(e) {}
+                if (document.body) {
+                    document.body.style.filter = 'blur(12px)';
+                    document.body.style.pointerEvents = 'none';
+                }
+            }
+        }
+
+        function onDevToolsClosed() {
+            if (devtoolsOpen) {
+                devtoolsOpen = false;
+                if (document.body) {
+                    document.body.style.filter = '';
+                    document.body.style.pointerEvents = '';
+                }
+            }
+        }
+
+        window.addEventListener('resize', function() {
+            if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+                onDevToolsTriggered();
+            } else {
+                onDevToolsClosed();
+            }
+        });
+
+        setInterval(function() {
+            const start = performance.now();
+            (function() {}['constructor']('debugger')());
+            if (performance.now() - start > 100) {
+                onDevToolsTriggered();
+            }
+        }, 1500);
+
+        try {
+            const noop = function() {};
+            window.console.log = noop;
+            window.console.warn = noop;
+            window.console.error = noop;
+            window.console.info = noop;
+            window.console.table = noop;
+        } catch(e) {}
+    }
+
     function init() {
         renderGlobalHeader();
         renderGlobalFooter();
+        initSecurity();
     }
 
-    // Auto run on DOM ready
     if (typeof document !== 'undefined') {
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
@@ -386,7 +511,6 @@ const LayoutEngine = (() => {
     };
 })();
 
-// Wire into DB sync so when pages or settings change, layout updates automatically!
 if (typeof DB !== 'undefined') {
     DB.onSync(() => {
         if (typeof LayoutEngine !== 'undefined') {

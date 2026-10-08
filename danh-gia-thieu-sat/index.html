@@ -5,25 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ Rối Loạn Phát Triển | Thu Hiền</title>
     <meta name="description" content="Checklist 14 câu hỏi sàng lọc nguy cơ thiếu sắt, thiếu máu, hội chứng chân không yên và rào cản ăn uống ở trẻ tự kỷ, chậm nói và rối loạn phát triển.">
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 
-    <!-- OpenGraph & Meta -->
     <meta property="og:title" content="Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ Rối Loạn Phát Triển | Thu Hiền">
     <meta property="og:description" content="Sàng lọc 14 dấu hiệu thiếu máu thiếu sắt, hội chứng chân không yên và khẩu phần ăn ở trẻ đặc biệt.">
     <meta property="og:image" content="../assets/images/thu-hien-hero-banner.png">
     <meta property="og:type" content="article">
     <meta name="theme-color" content="#174C3B">
 
-    <!-- Google Fonts Preconnect & Direct Stylesheet -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -51,7 +47,6 @@
         }
     </script>
 
-    <!-- Custom Design System Stylesheet -->
     <link rel="stylesheet" href="../assets/css/style.css">
     
     <style>
@@ -82,31 +77,28 @@
             border-color: #8FAF91;
         }
     </style>
+    <script src="../assets/js/security.js"></script>
 </head>
 <body data-page="danh-gia-thieu-sat" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-24 md:pb-28">
 
 <header class="nav-island" id="globalNavIsland"></header>
 
-<!-- ==========================================================================
-     HERO SECTION
-     ========================================================================== -->
 <section class="pt-24 sm:pt-32 md:pt-36 pb-8 md:pb-12 text-center max-w-4xl mx-auto px-4 sm:px-6">
     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#174C3B]/10 text-[#174C3B] text-xs font-bold uppercase tracking-wider mb-4">
         <svg class="w-3.5 h-3.5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
         </svg>
-        <span>Công Cụ Khảo Sát Sàng Lọc Vi Chất Chuyên Sâu</span>
+        <span>Công cụ khảo sát sàng lọc vi chất chuyên sâu</span>
     </div>
     
-    <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-[#174C3B] uppercase tracking-normal leading-snug md:leading-[1.38] mb-4">
-        Checklist Đánh Giá Nguy Cơ Thiếu Sắt Ở Trẻ Rối Loạn Phát Triển
+    <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-[#174C3B] tracking-normal leading-snug md:leading-[1.38] mb-4">
+        Checklist đánh giá nguy cơ thiếu sắt ở trẻ rối loạn phát triển
     </h1>
     
     <p class="text-sm sm:text-base md:text-lg text-[#5F6E66] max-w-2xl mx-auto leading-relaxed">
         Sắt là vi chất then chốt cho dẫn truyền thần kinh Dopamine, sự tập trung và giấc ngủ của trẻ. Dành 3 phút hoàn thành 14 câu hỏi dưới đây để phát hiện sớm nguy cơ thiếu sắt của con.
     </p>
 
-    <!-- Tra cứu link banner -->
     <div class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-[#8FAF91]/30 text-xs font-bold text-[#174C3B] shadow-2xs hover:border-[#174C3B] transition-all">
         <svg class="w-4 h-4 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -116,36 +108,29 @@
     </div>
 </section>
 
-<!-- ==========================================================================
-     MAIN ASSESSMENT FORM
-     ========================================================================== -->
 <main class="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
 
     <form id="ironAssessmentForm" class="space-y-8 sm:space-y-10" onsubmit="event.preventDefault(); calculateIronResult();">
 
-        <!-- ======================================================================
-             SECTION 1: THÔNG TIN TRẺ & PHỤ HUYNH
-             ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
                 <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">1</span>
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">THÔNG TIN TRẺ & PHỤ HUYNH</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B]">Thông tin trẻ & phụ huynh</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Giúp lưu hồ sơ tra cứu và chuyên gia liên hệ gửi phác đồ dinh dưỡng</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                <!-- Họ và tên phụ huynh -->
+                
                 <div>
                     <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">
-                        Họ và tên Phụ huynh <span class="text-red-500">*</span>
+                        Họ và tên phụ huynh <span class="text-red-500">*</span>
                     </label>
                     <input type="text" id="parentName" required placeholder="VD: Mẹ Nguyễn Thị Lan" 
                            class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] placeholder-[#8FAF91] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] focus:border-transparent transition-all">
                 </div>
 
-                <!-- Số điện thoại -->
                 <div>
                     <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">
                         Số điện thoại
@@ -154,7 +139,6 @@
                            class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] placeholder-[#8FAF91] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] focus:border-transparent transition-all">
                 </div>
 
-                <!-- Tên của bé -->
                 <div>
                     <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">
                         Họ và tên của bé
@@ -163,7 +147,6 @@
                            class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] placeholder-[#8FAF91] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] focus:border-transparent transition-all">
                 </div>
 
-                <!-- Tuổi của bé -->
                 <div>
                     <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">
                         Tuổi / Tháng tuổi của bé <span class="text-red-500">*</span>
@@ -172,7 +155,6 @@
                            class="w-full px-4 py-3 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/40 text-sm text-[#174C3B] placeholder-[#8FAF91] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#174C3B] focus:border-transparent transition-all">
                 </div>
 
-                <!-- Giới tính -->
                 <div>
                     <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">Giới tính của bé</label>
                     <div class="grid grid-cols-2 gap-3">
@@ -187,7 +169,6 @@
                     </div>
                 </div>
 
-                <!-- Cân nặng / Chiều cao -->
                 <div>
                     <label class="block text-xs sm:text-sm font-bold text-[#174C3B] mb-1.5">Cân nặng & Chiều cao (nếu nhớ)</label>
                     <div class="grid grid-cols-2 gap-2">
@@ -198,15 +179,12 @@
             </div>
         </div>
 
-        <!-- ======================================================================
-             SECTION 2: 14 CÂU HỎI KIỂM TRA NGUY CƠ THIẾU SẮT
-             ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center justify-between pb-4 border-b border-[#8FAF91]/20">
                 <div class="flex items-center gap-3">
                     <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">2</span>
                     <div>
-                        <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">14 CÂU HỎI SÀNG LỌC NGUY CƠ THIẾU SẮT</h2>
+                        <h2 class="text-base sm:text-lg font-black text-[#174C3B]">14 câu hỏi sàng lọc nguy cơ thiếu sắt</h2>
                         <p class="text-xs sm:text-sm text-[#5F6E66]">Ba mẹ vui lòng chọn "Có" hoặc "Không" tương ứng với biểu hiện của con</p>
                     </div>
                 </div>
@@ -215,20 +193,16 @@
                 </div>
             </div>
 
-            <!-- List of 14 Questions -->
             <div class="space-y-4" id="questionsContainer">
-                <!-- Populated via JS or static HTML -->
+                
             </div>
         </div>
 
-        <!-- ======================================================================
-             SECTION 3: THÔNG TIN BỔ SUNG & GHI CHÚ
-             ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-5">
             <div class="flex items-center gap-3 pb-3 border-b border-[#8FAF91]/20">
                 <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">3</span>
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">THÓI QUEN ĂN UỐNG & GHI CHÚ THÊM CỦA MẸ</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B]">Thói quen ăn uống & ghi chú thêm của mẹ</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Giúp chuyên gia hiểu rõ hơn về khẩu phần ăn thực tế của con</p>
                 </div>
             </div>
@@ -251,7 +225,6 @@
             </div>
         </div>
 
-        <!-- Submit Button -->
         <div class="text-center pt-2">
             <button type="submit" id="btnSubmitIron" class="w-full sm:w-auto px-8 py-4 rounded-full bg-[#174C3B] text-white hover:bg-[#1F5A45] font-black text-base uppercase tracking-wider shadow-lg hover:shadow-xl transition-all inline-flex items-center justify-center gap-2 cursor-pointer">
                 <span>Hoàn Thành & Xem Kết Quả Ngay</span>
@@ -264,27 +237,22 @@
 
     </form>
 
-    <!-- ======================================================================
-         RESULT SECTION (Revealed after calculation)
-         ====================================================================== -->
     <div id="ironResultSection" class="hidden mt-12 bg-white rounded-3xl p-6 sm:p-10 border-2 border-[#174C3B] shadow-xl space-y-6">
         <div class="text-center space-y-3 pb-6 border-b border-[#8FAF91]/20">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#174C3B]/10 text-[#174C3B] text-xs font-bold uppercase tracking-wider">
                 Kết Quả Đánh Giá Nguy Cơ Thiếu Sắt
             </div>
             <h3 class="text-2xl sm:text-3xl font-black text-[#174C3B]" id="resultTitle">
-                <!-- Dynamic Title -->
+                
             </h3>
         </div>
 
-        <!-- Advice Body -->
         <div id="resultAdviceCard" class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F0] border border-[#8FAF91]/30">
             <p class="text-sm sm:text-base text-[#174C3B] leading-relaxed font-medium" id="resultAdviceText">
-                <!-- Dynamic text -->
+                
             </p>
         </div>
 
-        <!-- Restless Legs Syndrome Alert if Q12 is yes -->
         <div id="rlsAlertBox" class="hidden p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 text-xs sm:text-sm space-y-1">
             <div class="font-bold flex items-center gap-2 text-rose-800 text-xs sm:text-sm">
                 <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
@@ -295,7 +263,6 @@
             </p>
         </div>
 
-        <!-- Call to Action Buttons -->
         <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button onclick="sendIronResultToZalo()" class="w-full sm:w-auto px-7 py-3 rounded-full bg-[#0068FF] text-white hover:bg-blue-600 font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
                 <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.44 3.84 7.07l-.95 3.51a1 1 0 001.3 1.18l4.02-1.63c.58.11 1.18.17 1.79.17 5.52 0 10-4.03 10-9s-4.48-9-10-9z"/></svg>
@@ -312,7 +279,6 @@
 
 <footer id="globalFooter"></footer>
 
-<!-- Core DB & Layout Engine -->
 <script src="../assets/js/db.js?v=2.5"></script>
 <script src="../assets/js/layout.js?v=1.2"></script>
 
@@ -432,7 +398,6 @@
                             ` : ''}
                         </div>
 
-                        <!-- Yes/No buttons without point numbers -->
                         <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
                             <button type="button" onclick="selectChoice('${q.id}', 1, ${q.pointsYes})" id="btn_${q.id}_yes" class="choice-btn px-5 py-2 min-w-[68px] rounded-xl border border-zinc-200 bg-white text-xs font-bold text-zinc-700 text-center">
                                 Có

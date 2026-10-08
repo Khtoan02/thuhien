@@ -1,11 +1,5 @@
-/**
- * Core UI JavaScript for Thu Hiền - Cùng Mẹ Hiểu Con (Pure Static Edition)
- * Đồng hành cùng cha mẹ có con tự kỷ (ASD)
- * Handles: Scroll reveals, lead modals, interactive pills, LocalStorage persistence & toasts
- */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Intersection Observer for Scroll Reveals
     const revealElements = document.querySelectorAll('.reveal-on-scroll');
     if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries, obs) => {
@@ -25,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         revealElements.forEach(el => el.classList.add('is-revealed'));
     }
 
-    // 2. Track Page View & Realtime Live Heartbeat via DB layer
     if (typeof DB !== 'undefined') {
         const curPage = document.title.includes('Đặt Lịch') 
             ? 'Đặt Lịch Trò Chuyện 1-1' 
@@ -39,12 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             ? 'Kênh & Cộng Đồng'
                             : 'Trang Chủ'))));
         DB.trackView(curPage);
-        // Periodic heartbeat every 12 seconds to keep session alive
         setInterval(() => {
             DB.heartbeat(curPage);
         }, 12000);
 
-        // Apply dynamic third-party integrations, social links and page status router
         try {
             if (typeof DB.applyPageStatusControl === 'function') DB.applyPageStatusControl();
             if (typeof DB.applyIntegrations === 'function') DB.applyIntegrations();
@@ -54,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. Interactive Checkbox Pills
     document.querySelectorAll('.checkbox-pill').forEach(pill => {
         const checkbox = pill.querySelector('input[type="checkbox"]');
         if (!checkbox) return;
@@ -70,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 4. Modal Lead Magnet Handlers
     const ebookModal = document.getElementById('ebookModal');
     const openModalBtns = document.querySelectorAll('[data-open-modal="ebook"]');
     const closeModalBtns = document.querySelectorAll('[data-close-modal="ebook"]');
@@ -99,14 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Booking Form Submission (Pure Client-Side + LocalStorage)
     const bookingForm = document.getElementById('consultBookingForm');
     if (bookingForm) {
         bookingForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const submitBtn = bookingForm.querySelector('button[type="submit"]');
 
-            // Collect form values
             const formData = new FormData(bookingForm);
             const issues = [];
             bookingForm.querySelectorAll('input[name="issues[]"]:checked').forEach(cb => {
@@ -123,8 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 baby_height: formData.get('baby_height') || '',
                 issues: issues,
                 feeding_notes: formData.get('feeding_notes') || '',
-                consult_type: formData.get('consult_type') || 'Tư vấn 1:1 qua Zalo (Gọi thoại / Video)',
-                preferred_time: formData.get('preferred_time') || 'Buổi tối (19h30 - 21h30)'
+                consult_type: formData.get('consult_type') || 'Tư vấn 1:1',
+                preferred_time: formData.get('preferred_time') || 'Linh hoạt (Thu Hiền liên hệ trao đổi)'
             };
 
             if (!bookingData.parent_name || !bookingData.phone) {
@@ -136,10 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.innerHTML = '<span>Đang ghi nhận thông tin...</span>';
 
             setTimeout(() => {
-                // Save to client-side DB
                 const savedBooking = DB.addBooking(bookingData);
 
-                // Dispatch email notification via configured provider
                 try {
                     if (typeof DB.sendNotificationEmail === 'function') {
                         DB.sendNotificationEmail('booking', savedBooking);
@@ -150,7 +135,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 showToast('Đăng ký thành công! Thu Hiền sẽ liên hệ riêng qua Zalo để sắp xếp lịch hẹn 1:1 cùng Mẹ.', 'success');
                 
-                // Show confirmation screen
                 const formContainer = bookingForm.closest('.booking-card-inner');
                 if (formContainer) {
                     formContainer.innerHTML = `
@@ -180,14 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. Ebook Form Submission (Pure Client-Side + LocalStorage)
     const ebookForm = document.getElementById('ebookLeadForm');
     if (ebookForm) {
         ebookForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const submitBtn = ebookForm.querySelector('button[type="submit"]');
             
-            // Get active resource from settings
             const activeRes = (typeof DB !== 'undefined' && typeof DB.getActiveResource === 'function') ? DB.getActiveResource() : null;
             const resTitle = activeRes && activeRes.title ? activeRes.title : 'Cẩm Nang: Những Bước Đầu Đồng Hành Cùng Con Tự Kỷ Tại Nhà';
             const fileUrl = activeRes && activeRes.file_url ? activeRes.file_url : 'data:text/plain;charset=utf-8,Cam%20Nang%20Nhung%20Buoc%20Dau%20Dong%20Hanh%20Cung%20Con%20Tu%20Ky%20Tai%20Nha%20-%20Thu%20Hien';
@@ -213,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 DB.addLead(leadData);
 
-                // Dispatch email notification via configured provider
                 try {
                     if (typeof DB.sendNotificationEmail === 'function') {
                         DB.sendNotificationEmail('lead', leadData);
@@ -242,7 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 7. Toast Notification Utility
     window.showToast = function(message, type = 'info') {
         let toastContainer = document.getElementById('toastContainer');
         if (!toastContainer) {
@@ -278,7 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4500);
     };
 
-    // 8. Pre-select Consultation Type from URL Query Param in dat-lich page
     const urlParams = new URLSearchParams(window.location.search);
     const consultTypeSelect = document.querySelector('select[name="consult_type"]');
     if (consultTypeSelect) {
@@ -294,7 +273,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 9. Interactive 1-Minute Assessment Tool on Homepage (Autism & Sensory Connection)
     const assessmentForm = document.getElementById('babyAssessmentForm');
     const assessmentResult = document.getElementById('assessmentResult');
     if (assessmentForm && assessmentResult) {
@@ -338,7 +316,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 ];
             }
 
-            // Render result
             const resultBox = document.getElementById('assessmentResultContent');
             if (resultBox) {
                 resultBox.innerHTML = `
@@ -374,7 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 assessmentResult.classList.remove('hidden');
                 assessmentResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-                // Re-bind modal buttons in newly inserted HTML
                 resultBox.querySelectorAll('[data-open-modal="ebook"]').forEach(btn => {
                     btn.addEventListener('click', (ev) => {
                         ev.preventDefault();
@@ -389,7 +365,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 10. Smooth Accordion - close others when one opens
     document.querySelectorAll('.faq-details').forEach(detail => {
         detail.addEventListener('toggle', () => {
             if (detail.open) {

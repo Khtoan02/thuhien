@@ -5,25 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tra Cứu Kết Quả Đánh Giá &amp; Sàng Lọc Sức Khỏe Cho Bé | Thu Hiền</title>
     <meta name="description" content="Tra cứu lịch sử và kết quả tất cả các bài đánh giá sức khỏe của bé theo số điện thoại phụ huynh: Checklist Thiếu Sắt, Sàng Lọc Dinh Dưỡng &amp; Tiêu Hóa.">
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 
-    <!-- OpenGraph & Meta -->
     <meta property="og:title" content="Tra Cứu Kết Quả Đánh Giá &amp; Sàng Lọc Sức Khỏe Cho Bé | Thu Hiền">
     <meta property="og:description" content="Tra cứu lịch sử và kết quả tất cả các bài đánh giá sức khỏe của bé theo số điện thoại phụ huynh: Checklist Thiếu Sắt, Sàng Lọc Dinh Dưỡng &amp; Tiêu Hóa.">
     <meta property="og:image" content="../assets/images/thu-hien-hero-banner.png">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#174C3B">
 
-    <!-- Google Fonts Preconnect & Direct Stylesheet -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -51,30 +47,26 @@
         }
     </script>
 
-    <!-- Custom Design System Stylesheet -->
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="../assets/js/security.js"></script>
 </head>
 <body data-page="tra-cuu" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-24 md:pb-28 min-h-screen flex flex-col justify-between">
 
 <header class="nav-island" id="globalNavIsland"></header>
 
-<!-- ==========================================================================
-     MAIN SEARCH HERO & LOOKUP CONTENT
-     ========================================================================== -->
 <main class="flex-grow pt-24 sm:pt-32 md:pt-36 pb-12 px-4 sm:px-6">
     <div class="max-w-3xl mx-auto space-y-8">
-        
-        <!-- Header text -->
+
         <div class="text-center space-y-3">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#174C3B]/10 text-[#174C3B] text-xs font-bold uppercase tracking-wider">
                 <svg class="w-3.5 h-3.5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
-                <span>Cổng Tra Cứu Trực Tuyến</span>
+                <span>Cổng tra cứu trực tuyến</span>
             </div>
             
-            <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-[#174C3B] uppercase tracking-normal leading-snug md:leading-[1.36]">
-                Tra Cứu Kết Quả Đánh Giá
+            <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-[#174C3B] tracking-normal leading-snug md:leading-[1.36]">
+                Tra cứu kết quả đánh giá
             </h1>
             
             <p class="text-sm sm:text-base text-[#5F6E66] max-w-xl mx-auto leading-relaxed">
@@ -82,7 +74,6 @@
             </p>
         </div>
 
-        <!-- Search Input Card -->
         <div class="bg-white rounded-3xl p-5 sm:p-7 border border-[#8FAF91]/30 shadow-md">
             <form id="lookupForm" onsubmit="event.preventDefault(); executeLookup();" class="space-y-4">
                 <label for="searchPhoneInput" class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider">
@@ -129,9 +120,8 @@
             </form>
         </div>
 
-        <!-- Results Area -->
         <div id="resultsContainer" class="space-y-6">
-            <!-- Dynamic search results rendered here -->
+            
         </div>
 
     </div>
@@ -139,7 +129,6 @@
 
 <footer id="globalFooter"></footer>
 
-<!-- Database and Core Scripts -->
 <script src="../assets/js/db.js?v=2.5"></script>
 <script src="../assets/js/layout.js?v=1.1"></script>
 
@@ -217,7 +206,7 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-bold text-[#174C3B]">Chưa Tìm Thấy Kết Quả</h3>
+                        <h3 class="text-lg font-bold text-[#174C3B]">Chưa tìm thấy kết quả</h3>
                         <p class="text-xs sm:text-sm text-[#5F6E66] max-w-md mx-auto mt-1">
                             Hệ thống chưa ghi nhận phiếu đánh giá nào gắn với số điện thoại <strong>${escapeHtml(searchedPhone)}</strong>.
                         </p>
@@ -352,8 +341,7 @@
 
             return `
                 <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 ${borderCard} shadow-sm space-y-5">
-                    
-                    <!-- Card Header -->
+
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-zinc-100">
                         <div class="space-y-1">
                             <div class="flex items-center gap-2 flex-wrap">
@@ -377,7 +365,6 @@
                             </p>
                         </div>
 
-                        <!-- Status badge -->
                         <div class="shrink-0">
                             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold border ${badgeClass}">
                                 <span class="w-2.5 h-2.5 rounded-full ${dotColor}"></span>
@@ -386,7 +373,6 @@
                         </div>
                     </div>
 
-                    <!-- Clinical Feedback Box -->
                     <div class="p-4 sm:p-5 rounded-2xl border ${feedbackBg} leading-relaxed text-xs sm:text-sm space-y-2">
                         <strong class="block text-sm text-[#174C3B] flex items-center gap-1.5">
                             <svg class="w-4 h-4 text-brand-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -397,7 +383,6 @@
                         </div>
                     </div>
 
-                    <!-- Diet and special difficulties if recorded -->
                     ${item.daily_diet ? `
                         <div class="p-3.5 rounded-xl bg-zinc-50 border border-zinc-200/70 text-xs">
                             <span class="font-bold text-[#174C3B] block mb-1">Mô tả chế độ ăn 1 ngày của con:</span>
@@ -412,7 +397,6 @@
                         </div>
                     ` : ''}
 
-                    <!-- Expandable Full Answers -->
                     <details class="group border border-zinc-200 rounded-2xl p-3.5 bg-[#FAF7F0]/30 transition-all">
                         <summary class="text-xs font-bold text-[#174C3B] cursor-pointer flex items-center justify-between select-none">
                             <span>Xem chi tiết các câu trả lời trong phiếu (${answerKeys.length} mục)</span>
@@ -423,7 +407,6 @@
                         </div>
                     </details>
 
-                    <!-- Card Actions -->
                     <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
                         <a href="https://hieucontugoc.online/zalo" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0068FF] hover:bg-[#0052cc] text-white text-xs sm:text-sm font-bold shadow-sm transition-all">
                             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 2.17.7 4.19 1.9 5.86L2.6 21.4c-.2.6.35 1.15.95.95l3.54-1.3C8.81 21.68 10.37 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.42 0-2.77-.32-3.98-.89l-.29-.14-2.3.84.84-2.3-.14-.29C5.56 16.01 5.24 14.66 5.24 13.24c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/></svg>

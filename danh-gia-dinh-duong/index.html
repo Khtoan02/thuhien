@@ -5,25 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phiếu Đánh Giá & Nhận Tư Vấn Dinh Dưỡng Cho Trẻ | Thu Hiền</title>
     <meta name="description" content="Bảng sàng lọc dinh dưỡng giúp cha mẹ nhận diện sớm rào cản ăn uống, nguy cơ thiếu hụt vi chất và tình trạng tiêu hóa ở trẻ.">
-    
-    <!-- Favicon -->
+
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
 
-    <!-- OpenGraph & Meta -->
     <meta property="og:title" content="Phiếu Đánh Giá & Nhận Tư Vấn Dinh Dưỡng Cho Trẻ | Thu Hiền">
     <meta property="og:description" content="Checklist sàng lọc thói quen ăn uống, nhai nuốt và nguy cơ thiếu hụt vi chất cho trẻ.">
     <meta property="og:image" content="../assets/images/thu-hien-hero-banner.png">
     <meta property="og:type" content="article">
     <meta name="theme-color" content="#174C3B">
 
-    <!-- Google Fonts Preconnect & Direct Stylesheet -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -51,7 +47,6 @@
         }
     </script>
 
-    <!-- Custom Design System Stylesheet -->
     <link rel="stylesheet" href="../assets/css/style.css">
     
     <style>
@@ -93,14 +88,12 @@
             background-color: #ffffff;
         }
     </style>
+    <script src="../assets/js/security.js"></script>
 </head>
 <body data-page="danh-gia-dinh-duong" class="bg-[#FAF7F0] site-pattern-bg text-[#174C3B] selection:bg-[#F08A4B]/20 selection:text-[#174C3B] pb-24 md:pb-28">
 
 <header class="nav-island" id="globalNavIsland"></header>
 
-<!-- ==========================================================================
-     HERO SECTION: INTRODUCE ASSESSMENT FORM
-     ========================================================================== -->
 <section class="pt-24 sm:pt-32 md:pt-36 pb-8 md:pb-12 text-center max-w-4xl mx-auto px-4 sm:px-6">
     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#174C3B]/10 text-[#174C3B] text-xs font-bold uppercase tracking-wider mb-4">
         <svg class="w-3.5 h-3.5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -117,7 +110,6 @@
         Dành 5 phút hoàn thành phiếu đánh giá dưới đây giúp ba mẹ nhận diện rõ rào cản ăn uống, nguy cơ thiếu hụt vi chất và tình trạng tiêu hóa của con.
     </p>
 
-    <!-- Tra cứu link banner -->
     <div class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-white border border-[#8FAF91]/30 text-xs font-bold text-[#174C3B] shadow-2xs hover:border-[#174C3B] transition-all">
         <svg class="w-4 h-4 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -127,33 +119,26 @@
     </div>
 </section>
 
-<!-- ==========================================================================
-     MAIN FORM CONTENT
-     ========================================================================== -->
 <main class="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
 
     <form id="assessmentForm" class="space-y-8 sm:space-y-12" onsubmit="event.preventDefault(); calculateAndShowResults();">
 
-        <!-- ======================================================================
-             SECTION 1: THÔNG TIN CƠ BẢN CỦA TRẺ & CHA MẸ
-             ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
                 <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">1</span>
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">THÔNG TIN TRẺ & PHỤ HUYNH</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B]">Thông tin trẻ & phụ huynh</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Giúp lưu thông tin và đưa ra định hướng chuẩn xác theo độ tuổi của bé</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                <!-- Họ và tên trẻ -->
+                
                 <div>
                     <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Họ và tên trẻ <span class="text-red-500">*</span></label>
                     <input type="text" id="childName" required placeholder="Ví dụ: Bé Gia Bảo (Ken)" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
                 </div>
 
-                <!-- Giới tính -->
                 <div>
                     <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Giới tính</label>
                     <div class="grid grid-cols-2 gap-3">
@@ -168,13 +153,11 @@
                     </div>
                 </div>
 
-                <!-- Ngày sinh / Tuổi -->
                 <div>
                     <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Tuổi / Tháng tuổi của bé <span class="text-red-500">*</span></label>
                     <input type="text" id="childAge" required placeholder="Ví dụ: 28 tháng tuổi (sinh 2023)" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
                 </div>
 
-                <!-- Cân nặng & Chiều cao -->
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Cân nặng (kg)</label>
@@ -186,13 +169,11 @@
                     </div>
                 </div>
 
-                <!-- Họ tên Cha/Mẹ -->
                 <div>
                     <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Họ và tên Cha/Mẹ <span class="text-red-500">*</span></label>
                     <input type="text" id="parentName" required placeholder="Ví dụ: Mẹ Mai Lan" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
                 </div>
 
-                <!-- Số điện thoại / Zalo -->
                 <div>
                     <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Số điện thoại (kết nối Zalo) <span class="text-red-500">*</span></label>
                     <input type="tel" id="parentPhone" required placeholder="09xx xxx xxx" class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all">
@@ -200,20 +181,17 @@
             </div>
         </div>
 
-        <!-- ======================================================================
-             SECTION 2: ĐÁNH GIÁ TÌNH TRẠNG DINH DƯỠNG TỔNG QUÁT (Mục 1 đến 6)
-             ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
                 <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">2</span>
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">TÌNH TRẠNG ĂN UỐNG & TIÊU HÓA TỔNG QUÁT</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B]">Tình trạng ăn uống & tiêu hóa tổng quát</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Khai thác nếp ăn hàng ngày, khả năng nhai nuốt và đường ruột của con</p>
                 </div>
             </div>
 
             <div class="space-y-6">
-                <!-- 1. Thói quen ăn hàng ngày -->
+                
                 <div class="question-block" data-qid="q1">
                     <label class="block text-sm font-bold text-[#174C3B] mb-2">1. Thói quen ăn uống hàng ngày của bé:</label>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -241,7 +219,6 @@
                     </div>
                 </div>
 
-                <!-- 2. Khả năng nhai nuốt -->
                 <div class="question-block" data-qid="q2">
                     <label class="block text-sm font-bold text-[#174C3B] mb-2">2. Khả năng nhai nuốt và xử lý thức ăn:</label>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -269,7 +246,6 @@
                     </div>
                 </div>
 
-                <!-- 3. Tình trạng tiêu hóa (Chọn nhiều đáp án) -->
                 <div class="question-block" data-qid="q3">
                     <label class="block text-sm font-bold text-[#174C3B] mb-2">3. Tình trạng tiêu hóa và bài tiết của trẻ (Chọn các tình trạng bé đang gặp):</label>
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
@@ -304,7 +280,6 @@
                     </div>
                 </div>
 
-                <!-- 4. Giấc ngủ -->
                 <div class="question-block" data-qid="q4">
                     <label class="block text-sm font-bold text-[#174C3B] mb-2">4. Chất lượng giấc ngủ ban đêm:</label>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -332,7 +307,6 @@
                     </div>
                 </div>
 
-                <!-- 5. Dị ứng & Lượng nước uống -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-bold text-[#174C3B] mb-2">5. Tiền sử dị ứng đã biết:</label>
@@ -366,7 +340,6 @@
                     </div>
                 </div>
 
-                <!-- 6. Sử dụng thiết bị điện tử khi ăn -->
                 <div class="question-block" data-qid="q6">
                     <label class="block text-sm font-bold text-[#174C3B] mb-2">6. Sử dụng thiết bị điện tử (điện thoại, TV, Ipad) trong khi ăn:</label>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -396,22 +369,17 @@
             </div>
         </div>
 
-        <!-- ======================================================================
-             SECTION 3: CÁC VẤN ĐỀ DINH DƯỠNG & CẢM GIÁC THƯỜNG GẶP (Mục 7)
-             ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
                 <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">3</span>
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">VẤN ĐỀ DINH DƯỠNG, CẢM GIÁC & VẬN ĐỘNG</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B]">Vấn đề dinh dưỡng, cảm giác & vận động</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Ba mẹ vui lòng chọn phương án phản ánh đúng nhất tình trạng của bé gần đây</p>
                 </div>
             </div>
 
-            <!-- Table-like responsive question list -->
             <div class="divide-y divide-zinc-100" id="detailedQuestionsContainer">
 
-                <!-- Q7.1: Thức ăn thô ráp -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_1">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">1. Trẻ có thích những đồ dùng và thức ăn thô ráp không?</span>
@@ -424,7 +392,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.2: Lười ăn rau, quả -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_2">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">2. Trẻ có tình trạng lười ăn rau, lười ăn hoa quả không?</span>
@@ -437,7 +404,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.3: Quá nhạy cảm thực phẩm -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_3">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">3. Trẻ có quá nhạy cảm với mùi, màu sắc hoặc kết cấu thực phẩm nào không?</span>
@@ -450,7 +416,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.4: Thực phẩm trái mùa -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_4">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">4. Trẻ có thường xuyên sử dụng thực phẩm trái mùa không?</span>
@@ -463,7 +428,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.5: Bánh kẹo ngọt -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_5">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">5. Trẻ có thường xuyên ăn bánh kẹo ngọt, đồ ngọt không?</span>
@@ -476,7 +440,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.6: Nước ngọt có gas -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_6">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">6. Trẻ có thường xuyên uống nước ngọt, nước có gas không?</span>
@@ -489,7 +452,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.7: Socola, caffein -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_7">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">7. Trẻ có thường xuyên sử dụng socola, thực phẩm chứa caffein không?</span>
@@ -502,7 +464,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.8: Đồ chế biến sẵn, đóng hộp -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_8">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">8. Trẻ có ăn các thực phẩm chế biến sẵn, đóng hộp (xúc xích, mì gói, snack...)?</span>
@@ -515,7 +476,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.9: Sống gần khu ô nhiễm -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_9">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">9. Trẻ có sống gần nhà máy, xí nghiệp, khói bụi hoặc nguồn ô nhiễm không?</span>
@@ -528,7 +488,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.10: Nguồn nước tinh khiết (Thói quen tốt) -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_10">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">10. Trẻ có được sử dụng nguồn nước tinh khiết, lọc RO/Nano đạt chuẩn không?</span>
@@ -541,7 +500,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.11: Xì hơi có mùi khó chịu -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_11">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">11. Trẻ thường xuyên xì hơi hoặc đi phân có mùi khó chịu/chua nồng không?</span>
@@ -554,7 +512,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.12: Khó khăn đi đại tiện -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_12">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">12. Trẻ có khó khăn, sợ sệt hoặc gồng mình khi đi đại tiện không?</span>
@@ -567,7 +524,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.13: Vận động thể lực (Thói quen tốt) -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_13">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">13. Trẻ có thường xuyên hoạt động thể lực (đi bộ, bơi, chạy nhảy, đạp xe...)?</span>
@@ -580,7 +536,6 @@
                     </div>
                 </div>
 
-                <!-- Q7.14: Cầm thìa tự xúc -->
                 <div class="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 question-row" data-qid="q7_14">
                     <div class="sm:pr-4">
                         <span class="text-sm font-bold text-[#174C3B] block">14. Trẻ có gặp khó khăn khi cầm thìa, tự xúc cơm ăn không?</span>
@@ -593,7 +548,6 @@
                     </div>
                 </div>
 
-                <!-- Ghi chú khó khăn khác -->
                 <div class="pt-4">
                     <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-2">Trẻ có gặp các khó khăn ăn uống đặc thù nào khác không? (Nếu có):</label>
                     <textarea id="otherFeedingDifficulties" rows="2" placeholder="Ví dụ: Bé chỉ ăn cơm với nước tương, hễ có màu xanh là nhè ra; hoặc bé rất sợ tiếng máy xay sinh tố..." class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B]"></textarea>
@@ -601,32 +555,27 @@
             </div>
         </div>
 
-        <!-- ======================================================================
-             SECTION 4: KHAI THÁC BỔ SUNG & TIỀN SỬ DÙNG VI CHẤT
-             ====================================================================== -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-[#8FAF91]/30 shadow-sm space-y-6">
             <div class="flex items-center gap-3 pb-4 border-b border-[#8FAF91]/20">
                 <span class="w-8 h-8 rounded-full bg-[#174C3B] text-white flex items-center justify-center font-bold text-sm shadow-xs">4</span>
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-[#174C3B] uppercase tracking-wide">KHAI THÁC BỔ SUNG & TIỀN SỬ DÙNG VI CHẤT</h2>
+                    <h2 class="text-base sm:text-lg font-black text-[#174C3B]">Khai thác bổ sung & tiền sử dùng vi chất</h2>
                     <p class="text-xs sm:text-sm text-[#5F6E66]">Ghi nhận thêm thông tin để định hướng tư vấn chuẩn xác theo thể trạng của bé</p>
                 </div>
             </div>
 
-            <!-- Chế độ dinh dưỡng 1 ngày -->
             <div>
                 <label class="block text-xs font-bold text-[#174C3B] uppercase tracking-wider mb-1.5">Mô tả chế độ ăn hiện tại điển hình trong 1 ngày của con:</label>
                 <textarea id="dailyDietDesc" rows="3" placeholder="Sáng: ... &#10;Trưa: ... &#10;Tối: ... &#10;Các bữa phụ (sữa/bánh): ..." class="w-full px-4 py-2.5 rounded-xl border border-zinc-200 bg-[#FAF7F0]/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#174C3B] transition-all"></textarea>
             </div>
 
-            <!-- 9 Câu hỏi Tiền sử bổ sung thực phẩm & can thiệp chế độ ăn -->
             <div class="space-y-3 pt-2">
                 <div class="mb-1">
                     <h3 class="text-xs font-bold text-[#174C3B] uppercase tracking-wider">Tiền sử bổ sung thực phẩm & can thiệp chế độ ăn:</h3>
                 </div>
 
                 <div class="grid grid-cols-1 gap-3" id="suppQuestionsContainer">
-                    <!-- Q1: supp_vitamin -->
+                    
                     <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_vitamin">
                         <div class="flex items-start gap-3 sm:pr-4">
                             <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">1</span>
@@ -649,7 +598,6 @@
                         </div>
                     </div>
 
-                    <!-- Q2: supp_special -->
                     <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_special">
                         <div class="flex items-start gap-3 sm:pr-4">
                             <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">2</span>
@@ -672,7 +620,6 @@
                         </div>
                     </div>
 
-                    <!-- Q3: supp_gfcf -->
                     <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_gfcf">
                         <div class="flex items-start gap-3 sm:pr-4">
                             <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">3</span>
@@ -696,7 +643,6 @@
                         </div>
                     </div>
 
-                    <!-- Q4: supp_iron -->
                     <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_iron">
                         <div class="flex items-start gap-3 sm:pr-4">
                             <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">4</span>
@@ -719,7 +665,6 @@
                         </div>
                     </div>
 
-                    <!-- Q5: supp_vitd_test -->
                     <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_vitd_test">
                         <div class="flex items-start gap-3 sm:pr-4">
                             <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">5</span>
@@ -742,7 +687,6 @@
                         </div>
                     </div>
 
-                    <!-- Q6: supp_vitd_use -->
                     <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_vitd_use">
                         <div class="flex items-start gap-3 sm:pr-4">
                             <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">6</span>
@@ -766,7 +710,6 @@
                         </div>
                     </div>
 
-                    <!-- Q7: supp_enzyme -->
                     <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_enzyme">
                         <div class="flex items-start gap-3 sm:pr-4">
                             <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">7</span>
@@ -789,7 +732,6 @@
                         </div>
                     </div>
 
-                    <!-- Q8: supp_omega -->
                     <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_omega">
                         <div class="flex items-start gap-3 sm:pr-4">
                             <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">8</span>
@@ -812,7 +754,6 @@
                         </div>
                     </div>
 
-                    <!-- Q9: supp_probiotic -->
                     <div class="supp-card p-4 sm:p-4.5 rounded-2xl border border-zinc-200 bg-white hover:border-[#8FAF91] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-qid="supp_probiotic">
                         <div class="flex items-start gap-3 sm:pr-4">
                             <span class="w-6 h-6 rounded-lg bg-[#FAF7F0] text-[#174C3B] font-bold text-xs flex items-center justify-center shrink-0 border border-[#8FAF91]/30 mt-0.5">9</span>
@@ -838,9 +779,6 @@
             </div>
         </div>
 
-        <!-- ======================================================================
-             SUBMIT & RESULT TRIGGER BUTTON
-             ====================================================================== -->
         <div class="text-center pt-4 no-print">
             <button type="submit" id="btnSubmitAssessment" class="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#174C3B] hover:bg-[#133F31] text-white text-base sm:text-lg font-bold shadow-lg shadow-[#174C3B]/20 hover:scale-[1.01] active:scale-[0.99] transition-all">
                 <svg class="w-5 h-5 text-[#F08A4B]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -852,11 +790,8 @@
         </div>
     </form>
 
-    <!-- ==========================================================================
-         SECTION 5: LIVE RESULT CARD (Rendered after calculation)
-         ========================================================================== -->
     <div id="resultCard" class="hidden bg-white rounded-3xl p-6 sm:p-10 border-2 shadow-xl transition-all duration-500 mt-10 sm:mt-14">
-        <!-- Result Header -->
+        
         <div class="text-center pb-6 border-b border-zinc-100">
             <h2 class="text-xl sm:text-2xl font-black text-[#174C3B] uppercase tracking-wide mb-2">
                 KẾT QUẢ ĐÁNH GIÁ TÌNH TRẠNG DINH DƯỠNG
@@ -865,20 +800,17 @@
                 Dành cho bé: <strong id="resChildName" class="text-[#174C3B]">-</strong> (<span id="resChildAge">-</span>) • Phụ huynh: <strong id="resParentName" class="text-[#174C3B]">-</strong>
             </p>
 
-            <!-- Prominent Evaluation Status Pill -->
             <div class="mt-5">
                 <div id="resultBadge" class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-2xl text-sm sm:text-base font-bold shadow-2xs">
-                    <!-- Injected via JS -->
+                    
                 </div>
             </div>
         </div>
 
-        <!-- Diagnostic Feedback Details -->
         <div id="resultFeedbackBox" class="mt-6 p-5 sm:p-6 rounded-2xl leading-relaxed text-sm sm:text-base">
-            <!-- Dynamic advice injected by JS -->
+            
         </div>
 
-        <!-- Medical Disclaimer Note (As instructed by User) -->
         <div class="p-4 rounded-xl bg-amber-50/80 border border-amber-200/80 text-xs text-amber-900 leading-relaxed my-6 flex items-start gap-2.5">
             <svg class="w-4 h-4 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
@@ -888,7 +820,6 @@
             </div>
         </div>
 
-        <!-- Auto-saved notice & Lookup link -->
         <div class="p-4 sm:p-5 rounded-2xl bg-[#EEF5EA] border border-[#8FAF91]/40 text-xs sm:text-sm text-[#174C3B] flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-[#174C3B] text-white flex items-center justify-center shrink-0 font-bold">
@@ -907,7 +838,6 @@
             </a>
         </div>
 
-        <!-- Single Primary Action Button: Nhận tư vấn qua Zalo -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 no-print">
             <button type="button" onclick="sendResultToZalo()" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-[#0068FF] hover:bg-[#0052cc] text-white text-base font-bold shadow-lg shadow-[#0068FF]/20 hover:scale-[1.01] active:scale-[0.99] transition-all">
                 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -921,7 +851,6 @@
 
 <footer id="globalFooter"></footer>
 
-<!-- Database and Core Scripts -->
 <script src="../assets/js/db.js?v=2.4"></script>
 <script src="../assets/js/layout.js?v=1.1"></script>
 
@@ -1117,7 +1046,7 @@
             
             boxEl.className = 'mt-6 p-5 sm:p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-emerald-950';
             feedbackHtml = `
-                <h3 class="font-bold text-base sm:text-lg mb-2 text-emerald-900">Nhận Xét & Đánh Giá Tình Trạng:</h3>
+                <h3 class="font-bold text-base sm:text-lg mb-2 text-emerald-900">Nhận xét & đánh giá tình trạng:</h3>
                 <p class="mb-3">Bé hiện có một số rào cản nhẹ trong nếp ăn uống hoặc sở thích vị giác. Tình trạng đường ruột và chuyển hóa của con nhìn chung vẫn trong ngưỡng kiểm soát được.</p>
                 <p class="font-bold mb-1">Định hướng cho ba mẹ:</p>
                 <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm">
@@ -1136,7 +1065,7 @@
             
             boxEl.className = 'mt-6 p-5 sm:p-6 rounded-2xl bg-amber-50/70 border border-amber-200 text-amber-950';
             feedbackHtml = `
-                <h3 class="font-bold text-base sm:text-lg mb-2 text-amber-900">Nhận Xét & Đánh Giá Tình Trạng:</h3>
+                <h3 class="font-bold text-base sm:text-lg mb-2 text-amber-900">Nhận xét & đánh giá tình trạng:</h3>
                 <p class="mb-3">Bé đang gặp phải những rào cản rõ rệt về cảm giác thức ăn hoặc đường tiêu hóa (như ngậm thức ăn, táo bón/nôn trớ, nhạy cảm mùi vị hoặc lười ăn rau quả kéo dài). Đây là dấu hiệu thường gặp cảnh báo nguy cơ mất cân bằng dinh dưỡng tích lũy.</p>
                 <p class="font-bold mb-1">Định hướng cho ba mẹ:</p>
                 <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm">
@@ -1155,7 +1084,7 @@
             
             boxEl.className = 'mt-6 p-5 sm:p-6 rounded-2xl bg-rose-50/70 border border-rose-200 text-rose-950';
             feedbackHtml = `
-                <h3 class="font-bold text-base sm:text-lg mb-2 text-rose-900">Nhận Xét & Đánh Giá Tình Trạng:</h3>
+                <h3 class="font-bold text-base sm:text-lg mb-2 text-rose-900">Nhận xét & đánh giá tình trạng:</h3>
                 <p class="mb-3">Bé có nhiều biểu hiện rõ nét về rối loạn cảm giác ăn uống, rối loạn tiêu hóa và thói quen sinh hoạt. Tình trạng ăn chọn lọc quá mức kết hợp với hệ tiêu hóa nhạy cảm kéo dài cần có sự đồng hành và can thiệp kịp thời.</p>
                 <p class="font-bold mb-1">Định hướng hỗ trợ:</p>
                 <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm">
