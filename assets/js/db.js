@@ -732,7 +732,7 @@ const DB = (() => {
                 baby_height: data.baby_height || '',
                 issues: Array.isArray(data.issues) ? data.issues.join(', ') : (data.issues || ''),
                 feeding_notes: data.feeding_notes || '',
-                consult_type: data.consult_type || 'Gói Đồng Hành Chuyên Sâu 1 Tháng (3.000.000đ)',
+                consult_type: data.consult_type || 'Tư vấn 1:1 qua Zalo (Gọi thoại / Video)',
                 preferred_time: data.preferred_time || 'Buổi tối (19h30 - 21h30)',
                 source: data.source || 'Website Trực Tiếp',
                 status: 'pending',
@@ -2293,32 +2293,32 @@ const DB = (() => {
                 const pPhone = (payload.phone || '').trim();
                 const bName = (payload.baby_name || '').trim();
                 const bAge = (payload.baby_age || '').trim();
-                const cType = payload.consult_type || 'Tư vấn 1-1';
+                const cType = payload.consult_type || 'Tư vấn 1:1 qua Zalo (Gọi thoại / Video)';
 
-                subject = `[Lịch Hẹn Mới] PH: ${pName || 'Phụ huynh'}${pPhone ? ` (${pPhone})` : ''} - ${cType}`;
-                bodyText = `THÔNG BÁO LỊCH HẸN TƯ VẤN 1-1 MỚI\n\n` +
+                subject = `[Lịch Hẹn 1:1] PH: ${pName || 'Phụ huynh'}${pPhone ? ` (${pPhone})` : ''} - ${cType}`;
+                bodyText = `THÔNG BÁO LỊCH HẸN TƯ VẤN 1:1 MỚI\n\n` +
                     `- Họ tên mẹ: ${pName || '-'}\n` +
                     `- SĐT / Zalo: ${pPhone || '-'}\n` +
                     `- Email: ${payload.email || 'Không có'}\n` +
                     `- Thông tin bé: ${bName || 'Bé'} (${bAge || '-'})\n` +
                     `- Biểu hiện của con: ${payload.issues || '-'}\n` +
                     `- Chia sẻ của mẹ: ${payload.feeding_notes || '-'}\n` +
-                    `- Gói đồng hành: ${cType}\n` +
+                    `- Hình thức tư vấn: ${cType}\n` +
                     `- Khung giờ mong muốn: ${payload.preferred_time || '-'}\n` +
                     `- Thời gian gửi: ${payload.created_at || nowStr}`;
 
                 htmlBody = `
                 <!-- Mobile Email Preheader -->
                 <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;">
-                    📅 Lịch hẹn 1-1 mới • Phụ huynh: ${pName || 'Phụ huynh'} ${pPhone ? `(${pPhone})` : ''} • Bé: ${bName || 'Bé'} (${bAge || '-'}) • Gói: ${cType}
+                    📅 Lịch hẹn 1:1 mới • Phụ huynh: ${pName || 'Phụ huynh'} ${pPhone ? `(${pPhone})` : ''} • Bé: ${bName || 'Bé'} (${bAge || '-'}) • Hình thức: ${cType}
                 </div>
                 <div style="display:none;max-height:0px;overflow:hidden;">&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
                 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:620px;margin:0 auto;background:#f3f4f6;padding:16px;border-radius:12px;">
                     <div style="background:#174c3b;padding:22px 20px;border-radius:10px 10px 0 0;text-align:center;color:#ffffff;">
                         <span style="display:inline-block;background:rgba(255,255,255,0.18);padding:4px 12px;border-radius:9999px;font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">
-                            LỊCH HẸN TƯ VẤN 1-1
+                            LỊCH HẸN TƯ VẤN 1:1
                         </span>
-                        <h1 style="margin:0;font-size:18px;font-weight:700;line-height:1.4;">Thông Báo Đăng Ký Lịch Hẹn Mới</h1>
+                        <h1 style="margin:0;font-size:18px;font-weight:700;line-height:1.4;">Thông Báo Đăng Ký Tư Vấn 1:1 Mới</h1>
                         <p style="margin:6px 0 0;font-size:12px;color:#d1fae5;opacity:0.9;">Thu Hiền - Cùng Mẹ Hiểu Con</p>
                     </div>
                     <div style="background:#ffffff;padding:20px;border-radius:0 0 10px 10px;border:1px solid #e5e7eb;border-top:none;">
@@ -2330,7 +2330,7 @@ const DB = (() => {
                                         <div style="font-size:14px;font-weight:700;color:#047857;margin-top:2px;">Chờ Xác Nhận Tư Vấn</div>
                                     </td>
                                     <td style="text-align:right;">
-                                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#065f46;">Gói dịch vụ</div>
+                                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#065f46;">Hình thức</div>
                                         <div style="font-size:13px;font-weight:600;color:#b45309;margin-top:2px;">${cType}</div>
                                     </td>
                                 </tr>

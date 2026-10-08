@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 baby_height: formData.get('baby_height') || '',
                 issues: issues,
                 feeding_notes: formData.get('feeding_notes') || '',
-                consult_type: formData.get('consult_type') || 'Gói Đồng Hành Chuyên Sâu 1 Tháng (3.000.000đ)',
+                consult_type: formData.get('consult_type') || 'Tư vấn 1:1 qua Zalo (Gọi thoại / Video)',
                 preferred_time: formData.get('preferred_time') || 'Buổi tối (19h30 - 21h30)'
             };
 
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.warn('Email dispatch notice:', err);
                 }
 
-                showToast('Đăng ký thành công! Thu Hiền sẽ liên hệ riêng qua Zalo cùng Mẹ.', 'success');
+                showToast('Đăng ký thành công! Thu Hiền sẽ liên hệ riêng qua Zalo để sắp xếp lịch hẹn 1:1 cùng Mẹ.', 'success');
                 
                 // Show confirmation screen
                 const formContainer = bookingForm.closest('.booking-card-inner');
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="eyebrow-badge mb-3">TIẾP NHẬN THÀNH CÔNG #TH-${savedBooking.id}</span>
                             <h3 class="font-serif text-2xl md:text-3xl text-[#174C3B] font-bold mb-4">Cảm ơn Mẹ đã tin tưởng gửi gắm!</h3>
                             <p class="text-[#5F6E66] max-w-lg mx-auto mb-6 text-base leading-relaxed">
-                                Thu Hiền đã ghi nhận câu chuyện của Mẹ. Thu Hiền sẽ chủ động liên hệ riêng tư qua số Zalo/SĐT để lắng nghe và sắp xếp lịch hẹn trò chuyện trong thời gian sớm nhất. Mẹ hãy yên tâm nhé!
+                                Thu Hiền đã ghi nhận câu chuyện của Mẹ. Thu Hiền sẽ chủ động liên hệ riêng tư qua số Zalo/SĐT để lắng nghe và sắp xếp lịch hẹn tư vấn 1:1 trong thời gian sớm nhất. Mẹ hãy yên tâm nhé!
                             </p>
                             <div class="inline-flex flex-col sm:flex-row gap-4 justify-center items-center">
                                 <a href="/" class="btn-pill-primary">
@@ -278,17 +278,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4500);
     };
 
-    // 8. Pre-select Package from URL Query Param in dat-lich page
+    // 8. Pre-select Consultation Type from URL Query Param in dat-lich page
     const urlParams = new URLSearchParams(window.location.search);
-    const selectedPackage = urlParams.get('package');
     const consultTypeSelect = document.querySelector('select[name="consult_type"]');
-    if (selectedPackage && consultTypeSelect) {
-        if (selectedPackage === '1thang') {
-            consultTypeSelect.value = 'Gói Đồng Hành Chuyên Sâu 1 Tháng (3.000.000đ)';
-        } else if (selectedPackage === '3ngay' || selectedPackage === '60phut') {
-            consultTypeSelect.value = 'Gói Khởi Động Trải Nghiệm 3 Ngày (500.000đ)';
-        } else if (selectedPackage === 'lienhe' || selectedPackage === '3thang') {
-            consultTypeSelect.value = 'Gói Đồng Hành Dài Hạn / Chuyên Biệt (Liên Hệ)';
+    if (consultTypeSelect) {
+        const typeParam = (urlParams.get('type') || urlParams.get('package') || '').toLowerCase();
+        if (typeParam) {
+            if (typeParam.includes('phone') || typeParam.includes('thoai') || typeParam.includes('call')) {
+                consultTypeSelect.value = 'Tư vấn 1:1 qua Cuộc gọi thoại trực tiếp';
+            } else if (typeParam.includes('chat') || typeParam.includes('tin') || typeParam.includes('sms')) {
+                consultTypeSelect.value = 'Tư vấn 1:1 qua Nhắn tin trao đổi trước';
+            } else {
+                consultTypeSelect.value = 'Tư vấn 1:1 qua Zalo (Gọi thoại / Video)';
+            }
         }
     }
 
