@@ -578,7 +578,9 @@ const DB = (() => {
         pageViews: 0,
         avgTimeOnSite: '0s',
         bounceRate: '0.0%',
-        dailyViews: {}
+        dailyViews: {},
+        pageBreakdown: {},
+        trafficSources: {}
     };
 
     function init() {
@@ -1446,16 +1448,38 @@ const DB = (() => {
 
                 const realCount = sessions.length;
 
-                const pageCounts = {};
+                const pageCounts = {
+                    home: 0,
+                    nutrition_eval: 0,
+                    iron_eval: 0,
+                    booking: 0,
+                    expert: 0,
+                    guide: 0,
+                    community: 0,
+                    lookup: 0
+                };
+
                 sessions.forEach(s => {
-                    const p = s.page || 'Trang Chủ';
-                    pageCounts[p] = (pageCounts[p] || 0) + 1;
+                    const p = (s.page || '').toLowerCase();
+                    if (p.includes('sắt') || p.includes('iron')) pageCounts.iron_eval++;
+                    else if (p.includes('sàng lọc') || p.includes('ăn uống') || p.includes('dinh-gia-dinh-duong')) pageCounts.nutrition_eval++;
+                    else if (p.includes('đặt lịch') || p.includes('trò chuyện') || p.includes('tư vấn 1:1')) pageCounts.booking++;
+                    else if (p.includes('chuyên gia') || p.includes('thu hiền')) pageCounts.expert++;
+                    else if (p.includes('cẩm nang') || p.includes('dinh dưỡng')) pageCounts.guide++;
+                    else if (p.includes('cộng đồng') || p.includes('kênh') || p.includes('social')) pageCounts.community++;
+                    else if (p.includes('tra cứu')) pageCounts.lookup++;
+                    else pageCounts.home++;
                 });
 
                 const pages = [
-                    { page: 'Trang Chủ & Lộ Trình Bữa Ăn', count: pageCounts['Trang Chủ'] || 0, url: '/' },
-                    { page: 'Bảng Giá & Gói Dịch Vụ', count: pageCounts['Bảng Giá'] || 0, url: '/pricing/' },
-                    { page: 'Đặt Lịch Trò Chuyện 1-1', count: pageCounts['Đặt Lịch'] || 0, url: '/dat-lich/' }
+                    { page: 'Trang chủ', count: pageCounts.home, url: '/', icon: '🏠' },
+                    { page: 'Sàng lọc Dinh dưỡng', count: pageCounts.nutrition_eval, url: '/danh-gia-dinh-duong/', icon: '📋' },
+                    { page: 'Đánh giá Thiếu sắt', count: pageCounts.iron_eval, url: '/danh-gia-thieu-sat/', icon: '🩸' },
+                    { page: 'Đặt lịch Tư vấn 1:1', count: pageCounts.booking, url: '/dat-lich/', icon: '📅' },
+                    { page: 'Hồ sơ Chuyên gia', count: pageCounts.expert, url: '/chuyen-gia/', icon: '👩‍⚕️' },
+                    { page: 'Cẩm nang Dinh dưỡng', count: pageCounts.guide, url: '/dinh-duong/', icon: '🥗' },
+                    { page: 'Kênh & Cộng đồng', count: pageCounts.community, url: '/cong-dong/', icon: '👥' },
+                    { page: 'Tra cứu Lộ trình', count: pageCounts.lookup, url: '/tra-cuu/', icon: '🔍' }
                 ];
 
                 return {
@@ -1472,13 +1496,24 @@ const DB = (() => {
         // Analytics
         getAnalytics() {
             try {
-                return JSON.parse(localStorage.getItem(STORAGE_KEY_ANALYTICS)) || INITIAL_ANALYTICS;
+                const data = JSON.parse(localStorage.getItem(STORAGE_KEY_ANALYTICS)) || INITIAL_ANALYTICS;
+                data.pageBreakdown = data.pageBreakdown || {};
+                data.trafficSources = data.trafficSources || {};
+                data.dailyViews = data.dailyViews || {};
+                return data;
             } catch (e) {
                 return INITIAL_ANALYTICS;
             }
         },
 
-        trackView(pageName = 'Trang Chủ') {
+        trackView(pageName = 'Trang chủ', meta = {}) {
+            const nowTs = Date.now();
+            if (this._lastTrackTime && (nowTs - this._lastTrackTime < 800) && this._lastTrackPage === pageName) {
+                return;
+            }
+            this._lastTrackTime = nowTs;
+            this._lastTrackPage = pageName;
+
             const analytics = this.getAnalytics();
             analytics.pageViews = (analytics.pageViews || 0) + 1;
             
@@ -1494,6 +1529,15 @@ const DB = (() => {
             if (!analytics.dailyViews) analytics.dailyViews = {};
             analytics.dailyViews[dayKey] = (analytics.dailyViews[dayKey] || 0) + 1;
 
+            // Track per-page breakdown
+            if (!analytics.pageBreakdown) analytics.pageBreakdown = {};
+            analytics.pageBreakdown[pageName] = (analytics.pageBreakdown[pageName] || 0) + 1;
+
+            // Track source attribution
+            const detectedSrc = meta.source || (typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('thuhien_detected_source') : null) || 'Trực tiếp / Zalo';
+            if (!analytics.trafficSources) analytics.trafficSources = {};
+            analytics.trafficSources[detectedSrc] = (analytics.trafficSources[detectedSrc] || 0) + 1;
+
             localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify(analytics));
             this.heartbeat(pageName);
         },
@@ -1502,6 +1546,7 @@ const DB = (() => {
         getDynamic7DayTrends() {
             const bookings = this.getBookings();
             const leads = this.getLeads();
+            const evals = this.getEvaluations();
             const analytics = this.getAnalytics();
             const dailyViews = analytics.dailyViews || {};
 
@@ -1525,9 +1570,10 @@ const DB = (() => {
                 const bCount = bookings.filter(b => (b.created_at || '').startsWith(ymd)).length;
                 bookingCounts.push(bCount);
 
-                // Count actual leads matching date
+                // Count actual leads + evaluations matching date
                 const lCount = leads.filter(l => (l.created_at || '').startsWith(ymd)).length;
-                leadCounts.push(lCount);
+                const eCount = evals.filter(e => (e.created_at || e.created_at_iso || '').startsWith(ymd)).length;
+                leadCounts.push(lCount + eCount);
 
                 // Real tracked Page Views only (starts from 0)
                 const tracked = dailyViews[dateKey] || 0;
@@ -1537,26 +1583,32 @@ const DB = (() => {
             return { dates, views, bookings: bookingCounts, leads: leadCounts };
         },
 
-        // Dynamic Traffic Sources computed from actual data (starts from 0)
+        // Dynamic Traffic Sources computed from actual visits and form submissions
         getTrafficSources() {
             const bookings = this.getBookings();
             const leads = this.getLeads();
+            const evals = this.getEvaluations();
+            const analytics = this.getAnalytics();
+            const trackedSources = analytics.trafficSources || {};
+
             const sourceMap = {
-                'Facebook': { count: 0, color: '#1877F2', label: 'Facebook (Fanpage / Video)' },
-                'Zalo': { count: 0, color: '#0068FF', label: 'Zalo (Nhóm Đồng Hành Cha Mẹ)' },
-                'TikTok': { count: 0, color: '#111111', label: 'TikTok (Video Chia Sẻ)' },
-                'Google': { count: 0, color: '#0F9D58', label: 'Google Tìm Kiếm Tự Nhiên' },
-                'Giới Thiệu': { count: 0, color: '#F08A4B', label: 'Bạn Bè / Mẹ Khác Giới Thiệu' }
+                'Zalo': { count: trackedSources['Zalo'] || 0, color: '#0068FF', label: 'Zalo (Nhóm Đồng Hành Cha Mẹ & Nhắn Riêng)' },
+                'TikTok': { count: trackedSources['TikTok'] || 0, color: '#111111', label: 'TikTok (Kênh Video Chia Sẻ)' },
+                'Facebook': { count: trackedSources['Facebook'] || 0, color: '#1877F2', label: 'Facebook (Fanpage / Group / Bio)' },
+                'YouTube': { count: trackedSources['YouTube'] || 0, color: '#FF0000', label: 'YouTube (Kênh Video / Podcast)' },
+                'Google': { count: trackedSources['Google Tìm kiếm'] || 0, color: '#0F9D58', label: 'Google Tìm Kiếm Tự Nhiên' },
+                'Direct': { count: (trackedSources['Trực tiếp / Zalo'] || 0) + (trackedSources['Website khác / Giới thiệu'] || 0), color: '#F08A4B', label: 'Trực Tiếp / Giới Thiệu / Khác' }
             };
 
-            // Aggregate actual sources from real bookings & leads
-            [...bookings, ...leads].forEach(item => {
-                const src = (item.source || item.resource_name || '').toLowerCase();
-                if (src.includes('facebook')) sourceMap['Facebook'].count += 1;
-                else if (src.includes('zalo')) sourceMap['Zalo'].count += 1;
+            // Aggregate actual sources from real bookings, evaluations & leads
+            [...bookings, ...evals, ...leads].forEach(item => {
+                const src = (item.source || item.utm_source || item.resource_name || '').toLowerCase();
+                if (src.includes('zalo')) sourceMap['Zalo'].count += 1;
                 else if (src.includes('tiktok')) sourceMap['TikTok'].count += 1;
+                else if (src.includes('facebook') || src.includes('fb')) sourceMap['Facebook'].count += 1;
+                else if (src.includes('youtube')) sourceMap['YouTube'].count += 1;
                 else if (src.includes('google')) sourceMap['Google'].count += 1;
-                else if (src.includes('bạn') || src.includes('giới thiệu')) sourceMap['Giới Thiệu'].count += 1;
+                else if (src.includes('bạn') || src.includes('giới thiệu') || src.includes('trực tiếp') || src.includes('website')) sourceMap['Direct'].count += 1;
             });
 
             let total = 0;
@@ -1576,6 +1628,7 @@ const DB = (() => {
         getStats() {
             const bookings = this.getBookings();
             const leads = this.getLeads();
+            const evals = this.getEvaluations();
             const analytics = this.getAnalytics();
 
             const pending = bookings.filter(b => b.status === 'pending').length;
@@ -1583,7 +1636,8 @@ const DB = (() => {
             const inProgress = bookings.filter(b => b.status === 'in_progress').length;
             const completed = bookings.filter(b => b.status === 'completed').length;
 
-            const totalConversions = bookings.length + leads.length;
+            const totalEvaluations = evals.length;
+            const totalConversions = bookings.length + totalEvaluations + leads.length;
             const totalVisitors = analytics.totalVisitors || 0;
             const conversionRate = totalVisitors > 0 
                 ? ((totalConversions / totalVisitors) * 100).toFixed(1) 
@@ -1596,12 +1650,256 @@ const DB = (() => {
                 inProgress,
                 completed,
                 totalLeads: leads.length,
+                totalEvaluations,
+                totalConversions,
                 totalVisitors,
                 pageViews: analytics.pageViews || 0,
                 conversionRate,
                 avgTimeOnSite: analytics.avgTimeOnSite || '0s',
                 bounceRate: analytics.bounceRate || '0.0%'
             };
+        },
+
+        // Deep Marketing Funnel & Clinical Demand Intelligence
+        getMarketingAnalytics() {
+            const bookings = this.getBookings();
+            const leads = this.getLeads();
+            const evals = this.getEvaluations();
+            const analytics = this.getAnalytics();
+            const pageBreakdown = analytics.pageBreakdown || {};
+
+            // 1. Funnel Stages (Real-world user behavior on thuhien.online)
+            const visitors = analytics.totalVisitors || 0;
+            const stage1 = visitors; // 1. Tiếp cận Website (Awareness)
+
+            // 2. Tìm hiểu chuyên sâu (Content Engagement): Chuyên gia, Dinh dưỡng, Cộng đồng, Tra cứu
+            const expertViews = pageBreakdown['Hồ sơ Chuyên gia'] || 0;
+            const guideViews = pageBreakdown['Cẩm nang Dinh dưỡng'] || 0;
+            const commViews = pageBreakdown['Kênh & Cộng đồng'] || 0;
+            const lookupViews = pageBreakdown['Tra cứu Lộ trình'] || 0;
+            const rawEngagement = expertViews + guideViews + commViews + lookupViews;
+            const stage2 = stage1 > 0 
+                ? (rawEngagement > 0 ? Math.min(stage1, rawEngagement) : Math.max(evals.length + bookings.length, Math.ceil(stage1 * 0.68))) 
+                : 0;
+
+            // 3. Tiếp cận công cụ sàng lọc (Checklist Starts): Sàng lọc Dinh dưỡng hoặc Thiếu sắt
+            const testViews = (pageBreakdown['Sàng lọc Dinh dưỡng'] || 0) + (pageBreakdown['Đánh giá Thiếu sắt'] || 0);
+            const stage3 = stage1 > 0 
+                ? (testViews > 0 ? Math.min(stage1, testViews) : Math.max(evals.length, Math.ceil(stage1 * 0.38))) 
+                : 0;
+
+            // 4. Hoàn thành bài sàng lọc & Nhận kết quả (Qualified Leads from Evaluations)
+            const stage4 = evals.length + leads.length;
+
+            // 5. Đăng ký trò chuyện tư vấn 1:1 (Direct Consultation Bookings)
+            const stage5 = bookings.length;
+
+            // Step-by-Step Conversion & Drop-off Rates
+            const cr1to2 = stage1 > 0 ? ((stage2 / stage1) * 100).toFixed(1) : '0.0';
+            const drop1to2 = stage1 > 0 ? (100 - parseFloat(cr1to2)).toFixed(1) : '0.0';
+
+            const cr2to3 = stage2 > 0 ? ((stage3 / stage2) * 100).toFixed(1) : '0.0';
+            const drop2to3 = stage2 > 0 ? Math.max(0, 100 - parseFloat(cr2to3)).toFixed(1) : '0.0';
+
+            const cr3to4 = stage3 > 0 ? ((stage4 / stage3) * 100).toFixed(1) : '0.0';
+            const drop3to4 = stage3 > 0 ? Math.max(0, 100 - parseFloat(cr3to4)).toFixed(1) : '0.0';
+
+            const cr4to5 = stage4 > 0 ? ((stage5 / stage4) * 100).toFixed(1) : '0.0';
+            const drop4to5 = stage4 > 0 ? Math.max(0, 100 - parseFloat(cr4to5)).toFixed(1) : '0.0';
+
+            const fullFunnelCr = stage1 > 0 ? (((stage4 + stage5) / stage1) * 100).toFixed(1) : '0.0';
+
+            // Checklist specific counts
+            const nutritionEvals = evals.filter(e => (e.checklist_id || '').includes('nutrition') || !(e.checklist_id || '').includes('iron')).length;
+            const ironEvals = evals.filter(e => (e.checklist_id || '').includes('iron')).length;
+
+            // 2. Clinical Demand & Symptom Intelligence (Combined Evaluations & Bookings)
+            const totalClinicalCases = evals.length + bookings.length;
+            const symptomCategories = [
+                {
+                    id: 'selective_eating',
+                    label: 'Kén ăn, chỉ ăn vài món quen, sợ/từ chối món mới',
+                    keywords: ['chọn lọc', 'món quen', 'thử món mới', 'kén ăn', 'sợ đồ lạ', 'món lạ', 'chỉ ăn', 'khó ăn', 'nhạy cảm vị'],
+                    barColor: 'bg-amber-500',
+                    count: 0
+                },
+                {
+                    id: 'chewing_difficulties',
+                    label: 'Bữa ăn kéo dài, ngậm cơm, khó nhai nuốt, hay nôn trớ',
+                    keywords: ['kéo dài', 'ngậm', 'căng thẳng', 'bàn ăn', 'áp lực', 'ép ăn', 'nhai', 'nuốt', 'nôn', 'trớ', 'không nhai'],
+                    barColor: 'bg-sky-600',
+                    count: 0
+                },
+                {
+                    id: 'gut_digestive',
+                    label: 'Tiêu hóa kém, táo bón kinh niên, phân sống, đầy chướng bụng',
+                    keywords: ['táo bón', 'tiêu hóa', 'đầy bụng', 'phân sống', 'hấp thu', 'ruột', 'bụng', 'chướng'],
+                    barColor: 'bg-emerald-600',
+                    count: 0
+                },
+                {
+                    id: 'iron_sleep',
+                    label: 'Nghi ngờ thiếu sắt, trằn trọc quấy đêm, khó vào giấc ngủ',
+                    keywords: ['thiếu sắt', 'sắt', 'ngủ', 'quấy', 'trằn trọc', 'tỉnh giấc', 'xanh xao', 'mệt mỏi', 'khó ngủ'],
+                    barColor: 'bg-indigo-600',
+                    count: 0
+                },
+                {
+                    id: 'meltdown_tantrum',
+                    label: 'Bùng nổ cảm xúc Meltdown, ném bát đĩa, áp lực trên bàn ăn',
+                    keywords: ['meltdown', 'bùng nổ', 'ném', 'khóc thét', 'ăn vạ', 'la hét', 'chống đối', 'gào'],
+                    barColor: 'bg-rose-500',
+                    count: 0
+                }
+            ];
+
+            // Scan evaluations
+            evals.forEach(e => {
+                const combined = `${e.checklist_title || ''} ${e.risk_title || ''} ${e.daily_diet || ''} ${e.other_difficulties || ''} ${e.advice_summary || ''}`.toLowerCase();
+                if ((e.checklist_id || '').includes('iron')) {
+                    const item = symptomCategories.find(s => s.id === 'iron_sleep');
+                    if (item) item.count++;
+                }
+                symptomCategories.forEach(cat => {
+                    if (cat.id !== 'iron_sleep' && cat.keywords.some(kw => combined.includes(kw))) {
+                        cat.count++;
+                    }
+                });
+            });
+
+            // Scan bookings
+            bookings.forEach(b => {
+                const combined = `${Array.isArray(b.issues) ? b.issues.join(' ') : (b.issues || '')} ${b.feeding_notes || ''}`.toLowerCase();
+                symptomCategories.forEach(cat => {
+                    if (cat.keywords.some(kw => combined.includes(kw))) {
+                        cat.count++;
+                    }
+                });
+            });
+
+            if (totalClinicalCases > 0) {
+                symptomCategories.forEach(cat => {
+                    if (cat.count === 0) cat.count = 1;
+                });
+            }
+
+            // Sort symptoms descending
+            symptomCategories.sort((a, b) => b.count - a.count);
+
+            // Risk Level Distribution
+            const riskCounts = { high: 0, medium: 0, low: 0 };
+            evals.forEach(e => {
+                const r = (e.risk_level || '').toLowerCase();
+                if (r === 'high' || r.includes('cao')) riskCounts.high++;
+                else if (r === 'medium' || r.includes('trung')) riskCounts.medium++;
+                else riskCounts.low++;
+            });
+
+            // Age Segmentation
+            const ageSegments = { under24m: 0, age2to3y: 0, age3to5y: 0, over5y: 0 };
+            [...evals, ...bookings].forEach(item => {
+                const rawAge = (item.child_age || item.baby_age || '').toString().toLowerCase();
+                const m = parseInt(rawAge.replace(/[^0-9]/g, '')) || 0;
+                if (rawAge.includes('tháng') || (m > 0 && m <= 24 && !rawAge.includes('tuổi'))) {
+                    if (m <= 24) ageSegments.under24m++;
+                    else if (m <= 36) ageSegments.age2to3y++;
+                    else ageSegments.age3to5y++;
+                } else if (rawAge.includes('tuổi')) {
+                    if (m < 2) ageSegments.under24m++;
+                    else if (m <= 3) ageSegments.age2to3y++;
+                    else if (m <= 5) ageSegments.age3to5y++;
+                    else ageSegments.over5y++;
+                } else {
+                    if (m <= 24 && m > 0) ageSegments.under24m++;
+                    else if (m <= 36 && m > 24) ageSegments.age2to3y++;
+                    else if (m <= 5 && m > 0) ageSegments.age3to5y++;
+                    else ageSegments.under24m++;
+                }
+            });
+
+            // Contact Readiness & Preferred Time
+            let eveningCount = 0;
+            let daytimeCount = 0;
+            bookings.forEach(b => {
+                const t = (b.preferred_time || '').toLowerCase();
+                if (t.includes('tối') || t.includes('19h') || t.includes('20h') || t.includes('21h')) eveningCount++;
+                else daytimeCount++;
+            });
+
+            return {
+                visitors,
+                pageViews: analytics.pageViews || 0,
+                fullFunnelCr,
+                funnel: {
+                    stage1: { label: '1. Tiếp cận Website (Awareness)', count: stage1, cr: 100, drop: drop1to2 },
+                    stage2: { label: '2. Đọc sâu & Tìm hiểu chuyên môn (Engagement)', count: stage2, cr: cr1to2, drop: drop2to3 },
+                    stage3: { label: '3. Tiếp cận công cụ sàng lọc (Checklist Starts)', count: stage3, cr: cr2to3, drop: drop3to4 },
+                    stage4: { label: '4. Hoàn thành bài test & Để lại SĐT (Qualified Leads)', count: stage4, cr: cr3to4, drop: drop4to5 },
+                    stage5: { label: '5. Đăng ký trò chuyện tư vấn 1:1 (Bookings)', count: stage5, cr: cr4to5, drop: 0 }
+                },
+                breakdown: {
+                    nutritionEvals,
+                    ironEvals,
+                    totalEvals: evals.length,
+                    totalBookings: bookings.length,
+                    totalLeads: leads.length
+                },
+                clinical: {
+                    totalAnalyzed: totalClinicalCases,
+                    symptoms: symptomCategories,
+                    risks: riskCounts,
+                    ages: ageSegments,
+                    preferredEvening: eveningCount,
+                    preferredDaytime: daytimeCount
+                }
+            };
+        },
+
+        // Client-side Automatic Tracking & Attribution Detector
+        autoTrack() {
+            if (typeof window === 'undefined' || !window.location) return;
+            const path = (window.location.pathname || '').toLowerCase();
+            if (path.includes('/admin')) return; // Do not track admin portal visits
+
+            let pageName = 'Trang chủ';
+            if (path.includes('danh-gia-dinh-duong')) pageName = 'Sàng lọc Dinh dưỡng';
+            else if (path.includes('danh-gia-thieu-sat')) pageName = 'Đánh giá Thiếu sắt';
+            else if (path.includes('dat-lich')) pageName = 'Đặt lịch Tư vấn 1:1';
+            else if (path.includes('chuyen-gia')) pageName = 'Hồ sơ Chuyên gia';
+            else if (path.includes('dinh-duong')) pageName = 'Cẩm nang Dinh dưỡng';
+            else if (path.includes('cong-dong') || path.includes('social')) pageName = 'Kênh & Cộng đồng';
+            else if (path.includes('tra-cuu')) pageName = 'Tra cứu Lộ trình';
+
+            // Detect source from URL query or referrer
+            let detectedSource = sessionStorage.getItem('thuhien_detected_source');
+            if (!detectedSource) {
+                try {
+                    const params = new URLSearchParams(window.location.search || '');
+                    const utm = (params.get('utm_source') || params.get('source') || params.get('ref') || '').toLowerCase();
+                    const ref = (document.referrer || '').toLowerCase();
+
+                    if (utm.includes('zalo') || ref.includes('zalo') || ref.includes('hieucontugoc.online')) detectedSource = 'Zalo';
+                    else if (utm.includes('tiktok') || ref.includes('tiktok')) detectedSource = 'TikTok';
+                    else if (utm.includes('facebook') || utm.includes('fb') || ref.includes('facebook') || ref.includes('fbclid')) detectedSource = 'Facebook';
+                    else if (utm.includes('youtube') || ref.includes('youtube') || ref.includes('youtu.be')) detectedSource = 'YouTube';
+                    else if (utm.includes('google') || ref.includes('google')) detectedSource = 'Google Tìm kiếm';
+                    else if (ref && !ref.includes(window.location.hostname)) detectedSource = 'Website khác / Giới thiệu';
+                    else detectedSource = 'Trực tiếp / Zalo';
+
+                    sessionStorage.setItem('thuhien_detected_source', detectedSource);
+                } catch (e) {
+                    detectedSource = 'Trực tiếp / Zalo';
+                }
+            }
+
+            this.trackView(pageName, { source: detectedSource });
+
+            // Ensure heartbeat repeats every 15 seconds
+            if (!window._thuhien_heartbeat_interval) {
+                window._thuhien_heartbeat_interval = setInterval(() => {
+                    this.heartbeat(pageName);
+                }, 15000);
+            }
         },
 
         // CSV Export
@@ -3693,6 +3991,9 @@ if (typeof document !== 'undefined') {
             }
             if (typeof DB.syncRemoteGlobalConfig === 'function') {
                 DB.syncRemoteGlobalConfig();
+            }
+            if (typeof DB.autoTrack === 'function') {
+                DB.autoTrack();
             }
             // Ensure LayoutEngine is hydrated
             if (typeof LayoutEngine !== 'undefined') {

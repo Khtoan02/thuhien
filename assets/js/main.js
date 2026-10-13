@@ -20,21 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (typeof DB !== 'undefined') {
-        const curPage = document.title.includes('Đặt Lịch') 
-            ? 'Đặt Lịch Trò Chuyện 1-1' 
-            : (document.title.includes('Bảng Giá') 
-                ? 'Bảng Giá & Gói Dịch Vụ' 
-                : (document.title.includes('Dinh Dưỡng') 
-                    ? 'Lời Khuyên Dinh Dưỡng GFCF' 
-                    : (document.title.includes('Chuyên Gia') 
-                        ? 'Chuyên Gia Bùi Thu Hiền' 
-                        : (document.title.includes('Cộng Đồng') || document.title.includes('Kênh') || document.title.includes('Social')
-                            ? 'Kênh & Cộng Đồng'
-                            : 'Trang Chủ'))));
-        DB.trackView(curPage);
-        setInterval(() => {
-            DB.heartbeat(curPage);
-        }, 12000);
+        if (typeof DB.autoTrack === 'function') {
+            DB.autoTrack();
+        }
 
         try {
             if (typeof DB.applyPageStatusControl === 'function') DB.applyPageStatusControl();
@@ -111,7 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 issues: issues,
                 feeding_notes: formData.get('feeding_notes') || '',
                 consult_type: formData.get('consult_type') || 'Tư vấn 1:1',
-                preferred_time: formData.get('preferred_time') || 'Linh hoạt (Thu Hiền liên hệ trao đổi)'
+                preferred_time: formData.get('preferred_time') || 'Linh hoạt (Thu Hiền liên hệ trao đổi)',
+                source: (typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('thuhien_detected_source') : null) || 'Website Trực Tiếp'
             };
 
             if (!bookingData.parent_name || !bookingData.phone) {

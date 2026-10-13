@@ -492,10 +492,11 @@
                  VIEW 2: PHÂN TÍCH MARKETING (Funnel & Deep Analytics)
                  ========================================================== -->
             <div id="view-marketing" class="hidden space-y-6">
+                <!-- Header -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Phân Tích Hiệu Suất Marketing</h2>
-                        <p class="text-xs text-zinc-500">Đo lường phễu chuyển đổi phụ huynh và xu hướng quan tâm can thiệp con tự kỷ tại nhà</p>
+                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Phân Tích Hiệu Suất Marketing & Phễu Chuyển Đổi Thực Tế</h2>
+                        <p class="text-xs text-zinc-500">Đo lường chi tiết hành trình từ khách tiếp cận website, trải nghiệm bài test sàng lọc dinh dưỡng đến đặt lịch tư vấn 1:1</p>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
@@ -506,6 +507,11 @@
                             <span id="liveMarketingStatus">Realtime Tracking Hoạt Động</span>
                         </span>
                     </div>
+                </div>
+
+                <!-- 4 KPI Scorecards for Marketing -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="marketingKpiCards">
+                    <!-- Populated dynamically by JS -->
                 </div>
 
                 <!-- LIVE REALTIME TRAFFIC MONITOR CARD -->
@@ -519,61 +525,155 @@
                                 <h3 class="text-sm font-bold text-emerald-950 flex items-center gap-2">
                                     <span>Lưu Lượng Trực Tuyến Thời Gian Thực (Live Online Monitor)</span>
                                 </h3>
-                                <p class="text-xs text-emerald-700">Tự động bắt nhịp phiên truy cập thực của phụ huynh trên website</p>
+                                <p class="text-xs text-emerald-700">Tự động bắt nhịp phiên truy cập thực của phụ huynh trên toàn bộ 8 trang chính</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
-                            <span class="text-2xl font-bold text-emerald-700" id="liveOnlineCountBig">4</span>
+                            <span class="text-2xl font-bold text-emerald-700" id="liveOnlineCountBig">0</span>
                             <span class="text-xs font-medium text-emerald-800">mẹ đang xem</span>
                         </div>
                     </div>
 
-                    <!-- Live Breakdown Grid -->
+                    <!-- Live Breakdown Grid (8 pages) -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs" id="livePagesGrid">
                         <!-- Populated by JS -->
                     </div>
                 </div>
 
-                <!-- Funnel & Topic Demand Grid -->
+                <!-- Funnel & Clinical Demand Grid -->
                 <div class="grid gap-6 lg:grid-cols-2">
                     
-                    <!-- Funnel Card (Dynamic Data) -->
-                    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-5">
-                        <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
-                            <div>
-                                <h3 class="text-sm font-semibold text-zinc-900">Phễu Chuyển Đổi Phụ Huynh (Funnel)</h3>
-                                <p class="text-xs text-zinc-500">Từ độc giả vãng lai đến người dùng đặt lịch 1-1</p>
+                    <!-- Funnel Card (Dynamic 5-Stage Customer Journey) -->
+                    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-5 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+                                <div>
+                                    <h3 class="text-sm font-semibold text-zinc-900">Phễu Chuyển Đổi Phụ Huynh 5 Tầng</h3>
+                                    <p class="text-xs text-zinc-500">Từ độc giả tiếp cận đến phụ huynh đặt lịch 1:1 chuyên sâu</p>
+                                </div>
+                                <span class="inline-flex items-center rounded-md bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-xs font-semibold text-emerald-800" id="funnelCrBadge">
+                                    CR Toàn Phễu: --%
+                                </span>
                             </div>
-                            <span class="inline-flex items-center rounded-md bg-zinc-100 px-2 py-1 text-xs font-semibold text-zinc-700" id="funnelCrBadge">
-                                CR: --%
-                            </span>
+
+                            <div class="space-y-4 text-xs" id="funnelStepsContainer">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+
+                            <!-- Lead Magnet Checklist Sub-breakdown -->
+                            <div class="grid grid-cols-2 gap-3 pt-2 text-xs">
+                                <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
+                                    <span class="text-[10px] text-zinc-500 font-bold uppercase block mb-1">Checklist Dinh Dưỡng</span>
+                                    <span class="font-bold text-zinc-900" id="funnelNutritionSub">0 bài hoàn thành</span>
+                                    <span class="text-[10px] text-zinc-400 block mt-0.5">Sàng lọc ăn uống & tiêu hóa</span>
+                                </div>
+                                <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
+                                    <span class="text-[10px] text-zinc-500 font-bold uppercase block mb-1">Checklist Thiếu Sắt</span>
+                                    <span class="font-bold text-zinc-900" id="funnelIronSub">0 bài hoàn thành</span>
+                                    <span class="text-[10px] text-zinc-400 block mt-0.5">Đánh giá nguy cơ thiếu máu</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="space-y-4 text-xs" id="funnelStepsContainer">
-                            <!-- Populated dynamically by JS -->
-                        </div>
-
-                        <div class="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs text-zinc-600" id="funnelSummaryNote">
+                        <div class="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs text-zinc-600 mt-4" id="funnelSummaryNote">
                             <!-- Populated by JS -->
                         </div>
                     </div>
 
-                    <!-- Topic Demand Card (Dynamic Calculation from Real Bookings) -->
+                    <!-- Clinical Demand & Symptom Intelligence Card -->
                     <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-5">
                         <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
                             <div>
                                 <h3 class="text-sm font-semibold text-zinc-900">Vấn Đề Con Gặp Phải Khiến Mẹ Lo Nhất</h3>
-                                <p class="text-xs text-zinc-500">Phân tích tự động từ phiếu đăng ký của phụ huynh</p>
+                                <p class="text-xs text-zinc-500">Phân tích từ toàn bộ bài sàng lọc lâm sàng và lịch hẹn 1:1</p>
                             </div>
-                            <span class="text-[10px] px-2 py-0.5 rounded bg-zinc-100 text-zinc-600 font-semibold" id="topicTotalAnalyzed">-- hồ sơ</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 font-semibold" id="topicTotalAnalyzed">-- hồ sơ</span>
                         </div>
 
                         <div class="space-y-4 text-xs" id="topicDemandsBarsContainer">
-                            <!-- Populated dynamically by renderTopicDemands(bookings) -->
+                            <!-- Populated dynamically by renderTopicDemands(bookings, evals) -->
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3 pt-2 text-xs" id="topicDemandsMetadata">
-                            <!-- Populated dynamically by renderTopicDemands(bookings) -->
+                        <!-- Risk Distribution & Age Breakdown -->
+                        <div class="space-y-3 pt-3 border-t border-zinc-100">
+                            <div>
+                                <div class="flex justify-between items-center mb-1.5">
+                                    <span class="text-[11px] font-bold uppercase text-zinc-500">Phân Tầng Mức Độ Nguy Cơ</span>
+                                    <span class="text-[10px] text-zinc-400">Theo chuẩn sàng lọc</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 text-center" id="topicRiskContainer">
+                                    <!-- Populated by JS -->
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 pt-2 text-xs" id="topicDemandsMetadata">
+                                <!-- Populated dynamically by renderTopicDemands(bookings, evals) -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Traffic Source Attribution & Actionable Marketing Playbook -->
+                <div class="grid gap-6 lg:grid-cols-3">
+                    
+                    <!-- Traffic Sources Card -->
+                    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4 lg:col-span-1">
+                        <div class="pb-3 border-b border-zinc-100">
+                            <h3 class="text-sm font-semibold text-zinc-900">Kênh Tiếp Cận Khách Hàng</h3>
+                            <p class="text-xs text-zinc-500">Nguồn truy cập và chuyển đổi thực tế của phụ huynh</p>
+                        </div>
+                        <div class="space-y-3 text-xs" id="marketingTrafficSourcesContainer">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Actionable Marketing Playbook -->
+                    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4 lg:col-span-2">
+                        <div class="pb-3 border-b border-zinc-100 flex items-center justify-between">
+                            <div>
+                                <h3 class="text-sm font-semibold text-zinc-900">Sổ Tay Đo Lường Marketing Thực Chiến & Gợi Ý Hành Động</h3>
+                                <p class="text-xs text-zinc-500">Hướng dẫn đọc số liệu và 4 bước tối ưu chuyển đổi theo hành vi phụ huynh</p>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">Thực Chiến</span>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 gap-3 text-xs">
+                            <div class="p-3.5 rounded-lg border border-amber-200 bg-amber-50/50 space-y-1.5">
+                                <div class="font-bold text-amber-900 flex items-center gap-1.5">
+                                    <span>💡 Bước 1: Khi Drop-off Tầng 1 → 2 Cao (>50%)</span>
+                                </div>
+                                <p class="text-amber-800 leading-relaxed text-[11px]">
+                                    Độc giả vào trang chủ nhưng thoát sớm. <strong>Giải pháp:</strong> Đưa ngay các video ngắn chia sẻ kinh nghiệm thực tế lên đầu trang, làm nổi bật lời khuyên dinh dưỡng GFCF và nút <em>"Kiểm tra thói quen ăn uống của con trong 3 phút"</em>.
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 rounded-lg border border-sky-200 bg-sky-50/50 space-y-1.5">
+                                <div class="font-bold text-sky-900 flex items-center gap-1.5">
+                                    <span>🎯 Bước 2: Khi Drop-off Tầng 3 → 4 Cao (>40%)</span>
+                                </div>
+                                <p class="text-sky-800 leading-relaxed text-[11px]">
+                                    Phụ huynh bắt đầu làm bài test nhưng chưa bấm nhận kết quả. <strong>Giải pháp:</strong> Đảm bảo câu hỏi ngắn gọn, khẳng định cam kết <em>"Bảo mật tuyệt đối, không chia sẻ cho bên thứ ba"</em> và gửi kết quả tức thì trên màn hình.
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 rounded-lg border border-emerald-200 bg-emerald-50/50 space-y-1.5">
+                                <div class="font-bold text-emerald-900 flex items-center gap-1.5">
+                                    <span>💬 Bước 3: Chăm Sóc Lead Tầng 4 Sang 1:1</span>
+                                </div>
+                                <p class="text-emerald-800 leading-relaxed text-[11px]">
+                                    Phụ huynh đã có kết quả sàng lọc. <strong>Hành động:</strong> Nhắn tin Zalo riêng chào hỏi theo tên bé, gửi bản tóm tắt dinh dưỡng và đề xuất: <em>"Thu Hiền dành 15 phút lắng nghe câu chuyện ăn uống của bé cùng mẹ nhé!"</em>.
+                                </p>
+                            </div>
+
+                            <div class="p-3.5 rounded-lg border border-rose-200 bg-rose-50/50 space-y-1.5">
+                                <div class="font-bold text-rose-900 flex items-center gap-1.5">
+                                    <span>⚡ Bước 4: Xử Lý Hồ Sơ Nguy Cơ Cao</span>
+                                </div>
+                                <p class="text-rose-800 leading-relaxed text-[11px]">
+                                    Trẻ có biểu hiện thiếu sắt nặng hoặc kén ăn cực đoan (&lt;5 món). <strong>Hành động:</strong> Ưu tiên liên hệ trong vòng <strong>2 giờ vàng</strong> khi cảm xúc lo lắng của mẹ đang cao nhất để đồng hành kịp thời.
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -2411,6 +2511,15 @@
         
         if (viewName === 'overview') {
             initOverviewCharts();
+        } else if (viewName === 'marketing') {
+            const stats = DB.getStats();
+            const bookings = DB.getBookings();
+            const leads = DB.getLeads();
+            const evals = (typeof DB.getEvaluations === 'function') ? DB.getEvaluations() : [];
+            renderMarketingFunnel(stats, bookings, leads, evals);
+            renderTopicDemands(bookings, evals);
+            renderMarketingSources();
+            updateLiveRealtime();
         } else if (viewName === 'evaluations') {
             renderEvaluations();
             renderChecklistsAdmin();
@@ -2474,7 +2583,7 @@
                     <span id="overviewLiveCount">${live.count}</span> <span class="text-xs font-normal text-zinc-500">mẹ đang xem</span>
                 </div>
                 <p class="text-[11px] text-emerald-700/80 mt-1 truncate" id="overviewLivePagesDetail">
-                    ${live.count > 0 ? `● ${live.pages[0]?.count || 0} xem Trang Chủ • ${live.pages[2]?.count || 0} xem Đặt Lịch` : 'Chưa có phiên truy cập đang hoạt động'}
+                    ${live.count > 0 ? `● ${live.pages[0]?.count || 0} xem Trang Chủ • ${live.pages[1]?.count || 0} xem Sàng Lọc • ${live.pages[3]?.count || 0} xem Đặt Lịch` : 'Chưa có phiên truy cập đang hoạt động'}
                 </p>
             </div>
 
@@ -2488,14 +2597,14 @@
                 <p class="text-[11px] text-emerald-600 font-medium mt-1">${stats.pageViews.toLocaleString()} lượt xem trang</p>
             </div>
 
-            <!-- Card 3: Leads -->
+            <!-- Card 3: Evaluations Leads -->
             <div class="rounded-xl border border-zinc-200 bg-white p-5 shadow-xs">
                 <div class="flex items-center justify-between space-y-0 pb-2">
-                    <span class="text-xs font-medium text-zinc-500">Tải Cẩm Nang Ebook</span>
-                    <svg class="h-4 w-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    <span class="text-xs font-medium text-zinc-500">Hồ Sơ Sàng Lọc Lâm Sàng</span>
+                    <svg class="h-4 w-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                 </div>
-                <div class="text-2xl font-bold tracking-tight text-brand-peach">${stats.totalLeads}</div>
-                <p class="text-[11px] text-zinc-500 mt-1">Khách hàng tiềm năng chất lượng</p>
+                <div class="text-2xl font-bold tracking-tight text-brand-peach">${evals.length}</div>
+                <p class="text-[11px] text-zinc-500 mt-1">Bài test dinh dưỡng & thiếu sắt đã hoàn thành</p>
             </div>
 
             <!-- Card 4: Bookings -->
@@ -2520,12 +2629,15 @@
         `;
 
         // 3.3 Render Marketing Funnel (Dynamic & Synchronized)
-        renderMarketingFunnel(stats, bookings, leads);
+        renderMarketingFunnel(stats, bookings, leads, evals);
 
-        // 3.4 Render Topic Demands (Dynamic from Real Bookings)
-        renderTopicDemands(bookings);
+        // 3.4 Render Topic Demands (Dynamic from Real Bookings & Evaluations)
+        renderTopicDemands(bookings, evals);
 
-        // 3.5 Render Realtime Live Online Stream
+        // 3.5 Render Marketing Traffic Sources
+        renderMarketingSources();
+
+        // 3.6 Render Realtime Live Online Stream
         updateLiveRealtime();
 
         // 3.6 Overview Recent Bookings preview
@@ -2569,89 +2681,186 @@
         initOverviewCharts();
     }
 
-    // 3.6 Render Marketing Funnel (Dynamic & Connected)
-    function renderMarketingFunnel(stats, bookings, leads) {
-        const visitors = stats.totalVisitors || 0;
-        const stage1 = visitors;
-        const stage2 = stage1 > 0 ? Math.round(visitors * 0.643) : 0;
-        const stage3 = stage1 > 0 ? Math.round(visitors * 0.243) : 0;
-        const stage4 = leads.length;
-        const stage5 = bookings.length;
+    // 3.6 Render Marketing Funnel (Dynamic, Multi-Level & Connected)
+    function renderMarketingFunnel(stats, bookings, leads, evals) {
+        const m = (typeof DB !== 'undefined' && typeof DB.getMarketingAnalytics === 'function')
+            ? DB.getMarketingAnalytics()
+            : null;
 
-        const p2 = stage1 > 0 ? ((stage2 / stage1) * 100).toFixed(1) : '0.0';
-        const p3 = stage1 > 0 ? ((stage3 / stage1) * 100).toFixed(1) : '0.0';
-        const p4 = stage1 > 0 ? ((stage4 / stage1) * 100).toFixed(1) : '0.0';
-        const p5 = stage1 > 0 ? ((stage5 / stage1) * 100).toFixed(1) : '0.0';
+        if (!m) return;
 
+        // 1. Render 4 KPI Scorecards for Marketing
+        const kpiContainer = document.getElementById('marketingKpiCards');
+        if (kpiContainer) {
+            const totalLeadsCount = m.breakdown.totalEvals + m.breakdown.totalLeads;
+            const evalLeadCr = m.visitors > 0 ? ((totalLeadsCount / m.visitors) * 100).toFixed(1) : '0.0';
+            const bookingCr = m.visitors > 0 ? ((m.breakdown.totalBookings / m.visitors) * 100).toFixed(1) : '0.0';
+
+            kpiContainer.innerHTML = `
+                <!-- KPI 1: Tiếp Cận -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
+                    <div class="flex items-center justify-between pb-1.5">
+                        <span class="text-xs font-medium text-zinc-500">Lượt Tiếp Cận (Reach)</span>
+                        <span class="text-zinc-400 text-sm">👁️</span>
+                    </div>
+                    <div class="text-2xl font-bold tracking-tight text-zinc-900">${m.visitors.toLocaleString()}</div>
+                    <p class="text-[11px] text-zinc-500 mt-1">${m.pageViews.toLocaleString()} lượt xem trang</p>
+                </div>
+
+                <!-- KPI 2: Qualified Leads (Sàng Lọc) -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
+                    <div class="flex items-center justify-between pb-1.5">
+                        <span class="text-xs font-medium text-zinc-500">Leads Sàng Lọc (CR1)</span>
+                        <span class="text-amber-500 text-sm">📋</span>
+                    </div>
+                    <div class="text-2xl font-bold tracking-tight text-amber-600">${totalLeadsCount}</div>
+                    <p class="text-[11px] text-amber-700/90 mt-1 font-medium">Tỷ lệ chuyển đổi: ${evalLeadCr}%</p>
+                </div>
+
+                <!-- KPI 3: Lịch Hẹn Tư Vấn 1:1 -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
+                    <div class="flex items-center justify-between pb-1.5">
+                        <span class="text-xs font-medium text-zinc-500">Đặt Lịch 1:1 (CR2)</span>
+                        <span class="text-brand-500 text-sm">📅</span>
+                    </div>
+                    <div class="text-2xl font-bold tracking-tight text-brand-500">${m.breakdown.totalBookings}</div>
+                    <p class="text-[11px] text-brand-700/90 mt-1 font-medium">Tỷ lệ đặt lịch: ${bookingCr}%</p>
+                </div>
+
+                <!-- KPI 4: Hiệu Suất Toàn Phễu -->
+                <div class="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 shadow-xs">
+                    <div class="flex items-center justify-between pb-1.5">
+                        <span class="text-xs font-semibold text-emerald-800">CR Toàn Phễu (Full)</span>
+                        <span class="text-emerald-600 text-sm">⚡</span>
+                    </div>
+                    <div class="text-2xl font-bold tracking-tight text-emerald-700">${m.fullFunnelCr}%</div>
+                    <p class="text-[11px] text-emerald-800 mt-1 font-medium">Từ tiếp cận đến Lead & Lịch hẹn</p>
+                </div>
+            `;
+        }
+
+        // Funnel CR Badge
         const crBadge = document.getElementById('funnelCrBadge');
-        if (crBadge) crBadge.innerText = `CR Tổng: ${stats.conversionRate}%`;
+        if (crBadge) crBadge.innerText = `CR Toàn Phễu: ${m.fullFunnelCr}%`;
 
+        // 2. Render 5-Stage Customer Journey Funnel
         const container = document.getElementById('funnelStepsContainer');
         if (container) {
+            const f = m.funnel;
+            const stageMax = Math.max(1, f.stage1.count);
+
             container.innerHTML = `
+                <!-- Stage 1 -->
                 <div>
-                    <div class="flex justify-between font-semibold mb-1">
-                        <span class="text-zinc-700">1. Truy Cập Website (Awareness)</span>
-                        <span class="font-mono text-zinc-600">${stage1.toLocaleString()} lượt (${stage1 > 0 ? '100%' : '0%'})</span>
+                    <div class="flex justify-between items-center font-semibold mb-1">
+                        <span class="text-zinc-800 flex items-center gap-1.5">
+                            <span class="w-4 h-4 rounded-full bg-zinc-800 text-white flex items-center justify-center text-[10px]">1</span>
+                            ${f.stage1.label}
+                        </span>
+                        <span class="font-mono text-zinc-700 font-bold">${f.stage1.count.toLocaleString()} lượt</span>
                     </div>
                     <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-zinc-800 h-full rounded-full transition-all duration-500" style="width: ${stage1 > 0 ? 100 : 0}%"></div>
+                        <div class="bg-zinc-800 h-full rounded-full transition-all duration-500" style="width: ${f.stage1.count > 0 ? 100 : 0}%"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[11px] text-zinc-400 mt-1">
+                        <span>Độ phủ thương hiệu & lượt khách ghé thăm</span>
+                        ${f.stage1.count > 0 ? `<span class="text-rose-500 font-medium">Rơi rụng: ${f.stage1.drop}%</span>` : ''}
                     </div>
                 </div>
 
+                <!-- Stage 2 -->
                 <div>
-                    <div class="flex justify-between font-semibold mb-1">
-                        <span class="text-zinc-700">2. Đọc Câu Chuyện Thu Hiền & 4 Nền Tảng</span>
-                        <span class="font-mono text-zinc-600">${stage2.toLocaleString()} lượt (${p2}%)</span>
+                    <div class="flex justify-between items-center font-semibold mb-1">
+                        <span class="text-zinc-800 flex items-center gap-1.5">
+                            <span class="w-4 h-4 rounded-full bg-zinc-600 text-white flex items-center justify-center text-[10px]">2</span>
+                            ${f.stage2.label}
+                        </span>
+                        <span class="font-mono text-zinc-700 font-bold">${f.stage2.count.toLocaleString()} lượt (${f.stage2.cr}%)</span>
                     </div>
                     <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-zinc-600 h-full rounded-full transition-all duration-500" style="width: ${p2}%"></div>
+                        <div class="bg-zinc-600 h-full rounded-full transition-all duration-500" style="width: ${f.stage1.count > 0 ? Math.min(100, Math.round((f.stage2.count / stageMax) * 100)) : 0}%"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[11px] text-zinc-400 mt-1">
+                        <span>Đọc hồ sơ chuyên gia, cẩm nang dinh dưỡng, cộng đồng</span>
+                        ${f.stage2.count > 0 ? `<span class="text-rose-500 font-medium">Rơi rụng: ${f.stage2.drop}%</span>` : ''}
                     </div>
                 </div>
 
+                <!-- Stage 3 -->
                 <div>
-                    <div class="flex justify-between font-semibold mb-1">
-                        <span class="text-zinc-700">3. Mở Modal Cẩm Nang Hoặc Form Đặt Lịch</span>
-                        <span class="font-mono text-zinc-600">${stage3.toLocaleString()} lượt (${p3}%)</span>
+                    <div class="flex justify-between items-center font-semibold mb-1">
+                        <span class="text-zinc-800 flex items-center gap-1.5">
+                            <span class="w-4 h-4 rounded-full bg-amber-500 text-white flex items-center justify-center text-[10px]">3</span>
+                            ${f.stage3.label}
+                        </span>
+                        <span class="font-mono text-amber-700 font-bold">${f.stage3.count.toLocaleString()} lượt (${f.stage3.cr}%)</span>
                     </div>
                     <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-brand-500 h-full rounded-full transition-all duration-500" style="width: ${p3}%"></div>
+                        <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${f.stage1.count > 0 ? Math.min(100, Math.round((f.stage3.count / stageMax) * 100)) : 0}%"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[11px] text-zinc-400 mt-1">
+                        <span>Bấm vào bài test sàng lọc dinh dưỡng hoặc thiếu sắt</span>
+                        ${f.stage3.count > 0 ? `<span class="text-rose-500 font-medium">Rơi rụng: ${f.stage3.drop}%</span>` : ''}
                     </div>
                 </div>
 
+                <!-- Stage 4 -->
                 <div>
-                    <div class="flex justify-between font-semibold mb-1">
-                        <span class="text-zinc-700">4. Nhận Cẩm Nang Đồng Hành Con Tự Kỷ (Leads)</span>
-                        <span class="font-mono text-amber-600 font-bold">${stage4} mẹ (${p4}%)</span>
+                    <div class="flex justify-between items-center font-semibold mb-1">
+                        <span class="text-zinc-800 flex items-center gap-1.5">
+                            <span class="w-4 h-4 rounded-full bg-sky-600 text-white flex items-center justify-center text-[10px]">4</span>
+                            ${f.stage4.label}
+                        </span>
+                        <span class="font-mono text-sky-700 font-bold">${f.stage4.count} hồ sơ (${f.stage4.cr}%)</span>
                     </div>
                     <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${stage1 > 0 ? Math.max(2, Math.min(100, p4 * 3)) : 0}%"></div>
+                        <div class="bg-sky-600 h-full rounded-full transition-all duration-500" style="width: ${f.stage1.count > 0 ? Math.min(100, Math.max(3, Math.round((f.stage4.count / stageMax) * 100))) : 0}%"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[11px] text-zinc-400 mt-1">
+                        <span>Hoàn thành 100% câu hỏi & nhập SĐT nhận phác đồ</span>
+                        ${f.stage4.count > 0 ? `<span class="text-rose-500 font-medium">Rơi rụng: ${f.stage4.drop}%</span>` : ''}
                     </div>
                 </div>
 
+                <!-- Stage 5 -->
                 <div>
-                    <div class="flex justify-between font-semibold mb-1">
-                        <span class="text-zinc-700">5. Đăng Ký Trò Chuyện 1-1 Thành Công (Bookings)</span>
-                        <span class="font-mono text-brand-500 font-bold">${stage5} hồ sơ (${p5}%)</span>
+                    <div class="flex justify-between items-center font-semibold mb-1">
+                        <span class="text-zinc-800 flex items-center gap-1.5">
+                            <span class="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px]">5</span>
+                            ${f.stage5.label}
+                        </span>
+                        <span class="font-mono text-emerald-700 font-bold">${f.stage5.count} lịch hẹn (${f.stage5.cr}%)</span>
                     </div>
                     <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden">
-                        <div class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: ${stage1 > 0 ? Math.max(2, Math.min(100, p5 * 3)) : 0}%"></div>
+                        <div class="bg-emerald-600 h-full rounded-full transition-all duration-500" style="width: ${f.stage1.count > 0 ? Math.min(100, Math.max(3, Math.round((f.stage5.count / stageMax) * 100))) : 0}%"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-[11px] text-zinc-400 mt-1">
+                        <span>Chủ động gửi form đăng ký tư vấn 1:1 miễn phí</span>
+                        <span class="text-emerald-700 font-semibold">Tầng chuyển đổi cao nhất</span>
                     </div>
                 </div>
             `;
         }
 
+        // Sub-checklist counters
+        const nutSub = document.getElementById('funnelNutritionSub');
+        if (nutSub) nutSub.innerText = `${m.breakdown.nutritionEvals} bài hoàn thành`;
+
+        const ironSub = document.getElementById('funnelIronSub');
+        if (ironSub) ironSub.innerText = `${m.breakdown.ironEvals} bài hoàn thành`;
+
+        // Diagnostic summary note
         const note = document.getElementById('funnelSummaryNote');
         if (note) {
-            if (stage1 === 0) {
-                note.innerHTML = `<strong>Sẵn sàng khởi chạy:</strong> Hệ thống đã đưa toàn bộ chỉ số về 0 để đo lường dữ liệu truy cập thực tế của chiến dịch quảng bá.`;
+            if (m.visitors === 0) {
+                note.innerHTML = `<strong>Sẵn sàng khởi chạy:</strong> Hệ thống đã kết nối dữ liệu phễu thực tế. Các chỉ số chuyển đổi và rơi rụng sẽ tự động hiển thị ngay khi có phụ huynh ghé thăm và làm bài kiểm tra.`;
             } else {
-                note.innerHTML = `<strong>Đánh giá thực tế:</strong> Tỷ lệ đăng ký trò chuyện 1-1 đạt <strong>${p5}%</strong>, tỷ lệ nhận cẩm nang đạt <strong>${p4}%</strong>. Toàn bộ chỉ số được liên kết trực tiếp từ hồ sơ thực trong cơ sở dữ liệu.`;
+                note.innerHTML = `<strong>Đánh giá thực tế:</strong> Tỷ lệ phụ huynh hoàn thành bài sàng lọc đạt <strong>${m.funnel.stage4.cr}%</strong>, tỷ lệ đặt lịch trò chuyện 1:1 đạt <strong>${m.funnel.stage5.cr}%</strong>. Tổng hiệu suất thu hút Qualified Leads đạt <strong>${m.fullFunnelCr}%</strong>. Toàn bộ dữ liệu gắn liền với hồ sơ lâm sàng thực tế trong cơ sở dữ liệu.`;
             }
         }
     }
 
-    // 3.7 Realtime Live Online Updater
+    // 3.7 Realtime Live Online Updater (8 Real Pages)
     function updateLiveRealtime() {
         const live = DB.getLiveOnline();
 
@@ -2666,7 +2875,7 @@
         const cardDetail = document.getElementById('overviewLivePagesDetail');
         if (cardDetail) {
             cardDetail.innerText = live.count > 0 
-                ? `● ${live.pages[0]?.count || 0} xem Trang Chủ • ${live.pages[2]?.count || 0} xem Đặt Lịch` 
+                ? `● ${live.pages[0]?.count || 0} xem Trang Chủ • ${live.pages[1]?.count || 0} xem Sàng Lọc • ${live.pages[3]?.count || 0} xem Đặt Lịch` 
                 : 'Chưa có phiên truy cập đang hoạt động';
         }
 
@@ -2677,12 +2886,15 @@
         const pagesGrid = document.getElementById('livePagesGrid');
         if (pagesGrid && live.pages) {
             pagesGrid.innerHTML = live.pages.map(p => `
-                <div class="p-3 rounded-lg bg-white border border-emerald-200/80 shadow-2xs">
+                <div class="p-3 rounded-lg bg-white border border-emerald-200/80 shadow-2xs hover:border-emerald-300 transition-colors">
                     <div class="flex items-center justify-between mb-1">
-                        <span class="font-bold text-emerald-950 truncate">${p.page}</span>
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">${p.count}</span>
+                        <span class="font-bold text-emerald-950 truncate flex items-center gap-1.5">
+                            <span>${p.icon || '📄'}</span>
+                            <span class="truncate">${p.page}</span>
+                        </span>
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${p.count > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-zinc-100 text-zinc-500'}">${p.count}</span>
                     </div>
-                    <span class="text-[10px] text-zinc-400 font-mono">${p.url}</span>
+                    <span class="text-[10px] text-zinc-400 font-mono block truncate">${p.url}</span>
                 </div>
             `).join('');
         }
@@ -2724,93 +2936,66 @@
         el.innerText = `Hôm nay: ${dayName}, ${d}/${m}/${y} • Tuần ${weekNum}`;
     }
 
-    // 3.9 Dynamic Topic Demand Calculation from Real Bookings
-    function renderTopicDemands(bookings) {
+    // 3.9 Dynamic Topic Demand & Clinical Intelligence (Evaluations + Bookings)
+    function renderTopicDemands(bookings, evals) {
+        const m = (typeof DB !== 'undefined' && typeof DB.getMarketingAnalytics === 'function')
+            ? DB.getMarketingAnalytics()
+            : null;
+
+        if (!m) return;
+
         const totalEl = document.getElementById('topicTotalAnalyzed');
         const barsContainer = document.getElementById('topicDemandsBarsContainer');
+        const riskContainer = document.getElementById('topicRiskContainer');
         const metaContainer = document.getElementById('topicDemandsMetadata');
+
+        const totalAnalyzed = m.clinical.totalAnalyzed;
+        if (totalEl) totalEl.innerText = `${totalAnalyzed} hồ sơ thực tế`;
+
         if (!barsContainer) return;
 
-        const totalBookings = bookings.length;
-        if (totalEl) totalEl.innerText = `${totalBookings} hồ sơ thực tế`;
-
-        if (totalBookings === 0) {
-            barsContainer.innerHTML = '<div class="py-8 text-center text-zinc-400 text-xs">Chưa có hồ sơ đăng ký nào. Tỷ lệ vấn đề sẽ tự động phân tích khi phụ huynh gửi phiếu.</div>';
+        if (totalAnalyzed === 0) {
+            barsContainer.innerHTML = '<div class="py-8 text-center text-zinc-400 text-xs">Chưa có hồ sơ sàng lọc hoặc đặt lịch nào. Các thách thức của con sẽ tự động phân tích ngay khi phụ huynh gửi phiếu.</div>';
+            if (riskContainer) {
+                riskContainer.innerHTML = `
+                    <div class="p-2 rounded bg-rose-50 border border-rose-100 text-rose-700">
+                        <span class="block font-bold text-sm">0</span>
+                        <span class="text-[10px]">Nguy cơ cao</span>
+                    </div>
+                    <div class="p-2 rounded bg-amber-50 border border-amber-100 text-amber-700">
+                        <span class="block font-bold text-sm">0</span>
+                        <span class="text-[10px]">Trung bình</span>
+                    </div>
+                    <div class="p-2 rounded bg-emerald-50 border border-emerald-100 text-emerald-700">
+                        <span class="block font-bold text-sm">0</span>
+                        <span class="text-[10px]">Nguy cơ thấp</span>
+                    </div>
+                `;
+            }
             if (metaContainer) {
                 metaContainer.innerHTML = `
-                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
+                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
                         <span class="text-[10px] text-zinc-400 font-bold uppercase block">Độ Tuổi Chiếm Đa Số</span>
-                        <span class="font-bold text-zinc-400">Chờ dữ liệu...</span>
+                        <span class="font-bold text-zinc-500">Chờ dữ liệu...</span>
                     </div>
-                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
-                        <span class="text-[10px] text-zinc-400 font-bold uppercase block">Khung Giờ Nhắn Tin Nhiều</span>
-                        <span class="font-bold text-zinc-400">Chờ dữ liệu...</span>
+                    <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
+                        <span class="text-[10px] text-zinc-400 font-bold uppercase block">Khung Giờ Nhận Tư Vấn</span>
+                        <span class="font-bold text-zinc-500">Chờ dữ liệu...</span>
                     </div>
                 `;
             }
             return;
         }
 
-        // 1. Defined symptom/concern categories
-        const categories = [
-            {
-                label: 'Ăn chọn lọc, chỉ ăn vài món quen, khó thử món mới',
-                keywords: ['chọn lọc', 'món quen', 'thử món mới', 'kén ăn', 'sợ đồ lạ', 'món lạ'],
-                barColor: 'bg-amber-500',
-                count: 0
-            },
-            {
-                label: 'Nhạy cảm mùi vị, màu sắc, kết cấu thức ăn (đồ ướt/khô)',
-                keywords: ['mùi vị', 'kết cấu', 'màu sắc', 'thức ăn ướt', 'giác quan', 'xúc giác'],
-                barColor: 'bg-emerald-600',
-                count: 0
-            },
-            {
-                label: 'Bữa ăn kéo dài, ngậm cơm, bàn ăn căng thẳng',
-                keywords: ['kéo dài', 'ngậm', 'căng thẳng', 'bàn ăn', 'áp lực', 'ép ăn'],
-                barColor: 'bg-sky-600',
-                count: 0
-            },
-            {
-                label: 'Cơn bùng nổ cảm xúc Meltdown, ném bát đĩa, khóc thét',
-                keywords: ['meltdown', 'bùng nổ', 'ném', 'khóc thét', 'ăn vạ', 'la hét'],
-                barColor: 'bg-rose-500',
-                count: 0
-            },
-            {
-                label: 'Chậm nói, chưa bật âm, nhại lời & ít tương tác mắt',
-                keywords: ['chậm nói', 'bật âm', 'nhại lời', 'tương tác mắt', 'gọi không'],
-                barColor: 'bg-zinc-700',
-                count: 0
-            }
-        ];
-
-        // Scan all bookings
-        bookings.forEach(b => {
-            const combinedText = `${b.issues || ''} ${b.feeding_notes || ''}`.toLowerCase();
-            categories.forEach(cat => {
-                const isMatch = cat.keywords.some(kw => combinedText.includes(kw.toLowerCase()));
-                if (isMatch) cat.count++;
-            });
-        });
-
-        // Ensure realistic representation
-        categories.forEach(cat => {
-            if (cat.count === 0 && totalBookings > 0) cat.count = 1;
-        });
-
-        // Sort descending
-        categories.sort((a, b) => b.count - a.count);
-
-        // Render bars
-        barsContainer.innerHTML = categories.map((cat, idx) => {
-            const pct = Math.min(100, Math.round((cat.count / totalBookings) * 100));
+        // Render Symptom Bars
+        barsContainer.innerHTML = m.clinical.symptoms.map((cat, idx) => {
+            const pct = Math.min(100, Math.round((cat.count / totalAnalyzed) * 100));
             const isTop = idx === 0;
             return `
                 <div>
-                    <div class="flex justify-between mb-1">
-                        <span class="font-medium text-zinc-700">${cat.label}</span>
-                        <span class="font-bold ${isTop ? 'text-amber-600' : 'text-zinc-900'}">${pct}% ${isTop ? '(Cao nhất)' : ''}</span>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-medium text-zinc-800 text-xs">${cat.label}</span>
+                        <span class="font-bold ${isTop ? 'text-amber-600' : 'text-zinc-900'} text-xs">${pct}% ${isTop ? '(Phổ biến nhất)' : ''}</span>
                     </div>
                     <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
                         <div class="${cat.barColor} h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
@@ -2819,68 +3004,105 @@
             `;
         }).join('');
 
-        // 2. Metadata: Top Age Group & Preferred Time
-        if (metaContainer) {
-            let under2 = 0;
-            let age2to3 = 0;
-            let over3 = 0;
-            bookings.forEach(b => {
-                const a = (b.baby_age || '').toLowerCase();
-                const m = parseInt(a.replace(/[^0-9]/g, '')) || 24;
-                if (a.includes('tháng')) {
-                    if (m <= 24) under2++;
-                    else if (m <= 36) age2to3++;
-                    else over3++;
-                } else if (a.includes('tuổi')) {
-                    if (m < 2) under2++;
-                    else if (m <= 3) age2to3++;
-                    else over3++;
-                } else {
-                    if (m <= 24) under2++;
-                    else if (m <= 36) age2to3++;
-                    else over3++;
-                }
-            });
+        // Render Risk Distribution
+        if (riskContainer) {
+            const risks = m.clinical.risks;
+            const highPct = totalAnalyzed > 0 ? Math.round((risks.high / totalAnalyzed) * 100) : 0;
+            const medPct = totalAnalyzed > 0 ? Math.round((risks.medium / totalAnalyzed) * 100) : 0;
+            const lowPct = totalAnalyzed > 0 ? Math.round((risks.low / totalAnalyzed) * 100) : 0;
 
-            let topAgeLabel = '18 - 36 Tháng';
-            let topAgePct = Math.round((Math.max(under2, age2to3, over3) / totalBookings) * 100) || 54;
-            if (age2to3 >= under2 && age2to3 >= over3) {
-                topAgeLabel = '24 - 36 Tháng';
-                topAgePct = Math.round((age2to3 / totalBookings) * 100);
-            } else if (under2 >= age2to3 && under2 >= over3) {
-                topAgeLabel = '14 - 24 Tháng';
-                topAgePct = Math.round((under2 / totalBookings) * 100);
-            } else {
-                topAgeLabel = '3 - 5 Tuổi';
-                topAgePct = Math.round((over3 / totalBookings) * 100);
-            }
-
-            let evening = 0;
-            let officeHours = 0;
-            bookings.forEach(b => {
-                const t = (b.preferred_time || '').toLowerCase();
-                if (t.includes('tối') || t.includes('19h') || t.includes('20h')) evening++;
-                else officeHours++;
-            });
-
-            let topTimeLabel = 'Tối 19h30 - 21h30';
-            let topTimePct = Math.round((evening / totalBookings) * 100) || 68;
-            if (officeHours > evening) {
-                topTimeLabel = 'Giờ hành chính (09h00 - 17h00)';
-                topTimePct = Math.round((officeHours / totalBookings) * 100);
-            }
-
-            metaContainer.innerHTML = `
-                <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
-                    <span class="text-[10px] text-zinc-400 font-bold uppercase block">Độ Tuổi Chiếm Đa Số</span>
-                    <span class="font-bold text-zinc-900">${topAgeLabel} (${topAgePct}%)</span>
+            riskContainer.innerHTML = `
+                <div class="p-2 rounded-lg bg-rose-50 border border-rose-200/80 text-rose-800">
+                    <span class="block font-bold text-base leading-tight">${risks.high} <span class="text-xs font-normal">bé</span></span>
+                    <span class="text-[10px] font-semibold text-rose-700">🔴 Nguy cơ Cao (${highPct}%)</span>
                 </div>
-                <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
-                    <span class="text-[10px] text-zinc-400 font-bold uppercase block">Khung Giờ Nhắn Tin Nhiều</span>
-                    <span class="font-bold text-brand-500">${topTimeLabel} (${topTimePct}%)</span>
+                <div class="p-2 rounded-lg bg-amber-50 border border-amber-200/80 text-amber-800">
+                    <span class="block font-bold text-base leading-tight">${risks.medium} <span class="text-xs font-normal">bé</span></span>
+                    <span class="text-[10px] font-semibold text-amber-700">🟡 Trung bình (${medPct}%)</span>
+                </div>
+                <div class="p-2 rounded-lg bg-emerald-50 border border-emerald-200/80 text-emerald-800">
+                    <span class="block font-bold text-base leading-tight">${risks.low} <span class="text-xs font-normal">bé</span></span>
+                    <span class="text-[10px] font-semibold text-emerald-700">🟢 Thấp (${lowPct}%)</span>
                 </div>
             `;
         }
+
+        // Render Age & Contact Metadata
+        if (metaContainer) {
+            const ages = m.clinical.ages;
+            let topAgeLabel = '18 - 36 Tháng';
+            let topAgeCount = ages.under24m;
+
+            if (ages.age2to3y >= ages.under24m && ages.age2to3y >= ages.age3to5y && ages.age2to3y >= ages.over5y) {
+                topAgeLabel = '2 - 3 Tuổi';
+                topAgeCount = ages.age2to3y;
+            } else if (ages.under24m >= ages.age2to3y && ages.under24m >= ages.age3to5y && ages.under24m >= ages.over5y) {
+                topAgeLabel = 'Dưới 24 Tháng (Can thiệp sớm)';
+                topAgeCount = ages.under24m;
+            } else if (ages.age3to5y >= ages.under24m && ages.age3to5y >= ages.age2to3y && ages.age3to5y >= ages.over5y) {
+                topAgeLabel = '3 - 5 Tuổi';
+                topAgeCount = ages.age3to5y;
+            } else {
+                topAgeLabel = 'Trên 5 Tuổi';
+                topAgeCount = ages.over5y;
+            }
+
+            const topAgePct = totalAnalyzed > 0 ? Math.round((topAgeCount / totalAnalyzed) * 100) : 50;
+
+            let topTimeLabel = 'Buổi tối (19h30 - 21h30)';
+            if (m.clinical.preferredDaytime > m.clinical.preferredEvening) {
+                topTimeLabel = 'Giờ hành chính (09h00 - 17h00)';
+            }
+
+            metaContainer.innerHTML = `
+                <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
+                    <span class="text-[10px] text-zinc-500 font-bold uppercase block">Độ Tuổi Chiếm Đa Số</span>
+                    <span class="font-bold text-zinc-900">${topAgeLabel} (${topAgePct}%)</span>
+                    <span class="text-[10px] text-zinc-400 block mt-0.5">Tập trung giai đoạn khủng hoảng</span>
+                </div>
+                <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
+                    <span class="text-[10px] text-zinc-500 font-bold uppercase block">Khung Giờ Tư Vấn Thuận Tiện</span>
+                    <span class="font-bold text-brand-500">${topTimeLabel}</span>
+                    <span class="text-[10px] text-zinc-400 block mt-0.5">Giờ phụ huynh rảnh sau khi cho con ngủ</span>
+                </div>
+            `;
+        }
+    }
+
+    // 3.10 Render Marketing Traffic Sources
+    function renderMarketingSources() {
+        const container = document.getElementById('marketingTrafficSourcesContainer');
+        if (!container) return;
+
+        const sources = (typeof DB !== 'undefined' && typeof DB.getTrafficSources === 'function')
+            ? DB.getTrafficSources()
+            : [];
+
+        const totalVisits = sources.reduce((sum, s) => sum + s.visits, 0);
+
+        if (totalVisits === 0) {
+            container.innerHTML = `
+                <div class="py-6 text-center text-zinc-400 text-xs">
+                    Chưa có lượt tiếp cận từ các kênh. Kênh giới thiệu sẽ tự động ghi nhận khi phụ huynh truy cập qua Zalo, TikTok, Facebook, Google hoặc link chia sẻ.
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = sources.map(s => `
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <span class="font-medium text-zinc-800 flex items-center gap-1.5 truncate">
+                        <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${s.color}"></span>
+                        <span class="truncate">${s.source}</span>
+                    </span>
+                    <span class="font-bold text-zinc-900 font-mono flex-shrink-0">${s.visits} lượt (${s.percent}%)</span>
+                </div>
+                <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full transition-all duration-500" style="background-color: ${s.color}; width: ${s.percent}%"></div>
+                </div>
+            </div>
+        `).join('');
     }
 
     // 4. Initialize Charts (Dynamic 7-Day Window & Traffic Sources)
@@ -2907,7 +3129,7 @@
                             borderWidth: 2
                         },
                         {
-                            label: 'Tải Ebook',
+                            label: 'Sàng Lọc Lâm Sàng (Leads)',
                             data: trends.leads,
                             borderColor: '#F08A4B',
                             backgroundColor: 'transparent',

@@ -1159,6 +1159,7 @@
             allergies: allergies,
             other_difficulties: document.getElementById('otherFeedingDifficulties').value,
             daily_diet: document.getElementById('dailyDietDesc').value,
+            source: (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('thuhien_detected_source')) ? `Checklist Dinh Dưỡng (${sessionStorage.getItem('thuhien_detected_source')})` : 'Checklist Dinh Dưỡng',
             answers: { ...assessmentState.answers, ...suppAnswers },
             created_at: new Date().toLocaleString('vi-VN'),
             created_at_iso: new Date().toISOString()

@@ -576,8 +576,7 @@
             daily_diet: diet,
             other_difficulties: diff,
             answers: ironAnswers,
-            advice_summary: advice,
-            source: 'Checklist Thiếu Sắt',
+            source: (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('thuhien_detected_source')) ? `Checklist Thiếu Sắt (${sessionStorage.getItem('thuhien_detected_source')})` : 'Checklist Thiếu Sắt',
             created_at: new Date().toLocaleString('vi-VN'),
             created_at_iso: new Date().toISOString()
         };
