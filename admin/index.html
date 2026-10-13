@@ -427,7 +427,6 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h2 class="text-xl font-bold tracking-tight text-zinc-900">Bảng Điều Khiển Tổng Quan</h2>
-                        <p class="text-xs text-zinc-500">Tóm tắt các chỉ số cốt lõi và tiến độ đồng hành phụ huynh có con tự kỷ</p>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="inline-flex items-center rounded-md bg-white px-2.5 py-1.5 text-xs font-medium text-zinc-700 border border-zinc-200 shadow-xs" id="adminCurrentPeriodBadge">
@@ -448,7 +447,6 @@
                     <div class="lg:col-span-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-xs">
                         <div class="flex flex-col space-y-1 pb-4">
                             <h3 class="text-sm font-semibold text-zinc-900">Xu Hướng Tăng Trưởng 7 Ngày Qua</h3>
-                            <p class="text-xs text-zinc-500">Lượt xem trang, lượt nhận cẩm nang và đặt lịch 1-1</p>
                         </div>
                         <div class="h-64">
                             <canvas id="overviewTrendChart"></canvas>
@@ -458,8 +456,7 @@
                     <!-- Doughnut Traffic (Col 3) -->
                     <div class="lg:col-span-3 rounded-xl border border-zinc-200 bg-white p-6 shadow-xs flex flex-col justify-between">
                         <div class="flex flex-col space-y-1 pb-2">
-                            <h3 class="text-sm font-semibold text-zinc-900">Cơ Cấu Kênh Tiếp Cận (Traffic)</h3>
-                            <p class="text-xs text-zinc-500">Kênh mạng xã hội phụ huynh tìm đến chuyên gia</p>
+                            <h3 class="text-sm font-semibold text-zinc-900">Cơ Cấu Kênh Tiếp Cận</h3>
                         </div>
                         <div class="h-44 relative my-2">
                             <canvas id="overviewSourceChart"></canvas>
@@ -476,7 +473,6 @@
                     <div class="flex items-center justify-between pb-4 border-b border-zinc-100">
                         <div>
                             <h3 class="text-sm font-semibold text-zinc-900">Hồ Sơ Cần Liên Hệ Gần Đây</h3>
-                            <p class="text-xs text-zinc-500">Các mẹ vừa đăng ký tư vấn qua website</p>
                         </div>
                         <button onclick="switchView('bookings')" class="text-xs font-semibold text-brand-500 hover:text-brand-600">
                             Xem tất cả →
@@ -495,8 +491,7 @@
                 <!-- Header -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Phân Tích Hiệu Suất Marketing & Phễu Chuyển Đổi Thực Tế</h2>
-                        <p class="text-xs text-zinc-500">Đo lường chi tiết hành trình từ khách tiếp cận website, trải nghiệm bài test sàng lọc dinh dưỡng đến đặt lịch tư vấn 1:1</p>
+                        <h2 class="text-xl font-bold tracking-tight text-zinc-900">Phân Tích Hiệu Suất Marketing & Phễu Chuyển Đổi</h2>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
@@ -504,7 +499,7 @@
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                             </span>
-                            <span id="liveMarketingStatus">Realtime Tracking Hoạt Động</span>
+                            <span id="liveMarketingStatus">Realtime Tracking</span>
                         </span>
                     </div>
                 </div>
@@ -523,9 +518,8 @@
                             </div>
                             <div>
                                 <h3 class="text-sm font-bold text-emerald-950 flex items-center gap-2">
-                                    <span>Lưu Lượng Trực Tuyến Thời Gian Thực (Live Online Monitor)</span>
+                                    <span>Lưu Lượng Trực Tuyến Thời Gian Thực (Live Online)</span>
                                 </h3>
-                                <p class="text-xs text-emerald-700">Tự động bắt nhịp phiên truy cập thực của phụ huynh trên toàn bộ 8 trang chính</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
@@ -540,16 +534,13 @@
                     </div>
                 </div>
 
-                <!-- BÁO CÁO SO SÁNH HIỆU SUẤT & ĐỘ THU HÚT CÁC TRANG QUA CÁC TUẦN -->
+                <!-- BÁO CÁO SO SÁNH HIỆU SUẤT CÁC TRANG QUA CÁC TUẦN -->
                 <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-6">
                     <!-- Header -->
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-100">
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h3 class="text-base font-bold text-zinc-900">Báo Cáo So Sánh Hiệu Suất & Mức Độ Thu Hút Các Trang Qua Các Tuần</h3>
-                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200">Đa Chiều</span>
-                            </div>
-                            <p class="text-xs text-zinc-500 mt-0.5">So sánh chi tiết 8 trang chính qua 4 tuần gần nhất: Biến động lượt xem (WoW), tỷ trọng toàn site, chuyển đổi thực tế và mức độ thu hút</p>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-base font-bold text-zinc-900">Báo Cáo So Sánh Hiệu Suất Các Trang Qua Các Tuần</h3>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200">Đa Chiều</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <button onclick="DB.exportCSV('pages_weekly')" class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-800 shadow-xs hover:bg-zinc-50 transition-colors gap-1.5">
@@ -568,8 +559,7 @@
                     <div class="rounded-xl border border-zinc-100 bg-zinc-50/60 p-4 space-y-3">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div>
-                                <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-700">Biểu Đồ So Sánh Lượt Xem Từng Trang: Tuần Này vs Tuần Trước</h4>
-                                <p class="text-[11px] text-zinc-500">Trực quan hóa xu hướng tăng/giảm lưu lượng của từng trang giữa 2 tuần liên tiếp</p>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-700">Lượt Xem Từng Trang: Tuần Này vs Tuần Trước</h4>
                             </div>
                             <div class="flex items-center gap-3 text-xs">
                                 <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span> <span class="font-medium text-zinc-700" id="chartLegendThisWeek">Tuần Này (Hiện tại)</span></span>
@@ -585,8 +575,7 @@
                     <div class="space-y-3">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-700">Bảng Đối Chiếu Số Liệu Chi Tiết Cả 8 Trang Theo Tuần</h4>
-                                <p class="text-[11px] text-zinc-500">Dữ liệu thực tế ghi nhận từ hệ thống đo lường và CRM của Thu Hiền</p>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-700">Số Liệu Chi Tiết Cả 8 Trang Theo Tuần</h4>
                             </div>
                             <span class="text-xs text-zinc-400" id="weeklyTableReportTimestamp"></span>
                         </div>
@@ -612,8 +601,7 @@
                         <div class="space-y-4">
                             <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
                                 <div>
-                                    <h3 class="text-sm font-semibold text-zinc-900">Phễu Chuyển Đổi Phụ Huynh 5 Tầng</h3>
-                                    <p class="text-xs text-zinc-500">Từ độc giả tiếp cận đến phụ huynh đặt lịch 1:1 chuyên sâu</p>
+                                    <h3 class="text-sm font-semibold text-zinc-900">Phễu Chuyển Đổi 5 Tầng</h3>
                                 </div>
                                 <span class="inline-flex items-center rounded-md bg-emerald-50 border border-emerald-200 px-2.5 py-1 text-xs font-semibold text-emerald-800" id="funnelCrBadge">
                                     CR Toàn Phễu: --%
@@ -629,18 +617,12 @@
                                 <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
                                     <span class="text-[10px] text-zinc-500 font-bold uppercase block mb-1">Checklist Dinh Dưỡng</span>
                                     <span class="font-bold text-zinc-900" id="funnelNutritionSub">0 bài hoàn thành</span>
-                                    <span class="text-[10px] text-zinc-400 block mt-0.5">Sàng lọc ăn uống & tiêu hóa</span>
                                 </div>
                                 <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
                                     <span class="text-[10px] text-zinc-500 font-bold uppercase block mb-1">Checklist Thiếu Sắt</span>
                                     <span class="font-bold text-zinc-900" id="funnelIronSub">0 bài hoàn thành</span>
-                                    <span class="text-[10px] text-zinc-400 block mt-0.5">Đánh giá nguy cơ thiếu máu</span>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200/80 text-xs text-zinc-600 mt-4" id="funnelSummaryNote">
-                            <!-- Populated by JS -->
                         </div>
                     </div>
 
@@ -649,7 +631,6 @@
                         <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
                             <div>
                                 <h3 class="text-sm font-semibold text-zinc-900">Vấn Đề Con Gặp Phải Khiến Mẹ Lo Nhất</h3>
-                                <p class="text-xs text-zinc-500">Phân tích từ toàn bộ bài sàng lọc lâm sàng và lịch hẹn 1:1</p>
                             </div>
                             <span class="text-[10px] px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 font-semibold" id="topicTotalAnalyzed">-- hồ sơ</span>
                         </div>
@@ -663,7 +644,6 @@
                             <div>
                                 <div class="flex justify-between items-center mb-1.5">
                                     <span class="text-[11px] font-bold uppercase text-zinc-500">Phân Tầng Mức Độ Nguy Cơ</span>
-                                    <span class="text-[10px] text-zinc-400">Theo chuẩn sàng lọc</span>
                                 </div>
                                 <div class="grid grid-cols-3 gap-2 text-center" id="topicRiskContainer">
                                     <!-- Populated by JS -->
@@ -678,69 +658,15 @@
 
                 </div>
 
-                <!-- Traffic Source Attribution & Actionable Marketing Playbook -->
-                <div class="grid gap-6 lg:grid-cols-3">
-                    
-                    <!-- Traffic Sources Card -->
-                    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4 lg:col-span-1">
-                        <div class="pb-3 border-b border-zinc-100">
-                            <h3 class="text-sm font-semibold text-zinc-900">Kênh Tiếp Cận Khách Hàng</h3>
-                            <p class="text-xs text-zinc-500">Nguồn truy cập và chuyển đổi thực tế của phụ huynh</p>
-                        </div>
-                        <div class="space-y-3 text-xs" id="marketingTrafficSourcesContainer">
-                            <!-- Populated by JS -->
-                        </div>
+                <!-- Traffic Source Attribution -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4">
+                    <div class="pb-3 border-b border-zinc-100 flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-zinc-900">Kênh Tiếp Cận Khách Hàng</h3>
+                        <span class="text-xs text-zinc-400">Tỷ lệ theo nguồn thực tế</span>
                     </div>
-
-                    <!-- Actionable Marketing Playbook -->
-                    <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-4 lg:col-span-2">
-                        <div class="pb-3 border-b border-zinc-100 flex items-center justify-between">
-                            <div>
-                                <h3 class="text-sm font-semibold text-zinc-900">Sổ Tay Đo Lường Marketing Thực Chiến & Gợi Ý Hành Động</h3>
-                                <p class="text-xs text-zinc-500">Hướng dẫn đọc số liệu và 4 bước tối ưu chuyển đổi theo hành vi phụ huynh</p>
-                            </div>
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">Thực Chiến</span>
-                        </div>
-
-                        <div class="grid sm:grid-cols-2 gap-3 text-xs">
-                            <div class="p-3.5 rounded-lg border border-amber-200 bg-amber-50/50 space-y-1.5">
-                                <div class="font-bold text-amber-900 flex items-center gap-1.5">
-                                    <span>💡 Bước 1: Khi Drop-off Tầng 1 → 2 Cao (>50%)</span>
-                                </div>
-                                <p class="text-amber-800 leading-relaxed text-[11px]">
-                                    Độc giả vào trang chủ nhưng thoát sớm. <strong>Giải pháp:</strong> Đưa ngay các video ngắn chia sẻ kinh nghiệm thực tế lên đầu trang, làm nổi bật lời khuyên dinh dưỡng GFCF và nút <em>"Kiểm tra thói quen ăn uống của con trong 3 phút"</em>.
-                                </p>
-                            </div>
-
-                            <div class="p-3.5 rounded-lg border border-sky-200 bg-sky-50/50 space-y-1.5">
-                                <div class="font-bold text-sky-900 flex items-center gap-1.5">
-                                    <span>🎯 Bước 2: Khi Drop-off Tầng 3 → 4 Cao (>40%)</span>
-                                </div>
-                                <p class="text-sky-800 leading-relaxed text-[11px]">
-                                    Phụ huynh bắt đầu làm bài test nhưng chưa bấm nhận kết quả. <strong>Giải pháp:</strong> Đảm bảo câu hỏi ngắn gọn, khẳng định cam kết <em>"Bảo mật tuyệt đối, không chia sẻ cho bên thứ ba"</em> và gửi kết quả tức thì trên màn hình.
-                                </p>
-                            </div>
-
-                            <div class="p-3.5 rounded-lg border border-emerald-200 bg-emerald-50/50 space-y-1.5">
-                                <div class="font-bold text-emerald-900 flex items-center gap-1.5">
-                                    <span>💬 Bước 3: Chăm Sóc Lead Tầng 4 Sang 1:1</span>
-                                </div>
-                                <p class="text-emerald-800 leading-relaxed text-[11px]">
-                                    Phụ huynh đã có kết quả sàng lọc. <strong>Hành động:</strong> Nhắn tin Zalo riêng chào hỏi theo tên bé, gửi bản tóm tắt dinh dưỡng và đề xuất: <em>"Thu Hiền dành 15 phút lắng nghe câu chuyện ăn uống của bé cùng mẹ nhé!"</em>.
-                                </p>
-                            </div>
-
-                            <div class="p-3.5 rounded-lg border border-rose-200 bg-rose-50/50 space-y-1.5">
-                                <div class="font-bold text-rose-900 flex items-center gap-1.5">
-                                    <span>⚡ Bước 4: Xử Lý Hồ Sơ Nguy Cơ Cao</span>
-                                </div>
-                                <p class="text-rose-800 leading-relaxed text-[11px]">
-                                    Trẻ có biểu hiện thiếu sắt nặng hoặc kén ăn cực đoan (&lt;5 món). <strong>Hành động:</strong> Ưu tiên liên hệ trong vòng <strong>2 giờ vàng</strong> khi cảm xúc lo lắng của mẹ đang cao nhất để đồng hành kịp thời.
-                                </p>
-                            </div>
-                        </div>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs" id="marketingTrafficSourcesContainer">
+                        <!-- Populated by JS -->
                     </div>
-
                 </div>
             </div>
 
@@ -752,7 +678,6 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h2 class="text-xl font-bold tracking-tight text-zinc-900">Danh Sách Lịch Hẹn Tư Vấn</h2>
-                        <p class="text-xs text-zinc-500">Quản lý hồ sơ dinh dưỡng, cập nhật trạng thái và theo dõi phác đồ</p>
                     </div>
 
                     <div class="flex items-center gap-2">
@@ -816,7 +741,6 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h2 class="text-xl font-bold tracking-tight text-zinc-900">Danh Sách Khách Hàng Tải Cẩm Nang</h2>
-                        <p class="text-xs text-zinc-500">Tệp khách hàng tiềm năng nhận Ebook 30 Thực Đơn</p>
                     </div>
 
                     <button onclick="DB.exportCSV('leads')" class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-800 shadow-xs hover:bg-zinc-50 transition-colors gap-1.5">
@@ -876,7 +800,6 @@
                             <h2 class="text-xl font-bold tracking-tight text-zinc-900">Hệ Thống Checklist & Chăm Sóc Khách Hàng (CRM)</h2>
                             <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-brand-50 text-brand-700 border border-brand-200">CRM Intelligence</span>
                         </div>
-                        <p class="text-xs text-zinc-500 mt-0.5">Quản lý phễu khách hàng tiềm năng từ bài test, điều phối chăm sóc phụ huynh 1:1 và mở rộng kho checklist</p>
                     </div>
 
                     <div class="flex flex-wrap items-center gap-2">
@@ -2958,10 +2881,10 @@
                 const share = p.viewShare || '0.0';
                 const isLive = p.count > 0;
                 return `
-                <div class="p-3.5 rounded-xl bg-white border border-emerald-200/80 shadow-2xs hover:border-emerald-300 hover:shadow-xs transition-all flex flex-col justify-between">
+                <div class="p-3.5 rounded-xl bg-white border border-emerald-200/80 shadow-2xs hover:border-emerald-300 transition-all flex flex-col justify-between">
                     <div>
-                        <div class="flex items-start justify-between gap-1 mb-1.5">
-                            <span class="font-bold text-emerald-950 text-xs truncate flex items-center gap-1.5" title="${p.page}">
+                        <div class="flex items-start justify-between gap-1 mb-1">
+                            <span class="font-bold text-zinc-900 text-xs truncate flex items-center gap-1.5" title="${p.page}">
                                 <span>${p.icon || '📄'}</span>
                                 <span class="truncate">${p.page}</span>
                             </span>
@@ -2970,20 +2893,17 @@
                                 <span>${p.count} live</span>
                             </span>
                         </div>
-                        <div class="flex items-center justify-between text-[10px] text-zinc-400 font-mono mb-2">
-                            <span class="truncate max-w-[120px]">${p.url}</span>
-                            <span class="text-zinc-500 font-sans font-medium px-1 rounded bg-zinc-50">${p.role || ''}</span>
-                        </div>
+                        <div class="text-[10px] text-zinc-400 font-mono mb-2 truncate">${p.url}</div>
                     </div>
 
                     <div class="pt-2 border-t border-zinc-100 space-y-1.5">
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] text-zinc-500 font-medium">Tổng view tích lũy</span>
+                            <span class="text-[11px] text-zinc-500">Tổng view</span>
                             <span class="text-xs font-bold text-zinc-900">${total.toLocaleString()}</span>
                         </div>
                         <div class="flex items-center justify-between text-[10px]">
-                            <span class="text-emerald-700 font-medium">${today > 0 ? `+${today} hôm nay` : '0 hôm nay'}</span>
-                            <span class="text-zinc-500 font-medium">${share}% toàn site</span>
+                            <span class="text-emerald-700 font-semibold">${today > 0 ? `+${today} hôm nay` : '0 hôm nay'}</span>
+                            <span class="text-zinc-600 font-semibold">${share}%</span>
                         </div>
                         <div class="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
                             <div class="h-full bg-emerald-600 rounded-full transition-all duration-500" style="width: ${Math.min(100, Math.max(2, parseFloat(share)))}%"></div>
@@ -3157,15 +3077,15 @@
         if (thead) {
             thead.innerHTML = `
                 <tr>
-                    <th class="py-3 px-3">Trang & Vai Trò Trong Phễu</th>
-                    <th class="py-3 px-3 text-right">Tổng View All-time</th>
+                    <th class="py-3 px-3">Trang & Phân Loại</th>
+                    <th class="py-3 px-3 text-right">Tổng View</th>
                     <th class="py-3 px-2 text-center text-zinc-500 font-medium">${weeks[0].shortLabel}<br><span class="text-[9px] font-normal text-zinc-400">${weeks[0].label.split('(')[1]?.replace(')', '') || ''}</span></th>
                     <th class="py-3 px-2 text-center text-zinc-500 font-medium">${weeks[1].shortLabel}<br><span class="text-[9px] font-normal text-zinc-400">${weeks[1].label.split('(')[1]?.replace(')', '') || ''}</span></th>
                     <th class="py-3 px-2 text-center text-zinc-600 font-semibold bg-zinc-100/50">${weeks[2].shortLabel}<br><span class="text-[9px] font-normal text-zinc-500">${weeks[2].label.split('(')[1]?.replace(')', '') || ''}</span></th>
                     <th class="py-3 px-3 text-center text-emerald-800 font-bold bg-emerald-50/70 border-x border-emerald-100">${weeks[3].shortLabel} (Hiện tại)<br><span class="text-[9px] font-normal text-emerald-700">${weeks[3].label.split('(')[1]?.replace(')', '') || ''}</span></th>
                     <th class="py-3 px-2 text-center">Tăng Trưởng WoW</th>
-                    <th class="py-3 px-3">Chuyển Đổi Thực Tế</th>
-                    <th class="py-3 px-3 text-center">Mức Độ Thu Hút & Đề Xuất</th>
+                    <th class="py-3 px-3">Chuyển Đổi (CR)</th>
+                    <th class="py-3 px-3 text-center">Đánh Giá Thu Hút</th>
                 </tr>
             `;
         }
@@ -3196,13 +3116,13 @@
                         </td>
                         <td class="py-3 px-3 text-right">
                             <div class="font-bold text-zinc-900 text-sm">${p.totalViews.toLocaleString()}</div>
-                            <div class="text-[10px] text-zinc-400 font-medium">${p.viewShare}% toàn site</div>
+                            <div class="text-[10px] text-zinc-500 font-semibold">${p.viewShare}%</div>
                             <div class="w-16 ml-auto mt-1 bg-zinc-100 h-1 rounded-full overflow-hidden">
                                 <div class="h-full bg-emerald-500 rounded-full" style="width: ${Math.min(100, Math.max(3, parseFloat(p.viewShare)))}%"></div>
                             </div>
                         </td>
-                        <td class="py-3 px-2 text-center text-zinc-500 font-mono">${p.viewsByWeek[0]}</td>
-                        <td class="py-3 px-2 text-center text-zinc-500 font-mono">${p.viewsByWeek[1]}</td>
+                        <td class="py-3 px-2 text-center text-zinc-600 font-mono">${p.viewsByWeek[0]}</td>
+                        <td class="py-3 px-2 text-center text-zinc-600 font-mono">${p.viewsByWeek[1]}</td>
                         <td class="py-3 px-2 text-center text-zinc-700 font-semibold font-mono bg-zinc-50/50">${p.viewsByWeek[2]}</td>
                         <td class="py-3 px-3 text-center text-emerald-900 font-bold font-mono bg-emerald-50/50 border-x border-emerald-100 text-sm">
                             ${p.viewsByWeek[3]}
@@ -3213,16 +3133,13 @@
                             </span>
                         </td>
                         <td class="py-3 px-3">
-                            <div class="font-medium text-zinc-800 text-xs">${p.convLabel}</div>
-                            ${p.convCount > 0 ? `<div class="text-[10px] text-emerald-600 font-bold mt-0.5">Tỷ lệ CR: ${p.convRate}%</div>` : '<div class="text-[10px] text-zinc-400">Giai đoạn nhận thức</div>'}
+                            <div class="font-bold text-zinc-900 text-xs">${p.convLabel}</div>
+                            ${p.convCount > 0 ? `<div class="text-[10px] text-emerald-600 font-bold mt-0.5">CR: ${p.convRate}%</div>` : '<div class="text-[10px] text-zinc-400">Nhận thức</div>'}
                         </td>
                         <td class="py-3 px-3 text-center">
-                            <span class="inline-block px-2 py-1 rounded-md text-[11px] font-bold border ${p.appealBadge.class}">
+                            <span class="inline-block px-2.5 py-1 rounded-md text-xs font-bold border ${p.appealBadge.class}">
                                 ${p.appealBadge.label}
                             </span>
-                            <div class="text-[10px] text-zinc-500 mt-1 max-w-[170px] mx-auto text-left leading-tight">
-                                ${p.appealAction}
-                            </div>
                         </td>
                     </tr>
                 `;
@@ -3391,14 +3308,12 @@
 
             metaContainer.innerHTML = `
                 <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
-                    <span class="text-[10px] text-zinc-500 font-bold uppercase block">Độ Tuổi Chiếm Đa Số</span>
+                    <span class="text-[10px] text-zinc-500 font-bold uppercase block mb-1">Độ Tuổi Chiếm Đa Số</span>
                     <span class="font-bold text-zinc-900">${topAgeLabel} (${topAgePct}%)</span>
-                    <span class="text-[10px] text-zinc-400 block mt-0.5">Tập trung giai đoạn khủng hoảng</span>
                 </div>
                 <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200">
-                    <span class="text-[10px] text-zinc-500 font-bold uppercase block">Khung Giờ Tư Vấn Thuận Tiện</span>
+                    <span class="text-[10px] text-zinc-500 font-bold uppercase block mb-1">Khung Giờ Tư Vấn Thuận Tiện</span>
                     <span class="font-bold text-brand-500">${topTimeLabel}</span>
-                    <span class="text-[10px] text-zinc-400 block mt-0.5">Giờ phụ huynh rảnh sau khi cho con ngủ</span>
                 </div>
             `;
         }
@@ -3417,25 +3332,26 @@
 
         if (totalVisits === 0) {
             container.innerHTML = `
-                <div class="py-6 text-center text-zinc-400 text-xs">
-                    Chưa có lượt tiếp cận từ các kênh. Kênh giới thiệu sẽ tự động ghi nhận khi phụ huynh truy cập qua Zalo, TikTok, Facebook, Google hoặc link chia sẻ.
+                <div class="py-6 text-center text-zinc-400 text-xs sm:col-span-2 lg:col-span-3">
+                    Chưa có lượt tiếp cận từ các kênh.
                 </div>
             `;
             return;
         }
 
         container.innerHTML = sources.map(s => `
-            <div>
-                <div class="flex justify-between items-center mb-1">
-                    <span class="font-medium text-zinc-800 flex items-center gap-1.5 truncate">
+            <div class="p-3.5 rounded-xl border border-zinc-200 bg-zinc-50/50 space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-zinc-900 flex items-center gap-1.5 truncate text-xs">
                         <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${s.color}"></span>
                         <span class="truncate">${s.source}</span>
                     </span>
-                    <span class="font-bold text-zinc-900 font-mono flex-shrink-0">${s.visits} lượt (${s.percent}%)</span>
+                    <span class="font-bold text-zinc-900 font-mono text-sm">${s.visits}</span>
                 </div>
-                <div class="w-full bg-zinc-100 h-2 rounded-full overflow-hidden">
+                <div class="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
                     <div class="h-full rounded-full transition-all duration-500" style="background-color: ${s.color}; width: ${s.percent}%"></div>
                 </div>
+                <div class="text-[11px] text-zinc-500 text-right font-semibold">${s.percent}%</div>
             </div>
         `).join('');
     }
