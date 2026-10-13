@@ -579,6 +579,8 @@ const DB = (() => {
         avgTimeOnSite: '0s',
         bounceRate: '0.0%',
         dailyViews: {},
+        pageDailyViews: {},
+        pageWeeklyViews: {},
         pageBreakdown: {},
         trafficSources: {}
     };
@@ -1471,25 +1473,47 @@ const DB = (() => {
                     else pageCounts.home++;
                 });
 
-                const pages = [
-                    { page: 'Trang chủ', count: pageCounts.home, url: '/', icon: '🏠' },
-                    { page: 'Sàng lọc Dinh dưỡng', count: pageCounts.nutrition_eval, url: '/danh-gia-dinh-duong/', icon: '📋' },
-                    { page: 'Đánh giá Thiếu sắt', count: pageCounts.iron_eval, url: '/danh-gia-thieu-sat/', icon: '🩸' },
-                    { page: 'Đặt lịch Tư vấn 1:1', count: pageCounts.booking, url: '/dat-lich/', icon: '📅' },
-                    { page: 'Hồ sơ Chuyên gia', count: pageCounts.expert, url: '/chuyen-gia/', icon: '👩‍⚕️' },
-                    { page: 'Cẩm nang Dinh dưỡng', count: pageCounts.guide, url: '/dinh-duong/', icon: '🥗' },
-                    { page: 'Kênh & Cộng đồng', count: pageCounts.community, url: '/cong-dong/', icon: '👥' },
-                    { page: 'Tra cứu Lộ trình', count: pageCounts.lookup, url: '/tra-cuu/', icon: '🔍' }
+                const analytics = this.getAnalytics();
+                const pageBreakdown = analytics.pageBreakdown || {};
+                const pageDailyViews = analytics.pageDailyViews || {};
+                const totalSiteViews = analytics.pageViews || 0;
+
+                const nowDate = new Date();
+                const ymdNow = `${nowDate.getFullYear()}-${String(nowDate.getMonth() + 1).padStart(2, '0')}-${String(nowDate.getDate()).padStart(2, '0')}`;
+                const todayPageMap = pageDailyViews[ymdNow] || {};
+
+                const rawPages = [
+                    { id: 'home', page: 'Trang chủ', count: pageCounts.home, url: '/', icon: '🏠', role: 'Cổng Tiếp Đón' },
+                    { id: 'nutrition_eval', page: 'Sàng lọc Dinh dưỡng', count: pageCounts.nutrition_eval, url: '/danh-gia-dinh-duong/', icon: '📋', role: 'Lead Magnet Chủ Lực' },
+                    { id: 'iron_eval', page: 'Đánh giá Thiếu sắt', count: pageCounts.iron_eval, url: '/danh-gia-thieu-sat/', icon: '🩸', role: 'Lead Magnet Vi Chất' },
+                    { id: 'booking', page: 'Đặt lịch Tư vấn 1:1', count: pageCounts.booking, url: '/dat-lich/', icon: '📅', role: 'Đích Chuyển Đổi 1:1' },
+                    { id: 'expert', page: 'Hồ sơ Chuyên gia', count: pageCounts.expert, url: '/chuyen-gia/', icon: '👩‍⚕️', role: 'Xây Dựng Niềm Tin' },
+                    { id: 'guide', page: 'Cẩm nang Dinh dưỡng', count: pageCounts.guide, url: '/dinh-duong/', icon: '🥗', role: 'Giáo Dục Nhận Thức' },
+                    { id: 'community', page: 'Kênh & Cộng đồng', count: pageCounts.community, url: '/cong-dong/', icon: '👥', role: 'Giữ Chân Mạng Xã Hội' },
+                    { id: 'lookup', page: 'Tra cứu Lộ trình', count: pageCounts.lookup, url: '/tra-cuu/', icon: '🔍', role: 'Tương Tác & Chăm Sóc' }
                 ];
+
+                const pages = rawPages.map(p => {
+                    const total = pageBreakdown[p.page] || 0;
+                    const today = todayPageMap[p.page] || 0;
+                    const share = totalSiteViews > 0 ? ((total / totalSiteViews) * 100).toFixed(1) : '0.0';
+                    return {
+                        ...p,
+                        totalViews: total,
+                        todayViews: today,
+                        viewShare: share
+                    };
+                });
 
                 return {
                     count: realCount,
                     sessions: sessions,
                     pages: pages,
-                    realTabs: realCount
+                    realTabs: realCount,
+                    totalSiteViews: totalSiteViews
                 };
             } catch (e) {
-                return { count: 0, pages: [], realTabs: 0 };
+                return { count: 0, pages: [], realTabs: 0, totalSiteViews: 0 };
             }
         },
 
@@ -1500,10 +1524,47 @@ const DB = (() => {
                 data.pageBreakdown = data.pageBreakdown || {};
                 data.trafficSources = data.trafficSources || {};
                 data.dailyViews = data.dailyViews || {};
+                data.pageDailyViews = data.pageDailyViews || {};
+                data.pageWeeklyViews = data.pageWeeklyViews || {};
                 return data;
             } catch (e) {
                 return INITIAL_ANALYTICS;
             }
+        },
+
+        getISOWeekKey(d) {
+            const target = new Date(d.valueOf());
+            const dayNr = (d.getDay() + 6) % 7;
+            target.setDate(target.getDate() - dayNr + 3);
+            const firstThursday = target.valueOf();
+            target.setMonth(0, 1);
+            if (target.getDay() !== 4) {
+                target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+            }
+            const weekNum = 1 + Math.ceil((firstThursday - target.valueOf()) / 604800000);
+            return `${target.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+        },
+
+        getWeekBoundaries(d) {
+            const curr = new Date(d.valueOf());
+            const day = curr.getDay();
+            const diffToMonday = curr.getDate() - day + (day === 0 ? -6 : 1);
+            const monday = new Date(curr.setDate(diffToMonday));
+            monday.setHours(0, 0, 0, 0);
+            const sunday = new Date(monday.valueOf());
+            sunday.setDate(monday.getDate() + 6);
+            sunday.setHours(23, 59, 59, 999);
+            
+            const pad = (n) => String(n).padStart(2, '0');
+            const weekNum = this.getISOWeekKey(monday).split('-W')[1];
+            return {
+                key: this.getISOWeekKey(monday),
+                weekNum: parseInt(weekNum, 10),
+                monday: monday,
+                sunday: sunday,
+                label: `Tuần ${weekNum} (${pad(monday.getDate())}/${pad(monday.getMonth() + 1)} - ${pad(sunday.getDate())}/${pad(sunday.getMonth() + 1)})`,
+                shortLabel: `Tuần ${weekNum}`
+            };
         },
 
         trackView(pageName = 'Trang chủ', meta = {}) {
@@ -1526,8 +1587,22 @@ const DB = (() => {
             // Track daily views by date
             const now = new Date();
             const dayKey = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}`;
+            const ymd = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            const weekKey = this.getISOWeekKey(now);
+
             if (!analytics.dailyViews) analytics.dailyViews = {};
             analytics.dailyViews[dayKey] = (analytics.dailyViews[dayKey] || 0) + 1;
+
+            // Track detailed page daily views
+            if (!analytics.pageDailyViews) analytics.pageDailyViews = {};
+            if (!analytics.pageDailyViews[ymd]) analytics.pageDailyViews[ymd] = {};
+            analytics.pageDailyViews[ymd][pageName] = (analytics.pageDailyViews[ymd][pageName] || 0) + 1;
+
+            // Track detailed page weekly views
+            if (!analytics.pageWeeklyViews) analytics.pageWeeklyViews = {};
+            if (!analytics.pageWeeklyViews[weekKey]) analytics.pageWeeklyViews[weekKey] = {};
+            analytics.pageWeeklyViews[weekKey][pageName] = (analytics.pageWeeklyViews[weekKey][pageName] || 0) + 1;
+            analytics.pageWeeklyViews[weekKey]['_total'] = (analytics.pageWeeklyViews[weekKey]['_total'] || 0) + 1;
 
             // Track per-page breakdown
             if (!analytics.pageBreakdown) analytics.pageBreakdown = {};
@@ -1540,6 +1615,289 @@ const DB = (() => {
 
             localStorage.setItem(STORAGE_KEY_ANALYTICS, JSON.stringify(analytics));
             this.heartbeat(pageName);
+        },
+
+        // Detailed Week-over-Week (WoW) Multi-Week Comparison Report
+        getPageWeeklyComparison(weeksCount = 4) {
+            const analytics = this.getAnalytics();
+            const bookings = this.getBookings();
+            const evals = (typeof this.getEvaluations === 'function') ? this.getEvaluations() : [];
+            const pageBreakdown = analytics.pageBreakdown || {};
+            const pageWeeklyViews = analytics.pageWeeklyViews || {};
+            const pageDailyViews = analytics.pageDailyViews || {};
+            const totalSiteViews = analytics.pageViews || 0;
+
+            const now = new Date();
+            const currentWeekKey = this.getISOWeekKey(now);
+            const weeks = [];
+            for (let i = weeksCount - 1; i >= 0; i--) {
+                const target = new Date(now.getTime() - i * 7 * 24 * 60 * 60 * 1000);
+                weeks.push(this.getWeekBoundaries(target));
+            }
+
+            const canonicalPages = [
+                {
+                    id: 'home',
+                    page: 'Trang chủ',
+                    url: '/',
+                    icon: '🏠',
+                    category: 'Trang Chính',
+                    roleName: 'Cổng Tiếp Đón & Định Vị',
+                    roleBadge: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+                    targetType: 'awareness'
+                },
+                {
+                    id: 'nutrition_eval',
+                    page: 'Sàng lọc Dinh dưỡng',
+                    url: '/danh-gia-dinh-duong/',
+                    icon: '📋',
+                    category: 'Đánh Giá & Khảo Sát',
+                    roleName: 'Lead Magnet Sàng Lọc 28 Tiêu Chí',
+                    roleBadge: 'bg-amber-50 text-amber-800 border-amber-200',
+                    targetType: 'nutrition_eval'
+                },
+                {
+                    id: 'iron_eval',
+                    page: 'Đánh giá Thiếu sắt',
+                    url: '/danh-gia-thieu-sat/',
+                    icon: '🩸',
+                    category: 'Đánh Giá & Khảo Sát',
+                    roleName: 'Lead Magnet Thiếu Sắt 14 Dấu Hiệu',
+                    roleBadge: 'bg-rose-50 text-rose-800 border-rose-200',
+                    targetType: 'iron_eval'
+                },
+                {
+                    id: 'booking',
+                    page: 'Đặt lịch Tư vấn 1:1',
+                    url: '/dat-lich/',
+                    icon: '📅',
+                    category: 'Đặt Lịch & Biểu Mẫu',
+                    roleName: 'Đích Chuyển Đổi Hẹn Trò Chuyện 1:1',
+                    roleBadge: 'bg-sky-50 text-sky-800 border-sky-200',
+                    targetType: 'booking'
+                },
+                {
+                    id: 'expert',
+                    page: 'Hồ sơ Chuyên gia',
+                    url: '/chuyen-gia/',
+                    icon: '👩‍⚕️',
+                    category: 'Hồ Sơ Chuyên Môn',
+                    roleName: 'Xây Dựng Niềm Tin & Hồ Sơ Năng Lực',
+                    roleBadge: 'bg-purple-50 text-purple-800 border-purple-200',
+                    targetType: 'trust'
+                },
+                {
+                    id: 'guide',
+                    page: 'Cẩm nang Dinh dưỡng',
+                    url: '/dinh-duong/',
+                    icon: '🥗',
+                    category: 'Kiến Thức Khoa Học',
+                    roleName: 'Giáo Dục Chế Độ Ăn GFCF+SF',
+                    roleBadge: 'bg-lime-50 text-lime-800 border-lime-200',
+                    targetType: 'education'
+                },
+                {
+                    id: 'community',
+                    page: 'Kênh & Cộng đồng',
+                    url: '/cong-dong/',
+                    icon: '👥',
+                    category: 'Mạng Xã Hội',
+                    roleName: 'Giữ Chân Mạng Xã Hội TikTok, Zalo, YT',
+                    roleBadge: 'bg-indigo-50 text-indigo-800 border-indigo-200',
+                    targetType: 'retention'
+                },
+                {
+                    id: 'lookup',
+                    page: 'Tra cứu Lộ trình',
+                    url: '/tra-cuu/',
+                    icon: '🔍',
+                    category: 'Đánh Giá & Khảo Sát',
+                    roleName: 'Tương Tác & Chăm Sóc Khách Hàng',
+                    roleBadge: 'bg-teal-50 text-teal-800 border-teal-200',
+                    targetType: 'crm'
+                }
+            ];
+
+            const parseItemDate = (str) => {
+                if (!str) return null;
+                if (str instanceof Date) return isNaN(str.getTime()) ? null : str;
+                const m2 = String(str).match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+                if (m2) return new Date(parseInt(m2[3], 10), parseInt(m2[2], 10) - 1, parseInt(m2[1], 10));
+                const m1 = String(str).match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+                if (m1) return new Date(parseInt(m1[1], 10), parseInt(m1[2], 10) - 1, parseInt(m1[3], 10));
+                const d = new Date(str);
+                return isNaN(d.getTime()) ? null : d;
+            };
+
+            const nutritionEvalsTotal = evals.filter(e => (e.checklist_id || '').includes('nutrition') || !(e.checklist_id || '').includes('iron')).length;
+            const ironEvalsTotal = evals.filter(e => (e.checklist_id || '').includes('iron')).length;
+            const bookingsTotal = bookings.length;
+
+            const pageResults = canonicalPages.map(cp => {
+                const totalPageViews = pageBreakdown[cp.page] || 0;
+                const sharePercent = totalSiteViews > 0 ? ((totalPageViews / totalSiteViews) * 100).toFixed(1) : '0.0';
+
+                const viewsByWeek = weeks.map((w) => {
+                    let count = 0;
+                    if (pageWeeklyViews[w.key] && typeof pageWeeklyViews[w.key][cp.page] === 'number') {
+                        count = pageWeeklyViews[w.key][cp.page];
+                    } else {
+                        Object.keys(pageDailyViews).forEach(ymd => {
+                            const d = parseItemDate(ymd);
+                            if (d && d >= w.monday && d <= w.sunday) {
+                                count += (pageDailyViews[ymd][cp.page] || 0);
+                            }
+                        });
+                    }
+
+                    if (count === 0 && w.key === currentWeekKey && totalPageViews > 0) {
+                        let otherWeeksCount = 0;
+                        weeks.slice(0, -1).forEach(pw => {
+                            otherWeeksCount += (pageWeeklyViews[pw.key]?.[cp.page] || 0);
+                        });
+                        count = Math.max(0, totalPageViews - otherWeeksCount);
+                    }
+
+                    return count;
+                });
+
+                const thisWeekViews = viewsByWeek[viewsByWeek.length - 1];
+                const lastWeekViews = viewsByWeek[viewsByWeek.length - 2];
+
+                let wowGrowth = 0;
+                let wowDirection = 'flat';
+                let wowBadgeText = '0.0%';
+
+                if (lastWeekViews > 0) {
+                    wowGrowth = (((thisWeekViews - lastWeekViews) / lastWeekViews) * 100);
+                    if (wowGrowth > 0) {
+                        wowDirection = 'up';
+                        wowBadgeText = `+${wowGrowth.toFixed(1)}%`;
+                    } else if (wowGrowth < 0) {
+                        wowDirection = 'down';
+                        wowBadgeText = `${wowGrowth.toFixed(1)}%`;
+                    } else {
+                        wowDirection = 'flat';
+                        wowBadgeText = '0.0%';
+                    }
+                } else if (thisWeekViews > 0) {
+                    wowDirection = 'new';
+                    wowBadgeText = '+100% (Mới)';
+                    wowGrowth = 100;
+                } else {
+                    wowDirection = 'flat';
+                    wowBadgeText = '0.0%';
+                }
+
+                let convCount = 0;
+                let convLabel = 'Đóng góp phễu nhận thức';
+                let convRate = '0.0';
+
+                if (cp.targetType === 'nutrition_eval') {
+                    convCount = nutritionEvalsTotal;
+                    convLabel = `${convCount} bài nộp Dinh dưỡng`;
+                    convRate = totalPageViews > 0 ? ((convCount / totalPageViews) * 100).toFixed(1) : '0.0';
+                } else if (cp.targetType === 'iron_eval') {
+                    convCount = ironEvalsTotal;
+                    convLabel = `${convCount} bài nộp Thiếu sắt`;
+                    convRate = totalPageViews > 0 ? ((convCount / totalPageViews) * 100).toFixed(1) : '0.0';
+                } else if (cp.targetType === 'booking') {
+                    convCount = bookingsTotal;
+                    convLabel = `${convCount} lịch hẹn tư vấn 1:1`;
+                    convRate = totalPageViews > 0 ? ((convCount / totalPageViews) * 100).toFixed(1) : '0.0';
+                } else if (cp.targetType === 'trust') {
+                    convLabel = 'Củng cố niềm tin chuyên môn';
+                } else if (cp.targetType === 'education') {
+                    convLabel = 'Giáo dục nhận thức GFCF';
+                } else if (cp.targetType === 'retention') {
+                    convLabel = 'Điều hướng mạng xã hội';
+                } else if (cp.targetType === 'crm') {
+                    convLabel = 'Tra cứu kết quả đã nộp';
+                } else {
+                    convLabel = 'Cửa ngõ tiếp cận toàn site';
+                }
+
+                let appealBadge = {
+                    label: '⚖️ Ổn Định',
+                    class: 'bg-zinc-100 text-zinc-700 border-zinc-200'
+                };
+                let appealAction = 'Duy trì nội dung và cập nhật định kỳ';
+
+                if (parseFloat(sharePercent) >= 20 || (totalPageViews > 0 && totalPageViews === Math.max(...Object.values(pageBreakdown).concat(0)))) {
+                    appealBadge = {
+                        label: '🔥 Chủ Lực Hút Khách',
+                        class: 'bg-rose-50 text-rose-700 border-rose-200'
+                    };
+                    appealAction = 'Tối ưu CTA và liên kết dẫn vào phiếu sàng lọc';
+                } else if (wowDirection === 'up' && wowGrowth >= 15) {
+                    appealBadge = {
+                        label: '🚀 Tăng Trưởng Mạnh',
+                        class: 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                    };
+                    appealAction = 'Đẩy mạnh truyền thông kênh đang mang lại traffic tốt';
+                } else if (convCount > 0 && parseFloat(convRate) >= 5) {
+                    appealBadge = {
+                        label: '🎯 Chuyển Đổi Vượt Trội',
+                        class: 'bg-amber-50 text-amber-800 border-amber-200'
+                    };
+                    appealAction = 'Trang có tỷ lệ ra lead cao, cần tối ưu trải nghiệm form';
+                } else if (totalPageViews < 5 && totalSiteViews > 10) {
+                    appealBadge = {
+                        label: '⚠️ Cần Kéo Traffic',
+                        class: 'bg-amber-50 text-amber-700 border-amber-200'
+                    };
+                    appealAction = 'Gắn thêm banner và link từ bài viết/video mạng xã hội';
+                }
+
+                return {
+                    ...cp,
+                    totalViews: totalPageViews,
+                    viewShare: sharePercent,
+                    viewsByWeek: viewsByWeek,
+                    thisWeekViews: thisWeekViews,
+                    lastWeekViews: lastWeekViews,
+                    wowGrowth: wowGrowth,
+                    wowDirection: wowDirection,
+                    wowBadgeText: wowBadgeText,
+                    convCount: convCount,
+                    convLabel: convLabel,
+                    convRate: convRate,
+                    appealBadge: appealBadge,
+                    appealAction: appealAction
+                };
+            });
+
+            const thisWeekTotal = pageResults.reduce((sum, p) => sum + p.thisWeekViews, 0);
+            const lastWeekTotal = pageResults.reduce((sum, p) => sum + p.lastWeekViews, 0);
+            let totalWoWGrowth = '0.0';
+            if (lastWeekTotal > 0) {
+                totalWoWGrowth = (((thisWeekTotal - lastWeekTotal) / lastWeekTotal) * 100).toFixed(1);
+            } else if (thisWeekTotal > 0) {
+                totalWoWGrowth = '100.0';
+            }
+
+            const sortedByThisWeek = [...pageResults].sort((a, b) => b.thisWeekViews - a.thisWeekViews);
+            const topAttraction = sortedByThisWeek[0] || null;
+
+            const sortedByGrowth = [...pageResults].filter(p => p.thisWeekViews > 0).sort((a, b) => b.wowGrowth - a.wowGrowth);
+            const topGrowth = sortedByGrowth[0] || sortedByThisWeek[0] || null;
+
+            const sortedByConv = [...pageResults].sort((a, b) => (b.convCount || 0) - (a.convCount || 0));
+            const topConversion = sortedByConv.find(p => p.convCount > 0) || sortedByThisWeek[0] || null;
+
+            return {
+                weeks: weeks,
+                pages: pageResults,
+                summary: {
+                    thisWeekTotal: thisWeekTotal,
+                    lastWeekTotal: lastWeekTotal,
+                    totalWoWGrowth: `${parseFloat(totalWoWGrowth) >= 0 ? '+' : ''}${totalWoWGrowth}%`,
+                    topAttractionPage: topAttraction,
+                    topGrowthPage: topGrowth,
+                    topConversionPage: topConversion,
+                    totalSiteViews: totalSiteViews
+                }
+            };
         },
 
         // Dynamic 7-Day Rolling Trend Window (starts from 0, tracks real data)
@@ -1917,6 +2275,14 @@ const DB = (() => {
                 evals.forEach(e => {
                     const allergiesStr = Array.isArray(e.allergies) ? e.allergies.join('; ') : (e.allergies || '');
                     csvContent += `"${e.id}","${e.created_at}","${(e.checklist_title || '').replace(/"/g, '""')}","${(e.parent_name || '').replace(/"/g, '""')}","${e.phone || ''}","${e.phone_normalized || ''}","${(e.child_name || '').replace(/"/g, '""')}","${e.child_age || ''}","${e.gender || ''}","${e.weight || ''}","${e.height || ''}","${(e.risk_title || e.risk_level || '').replace(/"/g, '""')}","${e.score || 0}","${e.crm_status || 'new'}","${e.crm_priority || 'normal'}","${(e.crm_notes || '').replace(/"/g, '""')}","${e.water || ''}","${allergiesStr.replace(/"/g, '""')}","${(e.daily_diet || '').replace(/"/g, '""')}","${(e.other_difficulties || '').replace(/"/g, '""')}","${e.source || 'Website'}"\n`;
+                });
+            } else if (type === 'pages_weekly') {
+                const report = this.getPageWeeklyComparison(4);
+                const w = report.weeks;
+                csvContent += `"Mã Trang","Tên Trang","Đường Dẫn","Vai Trò Phễu","Tổng Lượt Xem","Tỷ Trọng (%)","${w[0].label}","${w[1].label}","${w[2].label}","${w[3].label}","Tăng Trưởng WoW (%)","Chuyển Đổi Thực Tế","Tỷ Lệ CR (%)","Đánh Giá Mức Độ Thu Hút"\n`;
+                report.pages.forEach(p => {
+                    const cleanAppeal = (p.appealBadge?.label || '').replace(/[^\p{L}\p{N}\s]/gu, '').trim();
+                    csvContent += `"${p.id}","${p.page}","${p.url}","${p.roleName}","${p.totalViews}","${p.viewShare}%","${p.viewsByWeek[0]}","${p.viewsByWeek[1]}","${p.viewsByWeek[2]}","${p.viewsByWeek[3]}","${p.wowBadgeText}","${p.convLabel}","${p.convRate}%","${cleanAppeal}"\n`;
                 });
             } else {
                 const bookings = this.getBookings();

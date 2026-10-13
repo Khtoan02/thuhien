@@ -540,6 +540,70 @@
                     </div>
                 </div>
 
+                <!-- BÁO CÁO SO SÁNH HIỆU SUẤT & ĐỘ THU HÚT CÁC TRANG QUA CÁC TUẦN -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-6 shadow-xs space-y-6">
+                    <!-- Header -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-100">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-base font-bold text-zinc-900">Báo Cáo So Sánh Hiệu Suất & Mức Độ Thu Hút Các Trang Qua Các Tuần</h3>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200">Đa Chiều</span>
+                            </div>
+                            <p class="text-xs text-zinc-500 mt-0.5">So sánh chi tiết 8 trang chính qua 4 tuần gần nhất: Biến động lượt xem (WoW), tỷ trọng toàn site, chuyển đổi thực tế và mức độ thu hút</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="DB.exportCSV('pages_weekly')" class="inline-flex h-8 items-center justify-center rounded-md border border-zinc-200 bg-white px-3 text-xs font-medium text-zinc-800 shadow-xs hover:bg-zinc-50 transition-colors gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                <span>Xuất Excel Báo Cáo Tuần</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4 Weekly KPI Scorecards -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="weeklyPagesKpiCards">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Visual Chart & Trend Highlights -->
+                    <div class="rounded-xl border border-zinc-100 bg-zinc-50/60 p-4 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-700">Biểu Đồ So Sánh Lượt Xem Từng Trang: Tuần Này vs Tuần Trước</h4>
+                                <p class="text-[11px] text-zinc-500">Trực quan hóa xu hướng tăng/giảm lưu lượng của từng trang giữa 2 tuần liên tiếp</p>
+                            </div>
+                            <div class="flex items-center gap-3 text-xs">
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span> <span class="font-medium text-zinc-700" id="chartLegendThisWeek">Tuần Này (Hiện tại)</span></span>
+                                <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-slate-400 inline-block"></span> <span class="font-medium text-zinc-600" id="chartLegendLastWeek">Tuần Trước</span></span>
+                            </div>
+                        </div>
+                        <div class="h-64 w-full">
+                            <canvas id="weeklyPageComparisonChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Week Comparison Table -->
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-700">Bảng Đối Chiếu Số Liệu Chi Tiết Cả 8 Trang Theo Tuần</h4>
+                                <p class="text-[11px] text-zinc-500">Dữ liệu thực tế ghi nhận từ hệ thống đo lường và CRM của Thu Hiền</p>
+                            </div>
+                            <span class="text-xs text-zinc-400" id="weeklyTableReportTimestamp"></span>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-lg border border-zinc-200">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead class="bg-zinc-50 text-zinc-600 border-b border-zinc-200 font-semibold uppercase text-[11px]" id="weeklyComparisonTableHead">
+                                    <!-- Populated by JS with exact week date ranges -->
+                                </thead>
+                                <tbody class="divide-y divide-zinc-200 bg-white" id="weeklyComparisonTableBody">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Funnel & Clinical Demand Grid -->
                 <div class="grid gap-6 lg:grid-cols-2">
                     
@@ -2327,6 +2391,7 @@
     const AUTH_KEY = 'thuhien_admin_auth';
     let overviewTrendChartInstance = null;
     let overviewSourceChartInstance = null;
+    let weeklyPageComparisonChartInstance = null;
 
     // Security & XSS Sanitization Utility
     function escapeHtml(str) {
@@ -2520,6 +2585,7 @@
             renderTopicDemands(bookings, evals);
             renderMarketingSources();
             updateLiveRealtime();
+            renderPageWeeklyComparison();
         } else if (viewName === 'evaluations') {
             renderEvaluations();
             renderChecklistsAdmin();
@@ -2637,8 +2703,9 @@
         // 3.5 Render Marketing Traffic Sources
         renderMarketingSources();
 
-        // 3.6 Render Realtime Live Online Stream
+        // 3.6 Render Realtime Live Online Stream & Weekly Comparison
         updateLiveRealtime();
+        renderPageWeeklyComparison();
 
         // 3.6 Overview Recent Bookings preview
         const recent = bookings.slice(0, 4);
@@ -2885,18 +2952,286 @@
 
         const pagesGrid = document.getElementById('livePagesGrid');
         if (pagesGrid && live.pages) {
-            pagesGrid.innerHTML = live.pages.map(p => `
-                <div class="p-3 rounded-lg bg-white border border-emerald-200/80 shadow-2xs hover:border-emerald-300 transition-colors">
-                    <div class="flex items-center justify-between mb-1">
-                        <span class="font-bold text-emerald-950 truncate flex items-center gap-1.5">
-                            <span>${p.icon || '📄'}</span>
-                            <span class="truncate">${p.page}</span>
-                        </span>
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${p.count > 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-zinc-100 text-zinc-500'}">${p.count}</span>
+            pagesGrid.innerHTML = live.pages.map(p => {
+                const total = p.totalViews || 0;
+                const today = p.todayViews || 0;
+                const share = p.viewShare || '0.0';
+                const isLive = p.count > 0;
+                return `
+                <div class="p-3.5 rounded-xl bg-white border border-emerald-200/80 shadow-2xs hover:border-emerald-300 hover:shadow-xs transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between gap-1 mb-1.5">
+                            <span class="font-bold text-emerald-950 text-xs truncate flex items-center gap-1.5" title="${p.page}">
+                                <span>${p.icon || '📄'}</span>
+                                <span class="truncate">${p.page}</span>
+                            </span>
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0 ${isLive ? 'bg-emerald-100 text-emerald-800' : 'bg-zinc-100 text-zinc-500'}">
+                                ${isLive ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>' : ''}
+                                <span>${p.count} live</span>
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] text-zinc-400 font-mono mb-2">
+                            <span class="truncate max-w-[120px]">${p.url}</span>
+                            <span class="text-zinc-500 font-sans font-medium px-1 rounded bg-zinc-50">${p.role || ''}</span>
+                        </div>
                     </div>
-                    <span class="text-[10px] text-zinc-400 font-mono block truncate">${p.url}</span>
+
+                    <div class="pt-2 border-t border-zinc-100 space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] text-zinc-500 font-medium">Tổng view tích lũy</span>
+                            <span class="text-xs font-bold text-zinc-900">${total.toLocaleString()}</span>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px]">
+                            <span class="text-emerald-700 font-medium">${today > 0 ? `+${today} hôm nay` : '0 hôm nay'}</span>
+                            <span class="text-zinc-500 font-medium">${share}% toàn site</span>
+                        </div>
+                        <div class="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
+                            <div class="h-full bg-emerald-600 rounded-full transition-all duration-500" style="width: ${Math.min(100, Math.max(2, parseFloat(share)))}%"></div>
+                        </div>
+                    </div>
                 </div>
-            `).join('');
+            `;
+            }).join('');
+        }
+    }
+
+    // 3.6.1 Render Weekly Page Comparison (Performance & Multi-Week Attraction)
+    function renderPageWeeklyComparison() {
+        if (typeof DB === 'undefined' || typeof DB.getPageWeeklyComparison !== 'function') return;
+
+        const report = DB.getPageWeeklyComparison(4);
+        const summary = report.summary;
+        const pages = report.pages;
+        const weeks = report.weeks;
+
+        // 1. Render 4 KPI Scorecards
+        const kpiEl = document.getElementById('weeklyPagesKpiCards');
+        if (kpiEl) {
+            const topAtt = summary.topAttractionPage;
+            const topGro = summary.topGrowthPage;
+            const topConv = summary.topConversionPage;
+
+            kpiEl.innerHTML = `
+                <!-- Card 1: Tổng Lượt Xem Tuần Này -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
+                    <div class="flex items-center justify-between pb-1.5">
+                        <span class="text-xs font-medium text-zinc-500">Lượt Xem Tuần Này (${weeks[3]?.shortLabel || 'Hiện tại'})</span>
+                        <span class="text-emerald-600 text-sm">📈</span>
+                    </div>
+                    <div class="text-2xl font-bold tracking-tight text-zinc-900">${summary.thisWeekTotal.toLocaleString()}</div>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold ${summary.totalWoWGrowth.startsWith('+') ? 'bg-emerald-50 text-emerald-700' : (summary.totalWoWGrowth.startsWith('-') ? 'bg-rose-50 text-rose-700' : 'bg-zinc-100 text-zinc-600')}">
+                            ${summary.totalWoWGrowth} WoW
+                        </span>
+                        <span class="text-[11px] text-zinc-400">vs ${summary.lastWeekTotal} view tuần trước</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Trang Hút Khách Nhất -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
+                    <div class="flex items-center justify-between pb-1.5">
+                        <span class="text-xs font-medium text-zinc-500">Trang Hút Khách Nhất</span>
+                        <span class="text-amber-500 text-sm">🔥</span>
+                    </div>
+                    <div class="text-base font-bold tracking-tight text-zinc-900 truncate" title="${topAtt?.page || '-'}">
+                        ${topAtt ? `${topAtt.icon} ${topAtt.page}` : 'Chờ dữ liệu...'}
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <span class="text-xs font-bold text-amber-600">${topAtt ? topAtt.thisWeekViews : 0} view tuần này</span>
+                        <span class="text-[11px] text-zinc-400">(${topAtt ? topAtt.viewShare : 0}% all-time)</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Trang Tăng Trưởng Nhanh Nhất -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
+                    <div class="flex items-center justify-between pb-1.5">
+                        <span class="text-xs font-medium text-zinc-500">Tăng Trưởng Nhanh Nhất</span>
+                        <span class="text-sky-500 text-sm">🚀</span>
+                    </div>
+                    <div class="text-base font-bold tracking-tight text-zinc-900 truncate" title="${topGro?.page || '-'}">
+                        ${topGro ? `${topGro.icon} ${topGro.page}` : 'Chờ dữ liệu...'}
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-sky-50 text-sky-700">
+                            ${topGro?.wowBadgeText || '0.0%'}
+                        </span>
+                        <span class="text-[11px] text-zinc-400">tăng ${Math.max(0, (topGro?.thisWeekViews || 0) - (topGro?.lastWeekViews || 0))} view</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Trang Chuyển Đổi Tốt Nhất -->
+                <div class="rounded-xl border border-zinc-200 bg-white p-4 shadow-xs">
+                    <div class="flex items-center justify-between pb-1.5">
+                        <span class="text-xs font-medium text-zinc-500">Chuyển Đổi Hiệu Quả Nhất</span>
+                        <span class="text-purple-600 text-sm">🎯</span>
+                    </div>
+                    <div class="text-base font-bold tracking-tight text-zinc-900 truncate" title="${topConv?.page || '-'}">
+                        ${topConv ? `${topConv.icon} ${topConv.page}` : 'Chờ dữ liệu...'}
+                    </div>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <span class="text-xs font-bold text-purple-700">${topConv?.convCount || 0} nộp</span>
+                        <span class="text-[11px] text-zinc-400 font-medium">(CR: ${topConv?.convRate || '0.0'}%)</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 2. Render Chart (Grouped Bar Chart: Tuần Này vs Tuần Trước)
+        const chartCtx = document.getElementById('weeklyPageComparisonChart');
+        if (chartCtx) {
+            if (weeklyPageComparisonChartInstance) weeklyPageComparisonChartInstance.destroy();
+
+            const labels = pages.map(p => `${p.icon} ${p.page}`);
+            const thisWeekData = pages.map(p => p.thisWeekViews);
+            const lastWeekData = pages.map(p => p.lastWeekViews);
+
+            const legendThis = document.getElementById('chartLegendThisWeek');
+            const legendLast = document.getElementById('chartLegendLastWeek');
+            if (legendThis && weeks[3]) legendThis.innerText = `${weeks[3].label} (Hiện tại)`;
+            if (legendLast && weeks[2]) legendLast.innerText = `${weeks[2].label}`;
+
+            weeklyPageComparisonChartInstance = new Chart(chartCtx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: `${weeks[3]?.label || 'Tuần Này'} (Hiện tại)`,
+                            data: thisWeekData,
+                            backgroundColor: '#10B981',
+                            borderRadius: 4,
+                            barPercentage: 0.65,
+                            categoryPercentage: 0.7
+                        },
+                        {
+                            label: `${weeks[2]?.label || 'Tuần Trước'}`,
+                            data: lastWeekData,
+                            backgroundColor: '#94A3B8',
+                            borderRadius: 4,
+                            barPercentage: 0.65,
+                            categoryPercentage: 0.7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { boxWidth: 12, font: { size: 11 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    const p = pages[context.dataIndex];
+                                    if (context.datasetIndex === 0) {
+                                        return `Tăng trưởng WoW: ${p.wowBadgeText} | Vai trò: ${p.roleName}`;
+                                    }
+                                    return `Tổng all-time: ${p.totalViews} views`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#F4F4F5' },
+                            ticks: { stepSize: 1 }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                font: { size: 10 },
+                                maxRotation: 25,
+                                minRotation: 15
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 3. Render Table Head (Dynamic Week Labels)
+        const thead = document.getElementById('weeklyComparisonTableHead');
+        if (thead) {
+            thead.innerHTML = `
+                <tr>
+                    <th class="py-3 px-3">Trang & Vai Trò Trong Phễu</th>
+                    <th class="py-3 px-3 text-right">Tổng View All-time</th>
+                    <th class="py-3 px-2 text-center text-zinc-500 font-medium">${weeks[0].shortLabel}<br><span class="text-[9px] font-normal text-zinc-400">${weeks[0].label.split('(')[1]?.replace(')', '') || ''}</span></th>
+                    <th class="py-3 px-2 text-center text-zinc-500 font-medium">${weeks[1].shortLabel}<br><span class="text-[9px] font-normal text-zinc-400">${weeks[1].label.split('(')[1]?.replace(')', '') || ''}</span></th>
+                    <th class="py-3 px-2 text-center text-zinc-600 font-semibold bg-zinc-100/50">${weeks[2].shortLabel}<br><span class="text-[9px] font-normal text-zinc-500">${weeks[2].label.split('(')[1]?.replace(')', '') || ''}</span></th>
+                    <th class="py-3 px-3 text-center text-emerald-800 font-bold bg-emerald-50/70 border-x border-emerald-100">${weeks[3].shortLabel} (Hiện tại)<br><span class="text-[9px] font-normal text-emerald-700">${weeks[3].label.split('(')[1]?.replace(')', '') || ''}</span></th>
+                    <th class="py-3 px-2 text-center">Tăng Trưởng WoW</th>
+                    <th class="py-3 px-3">Chuyển Đổi Thực Tế</th>
+                    <th class="py-3 px-3 text-center">Mức Độ Thu Hút & Đề Xuất</th>
+                </tr>
+            `;
+        }
+
+        // 4. Render Table Body
+        const tbody = document.getElementById('weeklyComparisonTableBody');
+        if (tbody) {
+            tbody.innerHTML = pages.map(p => {
+                const growthClass = p.wowDirection === 'up'
+                    ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                    : (p.wowDirection === 'down' 
+                        ? 'text-rose-700 bg-rose-50 border-rose-200' 
+                        : (p.wowDirection === 'new' ? 'text-sky-700 bg-sky-50 border-sky-200' : 'text-zinc-600 bg-zinc-100 border-zinc-200'));
+
+                return `
+                    <tr class="hover:bg-zinc-50/80 transition-colors">
+                        <td class="py-3 px-3 font-medium text-zinc-900">
+                            <div class="flex items-start gap-2">
+                                <span class="text-base">${p.icon}</span>
+                                <div>
+                                    <div class="font-bold text-zinc-900">${p.page}</div>
+                                    <div class="text-[10px] text-zinc-400 font-mono">${p.url}</div>
+                                    <span class="inline-block mt-0.5 px-1.5 py-0.2 rounded text-[10px] border ${p.roleBadge}">
+                                        ${p.roleName}
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-3 px-3 text-right">
+                            <div class="font-bold text-zinc-900 text-sm">${p.totalViews.toLocaleString()}</div>
+                            <div class="text-[10px] text-zinc-400 font-medium">${p.viewShare}% toàn site</div>
+                            <div class="w-16 ml-auto mt-1 bg-zinc-100 h-1 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-500 rounded-full" style="width: ${Math.min(100, Math.max(3, parseFloat(p.viewShare)))}%"></div>
+                            </div>
+                        </td>
+                        <td class="py-3 px-2 text-center text-zinc-500 font-mono">${p.viewsByWeek[0]}</td>
+                        <td class="py-3 px-2 text-center text-zinc-500 font-mono">${p.viewsByWeek[1]}</td>
+                        <td class="py-3 px-2 text-center text-zinc-700 font-semibold font-mono bg-zinc-50/50">${p.viewsByWeek[2]}</td>
+                        <td class="py-3 px-3 text-center text-emerald-900 font-bold font-mono bg-emerald-50/50 border-x border-emerald-100 text-sm">
+                            ${p.viewsByWeek[3]}
+                        </td>
+                        <td class="py-3 px-2 text-center">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold border ${growthClass}">
+                                ${p.wowBadgeText}
+                            </span>
+                        </td>
+                        <td class="py-3 px-3">
+                            <div class="font-medium text-zinc-800 text-xs">${p.convLabel}</div>
+                            ${p.convCount > 0 ? `<div class="text-[10px] text-emerald-600 font-bold mt-0.5">Tỷ lệ CR: ${p.convRate}%</div>` : '<div class="text-[10px] text-zinc-400">Giai đoạn nhận thức</div>'}
+                        </td>
+                        <td class="py-3 px-3 text-center">
+                            <span class="inline-block px-2 py-1 rounded-md text-[11px] font-bold border ${p.appealBadge.class}">
+                                ${p.appealBadge.label}
+                            </span>
+                            <div class="text-[10px] text-zinc-500 mt-1 max-w-[170px] mx-auto text-left leading-tight">
+                                ${p.appealAction}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        const stampEl = document.getElementById('weeklyTableReportTimestamp');
+        if (stampEl) {
+            stampEl.innerText = `Cập nhật lúc: ${new Date().toLocaleTimeString('vi-VN')} hôm nay`;
         }
     }
 
